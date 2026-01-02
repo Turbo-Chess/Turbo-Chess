@@ -1,0 +1,20 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+interface chessBoard {
+    getEntity() : Entity
+}
+
+class chessBoardImpl {
+    - {static} BOARD_HEIGHT : int
+    - {static} BOARD_LENGTH : int
+    - position : List<Entity>
+
+    getEntity() : Entity
+}
+
+chessBoard <|.. chessBoardImpl
+
+@enduml
