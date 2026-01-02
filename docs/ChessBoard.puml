@@ -10,7 +10,7 @@ interface chessBoard {
 class chessBoardImpl {
     - {static} BOARD_HEIGHT : int
     - {static} BOARD_LENGTH : int
-    - position : List<Entity>
+    - cells : List<Cell>
 
     getEntity() : Entity
 }
