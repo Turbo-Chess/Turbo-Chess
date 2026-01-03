@@ -1,0 +1,71 @@
+@startuml SceneManager
+    skinparam classAttributeIconSize 0
+    hide empty fields
+    hide empty methods
+
+    ' --- Gestione Generale della Scena ---
+    class SceneManager {
+        +switchToMainMenu(): void
+        +switchToSettings(): void
+        +switchToGame(): void
+        +saveCurrentGame(): void
+    }
+
+    ' --- Impostazioni di Gioco ---
+    class SettingsManager {
+        +saveSettings(): void
+        +loadSettings(): void
+    }
+
+    ' --- Logica e Interprete ---
+    class MoveInterpreter {
+        +parse(input: String): Move
+        +isValidFormat(input: String): boolean
+    }
+
+    class MoveLogView {
+        -logHistory: List<String>
+        +addEntry(move: String): void
+        +renderLog(): void
+    }
+
+    ' --- Punteggio ---
+    class ScoreSystem {
+        - whiteScore: int
+        - blackScore: int
+        + updateScore(color: Color, moveType: String)
+        + getLead(): int
+        + resetScores()
+    }
+
+    ' --- Salvataggio/Caricamento (Ogni Turno) ---
+    class SaveLoadSystem {
+        -filePath: String
+        +saveGame(data: GameData): void
+        +loadGame(): GameData
+    }
+
+    class GameData {
+        '+boardState: String
+        +moveHistory: List<String>
+        +turnNumber: int
+        +currentPlayer: Color
+    }
+
+    ' --- Replay ---
+    class ReplaySystem {
+        -isReplaying: boolean
+        -playbackIndex: int
+        -speed: float
+        +startReplay(history: List<String>): void
+        +nextStep(): void
+        +previousStep(): void
+        +pause(): void
+        +setSpeed(newSpeed: float): void
+    }
+
+    ' Relazioni
+    MoveLogView --|> MoveInterpreter : riceve stringhe
+    SaveLoadSystem ..> GameData : gestisce
+    ReplaySystem --> MoveLogView : visualizza mosse passate
+@enduml
