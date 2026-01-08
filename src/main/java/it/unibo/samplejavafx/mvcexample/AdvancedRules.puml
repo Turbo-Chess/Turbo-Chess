@@ -1,0 +1,15 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty method
+
+interface AdvancedRules {
+
+    +{static}check()
+    +{static}checkmate()
+    +{static}draw()
+    +{static}enPassant()
+    +{static}castle()
+}
+@enduml
