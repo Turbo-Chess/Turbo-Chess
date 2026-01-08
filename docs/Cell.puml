@@ -1,0 +1,21 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+interface Cell {
+    getEntity() : Entity
+}
+
+class CellImpl {
+    - pos : Point2D
+    - entity : Optional<Entity>
+
+    getPos() : Point2D
+    getEntity() : Entity
+    isFree() : boolean
+}
+
+Cell <|.. CellImpl
+
+@enduml
