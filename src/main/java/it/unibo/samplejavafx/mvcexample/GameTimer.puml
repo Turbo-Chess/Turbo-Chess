@@ -1,0 +1,11 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty method
+
+interface GameTimer {
+
+    +runTimer()
+}
+@enduml
