@@ -17,15 +17,15 @@ branch-merge: ## Merge branch and close issue automatically
 		echo "Error: Branch name does not follow the pattern NNN-type_description"; \
 		exit 1; \
 	fi; \
-	echo "Merging $$BRANCH_TYPE branch to dev..."; \
-	git checkout dev || exit 1; \
-	git pull origin dev || exit 1; \
+	echo "Merging $$BRANCH_TYPE branch to master..."; \
+	git checkout master || exit 1; \
+	git pull origin master || exit 1; \
 	git merge $$CURRENT_BRANCH || exit 1; \
-	git push origin dev || exit 1; \
+	git push origin master || exit 1; \
 	if [ -n "$$ISSUE_NUMBER" ]; then \
 		echo "Adding commit to close issue #$$ISSUE_NUMBER..."; \
 		git commit --allow-empty -m "Close #$$ISSUE_NUMBER"; \
-		git push origin dev || exit 1; \
+		git push origin master || exit 1; \
 	fi; \
 	echo "Cleaning up..."; \
 	echo "Deleting local branch $$CURRENT_BRANCH..."; \
