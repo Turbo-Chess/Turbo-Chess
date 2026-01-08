@@ -1,0 +1,36 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+interface BoardEntity {
+
+}
+
+abstract AbstractEntity {
+    - ID : String
+    - NAME : String
+    - IMAGE_PATH : String
+    - IS_WHITE : boolean
+}
+
+class Piece {
+    - has_moved : boolean
+    - weight : int
+    - availableCells : List<Point2D>
+    - movementRules : List<MoveRules>
+
+    + getValidMoves(ChessBoard board) : List<Point2D>
+}
+
+class PowerUp {
+    - duration : int
+
+    + applyEffect() : void
+}
+
+BoardEntity <|.. AbstractEntity
+AbstractEntity <|-- Piece
+AbstractEntity <|-- PowerUp
+
+@enduml

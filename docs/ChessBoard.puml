@@ -12,7 +12,7 @@ class chessBoardImpl {
     - {static} BOARD_LENGTH : int
     - cells : List<Cell>
 
-    getEntity() : Entity
+    + getEntity() : Entity
 }
 
 chessBoard <|.. chessBoardImpl

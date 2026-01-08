@@ -1,0 +1,44 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+Interface MovementStrategy {
+    calculateMoves(Point2D start, Point2D direction, ChessBoard board) : List<Point2D>
+}
+
+class SlidingMovement {
+    + calculateMoves(...) : List<Point2D>
+}
+
+class JumpingMovement {
+    + calculateMoves(...) : List<Point2D>
+}
+
+class MoveRules {
+    - directions : Point2D
+    - restriction : MoveType
+    - moveStrategy : MovementStrategy
+
+    + getValidMoves(Point2D start, ChessBoard board, boolean isWhite) : List<Point2D>
+}
+
+enum MoveType {
+    - MOVE_ONLY
+    - EAT_ONLY
+    - MOVE_AND_EAT
+}
+
+class Piece {
+    moveRules : List<MoveRules>
+    ...
+
+    getValidMoves(ChessBoard board) : List<Point2D>
+}
+
+MovementStrategy <|.. SlidingMovement
+MovementStrategy <|.. JumpingMovement
+Piece "1" *-- "many" MoveRules : contains
+MoveRules "1" o-- "1" MovementStrategy : uses
+MoveRules "1" -- "1" MoveType : has
+@enduml

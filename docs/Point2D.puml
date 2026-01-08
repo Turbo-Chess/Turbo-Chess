@@ -1,0 +1,17 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+class Point2D {
+    - x : int
+    - y : int
+
+    + getX() : int
+    + getY() : int
+    + multiply(int) : Point2D
+    + sum(Point2D) : Point2D
+}
+
+@enduml
