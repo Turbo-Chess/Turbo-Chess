@@ -10,26 +10,26 @@ branch-merge: ## Merge branch and close issue automatically
 	echo "Branch Type: $$BRANCH_TYPE"; \
 	echo "Description: $$VERSION"; \
 	if [ -z "$$ISSUE_NUMBER" ]; then \
-		echo "Error: Branch name must start with an issue number (e.g., 123-feature_description)"; \
+		echo "\033[0;31mError: Branch name must start with an issue number (e.g., 123-feature_description)\033[0m"; \
 		exit 1; \
 	fi; \
 	if [ -z "$$BRANCH_TYPE" ]; then \
-		echo "Error: Branch name does not follow the pattern NNN-type_description"; \
+		echo "\033[0;31mError: Branch name does not follow the pattern NNN-type_description\033[0m"; \
 		exit 1; \
 	fi; \
-	echo "Merging $$BRANCH_TYPE branch to master..."; \
+	echo "\033[0;33mMerging $$BRANCH_TYPE branch to master...\033[0m"; \
 	git checkout master || exit 1; \
 	git pull origin master || exit 1; \
 	git merge $$CURRENT_BRANCH || exit 1; \
 	git push origin master || exit 1; \
 	if [ -n "$$ISSUE_NUMBER" ]; then \
-		echo "Adding commit to close issue #$$ISSUE_NUMBER..."; \
+		echo "\033[0;33mAdding commit to close issue #$$ISSUE_NUMBER...\033[0m"; \
 		git commit --allow-empty -m "Close #$$ISSUE_NUMBER"; \
 		git push origin master || exit 1; \
 	fi; \
-	echo "Cleaning up..."; \
+	echo "\033[0;33mCleaning up...\033[0m"; \
 	echo "Deleting local branch $$CURRENT_BRANCH..."; \
 	git branch -D "$$CURRENT_BRANCH" || exit 1; \
 	echo "Deleting remote branch origin/$$CURRENT_BRANCH..."; \
 	git push origin --delete "$$CURRENT_BRANCH" || true; \
-	echo "Branch merge and cleanup completed successfully!"
+	echo "\033[0;32mBranch merge and cleanup completed successfully!\033[0m"
