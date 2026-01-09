@@ -45,7 +45,11 @@ dependencies {
             implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
         }
     }
-
+    
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    // Logging framework
+    implementation("ch.qos.logback:logback-classic:1.4.12")
     // The BOM (Bill of Materials) synchronizes all the versions of Junit coherently.
     testImplementation(platform("org.junit:junit-bom:6.0.1"))
     // The annotations, assertions and other elements we want to have access when compiling our tests.
