@@ -6,9 +6,10 @@ package it.unibo.samplejavafx;
 
 import it.unibo.samplejavafx.mvcexample.EntryPoint;
 import javafx.application.Application;
+import lombok.extern.slf4j.Slf4j;
 
 /** Main application entry-point's class. */
-
+@Slf4j
 public final class App {
     private App() { }
 
@@ -18,7 +19,9 @@ public final class App {
      * @param args passed to JavaFX.
      */
     public static void main(final String[] args) {
+        log.info("Starting Turbo-Chess application...");
         Application.launch(EntryPoint.class, args);
+        log.info("Application closed.");
         // The following line raises: Error: class it.unibo.samplejavafx.App is not a subclass of javafx.application.Application
         // JavaFXApp.launch(args);
         // While the following would do just fine:

@@ -1,0 +1,8 @@
+{
+    "java.debug.settings.onBuildFailureProceed": true,
+    "cSpell.words": [
+        "gradleup",
+        "projectname",
+        "spotbugs"
+    ]
+}
