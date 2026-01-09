@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvcexample.view;
 
-import it.unibo.samplejavafx.mvcexample.model.DrawResult;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;

@@ -1,9 +1,5 @@
 package it.unibo.samplejavafx.mvcexample.controller;
 
-import it.unibo.samplejavafx.mvcexample.model.Configuration;
-import it.unibo.samplejavafx.mvcexample.model.DrawNumber;
-import it.unibo.samplejavafx.mvcexample.model.DrawNumberImpl;
-import it.unibo.samplejavafx.mvcexample.model.DrawResult;
 import it.unibo.samplejavafx.mvcexample.view.DrawNumberView;
 import java.io.BufferedReader;
 import java.io.IOException;

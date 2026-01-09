@@ -1,7 +1,5 @@
 package it.unibo.samplejavafx.mvcexample.view;
 
-import it.unibo.samplejavafx.mvcexample.model.DrawResult;
-
 /**
  *
  */

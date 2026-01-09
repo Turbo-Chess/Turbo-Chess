@@ -2,7 +2,7 @@ package it.unibo.samplejavafx.mvcexample.view;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvcexample.controller.DrawNumberController;
-import it.unibo.samplejavafx.mvcexample.model.DrawResult;
+
 import java.util.concurrent.CompletableFuture;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
