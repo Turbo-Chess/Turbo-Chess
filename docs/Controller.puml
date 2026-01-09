@@ -10,14 +10,12 @@
         -moveInterpreter: MoveInterpreter
         -scoreSystem: ScoreSystem
         -saveLoadSystem: SaveLoadSystem
-        -replaySystem: ReplaySystem
 
         +startNewGame(): void
-        +loadGameFromFile(filePath: String): void
+        +loadGame(): GameData
         +handlePlayerMove(input: String): void
-        +updateSettings(newSettings: Settings): void
-        +saveGameToFile(filePath: String): void
-        +startReplayMode(): void
+        +switchToSettings(): void
+        +saveGame(data: GameData): void
     }
 
     ' --- Dipendenze ---
@@ -26,5 +24,5 @@
     GameController "1" --> "1" MoveInterpreter : uses
     GameController "1" --> "1" ScoreSystem : uses
     GameController "1" --> "1" SaveLoadSystem : uses
-    GameController "1" --> "1" ReplaySystem : uses
+    GameController "1" --> "1" GameData : manages
 @enduml
