@@ -4,5 +4,6 @@
         "gradleup",
         "projectname",
         "spotbugs"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
 }
