@@ -1,0 +1,30 @@
+@startuml Controller
+    skinparam classAttributeIconSize 0
+    hide empty fields
+    hide empty methods
+
+    ' --- Controller Principale ---
+    class GameController {
+        -sceneManager: SceneManager
+        -settingsManager: SettingsManager
+        -moveInterpreter: MoveInterpreter
+        -scoreSystem: ScoreSystem
+        -saveLoadSystem: SaveLoadSystem
+        -replaySystem: ReplaySystem
+
+        +startNewGame(): void
+        +loadGameFromFile(filePath: String): void
+        +handlePlayerMove(input: String): void
+        +updateSettings(newSettings: Settings): void
+        +saveGameToFile(filePath: String): void
+        +startReplayMode(): void
+    }
+
+    ' --- Dipendenze ---
+    GameController "1" --> "1" SceneManager : uses
+    GameController "1" --> "1" SettingsManager : uses
+    GameController "1" --> "1" MoveInterpreter : uses
+    GameController "1" --> "1" ScoreSystem : uses
+    GameController "1" --> "1" SaveLoadSystem : uses
+    GameController "1" --> "1" ReplaySystem : uses
+@enduml
