@@ -1,4 +1,5 @@
 package it.unibo.samplejavafx.mvcexample.model;
 
-public interface Point2D {
+public record Point2D(int x, int y) {
+
 }
