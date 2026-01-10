@@ -4,7 +4,7 @@
 
 package it.unibo.samplejavafx;
 
-import it.unibo.samplejavafx.mvcexample.EntryPoint;
+import it.unibo.samplejavafx.mvc.EntryPoint;
 import javafx.application.Application;
 
 /** Main application entry-point's class. */

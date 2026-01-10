@@ -1,4 +1,7 @@
-package it.unibo.samplejavafx.mvcexample.model;
+package it.unibo.samplejavafx.mvc.model;
+
+import it.unibo.samplejavafx.mvc.model.Entity.Entity;
+import it.unibo.samplejavafx.mvc.model.Point2D.Point2D;
 
 import java.util.Optional;
 

@@ -1,9 +1,9 @@
-package it.unibo.samplejavafx.mvcexample;
+package it.unibo.samplejavafx.mvc;
 
-import it.unibo.samplejavafx.mvcexample.controller.DrawNumberController;
-import it.unibo.samplejavafx.mvcexample.controller.DrawNumberControllerImpl;
-import it.unibo.samplejavafx.mvcexample.view.JFXDrawNumberView;
-import it.unibo.samplejavafx.mvcexample.view.PrintStreamView;
+import it.unibo.samplejavafx.mvc.controller.DrawNumberController;
+import it.unibo.samplejavafx.mvc.controller.DrawNumberControllerImpl;
+import it.unibo.samplejavafx.mvc.view.JFXDrawNumberView;
+import it.unibo.samplejavafx.mvc.view.PrintStreamView;
 import java.io.FileNotFoundException;
 import java.util.List;
 

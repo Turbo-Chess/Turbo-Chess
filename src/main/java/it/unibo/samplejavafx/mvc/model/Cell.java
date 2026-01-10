@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvcexample.model;
+package it.unibo.samplejavafx.mvc.model;
 
 public interface Cell {
     boolean isFree();

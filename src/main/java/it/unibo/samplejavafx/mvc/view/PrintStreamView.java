@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvcexample.view;
+package it.unibo.samplejavafx.mvc.view;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

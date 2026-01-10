@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvcexample.view;
+package it.unibo.samplejavafx.mvc.view;
 
 import java.util.concurrent.CompletableFuture;
 import javafx.scene.Scene;

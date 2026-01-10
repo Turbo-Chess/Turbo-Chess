@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvcexample;
+package it.unibo.samplejavafx.mvc;
 
 import javafx.application.Application;
 

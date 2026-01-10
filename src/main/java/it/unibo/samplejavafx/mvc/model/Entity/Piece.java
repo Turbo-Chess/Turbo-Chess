@@ -1,4 +1,6 @@
-package it.unibo.samplejavafx.mvcexample.model;
+package it.unibo.samplejavafx.mvc.model.Entity;
+
+import it.unibo.samplejavafx.mvc.model.Point2D.Point2D;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

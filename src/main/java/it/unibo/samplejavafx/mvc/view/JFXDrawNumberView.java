@@ -1,7 +1,7 @@
-package it.unibo.samplejavafx.mvcexample.view;
+package it.unibo.samplejavafx.mvc.view;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import it.unibo.samplejavafx.mvcexample.controller.DrawNumberController;
+import it.unibo.samplejavafx.mvc.controller.DrawNumberController;
 
 import java.util.concurrent.CompletableFuture;
 import javafx.application.Platform;

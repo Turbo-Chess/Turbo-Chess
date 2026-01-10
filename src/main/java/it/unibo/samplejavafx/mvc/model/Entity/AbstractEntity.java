@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvcexample.model;
+package it.unibo.samplejavafx.mvc.model.Entity;
 
 import java.nio.file.Path;
 
