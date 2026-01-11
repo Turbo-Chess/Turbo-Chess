@@ -1,11 +1,13 @@
 package it.unibo.samplejavafx.mvc.model.Entity;
 
 import java.nio.file.Path;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * PowerUps are special entities that applies effect on the board that can affect both players.
  * Each power up has a duration.
  */
+@SuppressFBWarnings(value = "UrF_UNUSED_FIELD", justification = "Feature work in progress")
 public class PowerUp extends AbstractEntity {
     private final int duration;
 
@@ -28,5 +30,14 @@ public class PowerUp extends AbstractEntity {
      */
     public void applyEffect() {
         // TO-DO: implement method
+    }
+
+    /**
+     * Return the duration of the effect.
+     *
+     * @return a non-negative int value representing the duration of the applied effect.
+     */
+    public int getDuration() {
+        return this.duration;
     }
 }
