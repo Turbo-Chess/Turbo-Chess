@@ -2,7 +2,6 @@
 
 - <brando.fabbri@studio.unibo.it>
 - <giacomo.fantini5@studio.unibo.it>
-- <patrick.battazza@studio.unibo.it>
 - <luca.bevilacqua6@studio.unibo.it>
 
 ## Obiettivo
