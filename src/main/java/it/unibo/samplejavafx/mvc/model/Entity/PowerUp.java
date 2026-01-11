@@ -7,7 +7,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * PowerUps are special entities that applies effect on the board that can affect both players.
  * Each power up has a duration.
  */
-@SuppressFBWarnings(value = "UrF_UNUSED_FIELD", justification = "Feature work in progress")
 public class PowerUp extends AbstractEntity {
     private final int duration;
 
