@@ -1,7 +1,7 @@
-package it.unibo.samplejavafx.mvc.model.Movement;
+package it.unibo.samplejavafx.mvc.model.movement;
 
-import it.unibo.samplejavafx.mvc.model.ChessBoard.ChessBoard;
-import it.unibo.samplejavafx.mvc.model.Point2D.Point2D;
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package it.unibo.samplejavafx.mvc.model.ChessBoard;
+package it.unibo.samplejavafx.mvc.model.chessboard;
 
-import it.unibo.samplejavafx.mvc.model.Entity.Entity;
-import it.unibo.samplejavafx.mvc.model.Point2D.Point2D;
+import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.model.Point2D;
+package it.unibo.samplejavafx.mvc.model.point2d;
 
 /**
  * A record that represents a point in a 2D Cartesian system.

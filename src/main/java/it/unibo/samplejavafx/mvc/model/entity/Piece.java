@@ -1,7 +1,7 @@
-package it.unibo.samplejavafx.mvc.model.Entity;
+package it.unibo.samplejavafx.mvc.model.entity;
 
-import it.unibo.samplejavafx.mvc.model.Movement.MoveRules;
-import it.unibo.samplejavafx.mvc.model.Point2D.Point2D;
+import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
