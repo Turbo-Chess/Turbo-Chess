@@ -5,6 +5,7 @@ import it.unibo.samplejavafx.mvc.model.Point2D.Point2D;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class Piece extends AbstractEntity {
      */
     public List<Point2D> getValidMoves() {
         // TO-DO: Piece logic needs implementation
-        return this.avaliableCells;
+        return Collections.unmodifiableList(avaliableCells);
     }
 
     /**
