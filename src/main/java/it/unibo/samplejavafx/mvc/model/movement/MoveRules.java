@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * A move rule is a rule that determines the direction and the constraints of all the possible moves of a piece.
  */
+@FunctionalInterface
 public interface MoveRules {
     /**
      * The method that calculates all available cells a piece can move to.

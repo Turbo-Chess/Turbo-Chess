@@ -9,6 +9,7 @@ import java.util.List;
  * The movement strategy represents the way a piece can move.
  * It can be implemented in various ways, though the main will be {@link JumpingMovement} and {@link SlidingMovement}.
  */
+@FunctionalInterface
 public interface MovementStrategy {
     /**
      * The method that calculates all available cells a piece can move to.
