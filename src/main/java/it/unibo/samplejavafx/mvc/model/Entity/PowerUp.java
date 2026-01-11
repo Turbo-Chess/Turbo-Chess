@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.Entity;
 
 import java.nio.file.Path;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * PowerUps are special entities that applies effect on the board that can affect both players.

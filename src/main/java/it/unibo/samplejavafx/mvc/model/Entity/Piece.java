@@ -13,6 +13,7 @@ import java.util.List;
  * This entity tracks the piece's state (if it has moved, and its weight)
  * and calculates the cells in which he could move to, based on its specific {@link MoveRules}
  */
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
 public class Piece extends AbstractEntity {
     private final int weight;
     private boolean hasMoved;
@@ -30,7 +31,7 @@ public class Piece extends AbstractEntity {
      * @param moveRules non-null list of rules defining how the piece can move.
      */
     Piece(final String id, final String name, final Path path, final boolean whiteColor,
-          final int weight, final List<MoveRules> moveRules) {
+        final int weight, final List<MoveRules> moveRules) {
         super(id, name, path, whiteColor);
         this.moveRules = moveRules;
         this.weight = weight;
