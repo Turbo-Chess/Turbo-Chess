@@ -25,7 +25,9 @@ public class MoveRulesImpl implements MoveRules {
     @Override
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board, final boolean isWhite) {
         List<Point2D> tempResult = moveStrategy.calculateMoves(start, this.direction, board);
-        return List.of();
+        return tempResult.stream()
+                .filter(pos -> this.restriction.filterFunc.test(board, pos))
+                .toList();
     }
 
 
