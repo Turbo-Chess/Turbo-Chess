@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
@@ -43,8 +44,11 @@ public class Piece extends AbstractEntity {
      *
      * @return a non-null unmodifiable {@link List} of {@link Point2D} coordinates. It could be empty if no moves are possible.
      */
-    public List<Point2D> getValidMoves() {
-        // TO-DO: Piece logic needs implementation
+    public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
+        avaliableCells.clear();
+        for (var rule : moveRules) {
+            this.avaliableCells.addAll(rule.getValidMoves(start, board, this.isWhite()));
+        }
         return Collections.unmodifiableList(avaliableCells);
     }
 
