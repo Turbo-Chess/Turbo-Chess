@@ -36,4 +36,8 @@ public class ChessBoardImpl implements ChessBoard {
         cells.put(pos, Optional.of(newEntity));
     }
 
+    public boolean isFree(final Point2D pos) {
+        return this.cells.get(pos).isEmpty();
+    }
+
 }
