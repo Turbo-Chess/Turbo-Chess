@@ -10,5 +10,19 @@ package it.unibo.samplejavafx.mvc.model.point2d;
  * @param y the vertical coordinate.
  */
 public record Point2D(int x, int y) {
+    public Point2D sum(final Point2D p) {
+        return new Point2D(this.x() + p.x(), this.y() + p.y());
+    }
 
+    public Point2D multiply(final int n) {
+        return new Point2D(this.x() * n, this.y() * n);
+    }
+
+    public Point2D invertX() {
+        return new Point2D(-this.x(), this.y());
+    }
+
+    public Point2D invertY() {
+        return new Point2D(this.x(), -this.y());
+    }
 }
