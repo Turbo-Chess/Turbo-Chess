@@ -31,7 +31,7 @@ public class Piece extends AbstractEntity {
      * @param weight positive int value that represents the importance (and score) value of the piece.
      * @param moveRules non-null list of rules defining how the piece can move.
      */
-    Piece(final String id, final String name, final Path path, final boolean whiteColor,
+    public Piece(final String id, final String name, final Path path, final boolean whiteColor,
         final int weight, final List<MoveRules> moveRules) {
         super(id, name, path, whiteColor);
         this.moveRules = moveRules;
