@@ -7,4 +7,6 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  */
 public interface ChessBoard {
     boolean isFree(final Point2D pos);
+
+    boolean checkBounds(Point2D pos);
 }

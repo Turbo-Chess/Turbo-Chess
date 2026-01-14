@@ -41,4 +41,8 @@ public class ChessBoardImpl implements ChessBoard {
         return this.cells.get(pos).isEmpty();
     }
 
+    @Override
+    public boolean checkBounds(Point2D pos) {
+        return pos.x() >= 0 && pos.y() >= 0 && pos.x() < CHESSBOARD_SIZE && pos.y() < CHESSBOARD_SIZE;
+    }
 }
