@@ -2,12 +2,14 @@ package it.unibo.samplejavafx.mvc.model.movement;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import lombok.Getter;
 
 
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+@Getter
 public class MoveRulesImpl implements MoveRules {
     private final Point2D direction;
     private final MoveType restriction;
@@ -30,18 +32,6 @@ public class MoveRulesImpl implements MoveRules {
                 .toList();
     }
 
-
-    public Point2D getDirection() {
-        return direction;
-    }
-
-    public MoveType getRestriction() {
-        return restriction;
-    }
-
-    public MovementStrategy getMoveStrategy() {
-        return moveStrategy;
-    }
 
     public enum MoveType {
         MOVE_ONLY(ChessBoard::isFree),
