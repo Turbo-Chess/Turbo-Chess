@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.model.movement;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,13 @@ public class SlidingMovement implements MovementStrategy {
      */
     @Override
     public List<Point2D> calculateMoves(final Point2D start, final Point2D direction, final ChessBoard board) {
-        // TO-DO: implement method
-        return List.of();
+        final List<Point2D> resultPoints = new ArrayList<>();
+        Point2D newPos = start.sum(direction);
+        while (board.checkBounds(newPos) && board.isFree(newPos)) {
+            resultPoints.add(newPos);
+            newPos = newPos.sum(direction);
+        }
+
+        return resultPoints;
     }
 }
