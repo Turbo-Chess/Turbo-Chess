@@ -21,7 +21,7 @@ public class JumpingMovement implements MovementStrategy {
      */
     @Override
     public List<Point2D> calculateMoves(final Point2D start, final Point2D direction, final ChessBoard board) {
-        // TO-DO: implement method
-        return List.of();
+        Point2D newPos = start.sum(direction);
+        return board.checkBounds(newPos) ? List.of(newPos) : List.of();
     }
 }
