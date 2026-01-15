@@ -6,6 +6,8 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Chessboard implementation of {@link ChessBoard}.
@@ -15,7 +17,18 @@ public class ChessBoardImpl implements ChessBoard {
     //private static final int BOARD_HEIGHT = 8;
     //private static final int BOARD_WIDTH = 8;
 
-    private final Map<Point2D, Optional<Entity>> cells = new HashMap<>();
+    private final Map<Point2D, Optional<Entity>> cells;
+
+    public ChessBoardImpl() {
+        this.cells = IntStream.range(0, CHESSBOARD_SIZE)
+                .boxed()
+                .flatMap(x -> IntStream.range(0, CHESSBOARD_SIZE)
+                        .mapToObj(y -> new Point2D(x, y)))
+                .collect(Collectors.toMap(
+                        pos -> pos,
+                        pos -> Optional.empty()
+                ));
+    }
 
     /**
      * Returns the entity on the board.
