@@ -18,6 +18,9 @@ public class ChessBoardImpl implements ChessBoard {
 
     private final Map<Point2D, Optional<Entity>> cells;
 
+    /**
+     * placeholder.
+     */
     public ChessBoardImpl() {
         this.cells = IntStream.range(0, CHESSBOARD_SIZE)
                 .boxed()
