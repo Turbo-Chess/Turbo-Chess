@@ -86,4 +86,8 @@ public class Piece extends AbstractEntity {
     public void setHasMoved() {
         this.hasMoved = true;
     }
+
+    public List<Point2D> getAvailableCells() {
+        return List.copyOf(this.availableCells);
+    }
 }
