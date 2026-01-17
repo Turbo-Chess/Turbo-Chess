@@ -15,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 /**
  *
  */
-public class Pieces {
+public class PiecesTest {
     /**
      *
      */
     @Test
-    public void testPieceInitialization() {
+    void testPieceInitialization() {
         final Piece p = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
                 3, List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())

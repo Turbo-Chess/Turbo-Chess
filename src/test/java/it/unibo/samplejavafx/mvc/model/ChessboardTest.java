@@ -21,7 +21,7 @@ public class ChessboardTest {
      *
      */
     @Test
-    public void initTest() {
+   void initTest() {
         final Piece p = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
@@ -42,7 +42,7 @@ public class ChessboardTest {
      *
      */
     @Test
-    public void checkBoardLimits() {
+    void checkBoardLimits() {
         final ChessBoard board = new ChessBoardImpl();
         // Test that the limit values are correctly generated (the isFree method access the map, so it would throw
         // an error if a point does not exist)
