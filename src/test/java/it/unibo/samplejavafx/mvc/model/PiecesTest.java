@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 /**
  *
  */
-public class PiecesTest {
+class PiecesTest {
     /**
      *
      */

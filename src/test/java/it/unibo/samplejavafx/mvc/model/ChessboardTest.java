@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  *
  */
-public class ChessboardTest {
+class ChessboardTest {
     /**
      *
      */
