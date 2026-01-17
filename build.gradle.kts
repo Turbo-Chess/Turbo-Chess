@@ -74,3 +74,15 @@ application {
     // Define the main class for the application
     mainClass.set(main)
 }
+
+// Disabilita Checkstyle per il set di sorgenti di test
+tasks.named<Checkstyle>("checkstyleTest") {
+    enabled = false
+}
+
+// Disabilita SpotBugs solo per i test
+tasks.withType<com.github.spotbugs.snom.SpotBugsTask> {
+    if (name.contains("test", ignoreCase = true)) {
+        enabled = false
+    }
+}

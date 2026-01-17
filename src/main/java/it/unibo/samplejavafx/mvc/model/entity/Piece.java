@@ -16,11 +16,11 @@ import java.util.List;
  * and calculates the cells in which he could move to, based on its specific {@link MoveRules}
  */
 @Getter
-@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
+//@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
 public class Piece extends AbstractEntity {
     private final int weight;
     private boolean hasMoved;
-    private final List<Point2D> avaliableCells = new ArrayList<>();
+    private final List<Point2D> availableCells = new ArrayList<>();
     private final List<MoveRules> moveRules;
 
     /**
@@ -36,7 +36,7 @@ public class Piece extends AbstractEntity {
     public Piece(final String id, final String name, final Path path, final boolean whiteColor,
         final int weight, final List<MoveRules> moveRules) {
         super(id, name, path, whiteColor);
-        this.moveRules = moveRules;
+        this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
         this.hasMoved = false;
     }
@@ -49,11 +49,11 @@ public class Piece extends AbstractEntity {
      * @return a non-null unmodifiable {@link List} of {@link Point2D} coordinates. It could be empty if no moves are possible.
      */
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
-        avaliableCells.clear();
+        availableCells.clear();
         for (final var rule : moveRules) {
-            this.avaliableCells.addAll(rule.getValidMoves(start, board, this.isWhite()));
+            this.availableCells.addAll(rule.getValidMoves(start, board, this.isWhite()));
         }
-        return Collections.unmodifiableList(avaliableCells);
+        return Collections.unmodifiableList(availableCells);
     }
 
     /**
