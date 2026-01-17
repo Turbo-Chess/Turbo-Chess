@@ -21,7 +21,7 @@ public record Point2D(int x, int y) {
     }
 
     /**
-     *  placeholder
+     *  placeholder.
      *
      * @param n placeholder.
      * @return placeholder.

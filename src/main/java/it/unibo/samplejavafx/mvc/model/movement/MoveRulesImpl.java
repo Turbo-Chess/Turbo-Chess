@@ -2,21 +2,26 @@ package it.unibo.samplejavafx.mvc.model.movement;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
-import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import lombok.Getter;
-
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
+/**
+ * placeholder.
+ */
 public class MoveRulesImpl implements MoveRules {
     private final Point2D direction;
     private final MoveType restriction;
     private final MovementStrategy moveStrategy;
 
+    /**
+     * placeholder.
+     *
+     * @param direction placeholder.
+     * @param restriction placeholder.
+     * @param moveStrategy placeholder.
+     */
     public MoveRulesImpl(final Point2D direction, final MoveType restriction, final MovementStrategy moveStrategy) {
         this.direction = direction;
         this.restriction = restriction;
@@ -85,14 +90,13 @@ public class MoveRulesImpl implements MoveRules {
         return tempResult;
     }
 
-
     /**
      *  placeholder.
      */
     public enum MoveType {
         MOVE_ONLY,
         EAT_ONLY,
-        MOVE_AND_EAT;
+        MOVE_AND_EAT
     }
 }
 

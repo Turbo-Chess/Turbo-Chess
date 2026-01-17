@@ -38,6 +38,7 @@ public class ChessBoardImpl implements ChessBoard {
      * @param pos position of the entity.
      * @return the optional containing the entity (or an optional empty if no entities are present).
      */
+    @Override
     public Optional<Entity> getEntity(final Point2D pos) {
         return this.cells.get(pos);
     }
@@ -48,6 +49,7 @@ public class ChessBoardImpl implements ChessBoard {
      * @param pos position of the entity.
      * @param newEntity the new entity to be associated with the position.
      */
+    @Override
     public void setEntity(final Point2D pos, final Entity newEntity) {
         cells.put(pos, Optional.of(newEntity));
     }
@@ -58,6 +60,7 @@ public class ChessBoardImpl implements ChessBoard {
      * @param pos placeholder.
      * @return placeholder.
      */
+    @Override
     public boolean isFree(final Point2D pos) {
         return this.cells.get(pos).isEmpty();
     }

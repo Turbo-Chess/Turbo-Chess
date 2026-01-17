@@ -19,11 +19,12 @@ public interface ChessBoard {
     boolean isFree(Point2D pos);
 
     /**
+     * placeholder.
      *
      * @param pos placeholder.
      * @param newEntity placeholder.
      */
-    void setEntity(Point2D pos,Entity newEntity);
+    void setEntity(Point2D pos, Entity newEntity);
 
     /**
      * placeholder.
