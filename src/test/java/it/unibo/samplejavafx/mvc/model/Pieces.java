@@ -12,7 +12,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+/**
+ *
+ */
 public class Pieces {
+    /**
+     *
+     */
     @Test
     public void testPieceInitialization() {
         final Piece p = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,

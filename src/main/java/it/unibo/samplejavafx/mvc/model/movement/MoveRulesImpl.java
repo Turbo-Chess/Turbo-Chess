@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-@Getter
 public class MoveRulesImpl implements MoveRules {
     private final Point2D direction;
     private final MoveType restriction;
@@ -39,12 +38,27 @@ public class MoveRulesImpl implements MoveRules {
         // This can't be reached because all rules MUST be one of the 3 in the MoveType enum
     }
 
+    /**
+     *  placeholder.
+     *
+     * @param board  placeholder.
+     * @param tempResult placeholder.
+     * @return placeholder.
+     */
     private List<Point2D> moveOnlyFilter(ChessBoard board, final List<Point2D> tempResult) {
         return tempResult.stream()
                 .filter(board::isFree)
                 .toList();
     }
 
+    /**
+     *  placeholder.
+     *
+     * @param board placeholder.
+     * @param tempResult placeholder.
+     * @param isWhite placeholder.
+     * @return placeholder.
+     */
     private List<Point2D> eatOnlyFilter(ChessBoard board, final List<Point2D> tempResult, boolean isWhite) {
         return tempResult.stream()
                 .filter(pos -> !board.isFree(pos))
@@ -52,6 +66,14 @@ public class MoveRulesImpl implements MoveRules {
                 .toList();
     }
 
+    /**
+     *  placeholder.
+     *
+     * @param board  placeholder.
+     * @param tempResult placeholder.
+     * @param isWhite placeholder.
+     * @return placeholder.
+     */
     private List<Point2D> moveAndEatFilter(ChessBoard board, final List<Point2D> tempResult, boolean isWhite) {
         for (var pos : tempResult) {
             final Optional<Entity> pieceInNewPos = board.getEntity(pos);
@@ -64,6 +86,9 @@ public class MoveRulesImpl implements MoveRules {
     }
 
 
+    /**
+     *  placeholder.
+     */
     public enum MoveType {
         MOVE_ONLY,
         EAT_ONLY,

@@ -49,10 +49,22 @@ public class ChessBoardImpl implements ChessBoard {
         cells.put(pos, Optional.of(newEntity));
     }
 
+    /**
+     *  placeholder.
+     *
+     * @param pos placeholder.
+     * @return placeholder.
+     */
     public boolean isFree(final Point2D pos) {
         return this.cells.get(pos).isEmpty();
     }
 
+    /**
+     *  placeholder.
+     *
+     * @param pos placeholder.
+     * @return placeholder.
+     */
     @Override
     public boolean checkBounds(Point2D pos) {
         return pos.x() >= 0 && pos.y() >= 0 && pos.x() < CHESSBOARD_SIZE && pos.y() < CHESSBOARD_SIZE;

@@ -13,7 +13,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ *
+ */
 public class ChessboardTest {
+    /**
+     *
+     */
     @Test
     public void initTest() {
         final Piece p = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
@@ -32,6 +38,9 @@ public class ChessboardTest {
         assertFalse(board.isFree(new Point2D(5, 3)));
     }
 
+    /**
+     *
+     */
     @Test
     public void checkBoardLimits() {
         ChessBoard board = new ChessBoardImpl();

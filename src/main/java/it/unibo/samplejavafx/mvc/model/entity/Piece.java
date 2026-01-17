@@ -44,6 +44,8 @@ public class Piece extends AbstractEntity {
     /**
      * Calculates and returns the possible coordinates for the piece to move.
      *
+     * @param board  placeholder
+     * @param start  placeholder
      * @return a non-null unmodifiable {@link List} of {@link Point2D} coordinates. It could be empty if no moves are possible.
      */
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
