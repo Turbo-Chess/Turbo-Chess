@@ -28,7 +28,7 @@ public class MoveRulesImpl implements MoveRules {
      */
     @Override
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board, final boolean isWhite) {
-        List<Point2D> tempResult = moveStrategy.calculateMoves(start, isWhite ? direction.invertY() : direction, board);
+        final List<Point2D> tempResult = moveStrategy.calculateMoves(start, isWhite ? direction.invertY() : direction, board);
         return switch (restriction) {
             case MOVE_ONLY -> moveOnlyFilter(board, tempResult);
             case EAT_ONLY -> eatOnlyFilter(board, tempResult, isWhite);
@@ -45,7 +45,7 @@ public class MoveRulesImpl implements MoveRules {
      * @param tempResult placeholder.
      * @return placeholder.
      */
-    private List<Point2D> moveOnlyFilter(ChessBoard board, final List<Point2D> tempResult) {
+    private List<Point2D> moveOnlyFilter(final ChessBoard board, final List<Point2D> tempResult) {
         return tempResult.stream()
                 .filter(board::isFree)
                 .toList();
@@ -59,7 +59,7 @@ public class MoveRulesImpl implements MoveRules {
      * @param isWhite placeholder.
      * @return placeholder.
      */
-    private List<Point2D> eatOnlyFilter(ChessBoard board, final List<Point2D> tempResult, boolean isWhite) {
+    private List<Point2D> eatOnlyFilter(final ChessBoard board, final List<Point2D> tempResult, final boolean isWhite) {
         return tempResult.stream()
                 .filter(pos -> !board.isFree(pos))
                 .filter(pos -> !board.getEntity(pos).get().isWhite() == isWhite)
@@ -74,8 +74,8 @@ public class MoveRulesImpl implements MoveRules {
      * @param isWhite placeholder.
      * @return placeholder.
      */
-    private List<Point2D> moveAndEatFilter(ChessBoard board, final List<Point2D> tempResult, boolean isWhite) {
-        for (var pos : tempResult) {
+    private List<Point2D> moveAndEatFilter(final ChessBoard board, final List<Point2D> tempResult, final boolean isWhite) {
+        for (final var pos : tempResult) {
             final Optional<Entity> pieceInNewPos = board.getEntity(pos);
             if (pieceInNewPos.isPresent() && pieceInNewPos.get().isWhite() == isWhite) {
                 tempResult.remove(pos);

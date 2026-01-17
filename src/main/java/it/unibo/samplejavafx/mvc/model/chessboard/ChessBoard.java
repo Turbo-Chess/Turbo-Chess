@@ -16,14 +16,14 @@ public interface ChessBoard {
      * @param pos placeholder.
      * @return placeholder.
      */
-    boolean isFree(final Point2D pos);
+    boolean isFree(Point2D pos);
 
     /**
      *
      * @param pos placeholder.
      * @param newEntity placeholder.
      */
-    void setEntity(final Point2D pos, final Entity newEntity);
+    void setEntity(Point2D pos,Entity newEntity);
 
     /**
      * placeholder.
@@ -31,7 +31,7 @@ public interface ChessBoard {
      * @param pos placeholder.
      * @return placeholder.
      */
-    Optional<Entity> getEntity(final Point2D pos);
+    Optional<Entity> getEntity(Point2D pos);
 
     /**
      *  placeholder.

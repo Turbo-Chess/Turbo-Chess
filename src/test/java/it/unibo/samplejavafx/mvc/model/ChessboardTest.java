@@ -28,7 +28,7 @@ public class ChessboardTest {
         ));
 
         // Test if a cell is free at initialization and then correctly occupied
-        ChessBoard board = new ChessBoardImpl();
+        final ChessBoard board = new ChessBoardImpl();
         assertTrue(board.isFree(new Point2D(2, 2)));
         board.setEntity(new Point2D(2, 2), p);
         assertFalse(board.isFree(new Point2D(2, 2)));
@@ -43,7 +43,7 @@ public class ChessboardTest {
      */
     @Test
     public void checkBoardLimits() {
-        ChessBoard board = new ChessBoardImpl();
+        final ChessBoard board = new ChessBoardImpl();
         // Test that the limit values are correctly generated (the isFree method access the map, so it would throw
         // an error if a point does not exist)
         assertTrue(board.isFree(new Point2D(0, 0)));

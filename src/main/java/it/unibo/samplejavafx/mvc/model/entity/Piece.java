@@ -50,7 +50,7 @@ public class Piece extends AbstractEntity {
      */
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
         avaliableCells.clear();
-        for (var rule : moveRules) {
+        for (final var rule : moveRules) {
             this.avaliableCells.addAll(rule.getValidMoves(start, board, this.isWhite()));
         }
         return Collections.unmodifiableList(avaliableCells);
