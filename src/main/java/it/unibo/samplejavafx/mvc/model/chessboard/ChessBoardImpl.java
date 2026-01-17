@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.model.chessboard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,5 +75,15 @@ public class ChessBoardImpl implements ChessBoard {
     @Override
     public boolean checkBounds(final Point2D pos) {
         return pos.x() >= 0 && pos.y() >= 0 && pos.x() < CHESSBOARD_SIZE && pos.y() < CHESSBOARD_SIZE;
+    }
+
+    /**
+     *  placeholder.
+     *
+     * @return placeholder.
+     */
+    @Override
+    public List<Point2D> getCells() {
+        return cells.keySet().stream().toList();
     }
 }

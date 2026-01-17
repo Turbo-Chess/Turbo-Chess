@@ -1,11 +1,11 @@
-@startuml
+@startuml TurnHandler
 
 skinparam classAttributeIconSize 0
 hide empty fields
 hide empty method
 
-interface GameTimer {
+interface TurnHandler {
 
-    +runTimer()
+    +executeTurn()
 }
 @enduml

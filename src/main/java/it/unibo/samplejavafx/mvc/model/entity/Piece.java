@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Getter
 //@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
-public class Piece extends AbstractEntity {
+public class Piece extends AbstractEntity implements Moveable {
     private final int weight;
     private boolean hasMoved;
     private final List<Point2D> availableCells = new ArrayList<>();
@@ -48,6 +48,7 @@ public class Piece extends AbstractEntity {
      * @param start  placeholder
      * @return a non-null unmodifiable {@link List} of {@link Point2D} coordinates. It could be empty if no moves are possible.
      */
+    @Override
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
         availableCells.clear();
         for (final var rule : moveRules) {
@@ -92,6 +93,7 @@ public class Piece extends AbstractEntity {
      *
      * @return placeholder.
      */
+    @Override
     public List<Point2D> getAvailableCells() {
         return List.copyOf(this.availableCells);
     }

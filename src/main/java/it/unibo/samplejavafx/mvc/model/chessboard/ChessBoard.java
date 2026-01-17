@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.model.chessboard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -41,4 +42,11 @@ public interface ChessBoard {
      * @return placeholder.
      */
     boolean checkBounds(Point2D pos);
+
+    /**
+     *  placeholder.
+     *
+     * @return placeholder.
+     */
+    List<Point2D> getCells();
 }
