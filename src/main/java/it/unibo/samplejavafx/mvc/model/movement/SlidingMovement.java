@@ -25,11 +25,14 @@ public class SlidingMovement implements MovementStrategy {
     public List<Point2D> calculateMoves(final Point2D start, final Point2D direction, final ChessBoard board) {
         final List<Point2D> resultPoints = new ArrayList<>();
         Point2D newPos = start.sum(direction);
-        while (board.checkBounds(newPos) && board.isFree(newPos)) {
+        while (board.checkBounds(newPos)) {
             resultPoints.add(newPos);
-            newPos = newPos.sum(direction);
+            if (!board.isFree(newPos)) {
+                return resultPoints;
+            } else {
+                newPos = newPos.sum(direction);
+            }
         }
-
         return resultPoints;
     }
 }
