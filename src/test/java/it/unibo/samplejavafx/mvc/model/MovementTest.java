@@ -200,18 +200,18 @@ public class MovementTest {
     public void testBothRules() {
         final Piece blackSlidingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
                 3, List.of(
-                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement()),
-                new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement()),
-                new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement()),
-                new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement())
+                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
+                new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
+                new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
+                new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement())
         ));
 
         final Piece whiteJumpingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), true,
                 3, List.of(
-                new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement()),
-                new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement()),
-                new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement()),
-                new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement())
+                new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
+                new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
+                new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
+                new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
 
         // Dummy Pieces
@@ -223,7 +223,7 @@ public class MovementTest {
 
         board.setEntity(new Point2D(1, 2), blackSlidingPiece);
         blackSlidingPiece.getValidMoves(new Point2D(1, 2), board);
-        assertEquals(Set.of(new Point2D(1, 4)), new HashSet<>(blackSlidingPiece.getAvailableCells()));
+        assertEquals(Set.of(new Point2D(1, 3), new Point2D(1, 4), new Point2D(1, 1), new Point2D(1, 0), new Point2D(0, 2), new Point2D(2, 2)), new HashSet<>(blackSlidingPiece.getAvailableCells()));
 
         // Change dummy positions
         board.setEntity(new Point2D(7, 6), blackDummyPiece);
@@ -231,31 +231,6 @@ public class MovementTest {
 
         board.setEntity(new Point2D(5, 5), whiteJumpingPiece);
         whiteJumpingPiece.getValidMoves(new Point2D(5, 5), board);
-        assertEquals(Set.of(new Point2D(7,6)), new HashSet<>(whiteJumpingPiece.getAvailableCells()));
+        assertEquals(Set.of(new Point2D(7,6), new Point2D(3, 6), new Point2D(7, 4)), new HashSet<>(whiteJumpingPiece.getAvailableCells()));
     }
 }
-
-/*
-
-Things to test
-* Nero:
-MOVE_ONLY -> muove in cella libera OK
-          -> muove in cella occupata NO
-EAT_ONLY  -> muove in cella libera NO
-          -> muove in cella occupata da nemico SI
-          -> muove in cella occupata da amico NO
-BOTH      -> muove in cella libera SI
-          -> muove in cella occupata da nemico SI
-          -> muove in cella occupata da amico NO
-
-Bianco:
-MOVE_ONLY -> muove in cella libera OK
-          -> muove in cella occupata NO
-EAT_ONLY  -> muove in cella libera NO
-          -> muove in cella occupata da nemico SI
-          -> muove in cella occupata da amico NO
-BOTH      -> muove in cella libera SI
-          -> muove in cella occupata da nemico SI
-          -> muove in cella occupata da amico NO
-
-          */
