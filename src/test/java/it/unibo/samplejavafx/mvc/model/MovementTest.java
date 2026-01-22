@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MovementTest {
     ChessBoard board = new ChessBoardImpl();
-    Comparator<Point2D> xComparator = (pos1, pos2) -> pos1.x() - pos2.x();
 
     @BeforeEach
     public void initBoard() {
