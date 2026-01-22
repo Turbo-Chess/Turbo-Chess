@@ -11,30 +11,33 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MovementTest {
+class MovementTest {
+    private static final String PIECE_ID = "test";
+    private static final String PIECE_NAME = "test-piece";
+    private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
+
     ChessBoard board = new ChessBoardImpl();
 
     @BeforeEach
-    public void initBoard() {
+    void initBoard() {
         this.board = new ChessBoardImpl();
     }
 
     @Test
-    public void testWhiteBlackMovement() {
+    void testWhiteBlackMovement() {
         // This test wants to prove that the white piece moves in the reversed y direction compared to the black
-        final Piece blackPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
+        final Piece blackPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), false,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
 
-        final Piece whitePiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), true,
+        final Piece whitePiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), true,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
@@ -50,8 +53,8 @@ public class MovementTest {
     }
 
     @Test
-    public void testJumping() {
-        final Piece blackJumpingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
+    void testJumping() {
+        final Piece blackJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), false,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
@@ -59,7 +62,7 @@ public class MovementTest {
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
 
-        final Piece whiteJumpingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), true,
+        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), true,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
@@ -92,8 +95,8 @@ public class MovementTest {
     }
 
     @Test
-    public void testSliding() {
-        final Piece blackSlidingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
+    void testSliding() {
+        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), false,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
@@ -101,7 +104,7 @@ public class MovementTest {
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement())
         ));
 
-        final Piece whiteSlidingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), true,
+        final Piece whiteSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), true,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
@@ -120,8 +123,8 @@ public class MovementTest {
     }
 
     @Test
-    public void testMoveOnlyRule() {
-        final Piece blackSlidingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
+    void testMoveOnlyRule() {
+        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), false,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_ONLY, new SlidingMovement()),
@@ -129,7 +132,7 @@ public class MovementTest {
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_ONLY, new SlidingMovement())
         ));
 
-        final Piece whiteJumpingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), true,
+        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), true,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_ONLY, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.MOVE_ONLY, new JumpingMovement()),
@@ -138,9 +141,9 @@ public class MovementTest {
         ));
 
         // Dummy Pieces
-        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", Path.of("/home/giacomo/Documents/pawn.jpg"), false, 3, List.of());
+        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", Path.of(IMAGE_PATH), false, 3, List.of());
         board.setEntity(new Point2D(3, 2), blackDummyPiece);
-        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", Path.of("/home/giacomo/Documents/pawn.jpg"), true, 3, List.of());
+        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", Path.of(IMAGE_PATH), true, 3, List.of());
         board.setEntity(new Point2D(1, 4), whiteDummyPiece);
 
 
@@ -158,8 +161,8 @@ public class MovementTest {
     }
 
     @Test
-    public void testEatOnlyRule() {
-        final Piece blackSlidingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
+    void testEatOnlyRule() {
+        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), false,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement()),
@@ -167,7 +170,7 @@ public class MovementTest {
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement())
         ));
 
-        final Piece whiteJumpingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), true,
+        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), true,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement()),
@@ -176,9 +179,9 @@ public class MovementTest {
         ));
 
         // Dummy Pieces
-        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", Path.of("/home/giacomo/Documents/pawn.jpg"), false, 3, List.of());
+        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", Path.of(IMAGE_PATH), false, 3, List.of());
         board.setEntity(new Point2D(3, 2), blackDummyPiece);
-        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", Path.of("/home/giacomo/Documents/pawn.jpg"), true, 3, List.of());
+        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", Path.of(IMAGE_PATH), true, 3, List.of());
         board.setEntity(new Point2D(1, 4), whiteDummyPiece);
 
 
@@ -196,8 +199,8 @@ public class MovementTest {
     }
 
     @Test
-    public void testBothRules() {
-        final Piece blackSlidingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), false,
+     void testBothRules() {
+        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), false,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
@@ -205,7 +208,7 @@ public class MovementTest {
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement())
         ));
 
-        final Piece whiteJumpingPiece = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), true,
+        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, Path.of(IMAGE_PATH), true,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
@@ -214,9 +217,9 @@ public class MovementTest {
         ));
 
         // Dummy Pieces
-        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", Path.of("/home/giacomo/Documents/pawn.jpg"), false, 3, List.of());
+        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", Path.of(IMAGE_PATH), false, 3, List.of());
         board.setEntity(new Point2D(3, 2), blackDummyPiece);
-        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", Path.of("/home/giacomo/Documents/pawn.jpg"), true, 3, List.of());
+        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", Path.of(IMAGE_PATH), true, 3, List.of());
         board.setEntity(new Point2D(1, 4), whiteDummyPiece);
 
 
