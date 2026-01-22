@@ -4,6 +4,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,14 +81,15 @@ public class MoveRulesImpl implements MoveRules {
      * @return placeholder.
      */
     private List<Point2D> moveAndEatFilter(final ChessBoard board, final List<Point2D> tempResult, final boolean isWhite) {
+        final List<Point2D> res = new ArrayList<>(tempResult);
         for (final var pos : tempResult) {
             final Optional<Entity> pieceInNewPos = board.getEntity(pos);
             if (pieceInNewPos.isPresent() && pieceInNewPos.get().isWhite() == isWhite) {
-                tempResult.remove(pos);
+                res.remove(pos);
             }
         }
 
-        return tempResult;
+        return res;
     }
 
     /**
