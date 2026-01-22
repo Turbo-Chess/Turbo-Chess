@@ -67,7 +67,7 @@ public class MoveRulesImpl implements MoveRules {
     private List<Point2D> eatOnlyFilter(final ChessBoard board, final List<Point2D> tempResult, final boolean isWhite) {
         return tempResult.stream()
                 .filter(pos -> !board.isFree(pos))
-                .filter(pos -> !board.getEntity(pos).get().isWhite() == isWhite)
+                .filter(pos -> board.getEntity(pos).get().isWhite() != isWhite)
                 .toList();
     }
 
