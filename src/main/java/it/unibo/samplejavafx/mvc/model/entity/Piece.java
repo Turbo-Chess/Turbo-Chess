@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a playable game piece with its move rules and specific values.
@@ -55,6 +56,11 @@ public class Piece extends AbstractEntity implements Moveable {
             this.availableCells.addAll(rule.getValidMoves(start, board, this.getPlayerColor()));
         }
         return Collections.unmodifiableList(availableCells);
+    }
+
+    @Override
+    public Optional<Moveable> asMoveable() {
+        return Optional.of(this);
     }
 
     /**
