@@ -20,7 +20,7 @@ class MoveRules {
     - restriction : MoveType
     - moveStrategy : MovementStrategy
 
-    + getValidMoves(Point2D start, ChessBoard board, boolean isWhite) : List<Point2D>
+    + getValidMoves(Point2D start, ChessBoard board, PlayerColor color) : List<Point2D>
 }
 
 enum MoveType {

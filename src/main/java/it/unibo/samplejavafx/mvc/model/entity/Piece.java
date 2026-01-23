@@ -29,13 +29,13 @@ public class Piece extends AbstractEntity implements Moveable {
      * @param id unique identifier for the piece.
      * @param name the name of the piece displayed.
      * @param path file path with the image of the piece.
-     * @param whiteColor {@code true} if the piece belongs to the white player.
+     * @param playerColor color of the player owning this piece.
      * @param weight positive int value that represents the importance (and score) value of the piece.
      * @param moveRules non-null list of rules defining how the piece can move.
      */
-    public Piece(final String id, final String name, final Path path, final boolean whiteColor,
+    public Piece(final String id, final String name, final Path path, final PlayerColor playerColor,
         final int weight, final List<MoveRules> moveRules) {
-        super(id, name, path, whiteColor);
+        super(id, name, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
         this.hasMoved = false;
@@ -52,7 +52,7 @@ public class Piece extends AbstractEntity implements Moveable {
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
         availableCells.clear();
         for (final var rule : moveRules) {
-            this.availableCells.addAll(rule.getValidMoves(start, board, this.isWhite()));
+            this.availableCells.addAll(rule.getValidMoves(start, board, this.getPlayerColor()));
         }
         return Collections.unmodifiableList(availableCells);
     }

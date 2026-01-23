@@ -15,11 +15,11 @@ public class PowerUp extends AbstractEntity {
      * @param id unique identifier for the piece.
      * @param name the name of the piece displayed.
      * @param path file path with the image of the piece.
-     * @param whiteColor {@code true} if the piece belongs to the white player.
+     * @param playerColor color of the player owning this power up.
      * @param duration positive int value that represents the duration of the applied effect.
      */
-    PowerUp(final String id, final String name, final Path path, final boolean whiteColor, final int duration) {
-        super(id, name, path, whiteColor);
+    PowerUp(final String id, final String name, final Path path, final PlayerColor playerColor, final int duration) {
+        super(id, name, path, playerColor);
         this.duration = duration;
     }
 

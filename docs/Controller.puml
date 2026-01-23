@@ -15,7 +15,7 @@
         +loadGame(): GameData
         +handlePlayerMove(input: String): void
         +switchToSettings(): void
-        +saveGame(data: GameData): void
+        +saveGame(board: ChessBoard, turn: int, player: Color): GameData
     }
 
     ' --- Dipendenze ---

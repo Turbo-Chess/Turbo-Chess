@@ -13,7 +13,7 @@ public abstract class AbstractEntity implements Entity {
     private final String id;
     private final String name;
     private final Path imagePath;
-    private final boolean isWhite;
+    private final PlayerColor playerColor;
 
     /**
      * Base constructor shared with every entity.
@@ -21,13 +21,13 @@ public abstract class AbstractEntity implements Entity {
      * @param id            unique identifier of the entity.
      * @param name          display name of the entity.
      * @param path          the path containing the image resource to display.
-     * @param whiteColor    used to track if the piece is on the white side of the board.
+     * @param playerColor    color of the player owning this entity.
      */
-    AbstractEntity(final String id, final String name, final Path path, final boolean whiteColor) {
+    AbstractEntity(final String id, final String name, final Path path, final PlayerColor playerColor) {
         this.id = id;
         this.name = name;
         this.imagePath = path;
-        this.isWhite = whiteColor;
+        this.playerColor = playerColor;
     }
 
 //    /**

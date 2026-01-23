@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.movement;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import java.util.List;
 
@@ -15,8 +16,8 @@ public interface MoveRules {
      *
      * @param start         actual point of the piece.
      * @param board         the {@link ChessBoard} of the match.
-     * @param isWhite       {@code true} if the piece belongs to the white player.
+     * @param playerColor   the color of the player owning the piece.
      * @return              an immutable {@link List} containing all the available positions to move to.
      */
-    List<Point2D> getValidMoves(Point2D start, ChessBoard board, boolean isWhite);
+    List<Point2D> getValidMoves(Point2D start, ChessBoard board, PlayerColor playerColor);
 }

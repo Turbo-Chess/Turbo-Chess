@@ -10,5 +10,5 @@ public interface Entity {
      *
      * @return placeholder.
      */
-    boolean isWhite();
+    PlayerColor getPlayerColor();
 }
