@@ -3,11 +3,13 @@ package it.unibo.samplejavafx.mvc.model.rules;
 /*
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.entity.Moveable;*/
 
@@ -41,16 +43,18 @@ public interface AdvancedRules {
 
     }*/
 
-/* 
-    private static List<Piece> scan(final ChessBoard cb, final boolean currentColor, final List<Point2D> targets) {
+
+    /*private static List<Piece> scan(final ChessBoard cb, final PlayerColor currentColor, final List<Point2D> targets) {
         final List<Point2D> list = cb.getCells().stream()
                 .filter(pos -> !cb.isFree(pos))
-                .filter(pos -> !cb.getEntity(pos).get().isWhite() == currentColor)
-                .collect(Collectors.toList());
+                .filter(pos -> cb.getEntity(pos).get().getPlayerColor() == currentColor)
+                .toList();
 
-        for (Point2D piece : list) {
-            if(cb.getEntity(piece).get() instanceof Moveable moveable) {
-                Iterator<Point2D> it = moveable.getValidMoves(piece, cb).iterator();
+        for (Point2D piecePos : list) {
+            Optional<Entity> piece = cb.getEntity(piecePos);
+            //if(cb.getEntity(piece).get() instanceof Moveable moveable) {
+            if (piece.get().asMoveable().isPresent()) { // if the piece is a moveable we can use its movement methods
+                Iterator<Point2D> it = piece.get().asMoveable().get().getValidMoves(piecePos, cb).iterator();
 
                 while (it.hasNext()) {
                     Point2D trgt = it.next();
