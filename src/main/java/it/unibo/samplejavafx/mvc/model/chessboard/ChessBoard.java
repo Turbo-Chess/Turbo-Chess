@@ -35,6 +35,8 @@ public interface ChessBoard {
      */
     Optional<Entity> getEntity(Point2D pos);
 
+    Point2D getPosByEntity(Entity entity);
+
     /**
      *  placeholder.
      *

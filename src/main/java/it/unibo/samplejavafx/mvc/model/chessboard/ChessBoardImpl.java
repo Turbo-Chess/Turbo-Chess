@@ -6,9 +6,7 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -44,6 +42,11 @@ public class ChessBoardImpl implements ChessBoard {
     @Override
     public Optional<Entity> getEntity(final Point2D pos) {
         return this.cells.get(pos);
+    }
+
+    @Override
+    public Point2D getPosByEntity(Entity entity) {
+        return this.cells.inverse().get(Optional.of(entity));
     }
 
     /**
