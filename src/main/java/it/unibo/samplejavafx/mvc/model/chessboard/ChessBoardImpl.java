@@ -1,5 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.chessboard;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
@@ -17,7 +19,7 @@ public class ChessBoardImpl implements ChessBoard {
     //private static final int BOARD_HEIGHT = 8;
     //private static final int BOARD_WIDTH = 8;
 
-    private final Map<Point2D, Optional<Entity>> cells;
+    private final BiMap<Point2D, Optional<Entity>> cells;
 
     /**
      * placeholder.
@@ -27,7 +29,7 @@ public class ChessBoardImpl implements ChessBoard {
                 .boxed()
                 .flatMap(x -> IntStream.range(0, CHESSBOARD_SIZE)
                         .mapToObj(y -> new Point2D(x, y)))
-                .collect(Collectors.toMap(
+                .collect(ImmutableBiMap.toImmutableBiMap(
                         pos -> pos,
                         pos -> Optional.empty()
                 ));
