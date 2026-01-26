@@ -51,7 +51,7 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public void setEntity(final Point2D pos, final Entity newEntity) {
-        cells.put(pos, Optional.of(newEntity));
+        cells.put(pos, newEntity);
     }
 
     /**
