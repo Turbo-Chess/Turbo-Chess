@@ -27,6 +27,8 @@ public interface ChessBoard {
      */
     void setEntity(Point2D pos, Entity newEntity);
 
+    void removeEntity(Point2D pos);
+
     /**
      * placeholder.
      *

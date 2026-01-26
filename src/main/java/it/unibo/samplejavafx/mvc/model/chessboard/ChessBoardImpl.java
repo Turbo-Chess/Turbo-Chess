@@ -54,6 +54,11 @@ public class ChessBoardImpl implements ChessBoard {
         cells.put(pos, newEntity);
     }
 
+    @Override
+    public void removeEntity(Point2D pos) {
+        cells.remove(pos);
+    }
+
     /**
      *  placeholder.
      *
