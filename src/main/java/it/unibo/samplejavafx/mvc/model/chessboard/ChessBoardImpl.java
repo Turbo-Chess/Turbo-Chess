@@ -35,7 +35,7 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public Optional<Entity> getEntity(final Point2D pos) {
-        return this.cells.get(pos);
+        return this.isFree(pos) ? Optional.of(this.cells.get(pos)) : Optional.empty();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public boolean isFree(final Point2D pos) {
-        return this.cells.containsKey(pos);
+        return !this.cells.containsKey(pos);
     }
 
     /**
