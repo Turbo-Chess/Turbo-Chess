@@ -61,6 +61,9 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
     // The engine that must be available at runtime to run the tests.
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // Guava Library
+    implementation("com.google.guava:guava:33.5.0-jre")
 }
 
 tasks.withType<Test> {
