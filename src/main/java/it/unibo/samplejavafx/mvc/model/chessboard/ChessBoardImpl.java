@@ -40,7 +40,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     @Override
     public Point2D getPosByEntity(Entity entity) {
-        return this.cells.inverse().get(Optional.of(entity));
+        return this.cells.inverse().get(entity);
     }
 
     /**
