@@ -34,9 +34,9 @@ public class Piece extends AbstractEntity implements Moveable {
      * @param weight positive int value that represents the importance (and score) value of the piece.
      * @param moveRules non-null list of rules defining how the piece can move.
      */
-    public Piece(final String id, final String name, final Path path, final PlayerColor playerColor,
+    public Piece(final String id, final String name, final int gameId, final Path path, final PlayerColor playerColor,
         final int weight, final List<MoveRules> moveRules) {
-        super(id, name, path, playerColor);
+        super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
         this.hasMoved = false;

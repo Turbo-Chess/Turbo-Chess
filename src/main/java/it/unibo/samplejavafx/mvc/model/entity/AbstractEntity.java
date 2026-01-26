@@ -1,8 +1,11 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import ch.qos.logback.core.pattern.parser.OptionTokenizer;
 import lombok.Getter;
 
 import java.nio.file.Path;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Abstract Entity is the abstract class that implements {@link Entity} and defines the shared behavior of the
@@ -12,6 +15,7 @@ import java.nio.file.Path;
 public abstract class AbstractEntity implements Entity {
     private final String id;
     private final String name;
+    private final int gameId;
     private final Path imagePath;
     private final PlayerColor playerColor;
 
@@ -20,12 +24,14 @@ public abstract class AbstractEntity implements Entity {
      *
      * @param id            unique identifier of the entity.
      * @param name          display name of the entity.
+     * @param gameId        id assigned to the piece if is instantiated on the chess board. -1 if it's not.
      * @param path          the path containing the image resource to display.
      * @param playerColor    color of the player owning this entity.
      */
-    AbstractEntity(final String id, final String name, final Path path, final PlayerColor playerColor) {
+    AbstractEntity(final String id, final String name, final int gameId, final Path path, final PlayerColor playerColor) {
         this.id = id;
         this.name = name;
+        this.gameId = gameId;
         this.imagePath = path;
         this.playerColor = playerColor;
     }
