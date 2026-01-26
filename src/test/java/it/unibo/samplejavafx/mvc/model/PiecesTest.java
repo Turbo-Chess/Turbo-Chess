@@ -22,7 +22,7 @@ class PiecesTest {
      */
     @Test
     void testPieceInitialization() {
-        final Piece p = new Piece("test", "test-piece", Path.of("/home/giacomo/Documents/pawn.jpg"), PlayerColor.BLACK,
+        final Piece p = new Piece("test", "test-piece", 1, Path.of("/home/giacomo/Documents/pawn.jpg"), PlayerColor.BLACK,
                 3, List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
@@ -34,3 +34,4 @@ class PiecesTest {
         assertEquals(3, p.getWeight());
     }
 }
+
