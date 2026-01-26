@@ -36,6 +36,18 @@ public abstract class AbstractEntity implements Entity {
         this.playerColor = playerColor;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractEntity that = (AbstractEntity) o;
+        return gameId == that.gameId && Objects.equals(id, that.id) && playerColor == that.playerColor;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, gameId, playerColor);
+    }
+
 //    /**
 //     * Returns the id of the entity.
 //     *
