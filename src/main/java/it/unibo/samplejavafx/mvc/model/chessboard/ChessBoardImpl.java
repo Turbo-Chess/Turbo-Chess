@@ -60,14 +60,15 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     *  placeholder.
+     * Returns if the cell is free or not.
+     * If the cell is free, there will be no entry associated with that key.
      *
-     * @param pos placeholder.
-     * @return placeholder.
+     * @param pos the position to check.
+     * @return true if the entry does not exist (the cell is free), false otherwise.
      */
     @Override
     public boolean isFree(final Point2D pos) {
-        return this.cells.get(pos).isEmpty();
+        return this.cells.containsKey(pos);
     }
 
     /**
