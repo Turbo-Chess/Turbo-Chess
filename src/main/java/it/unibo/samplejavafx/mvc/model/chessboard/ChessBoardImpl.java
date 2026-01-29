@@ -2,10 +2,11 @@ package it.unibo.samplejavafx.mvc.model.chessboard;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
+
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,6 +24,10 @@ public class ChessBoardImpl implements ChessBoard {
      */
     public ChessBoardImpl() {
         this.cells = HashBiMap.create();
+    }
+
+    public ChessBoardImpl(final BiMap<Point2D, Entity> cells) {
+        this.cells = HashBiMap.create(cells);
     }
 
     /**
@@ -97,7 +102,7 @@ public class ChessBoardImpl implements ChessBoard {
      * @return placeholder.
      */
     @Override
-    public Map<Point2D, Optional<Entity>> getBoard() {
-        return Collections.unmodifiableMap(cells);
+    public BiMap<Point2D, Entity> getBoard() {
+        return Maps.unmodifiableBiMap(cells);
     }
 }

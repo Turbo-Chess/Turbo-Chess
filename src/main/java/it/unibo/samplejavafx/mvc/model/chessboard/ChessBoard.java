@@ -3,8 +3,9 @@ package it.unibo.samplejavafx.mvc.model.chessboard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-import java.util.Map;
 import java.util.Optional;
+
+import com.google.common.collect.BiMap;
 
 /**
  * Represents the board where the match is played.
@@ -63,5 +64,5 @@ public interface ChessBoard {
      *
      * @return placeholder.
      */
-    Map<Point2D, Optional<Entity>> getBoard();
+    BiMap<Point2D, Entity> getBoard();
 }
