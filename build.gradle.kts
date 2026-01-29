@@ -64,6 +64,9 @@ dependencies {
 
     // Guava Library
     implementation("com.google.guava:guava:33.5.0-jre")
+
+    // Gson Library
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 tasks.withType<Test> {
