@@ -3,7 +3,7 @@ package it.unibo.samplejavafx.mvc.model.chessboard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -83,7 +83,7 @@ public class ChessBoardImpl implements ChessBoard {
      * @return placeholder.
      */
     @Override
-    public List<Point2D> getCells() {
-        return cells.keySet().stream().toList();
+    public Map<Point2D, Optional<Entity>> getBoard() {
+        return Collections.unmodifiableMap(cells);
     }
 }
