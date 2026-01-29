@@ -1,13 +1,12 @@
 package it.unibo.samplejavafx.mvc.model.chessboard;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Chessboard implementation of {@link ChessBoard}.
@@ -17,20 +16,13 @@ public class ChessBoardImpl implements ChessBoard {
     //private static final int BOARD_HEIGHT = 8;
     //private static final int BOARD_WIDTH = 8;
 
-    private final Map<Point2D, Optional<Entity>> cells;
+    private final BiMap<Point2D, Entity> cells;
 
     /**
      * placeholder.
      */
     public ChessBoardImpl() {
-        this.cells = IntStream.range(0, CHESSBOARD_SIZE)
-                .boxed()
-                .flatMap(x -> IntStream.range(0, CHESSBOARD_SIZE)
-                        .mapToObj(y -> new Point2D(x, y)))
-                .collect(Collectors.toMap(
-                        pos -> pos,
-                        pos -> Optional.empty()
-                ));
+        this.cells = HashBiMap.create();
     }
 
     /**
@@ -41,7 +33,18 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public Optional<Entity> getEntity(final Point2D pos) {
-        return this.cells.get(pos);
+        return Optional.ofNullable(cells.get(pos));
+    }
+
+    /**
+     * placeholder.
+     *
+     * @param entity placeholder.
+     * @return placeholder.
+     */
+    @Override
+    public Point2D getPosByEntity(final Entity entity) {
+        return this.cells.inverse().get(entity);
     }
 
     /**
@@ -52,18 +55,29 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public void setEntity(final Point2D pos, final Entity newEntity) {
-        cells.put(pos, Optional.of(newEntity));
+        cells.put(pos, newEntity);
     }
 
     /**
-     *  placeholder.
+     * placeholder.
      *
      * @param pos placeholder.
-     * @return placeholder.
+     */
+    @Override
+    public void removeEntity(final Point2D pos) {
+        cells.remove(pos);
+    }
+
+    /**
+     * Returns if the cell is free or not.
+     * If the cell is free, there will be no entry associated with that key.
+     *
+     * @param pos the position to check.
+     * @return true if the entry does not exist (the cell is free), false otherwise.
      */
     @Override
     public boolean isFree(final Point2D pos) {
-        return this.cells.get(pos).isEmpty();
+        return !this.cells.containsKey(pos);
     }
 
     /**

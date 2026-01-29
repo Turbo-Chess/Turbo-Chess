@@ -31,9 +31,24 @@ public interface ChessBoard {
      * placeholder.
      *
      * @param pos placeholder.
+     */
+    void removeEntity(Point2D pos);
+
+    /**
+     * placeholder.
+     *
+     * @param pos placeholder.
      * @return placeholder.
      */
     Optional<Entity> getEntity(Point2D pos);
+
+    /**
+     * placeholder.
+     *
+     * @param entity placeholder.
+     * @return placeholder.
+     */
+    Point2D getPosByEntity(Entity entity);
 
     /**
      *  placeholder.

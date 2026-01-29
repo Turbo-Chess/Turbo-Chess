@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a playable game piece with its move rules and specific values.
@@ -28,14 +29,15 @@ public class Piece extends AbstractEntity implements Moveable {
      *
      * @param id unique identifier for the piece.
      * @param name the name of the piece displayed.
+     * @param gameId the id that the class will get at runtime.
      * @param path file path with the image of the piece.
      * @param playerColor color of the player owning this piece.
      * @param weight positive int value that represents the importance (and score) value of the piece.
      * @param moveRules non-null list of rules defining how the piece can move.
      */
-    public Piece(final String id, final String name, final Path path, final PlayerColor playerColor,
+    public Piece(final String id, final String name, final int gameId, final Path path, final PlayerColor playerColor,
         final int weight, final List<MoveRules> moveRules) {
-        super(id, name, path, playerColor);
+        super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
         this.hasMoved = false;
@@ -55,6 +57,16 @@ public class Piece extends AbstractEntity implements Moveable {
             this.availableCells.addAll(rule.getValidMoves(start, board, this.getPlayerColor()));
         }
         return Collections.unmodifiableList(availableCells);
+    }
+
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    @Override
+    public Optional<Moveable> asMoveable() {
+        return Optional.of(this);
     }
 
     /**

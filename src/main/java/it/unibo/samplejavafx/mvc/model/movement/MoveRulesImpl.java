@@ -35,7 +35,9 @@ public class MoveRulesImpl implements MoveRules {
      */
     @Override
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board, final PlayerColor playerColor) {
-        final List<Point2D> tempResult = moveStrategy.calculateMoves(start, playerColor == PlayerColor.WHITE ? direction.invertY() : direction, board);
+        final List<Point2D> tempResult = moveStrategy.calculateMoves(
+                start, playerColor == PlayerColor.WHITE ? direction.invertY() : direction, board
+        );
         return switch (restriction) {
             case MOVE_ONLY -> moveOnlyFilter(board, tempResult);
             case EAT_ONLY -> eatOnlyFilter(board, tempResult, playerColor);
@@ -81,7 +83,9 @@ public class MoveRulesImpl implements MoveRules {
      * @param playerColor placeholder.
      * @return placeholder.
      */
-    private List<Point2D> moveAndEatFilter(final ChessBoard board, final List<Point2D> tempResult, final PlayerColor playerColor) {
+    private List<Point2D> moveAndEatFilter(
+            final ChessBoard board, final List<Point2D> tempResult, final PlayerColor playerColor
+    ) {
         final List<Point2D> res = new ArrayList<>(tempResult);
         for (final var pos : tempResult) {
             final Optional<Entity> pieceInNewPos = board.getEntity(pos);
