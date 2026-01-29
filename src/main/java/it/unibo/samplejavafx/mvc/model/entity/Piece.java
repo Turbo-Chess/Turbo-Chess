@@ -29,6 +29,7 @@ public class Piece extends AbstractEntity implements Moveable {
      *
      * @param id unique identifier for the piece.
      * @param name the name of the piece displayed.
+     * @param gameId the id that the class will get at runtime.
      * @param path file path with the image of the piece.
      * @param playerColor color of the player owning this piece.
      * @param weight positive int value that represents the importance (and score) value of the piece.
@@ -58,6 +59,11 @@ public class Piece extends AbstractEntity implements Moveable {
         return Collections.unmodifiableList(availableCells);
     }
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     @Override
     public Optional<Moveable> asMoveable() {
         return Optional.of(this);

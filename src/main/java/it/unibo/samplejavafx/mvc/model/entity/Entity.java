@@ -14,6 +14,11 @@ public interface Entity {
      */
     PlayerColor getPlayerColor();
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     default Optional<Moveable> asMoveable() {
         return Optional.empty();
     }

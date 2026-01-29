@@ -1,11 +1,8 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
-import ch.qos.logback.core.pattern.parser.OptionTokenizer;
 import lombok.Getter;
-
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Abstract Entity is the abstract class that implements {@link Entity} and defines the shared behavior of the
@@ -36,52 +33,28 @@ public abstract class AbstractEntity implements Entity {
         this.playerColor = playerColor;
     }
 
+    /**
+     * placeholder.
+     *
+     * @param o placeholder.
+     * @return placeholder.
+     */
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        AbstractEntity that = (AbstractEntity) o;
+    public boolean equals(final Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final AbstractEntity that = (AbstractEntity) o;
         return gameId == that.gameId && Objects.equals(id, that.id) && playerColor == that.playerColor;
     }
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, gameId, playerColor);
     }
-
-//    /**
-//     * Returns the id of the entity.
-//     *
-//     * @return a non-null {@link String} representing the identifier of the entity.
-//     */
-//    public String getId() {
-//        return this.id;
-//    }
-//
-//    /**
-//     * Returns the name of the entity.
-//     *
-//     * @return a non-null {@link String} representing the name of the entity.
-//     */
-//    public String name() {
-//        return this.name;
-//    }
-//
-//    /**
-//     * Returns a boolean tracking the color of the entity.
-//     * Note: its value can't be changed after instantiation.
-//     *
-//     * @return {@code true} if it's white, {@code false otherwise}.
-//     */
-//    public boolean isWhite() {
-//        return this.isWhite;
-//    }
-//
-//    /**
-//     * Returns the path of the image.
-//     *
-//     * @return a non-null path.
-//     */
-//    public Path getImagePath() {
-//        return this.imagePath;
-//    }
 }

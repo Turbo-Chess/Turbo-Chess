@@ -2,13 +2,11 @@ package it.unibo.samplejavafx.mvc.model.chessboard;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableBiMap;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 /**
  * Chessboard implementation of {@link ChessBoard}.
@@ -38,8 +36,14 @@ public class ChessBoardImpl implements ChessBoard {
         return Optional.ofNullable(cells.get(pos));
     }
 
+    /**
+     * placeholder.
+     *
+     * @param entity placeholder.
+     * @return placeholder.
+     */
     @Override
-    public Point2D getPosByEntity(Entity entity) {
+    public Point2D getPosByEntity(final Entity entity) {
         return this.cells.inverse().get(entity);
     }
 
@@ -54,8 +58,13 @@ public class ChessBoardImpl implements ChessBoard {
         cells.put(pos, newEntity);
     }
 
+    /**
+     * placeholder.
+     *
+     * @param pos placeholder.
+     */
     @Override
-    public void removeEntity(Point2D pos) {
+    public void removeEntity(final Point2D pos) {
         cells.remove(pos);
     }
 

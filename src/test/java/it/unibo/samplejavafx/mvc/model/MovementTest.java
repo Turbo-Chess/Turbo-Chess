@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
-import java.nio.file.attribute.PosixFileAttributes;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +24,7 @@ class MovementTest {
     private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
 
     ChessBoard board = new ChessBoardImpl();
-    int counter = 0;
+    int counter;
 
     @BeforeEach
     void initBoard() {
@@ -36,12 +35,13 @@ class MovementTest {
     @Test
     void testWhiteBlackMovement() {
         // This test wants to prove that the white piece moves in the reversed y direction compared to the black
-        final Piece blackPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK,
+        final Piece blackPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
+        counter++;
 
-        final Piece whitePiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE,
+        final Piece whitePiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.WHITE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
@@ -58,15 +58,16 @@ class MovementTest {
 
     @Test
     void testJumping() {
-        final Piece blackJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK,
+        final Piece blackJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
+        counter++;
 
-        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE,
+        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.WHITE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
@@ -102,15 +103,16 @@ class MovementTest {
 
     @Test
     void testSliding() {
-        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK,
+        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement())
         ));
+        counter++;
 
-        final Piece whiteSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE,
+        final Piece whiteSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.WHITE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
@@ -130,26 +132,29 @@ class MovementTest {
 
     @Test
     void testMoveOnlyRule() {
-        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK,
+        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_ONLY, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_ONLY, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_ONLY, new SlidingMovement())
         ));
+        counter++;
 
-        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE,
+        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.WHITE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_ONLY, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.MOVE_ONLY, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.MOVE_ONLY, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_ONLY, new JumpingMovement())
         ));
+        counter++;
 
         // Dummy Pieces
-        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK, 3, List.of());
+        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", counter, Path.of(IMAGE_PATH), PlayerColor.BLACK, 3, List.of());
         board.setEntity(new Point2D(3, 2), blackDummyPiece);
-        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE, 3, List.of());
+        counter++;
+        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", counter, Path.of(IMAGE_PATH), PlayerColor.WHITE, 3, List.of());
         board.setEntity(new Point2D(1, 4), whiteDummyPiece);
 
         board.setEntity(new Point2D(1, 2), blackSlidingPiece);
@@ -169,26 +174,29 @@ class MovementTest {
 
     @Test
     void testEatOnlyRule() {
-        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK,
+        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.EAT_ONLY, new SlidingMovement())
         ));
+        counter++;
 
-        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE,
+        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.WHITE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.EAT_ONLY, new JumpingMovement())
         ));
+        counter++;
 
         // Dummy Pieces
-        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK, 3, List.of());
+        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", counter, Path.of(IMAGE_PATH), PlayerColor.BLACK, 3, List.of());
         board.setEntity(new Point2D(3, 2), blackDummyPiece);
-        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE, 3, List.of());
+        counter++;
+        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", counter, Path.of(IMAGE_PATH), PlayerColor.WHITE, 3, List.of());
         board.setEntity(new Point2D(1, 4), whiteDummyPiece);
 
 
@@ -209,26 +217,29 @@ class MovementTest {
 
     @Test
      void testBothRules() {
-        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK,
+        final Piece blackSlidingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement()),
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, new SlidingMovement())
         ));
+        counter++;
 
-        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE,
+        final Piece whiteJumpingPiece = new Piece(PIECE_ID, PIECE_NAME, counter, Path.of(IMAGE_PATH), PlayerColor.WHITE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement()),
                 new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
+        counter++;
 
         // Dummy Pieces
-        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", counter++, Path.of(IMAGE_PATH), PlayerColor.BLACK, 3, List.of());
+        final Piece blackDummyPiece = new Piece("dummy1", "blackDummy", counter, Path.of(IMAGE_PATH), PlayerColor.BLACK, 3, List.of());
         board.setEntity(new Point2D(3, 2), blackDummyPiece);
-        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", counter++, Path.of(IMAGE_PATH), PlayerColor.WHITE, 3, List.of());
+        counter++;
+        final Piece whiteDummyPiece = new Piece("dummy2", "whiteDummy", counter, Path.of(IMAGE_PATH), PlayerColor.WHITE, 3, List.of());
         board.setEntity(new Point2D(1, 4), whiteDummyPiece);
 
 
