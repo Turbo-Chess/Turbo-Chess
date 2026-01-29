@@ -50,9 +50,9 @@ class ChessboardTest {
         final ChessBoard board = new ChessBoardImpl();
         // Test that the limit values are correctly generated (the isFree method access the map, so it would throw
         // an error if a point does not exist)
-        assertTrue(board.isFree(new Point2D(0, 0)));
-        assertTrue(board.isFree(new Point2D(7, 7)));
-        assertThrows(NullPointerException.class, () -> board.isFree(new Point2D(8, 8)));
+        assertTrue(board.checkBounds(new Point2D(0, 0)));
+        assertTrue(board.checkBounds(new Point2D(7, 7)));
+        assertFalse(board.checkBounds(new Point2D(8, 8)));
     }
 
     @Test
