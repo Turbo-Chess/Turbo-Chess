@@ -19,8 +19,13 @@ public class PowerUp extends AbstractEntity {
      * @param playerColor color of the player owning this power up.
      * @param duration positive int value that represents the duration of the applied effect.
      */
-    PowerUp(final String id, final String name, final int gameId, final Path path,
-            final PlayerColor playerColor, final int duration
+    public PowerUp(
+        final String id,
+        final String name,
+        final int gameId,
+        final Path path,
+        final PlayerColor playerColor,
+        final int duration
     ) {
         super(id, name, gameId, path, playerColor);
         this.duration = duration;
@@ -30,7 +35,7 @@ public class PowerUp extends AbstractEntity {
      * Applies the effect on the board.
      */
     public void applyEffect() {
-        // TO-DO: implement method
+        // TODO: implement method
     }
 
     /**
