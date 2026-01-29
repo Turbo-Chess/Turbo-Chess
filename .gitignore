@@ -11,3 +11,5 @@ bin/
 .settings
 
 logs/*
+
+*.dat
