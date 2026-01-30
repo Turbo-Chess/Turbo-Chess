@@ -17,28 +17,27 @@ import java.util.stream.Stream;
 
 public class EntityLoaderImpl implements EntityLoader {
     private final Gson gson = new Gson();
-    private final List<Entity> loadedEntities = new ArrayList<>();
 
     @Override
     public List<Entity> loadEntityFile(final Path filesPath, final Class<? extends Entity> classToLoad) {
-        loadedEntities.clear();
         try (Stream<Path> paths = Files.walk(filesPath)) {
-           paths.filter(Files::isRegularFile)
+           return paths.filter(Files::isRegularFile)
                    .filter(file -> file.endsWith(".json"))
-                   .forEach(file -> this.parseEntityFile(file, classToLoad));
+                   .map(file -> this.parseEntityFile(file, classToLoad))
+                   .filter(java.util.Objects::nonNull)
+                   .toList();
         } catch (final Exception e) {
-
+            return List.of();
         }
 
-        return List.copyOf(loadedEntities);
     }
 
-    @Override
-    public void parseEntityFile(final Path filePath, final Class<? extends Entity> classToLoad) {
+    private Entity parseEntityFile(final Path filePath, final Class<? extends Entity> classToLoad) {
         try (final var reader = new BufferedReader(new FileReader(filePath.toFile()))) {
-            loadedEntities.add(gson.fromJson(reader, classToLoad));
+            return gson.fromJson(reader, classToLoad);
         } catch (final Exception e) {
-
+            //TODO: check this
+            return null;
         }
     }
 }
