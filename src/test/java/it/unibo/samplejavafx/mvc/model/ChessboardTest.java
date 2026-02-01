@@ -23,7 +23,7 @@ class ChessboardTest {
      */
     @Test
    void initTest() {
-        final Piece p = new Piece("test", "test-piece", 1,  Path.of("/home/giacomo/Documents/pawn.jpg"), PlayerColor.BLACK,
+        final Piece p = new Piece("test", "test-piece", 1,  "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
@@ -58,12 +58,12 @@ class ChessboardTest {
     @Test
     void checkGetPos() {
         final ChessBoard board = new ChessBoardImpl();
-        final Piece p1 = new Piece("test", "test-piece", 1, Path.of("/home/giacomo/Documents/pawn.jpg"), PlayerColor.BLACK,
+        final Piece p1 = new Piece("test", "test-piece", 1, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
 
-        final Piece p2 = new Piece("test", "test-piece", 2, Path.of("/home/giacomo/Documents/pawn.jpg"), PlayerColor.BLACK,
+        final Piece p2 = new Piece("test", "test-piece", 2, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
         ));
