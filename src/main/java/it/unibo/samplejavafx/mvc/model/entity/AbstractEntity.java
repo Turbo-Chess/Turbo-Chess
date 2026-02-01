@@ -13,7 +13,7 @@ public abstract class AbstractEntity implements Entity {
     private final String id;
     private final String name;
     private final int gameId;
-    private final Path imagePath;
+    private final String imagePath;
     private final PlayerColor playerColor;
 
     /**
@@ -25,7 +25,7 @@ public abstract class AbstractEntity implements Entity {
      * @param path          the path containing the image resource to display.
      * @param playerColor    color of the player owning this entity.
      */
-    AbstractEntity(final String id, final String name, final int gameId, final Path path, final PlayerColor playerColor) {
+    AbstractEntity(final String id, final String name, final int gameId, final String path, final PlayerColor playerColor) {
         this.id = id;
         this.name = name;
         this.gameId = gameId;

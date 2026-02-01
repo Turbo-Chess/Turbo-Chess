@@ -19,7 +19,7 @@ public class PowerUp extends AbstractEntity {
      * @param playerColor color of the player owning this power up.
      * @param duration positive int value that represents the duration of the applied effect.
      */
-    PowerUp(final String id, final String name, final int gameId, final Path path,
+    PowerUp(final String id, final String name, final int gameId, final String path,
             final PlayerColor playerColor, final int duration
     ) {
         super(id, name, gameId, path, playerColor);
