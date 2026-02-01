@@ -42,7 +42,7 @@ public class LoaderControllerImpl implements LoaderController {
                             .filter(associations::containsKey)
                             .forEach(folderName -> {
                                 final List<Entity> entities = entityLoader.loadEntityFile(Path.of(entityFileDir + folderName), associations.get(folderName));
-                                entities.forEach(entity -> entityCache.addEntity(entity, folderName + entity.getId()));
+                                entities.forEach(entity -> entityCache.addEntity(entity, entity.getId()));
                             });
                 } catch (Exception e) {
                     throw new RuntimeException(e);
