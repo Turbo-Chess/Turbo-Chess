@@ -24,7 +24,7 @@ class PiecesTest {
     void testPieceInitialization() {
         final Piece p = new Piece("test", "test-piece", 1, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
-                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
         ));
 
         assertEquals("test", p.getId());

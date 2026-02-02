@@ -25,7 +25,7 @@ class ChessboardTest {
    void initTest() {
         final Piece p = new Piece("test", "test-piece", 1,  "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
-                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
+                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
         ));
 
         // Test if a cell is free at initialization and then correctly occupied
@@ -60,12 +60,12 @@ class ChessboardTest {
         final ChessBoard board = new ChessBoardImpl();
         final Piece p1 = new Piece("test", "test-piece", 1, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
-                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
+                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
         ));
 
         final Piece p2 = new Piece("test", "test-piece", 2, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
-                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
+                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
         ));
 
        board.setEntity(new Point2D(2, 2), p1);
