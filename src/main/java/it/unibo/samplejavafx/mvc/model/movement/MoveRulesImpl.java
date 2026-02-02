@@ -4,6 +4,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class MoveRulesImpl implements MoveRules {
     private final Point2D direction;
     private final MoveType restriction;
-    private final MovementStrategy moveStrategy;
+    private final MoveStrategy moveStrategy;
 
     /**
      * placeholder.
@@ -24,7 +25,7 @@ public class MoveRulesImpl implements MoveRules {
      * @param restriction placeholder.
      * @param moveStrategy placeholder.
      */
-    public MoveRulesImpl(final Point2D direction, final MoveType restriction, final MovementStrategy moveStrategy) {
+    public MoveRulesImpl(final Point2D direction, final MoveType restriction, final MoveStrategy moveStrategy) {
         this.direction = direction;
         this.restriction = restriction;
         this.moveStrategy = moveStrategy;
@@ -35,7 +36,7 @@ public class MoveRulesImpl implements MoveRules {
      */
     @Override
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board, final PlayerColor playerColor) {
-        final List<Point2D> tempResult = moveStrategy.calculateMoves(
+        final List<Point2D> tempResult = moveStrategy.getStrategy().calculateMoves(
                 start, playerColor == PlayerColor.WHITE ? direction.invertY() : direction, board
         );
         return switch (restriction) {
@@ -104,6 +105,18 @@ public class MoveRulesImpl implements MoveRules {
         MOVE_ONLY,
         EAT_ONLY,
         MOVE_AND_EAT
+    }
+
+    @Getter
+    public enum MoveStrategy {
+        JUMPING(new SlidingMovement()),
+        SLIDING(new JumpingMovement());
+
+        private final MovementStrategy strategy;
+
+        MoveStrategy(final MovementStrategy strategy) {
+            this.strategy = strategy;
+        }
     }
 }
 
