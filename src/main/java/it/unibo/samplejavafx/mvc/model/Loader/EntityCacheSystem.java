@@ -7,4 +7,6 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
  */
 public interface EntityCacheSystem {
     void addEntity(Entity entity, String id);
+
+    Entity getEntity(String id);
 }

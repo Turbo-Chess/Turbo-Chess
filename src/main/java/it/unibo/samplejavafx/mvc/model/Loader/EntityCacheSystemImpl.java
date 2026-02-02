@@ -14,4 +14,9 @@ public class EntityCacheSystemImpl implements EntityCacheSystem {
     public void addEntity(final Entity entity, final String id) {
        entityCache.put(id, entity);
     }
+
+    @Override
+    public Entity getEntity(String id) {
+       return entityCache.get(id);
+    }
 }
