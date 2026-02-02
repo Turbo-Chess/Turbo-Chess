@@ -22,7 +22,7 @@ public class EntityLoaderImpl implements EntityLoader {
     public List<Entity> loadEntityFile(final Path filesPath, final Class<? extends Entity> classToLoad) {
         try (Stream<Path> paths = Files.walk(filesPath)) {
            return paths.filter(Files::isRegularFile)
-                   .filter(file -> file.endsWith(".json"))
+                   .filter(file -> file.toString().endsWith(".json"))
                    .map(file -> this.parseEntityFile(file, classToLoad))
                    .filter(java.util.Objects::nonNull)
                    .toList();
