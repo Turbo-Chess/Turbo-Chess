@@ -6,7 +6,6 @@ import it.unibo.samplejavafx.mvc.model.Loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.Loader.EntityLoaderImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
-import lombok.Getter;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
