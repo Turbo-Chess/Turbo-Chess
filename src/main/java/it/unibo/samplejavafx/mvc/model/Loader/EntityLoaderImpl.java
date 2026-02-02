@@ -1,7 +1,9 @@
 package it.unibo.samplejavafx.mvc.model.Loader;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -25,11 +27,11 @@ public class EntityLoaderImpl implements EntityLoader {
     }
 
     private Entity parseEntityFile(final Path filePath, final Class<? extends Entity> classToLoad) {
-        try (final var reader = Files.newBufferedReader(filePath)) {
-            return null;
+        try  {
+            final ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(new File(filePath.toString()), classToLoad);
         } catch (final Exception e) {
             System.out.println(Arrays.toString(e.getStackTrace()));
-            //TODO: check this
             return null;
         }
     }
