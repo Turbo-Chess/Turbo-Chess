@@ -5,7 +5,6 @@ import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.Getter;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +20,9 @@ import java.util.Optional;
 public class Piece extends AbstractEntity implements Moveable {
     private final int weight;
     private boolean hasMoved;
-    private final List<Point2D> availableCells = new ArrayList<>();
+    // Available cells will be moved to its own cache class
+    @Deprecated
+    private final transient List<Point2D> availableCells = new ArrayList<>();
     private final List<MoveRules> moveRules;
 
     /**
