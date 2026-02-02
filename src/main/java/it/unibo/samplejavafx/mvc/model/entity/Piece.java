@@ -1,7 +1,10 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
+import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.Getter;
 
@@ -22,7 +25,10 @@ public class Piece extends AbstractEntity implements Moveable {
     private boolean hasMoved;
     // Available cells will be moved to its own cache class
     @Deprecated
+    @JsonIgnore
     private final transient List<Point2D> availableCells = new ArrayList<>();
+    @JsonDeserialize(contentAs = MoveRulesImpl.class)
+    @JsonProperty("moveRules")
     private final List<MoveRules> moveRules;
 
     /**
@@ -36,8 +42,16 @@ public class Piece extends AbstractEntity implements Moveable {
      * @param weight positive int value that represents the importance (and score) value of the piece.
      * @param moveRules non-null list of rules defining how the piece can move.
      */
-    public Piece(final String id, final String name, final int gameId, final String path, final PlayerColor playerColor,
-        final int weight, final List<MoveRules> moveRules) {
+    @JsonCreator
+    public Piece(
+            @JsonProperty("id") String id,
+            @JsonProperty("name") String name,
+            @JsonProperty("gameId") int gameId,
+            @JsonProperty("path") String path,
+            @JsonProperty("playerColor") PlayerColor playerColor,
+            @JsonProperty("weight") int weight,
+            @JsonProperty("moveRules") List<MoveRules> moveRules
+    ) {
         super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;

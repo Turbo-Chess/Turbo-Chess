@@ -1,7 +1,8 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import java.nio.file.Path;
 import java.util.Objects;
 
 /**
@@ -25,7 +26,14 @@ public abstract class AbstractEntity implements Entity {
      * @param path          the path containing the image resource to display.
      * @param playerColor    color of the player owning this entity.
      */
-    AbstractEntity(final String id, final String name, final int gameId, final String path, final PlayerColor playerColor) {
+    @JsonCreator
+    AbstractEntity(
+            @JsonProperty("id") String id,
+            @JsonProperty("name") String name,
+            @JsonProperty("gameId") int gameId,
+            @JsonProperty("path") String path,
+            @JsonProperty("playerColor") PlayerColor playerColor
+    ) {
         this.id = id;
         this.name = name;
         this.gameId = gameId;

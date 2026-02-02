@@ -1,5 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.movement;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
@@ -13,6 +15,7 @@ import java.util.Optional;
 /**
  * placeholder.
  */
+@Getter
 public class MoveRulesImpl implements MoveRules {
     private final Point2D direction;
     private final MoveType restriction;
@@ -25,7 +28,12 @@ public class MoveRulesImpl implements MoveRules {
      * @param restriction placeholder.
      * @param moveStrategy placeholder.
      */
-    public MoveRulesImpl(final Point2D direction, final MoveType restriction, final MoveStrategy moveStrategy) {
+    @JsonCreator
+    public MoveRulesImpl(
+            @JsonProperty("direction") final Point2D direction,
+            @JsonProperty("restriction") final MoveType restriction,
+            @JsonProperty("moveStrategy") final MoveStrategy moveStrategy
+    ) {
         this.direction = direction;
         this.restriction = restriction;
         this.moveStrategy = moveStrategy;
@@ -109,8 +117,8 @@ public class MoveRulesImpl implements MoveRules {
 
     @Getter
     public enum MoveStrategy {
-        JUMPING(new SlidingMovement()),
-        SLIDING(new JumpingMovement());
+        JUMPING(new JumpingMovement()),
+        SLIDING(new SlidingMovement());
 
         private final MovementStrategy strategy;
 
