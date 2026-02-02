@@ -45,7 +45,7 @@ public class LoaderControllerImpl implements LoaderController {
                                 entities.forEach(entity -> entityCache.addEntity(entity, entity.getId()));
                             });
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    System.out.println(Arrays.toString(e.getStackTrace()));
                 }
             }
         }

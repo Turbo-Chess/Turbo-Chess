@@ -27,6 +27,7 @@ public class EntityLoaderImpl implements EntityLoader {
                    .filter(java.util.Objects::nonNull)
                    .toList();
         } catch (final Exception e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
             return List.of();
         }
 
@@ -36,6 +37,7 @@ public class EntityLoaderImpl implements EntityLoader {
         try (final var reader = Files.newBufferedReader(filePath)) {
             return gson.fromJson(reader, classToLoad);
         } catch (final Exception e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
             //TODO: check this
             return null;
         }
