@@ -1,19 +1,17 @@
 {
-  "weight": 3,
-  "hasMoved": false,
-  "moveRules": [
-    {
-      "direction": {
-        "x": 0,
-        "y": 1
-      },
-      "restriction": "MOVE_AND_EAT",
-      "moveStrategy": "JUMPING"
-    }
-  ],
-  "id": "pawn",
-  "name": "Pawn",
-  "gameId": 0,
-  "imagePath": "/home/giacomo/Documents/pawn.jpg",
-  "playerColor": "BLACK"
+  "id" : "test",
+  "name" : "test-piece",
+  "gameId" : 1,
+  "playerColor" : "BLACK",
+  "weight" : 3,
+  "moveRules" : [ {
+    "direction" : {
+      "x" : 0,
+      "y" : 1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  } ],
+  "imagePath" : "/home/giacomo/Documents/pawn.jpg",
+  "hasMoved" : false
 }
