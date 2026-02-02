@@ -33,7 +33,7 @@ public class EntityLoaderImpl implements EntityLoader {
     }
 
     private Entity parseEntityFile(final Path filePath, final Class<? extends Entity> classToLoad) {
-        try (final var reader = new BufferedReader(new FileReader(filePath.toFile()))) {
+        try (final var reader = Files.newBufferedReader(filePath)) {
             return gson.fromJson(reader, classToLoad);
         } catch (final Exception e) {
             //TODO: check this
