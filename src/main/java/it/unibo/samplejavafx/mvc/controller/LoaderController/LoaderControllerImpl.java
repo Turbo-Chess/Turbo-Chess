@@ -6,12 +6,11 @@ import it.unibo.samplejavafx.mvc.model.Loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.Loader.EntityLoaderImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
+import lombok.Getter;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class LoaderControllerImpl implements LoaderController {
@@ -35,13 +34,14 @@ public class LoaderControllerImpl implements LoaderController {
         // Get all the resource folders
         for (final var stringPath : entityPath) {
             for (final var packDir : getPackDirs(Path.of(stringPath))) {
-                try (Stream<Path> entityFileDir = Files.list(packDir)) {
+                try (Stream<Path> entityFileDir = Files.list(Path.of(stringPath).resolve(packDir))) {
                     entityFileDir.filter(Files::isDirectory)
                             .map(Path::getFileName)
                             .map(Path::toString)
                             .filter(associations::containsKey)
                             .forEach(folderName -> {
-                                final List<Entity> entities = entityLoader.loadEntityFile(Path.of(entityFileDir + folderName), associations.get(folderName));
+                                //entityFileDir + folderName
+                                final List<Entity> entities = entityLoader.loadEntityFile(Path.of(stringPath).resolve(packDir).resolve(folderName), associations.get(folderName));
                                 entities.forEach(entity -> entityCache.addEntity(entity, entity.getId()));
                             });
                 } catch (Exception e) {
@@ -61,6 +61,12 @@ public class LoaderControllerImpl implements LoaderController {
         }
 
         return res;
+    }
+
+    @Override
+    public EntityCacheSystem getEntityCache() {
+        // TODO: make this return an immutable object
+        return entityCache;
     }
 
 }
