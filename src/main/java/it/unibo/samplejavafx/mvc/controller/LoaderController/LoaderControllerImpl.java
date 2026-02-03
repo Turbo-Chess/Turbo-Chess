@@ -15,7 +15,7 @@ public class LoaderControllerImpl implements LoaderController {
     private final Map<String, Class<? extends Entity>> associations = Map.of(
             "pieces", Piece.class
     );
-    private final Map<String, Entity> entityCache = new HashMap<>();
+    private final Map<String, Map<String, Entity>> entityCache = new HashMap<>();
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
     public LoaderControllerImpl(final List<String> paths) {
@@ -26,6 +26,7 @@ public class LoaderControllerImpl implements LoaderController {
         // Get all the resource folders
         for (final var stringPath : entityPath) {
             for (final var packDir : getPackDirs(Path.of(stringPath))) {
+                entityCache.put(packDir.toString(), new HashMap<>());
                 try (Stream<Path> entityFileDir = Files.list(Path.of(stringPath).resolve(packDir))) {
                     entityFileDir.filter(Files::isDirectory)
                             .map(Path::getFileName)
@@ -34,7 +35,7 @@ public class LoaderControllerImpl implements LoaderController {
                             .forEach(folderName -> {
                                 //entityFileDir + folderName
                                 final List<Entity> entities = entityLoader.loadEntityFile(Path.of(stringPath).resolve(packDir).resolve(folderName), associations.get(folderName));
-                                entities.forEach(entity -> entityCache.put(entity.getId(),entity));
+                                entities.forEach(entity -> entityCache.get(packDir.toString()).put(entity.getId(), entity));
 
                             });
                 } catch (Exception e) {
@@ -57,7 +58,7 @@ public class LoaderControllerImpl implements LoaderController {
     }
 
     @Override
-    public Map<String, Entity> getEntityCache() {
+    public Map<String, Map<String, Entity>> getEntityCache() {
         return Collections.unmodifiableMap(entityCache);
     }
 
