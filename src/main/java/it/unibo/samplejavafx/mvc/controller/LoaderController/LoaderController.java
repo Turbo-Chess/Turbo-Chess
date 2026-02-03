@@ -1,7 +1,9 @@
 package it.unibo.samplejavafx.mvc.controller.LoaderController;
 
-import it.unibo.samplejavafx.mvc.model.Loader.EntityCacheSystem;
+import it.unibo.samplejavafx.mvc.model.entity.Entity;
+
+import java.util.Map;
 
 public interface LoaderController {
-    EntityCacheSystem getEntityCache();
+    Map<String, Entity> getEntityCache();
 }
