@@ -5,7 +5,6 @@ import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.Getter;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.Optional;
 //@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
 public class Piece extends AbstractEntity implements Moveable {
     private final int weight;
+    private PieceType type;
     private boolean hasMoved;
     private final List<Point2D> availableCells = new ArrayList<>();
     private final List<MoveRules> moveRules;
@@ -33,14 +33,17 @@ public class Piece extends AbstractEntity implements Moveable {
      * @param path file path with the image of the piece.
      * @param playerColor color of the player owning this piece.
      * @param weight positive int value that represents the importance (and score) value of the piece.
+     * @param type type of the piece
      * @param moveRules non-null list of rules defining how the piece can move.
      */
     public Piece(final String id, final String name, final int gameId, final String path, final PlayerColor playerColor,
-        final int weight, final List<MoveRules> moveRules) {
+        final int weight, final PieceType type, final List<MoveRules> moveRules) {
         super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
+        this.type = type;
         this.hasMoved = false;
+
     }
 
     /**

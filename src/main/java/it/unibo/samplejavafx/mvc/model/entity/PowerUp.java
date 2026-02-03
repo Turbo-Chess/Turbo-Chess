@@ -1,7 +1,5 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
-import java.nio.file.Path;
-
 /**
  * PowerUps are special entities that applies effect on the board that can affect both players.
  * Each power up has a duration.

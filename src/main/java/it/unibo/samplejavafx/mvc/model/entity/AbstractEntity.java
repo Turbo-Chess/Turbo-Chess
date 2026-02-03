@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
 import lombok.Getter;
-import java.nio.file.Path;
 import java.util.Objects;
 
 /**
