@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FirstLoadingTest {
+    private static final String INTERNAL_ENTITIES_PATH = "src/main/resources/EntityResources";
+
     @Test
     void testFirstLoadingPiece() {
 
@@ -29,7 +31,7 @@ public class FirstLoadingTest {
                 new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
         ));
 
-        var loaderController = new LoaderControllerImpl();
+        var loaderController = new LoaderControllerImpl(List.of(INTERNAL_ENTITIES_PATH));
         loaderController.load();
         System.out.println(loaderController.getEntityCache().get("pawn"));
         assertEquals(p, loaderController.getEntityCache().get("pawn"));

@@ -11,20 +11,15 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class LoaderControllerImpl implements LoaderController {
-    private static final String INTERNAL_ENTITIES_PATH = "src/main/resources/EntityResources";
-    private final List<String> entityPath = List.of(INTERNAL_ENTITIES_PATH);
-    // Needs to be generalized for all OSes
-    private static final String EXTERNAL_ENTITIES_PATH = "";
-
+    private final List<String> entityPath = new ArrayList<>();
     private final Map<String, Class<? extends Entity>> associations = Map.of(
             "pieces", Piece.class
     );
-
-    final Map<String, Entity> entityCache = new HashMap<>();
+    private final Map<String, Entity> entityCache = new HashMap<>();
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
-    public LoaderControllerImpl() {
-
+    public LoaderControllerImpl(final List<String> paths) {
+        entityPath.addAll(paths);
     }
 
     public void load() {
@@ -63,7 +58,6 @@ public class LoaderControllerImpl implements LoaderController {
 
     @Override
     public Map<String, Entity> getEntityCache() {
-        // TODO: make this return an immutable object
         return Collections.unmodifiableMap(entityCache);
     }
 
