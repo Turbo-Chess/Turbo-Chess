@@ -31,8 +31,8 @@ public class FirstLoadingTest {
 
         var loaderController = new LoaderControllerImpl();
         loaderController.load();
-        System.out.println(loaderController.getEntityCache().getEntity("pawn"));
-        assertEquals(p, loaderController.getEntityCache().getEntity("pawn"));
-        assertEquals(r, loaderController.getEntityCache().getEntity("rook"));
+        System.out.println(loaderController.getEntityCache().get("pawn"));
+        assertEquals(p, loaderController.getEntityCache().get("pawn"));
+        assertEquals(r, loaderController.getEntityCache().get("rook"));
     }
 }
