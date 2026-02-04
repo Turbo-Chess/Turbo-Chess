@@ -44,6 +44,5 @@ class FirstLoadingTest {
 
         assertEquals(p, pieces.get("pawn"));
         assertEquals(r, pieces.get("rook"));
-        System.out.println(loaderController.getEntityCache());
     }
 }

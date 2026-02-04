@@ -4,7 +4,10 @@ import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -19,6 +22,8 @@ import java.util.stream.Stream;
  * placeholder.
  */
 public class LoaderControllerImpl implements LoaderController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoaderControllerImpl.class);
+
     private final List<String> entityResRootPath = new ArrayList<>();
     private final Map<String, Class<? extends Entity>> associations = Map.of(
             "pieces", Piece.class
@@ -63,8 +68,8 @@ public class LoaderControllerImpl implements LoaderController {
                         loadIntoCache(loadedEntities, resPackDir.toString());
                     });
 
-        } catch (final Exception e) {
-
+        } catch (final IOException e) {
+            LOGGER.error("Could not read files from the specified folder: {}", resPackPath, e);
         }
     }
 
@@ -78,8 +83,8 @@ public class LoaderControllerImpl implements LoaderController {
         final List<Path> res = new ArrayList<>();
         try (Stream<Path> paths = Files.list(rootResDir)) {
             res.addAll(paths.filter(Files::isDirectory).map(Path::getFileName).toList());
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (final IOException e) {
+            LOGGER.error("Cannot get directories: {}", rootResDir, e);
         }
 
         return res;

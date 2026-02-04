@@ -2,12 +2,13 @@ package it.unibo.samplejavafx.mvc.model.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -15,6 +16,7 @@ import java.util.stream.Stream;
  * placeholder.
  */
 public class EntityLoaderImpl implements EntityLoader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntityLoaderImpl.class);
 
     /**
      * {@inheritDoc}
@@ -28,7 +30,7 @@ public class EntityLoaderImpl implements EntityLoader {
                    .filter(java.util.Objects::nonNull)
                    .toList();
         } catch (final IOException e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
+            LOGGER.error("Cannot get files inside: {}", filesPath, e);
             return List.of();
         }
 
@@ -39,7 +41,7 @@ public class EntityLoaderImpl implements EntityLoader {
             final ObjectMapper mapper = new ObjectMapper();
             return mapper.readerWithView(JsonViews.FirstLoading.class).readValue(new File(filePath.toString()), classToLoad);
         } catch (final IOException e) {
-            System.out.println(e.getMessage());
+            LOGGER.error("Cannot read file: {}", filePath, e);
             return null;
         }
     }
