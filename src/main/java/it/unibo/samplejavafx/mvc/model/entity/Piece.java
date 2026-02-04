@@ -1,11 +1,18 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import it.unibo.samplejavafx.mvc.model.loader.JsonViews;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
+import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,11 +24,18 @@ import java.util.Optional;
  * and calculates the cells in which he could move to, based on its specific {@link MoveRules}
  */
 @Getter
-//@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
+@EqualsAndHashCode(callSuper = true)
 public class Piece extends AbstractEntity implements Moveable {
+    @JsonView(JsonViews.FirstLoading.class)
     private final int weight;
+    @JsonView(JsonViews.FullLoading.class)
     private boolean hasMoved;
-    private final List<Point2D> availableCells = new ArrayList<>();
+    // Available cells will be moved to its own cache class
+    @Deprecated
+    @JsonIgnore
+    private final transient List<Point2D> availableCells = new ArrayList<>();
+    @JsonDeserialize(contentAs = MoveRulesImpl.class)
+    @JsonView(JsonViews.FirstLoading.class)
     private final List<MoveRules> moveRules;
 
     /**
@@ -35,8 +49,16 @@ public class Piece extends AbstractEntity implements Moveable {
      * @param weight positive int value that represents the importance (and score) value of the piece.
      * @param moveRules non-null list of rules defining how the piece can move.
      */
-    public Piece(final String id, final String name, final int gameId, final String path, final PlayerColor playerColor,
-        final int weight, final List<MoveRules> moveRules) {
+    @JsonCreator
+    public Piece(
+            @JsonProperty("id") final String id,
+            @JsonProperty("name") final String name,
+            @JsonProperty("gameId") final int gameId,
+            @JsonProperty("path") final String path,
+            @JsonProperty("playerColor") final PlayerColor playerColor,
+            @JsonProperty("weight") final int weight,
+            @JsonProperty("moveRules") final List<MoveRules> moveRules
+    ) {
         super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;

@@ -1,18 +1,28 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import it.unibo.samplejavafx.mvc.model.loader.JsonViews;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import java.util.Objects;
 
 /**
  * Abstract Entity is the abstract class that implements {@link Entity} and defines the shared behavior of the
  * two main entities of the game.
  */
 @Getter
+@EqualsAndHashCode
 public abstract class AbstractEntity implements Entity {
+    @JsonView(JsonViews.FirstLoading.class)
     private final String id;
+    @JsonView(JsonViews.FirstLoading.class)
     private final String name;
-    private final int gameId;
+    @JsonView(JsonViews.FirstLoading.class)
     private final String imagePath;
+    @JsonView(JsonViews.FullLoading.class)
+    private final int gameId;
+    @JsonView(JsonViews.FullLoading.class)
     private final PlayerColor playerColor;
 
     /**
@@ -24,36 +34,18 @@ public abstract class AbstractEntity implements Entity {
      * @param path          the path containing the image resource to display.
      * @param playerColor    color of the player owning this entity.
      */
-    AbstractEntity(final String id, final String name, final int gameId, final String path, final PlayerColor playerColor) {
+    @JsonCreator
+    AbstractEntity(
+            @JsonProperty("id") final String id,
+            @JsonProperty("name") final String name,
+            @JsonProperty("gameId") final int gameId,
+            @JsonProperty("path") final String path,
+            @JsonProperty("playerColor") final PlayerColor playerColor
+    ) {
         this.id = id;
         this.name = name;
         this.gameId = gameId;
         this.imagePath = path;
-        this.playerColor = playerColor;
-    }
-
-    /**
-     * placeholder.
-     *
-     * @param o placeholder.
-     * @return placeholder.
-     */
-    @Override
-    public boolean equals(final Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final AbstractEntity that = (AbstractEntity) o;
-        return gameId == that.gameId && Objects.equals(id, that.id) && playerColor == that.playerColor;
-    }
-
-    /**
-     * placeholder.
-     *
-     * @return placeholder.
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, gameId, playerColor);
+        this.playerColor = (playerColor == null) ? PlayerColor.NONE : playerColor;
     }
 }

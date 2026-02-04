@@ -5,7 +5,6 @@ import java.util.Optional;
 /**
  * Entity is the class that defines what can be on the board.
  */
-@FunctionalInterface
 public interface Entity {
     /**
      *  placeholder.
@@ -13,6 +12,13 @@ public interface Entity {
      * @return placeholder.
      */
     PlayerColor getPlayerColor();
+
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    String getId();
 
     /**
      * placeholder.

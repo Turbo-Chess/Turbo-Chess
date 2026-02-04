@@ -4,12 +4,10 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.movement.JumpingMovement;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +23,7 @@ class ChessboardTest {
    void initTest() {
         final Piece p = new Piece("test", "test-piece", 1,  "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
-                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
+                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
         ));
 
         // Test if a cell is free at initialization and then correctly occupied
@@ -60,12 +58,12 @@ class ChessboardTest {
         final ChessBoard board = new ChessBoardImpl();
         final Piece p1 = new Piece("test", "test-piece", 1, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
-                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
+                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
         ));
 
         final Piece p2 = new Piece("test", "test-piece", 2, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
                 3, List.of(
-                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, new JumpingMovement())
+                new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
         ));
 
        board.setEntity(new Point2D(2, 2), p1);
@@ -73,5 +71,12 @@ class ChessboardTest {
 
        assertEquals(new Point2D(2, 2), board.getPosByEntity(p1));
        assertEquals(new Point2D(3, 3), board.getPosByEntity(p2));
+    }
+
+    @Test
+    void removeNull() {
+        final ChessBoard board = new ChessBoardImpl();
+
+        board.removeEntity(new Point2D(2, 2));
     }
 }

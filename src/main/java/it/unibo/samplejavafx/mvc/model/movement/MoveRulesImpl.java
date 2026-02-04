@@ -1,9 +1,13 @@
 package it.unibo.samplejavafx.mvc.model.movement;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +16,12 @@ import java.util.Optional;
 /**
  * placeholder.
  */
+@EqualsAndHashCode
+@Getter
 public class MoveRulesImpl implements MoveRules {
     private final Point2D direction;
     private final MoveType restriction;
-    private final MovementStrategy moveStrategy;
+    private final MoveStrategy moveStrategy;
 
     /**
      * placeholder.
@@ -24,7 +30,12 @@ public class MoveRulesImpl implements MoveRules {
      * @param restriction placeholder.
      * @param moveStrategy placeholder.
      */
-    public MoveRulesImpl(final Point2D direction, final MoveType restriction, final MovementStrategy moveStrategy) {
+    @JsonCreator
+    public MoveRulesImpl(
+            @JsonProperty("direction") final Point2D direction,
+            @JsonProperty("restriction") final MoveType restriction,
+            @JsonProperty("moveStrategy") final MoveStrategy moveStrategy
+    ) {
         this.direction = direction;
         this.restriction = restriction;
         this.moveStrategy = moveStrategy;
@@ -35,7 +46,7 @@ public class MoveRulesImpl implements MoveRules {
      */
     @Override
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board, final PlayerColor playerColor) {
-        final List<Point2D> tempResult = moveStrategy.calculateMoves(
+        final List<Point2D> tempResult = moveStrategy.getStrategy().calculateMoves(
                 start, playerColor == PlayerColor.WHITE ? direction.invertY() : direction, board
         );
         return switch (restriction) {
@@ -43,8 +54,6 @@ public class MoveRulesImpl implements MoveRules {
             case EAT_ONLY -> eatOnlyFilter(board, tempResult, playerColor);
             case MOVE_AND_EAT -> moveAndEatFilter(board, tempResult, playerColor);
         };
-
-        // This can't be reached because all rules MUST be one of the 3 in the MoveType enum
     }
 
     /**
@@ -104,6 +113,21 @@ public class MoveRulesImpl implements MoveRules {
         MOVE_ONLY,
         EAT_ONLY,
         MOVE_AND_EAT
+    }
+
+    /**
+     * placeholder.
+     */
+    @Getter
+    public enum MoveStrategy {
+        JUMPING(new JumpingMovement()),
+        SLIDING(new SlidingMovement());
+
+        private final MovementStrategy strategy;
+
+        MoveStrategy(final MovementStrategy strategy) {
+            this.strategy = strategy;
+        }
     }
 }
 

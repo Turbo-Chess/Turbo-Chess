@@ -1,0 +1,35 @@
+{
+  "id" : "rook",
+  "name" : "Rook",
+  "weight" : 5,
+  "moveRules" : [ {
+    "direction" : {
+      "x" : 0,
+      "y" : 1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "SLIDING"
+  }, {
+    "direction" : {
+      "x" : 0,
+      "y" : -1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "SLIDING"
+  }, {
+    "direction" : {
+      "x" : 1,
+      "y" : 0
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "SLIDING"
+  }, {
+    "direction" : {
+      "x" : -1,
+      "y" : 0
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "SLIDING"
+  } ],
+  "imagePath" : "/home/giacomo/Documents/pawn.jpg"
+}
