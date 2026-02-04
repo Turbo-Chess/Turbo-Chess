@@ -74,4 +74,11 @@ class ChessboardTest {
        assertEquals(new Point2D(2, 2), board.getPosByEntity(p1));
        assertEquals(new Point2D(3, 3), board.getPosByEntity(p2));
     }
+
+    @Test
+    void removeNull() {
+        final ChessBoard board = new ChessBoardImpl();
+
+        board.removeEntity(new Point2D(2, 2));
+    }
 }
