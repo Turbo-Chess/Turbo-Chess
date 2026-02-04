@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import it.unibo.samplejavafx.mvc.model.Loader.JsonViews;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
@@ -23,14 +24,16 @@ import java.util.Optional;
 @EqualsAndHashCode(callSuper = true)
 //@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
 public class Piece extends AbstractEntity implements Moveable {
+    @JsonView(JsonViews.FirstLoading.class)
     private final int weight;
-    private boolean hasMoved;
+    @JsonView(JsonViews.FullLoading.class)
+    private boolean hasMoved = false;
     // Available cells will be moved to its own cache class
     @Deprecated
     @JsonIgnore
     private final transient List<Point2D> availableCells = new ArrayList<>();
     @JsonDeserialize(contentAs = MoveRulesImpl.class)
-    @JsonProperty("moveRules")
+    @JsonView(JsonViews.FirstLoading.class)
     private final List<MoveRules> moveRules;
 
     /**
@@ -57,7 +60,6 @@ public class Piece extends AbstractEntity implements Moveable {
         super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
-        this.hasMoved = false;
     }
 
     /**
