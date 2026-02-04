@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class LoaderControllerImpl implements LoaderController {
-    private final List<String> entityPath = new ArrayList<>();
+    private final List<String> entityResRootPath = new ArrayList<>();
     private final Map<String, Class<? extends Entity>> associations = Map.of(
             "pieces", Piece.class
     );
@@ -19,37 +19,46 @@ public class LoaderControllerImpl implements LoaderController {
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
     public LoaderControllerImpl(final List<String> paths) {
-        entityPath.addAll(paths);
+        entityResRootPath.addAll(paths);
     }
 
     public void load() {
-        // Get all the resource folders
-        for (final var stringPath : entityPath) {
-            for (final var packDir : getPackDirs(Path.of(stringPath))) {
-                entityCache.put(packDir.toString(), new HashMap<>());
-                try (Stream<Path> entityFileDir = Files.list(Path.of(stringPath).resolve(packDir))) {
-                    entityFileDir.filter(Files::isDirectory)
-                            .map(Path::getFileName)
-                            .map(Path::toString)
-                            .filter(associations::containsKey)
-                            .forEach(folderName -> {
-                                //entityFileDir + folderName
-                                final List<Entity> entities = entityLoader.loadEntityFile(Path.of(stringPath).resolve(packDir).resolve(folderName), associations.get(folderName));
-                                entities.forEach(entity -> entityCache.get(packDir.toString()).put(entity.getId(), entity));
-
-                            });
-                } catch (Exception e) {
-                    System.out.println(Arrays.toString(e.getStackTrace()));
-                }
-            }
+        for (final String basePathString : entityResRootPath) {
+            final Path basePath = Path.of(basePathString);
+            getDirs(basePath).forEach(resPackDir -> loadResourcePack(basePath, resPackDir));
         }
-
     }
 
-    private List<Path> getPackDirs(final Path rootResDir) {
+    private void loadResourcePack(final Path basePath, final Path resPackDir) {
+        final Path resPackPath = basePath.resolve(resPackDir);
+        entityCache.computeIfAbsent(resPackDir.toString(), map -> new HashMap<>());
+
+        try (Stream<Path> entityTypeDirs = Files.list(resPackPath)) {
+            entityTypeDirs
+                    .filter(Files::isDirectory)
+                    .filter(path -> associations.containsKey(path.getFileName().toString()))
+                    .forEach(path -> {
+                        final String entityType = path.getFileName().toString();
+                        List<Entity> loadedEntities = entityLoader.loadEntityFile(path, associations.get(entityType));
+                        loadIntoCache(loadedEntities, resPackDir.toString());
+
+                    });
+
+        } catch (final Exception e) {
+
+        }
+    }
+
+    private void loadIntoCache(final List<Entity> entitiesToLoad, final String packName) {
+        for (var entity : entitiesToLoad) {
+            entityCache.get(packName).put(entity.getId(), entity);
+        }
+    }
+
+    private List<Path> getDirs(final Path rootResDir) {
         List<Path> res = new ArrayList<>();
         try (Stream<Path> paths = Files.list(rootResDir)) {
-             res = paths.filter(Files::isDirectory).map(Path::getFileName).toList();
+            res = paths.filter(Files::isDirectory).map(Path::getFileName).toList();
         } catch (final Exception e) {
 
         }
