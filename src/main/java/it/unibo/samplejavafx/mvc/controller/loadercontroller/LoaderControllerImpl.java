@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -52,12 +53,14 @@ public class LoaderControllerImpl implements LoaderController {
         try (Stream<Path> entityTypeDirs = Files.list(resPackPath)) {
             entityTypeDirs
                     .filter(Files::isDirectory)
-                    .filter(path -> associations.containsKey(path.getFileName().toString()))
-                    .forEach(path -> {
-                        final String entityType = path.getFileName().toString();
-                        final List<Entity> loadedEntities = entityLoader.loadEntityFile(path, associations.get(entityType));
+                    .filter(Objects::nonNull)
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .filter(associations::containsKey)
+                    .forEach(entityType -> {
+                        final Path fullPath = resPackPath.resolve(entityType);
+                        final List<Entity> loadedEntities = entityLoader.loadEntityFile(fullPath, associations.get(entityType));
                         loadIntoCache(loadedEntities, resPackDir.toString());
-
                     });
 
         } catch (final Exception e) {
@@ -75,7 +78,7 @@ public class LoaderControllerImpl implements LoaderController {
         final List<Path> res = new ArrayList<>();
         try (Stream<Path> paths = Files.list(rootResDir)) {
             res.addAll(paths.filter(Files::isDirectory).map(Path::getFileName).toList());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
 
