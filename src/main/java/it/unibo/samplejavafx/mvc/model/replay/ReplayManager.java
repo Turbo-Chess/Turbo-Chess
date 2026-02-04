@@ -32,13 +32,14 @@ public class ReplayManager {
      *
      * @param history the history to save.
      * @param path the destination file path.
-     * @throws IOException if an error occurs.
      */
-    public void saveGame(final GameHistory history, final Path path) {
+    public boolean saveGame(final GameHistory history, final Path path) {
         try (OutputStream os = Files.newOutputStream(path)) {
             mapper.writeValue(os, history);
+            return true;
         } catch (final IOException e) {
             LOGGER.error("Error saving game history to file: {}", path, e); 
+            return false;
         }
     }
 
@@ -47,7 +48,6 @@ public class ReplayManager {
      *
      * @param path the source file path.
      * @return the loaded history.
-     * @throws IOException if an error occurs.
      */
     public GameHistory loadGame(final Path path) {
         try (InputStream is = Files.newInputStream(path)) {
