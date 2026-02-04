@@ -2,6 +2,9 @@ package it.unibo.samplejavafx.mvc.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import it.unibo.samplejavafx.mvc.model.Loader.JsonViews;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import java.util.Objects;
 
@@ -11,10 +14,15 @@ import java.util.Objects;
  */
 @Getter
 public abstract class AbstractEntity implements Entity {
+    @JsonView(JsonViews.FirstLoading.class)
     private final String id;
+    @JsonView(JsonViews.FirstLoading.class)
     private final String name;
-    private final int gameId;
+    @JsonView(JsonViews.FirstLoading.class)
     private final String imagePath;
+    @JsonView(JsonViews.FullLoading.class)
+    private final int gameId;
+    @JsonView(JsonViews.FullLoading.class)
     private final PlayerColor playerColor;
 
     /**
@@ -38,7 +46,7 @@ public abstract class AbstractEntity implements Entity {
         this.name = name;
         this.gameId = gameId;
         this.imagePath = path;
-        this.playerColor = playerColor;
+        this.playerColor = (playerColor == null) ? PlayerColor.NONE : playerColor;
     }
 
     /**
