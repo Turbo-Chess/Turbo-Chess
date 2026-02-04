@@ -1,8 +1,11 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import it.unibo.samplejavafx.mvc.model.Loader.JsonViews;
+import it.unibo.samplejavafx.mvc.model.loader.JsonViews;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
@@ -22,12 +25,11 @@ import java.util.Optional;
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)
-//@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
 public class Piece extends AbstractEntity implements Moveable {
     @JsonView(JsonViews.FirstLoading.class)
     private final int weight;
     @JsonView(JsonViews.FullLoading.class)
-    private boolean hasMoved = false;
+    private boolean hasMoved;
     // Available cells will be moved to its own cache class
     @Deprecated
     @JsonIgnore
@@ -49,17 +51,18 @@ public class Piece extends AbstractEntity implements Moveable {
      */
     @JsonCreator
     public Piece(
-            @JsonProperty("id") String id,
-            @JsonProperty("name") String name,
-            @JsonProperty("gameId") int gameId,
-            @JsonProperty("path") String path,
-            @JsonProperty("playerColor") PlayerColor playerColor,
-            @JsonProperty("weight") int weight,
-            @JsonProperty("moveRules") List<MoveRules> moveRules
+            @JsonProperty("id") final String id,
+            @JsonProperty("name") final String name,
+            @JsonProperty("gameId") final int gameId,
+            @JsonProperty("path") final String path,
+            @JsonProperty("playerColor") final PlayerColor playerColor,
+            @JsonProperty("weight") final int weight,
+            @JsonProperty("moveRules") final List<MoveRules> moveRules
     ) {
         super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
+        this.hasMoved = false;
     }
 
     /**

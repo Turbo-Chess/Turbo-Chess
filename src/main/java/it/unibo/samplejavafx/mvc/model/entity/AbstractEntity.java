@@ -3,10 +3,9 @@ package it.unibo.samplejavafx.mvc.model.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import it.unibo.samplejavafx.mvc.model.Loader.JsonViews;
+import it.unibo.samplejavafx.mvc.model.loader.JsonViews;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import java.util.Objects;
 
 /**
  * Abstract Entity is the abstract class that implements {@link Entity} and defines the shared behavior of the
@@ -37,11 +36,11 @@ public abstract class AbstractEntity implements Entity {
      */
     @JsonCreator
     AbstractEntity(
-            @JsonProperty("id") String id,
-            @JsonProperty("name") String name,
-            @JsonProperty("gameId") int gameId,
-            @JsonProperty("path") String path,
-            @JsonProperty("playerColor") PlayerColor playerColor
+            @JsonProperty("id") final String id,
+            @JsonProperty("name") final String name,
+            @JsonProperty("gameId") final int gameId,
+            @JsonProperty("path") final String path,
+            @JsonProperty("playerColor") final PlayerColor playerColor
     ) {
         this.id = id;
         this.name = name;

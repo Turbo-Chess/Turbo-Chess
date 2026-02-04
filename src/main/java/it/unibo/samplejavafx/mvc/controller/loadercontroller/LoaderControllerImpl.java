@@ -1,15 +1,22 @@
-package it.unibo.samplejavafx.mvc.controller.LoaderController;
+package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
-import it.unibo.samplejavafx.mvc.model.Loader.EntityLoader;
-import it.unibo.samplejavafx.mvc.model.Loader.EntityLoaderImpl;
+import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
+import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Collections;
 import java.util.stream.Stream;
 
+/**
+ * placeholder.
+ */
 public class LoaderControllerImpl implements LoaderController {
     private final List<String> entityResRootPath = new ArrayList<>();
     private final Map<String, Class<? extends Entity>> associations = Map.of(
@@ -18,10 +25,18 @@ public class LoaderControllerImpl implements LoaderController {
     private final Map<String, Map<String, Entity>> entityCache = new HashMap<>();
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
+    /**
+     * placeholder.
+     *
+     * @param paths placeholder.
+     */
     public LoaderControllerImpl(final List<String> paths) {
         entityResRootPath.addAll(paths);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void load() {
         for (final String basePathString : entityResRootPath) {
@@ -40,7 +55,7 @@ public class LoaderControllerImpl implements LoaderController {
                     .filter(path -> associations.containsKey(path.getFileName().toString()))
                     .forEach(path -> {
                         final String entityType = path.getFileName().toString();
-                        List<Entity> loadedEntities = entityLoader.loadEntityFile(path, associations.get(entityType));
+                        final List<Entity> loadedEntities = entityLoader.loadEntityFile(path, associations.get(entityType));
                         loadIntoCache(loadedEntities, resPackDir.toString());
 
                     });
@@ -51,22 +66,27 @@ public class LoaderControllerImpl implements LoaderController {
     }
 
     private void loadIntoCache(final List<Entity> entitiesToLoad, final String packName) {
-        for (var entity : entitiesToLoad) {
+        for (final var entity : entitiesToLoad) {
             entityCache.get(packName).put(entity.getId(), entity);
         }
     }
 
     private List<Path> getDirs(final Path rootResDir) {
-        List<Path> res = new ArrayList<>();
+        final List<Path> res = new ArrayList<>();
         try (Stream<Path> paths = Files.list(rootResDir)) {
-            res = paths.filter(Files::isDirectory).map(Path::getFileName).toList();
-        } catch (final Exception e) {
-
+            res.addAll(paths.filter(Files::isDirectory).map(Path::getFileName).toList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         return res;
     }
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     @Override
     public Map<String, Map<String, Entity>> getEntityCache() {
         return Collections.unmodifiableMap(entityCache);

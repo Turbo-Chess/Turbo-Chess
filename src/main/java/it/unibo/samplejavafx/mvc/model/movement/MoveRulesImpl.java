@@ -54,8 +54,6 @@ public class MoveRulesImpl implements MoveRules {
             case EAT_ONLY -> eatOnlyFilter(board, tempResult, playerColor);
             case MOVE_AND_EAT -> moveAndEatFilter(board, tempResult, playerColor);
         };
-
-        // This can't be reached because all rules MUST be one of the 3 in the MoveType enum
     }
 
     /**
@@ -117,6 +115,9 @@ public class MoveRulesImpl implements MoveRules {
         MOVE_AND_EAT
     }
 
+    /**
+     * placeholder.
+     */
     @Getter
     public enum MoveStrategy {
         JUMPING(new JumpingMovement()),
