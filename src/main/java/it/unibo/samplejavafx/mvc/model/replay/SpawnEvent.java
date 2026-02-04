@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.unibo.samplejavafx.mvc.model.entity.AbstractEntity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
@@ -13,7 +12,6 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  */
 public record SpawnEvent(
     int turn, 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
     AbstractEntity entity, 
     Point2D position
 ) implements GameEvent {

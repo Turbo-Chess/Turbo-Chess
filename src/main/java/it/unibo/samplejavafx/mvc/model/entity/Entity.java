@@ -8,11 +8,7 @@ import java.util.Optional;
 /**
  * Entity is the class that defines what can be on the board.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.CLASS,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@class"
-)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Piece.class, name = "piece"),
     @JsonSubTypes.Type(value = PowerUp.class, name = "powerUp")
