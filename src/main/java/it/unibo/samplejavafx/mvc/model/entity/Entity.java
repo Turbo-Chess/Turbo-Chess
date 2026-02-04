@@ -1,10 +1,22 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.Optional;
 
 /**
  * Entity is the class that defines what can be on the board.
  */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.CLASS,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "@class"
+)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Piece.class, name = "piece"),
+    @JsonSubTypes.Type(value = PowerUp.class, name = "powerUp")
+})
 public interface Entity {
     /**
      *  placeholder.
