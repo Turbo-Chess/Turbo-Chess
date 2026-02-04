@@ -21,13 +21,13 @@ public class FirstLoadingTest {
     @Test
     void testFirstLoadingPiece() {
 
-        Piece p = new Piece("pawn", "Pawn", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
+        Piece p = new Piece("pawn", "Pawn", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.NONE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                 new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
         ));
-        Piece r = new Piece("rook", "Rook", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
-                3, List.of(
+        Piece r = new Piece("rook", "Rook", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.NONE,
+                5, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                 new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
