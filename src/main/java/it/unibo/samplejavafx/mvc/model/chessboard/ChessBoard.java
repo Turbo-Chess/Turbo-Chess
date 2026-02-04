@@ -65,4 +65,18 @@ public interface ChessBoard {
      * @return placeholder.
      */
     BiMap<Point2D, Entity> getBoard();
+
+    /**
+     * Adds an observer to the board.
+     *
+     * @param observer the observer to add.
+     */
+    void addObserver(BoardObserver observer);
+
+    /**
+     * Removes an observer from the board.
+     *
+     * @param observer the observer to remove.
+     */
+    void removeObserver(BoardObserver observer);
 }

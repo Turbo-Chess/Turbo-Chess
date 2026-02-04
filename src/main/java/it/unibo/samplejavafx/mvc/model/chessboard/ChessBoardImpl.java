@@ -7,6 +7,8 @@ import com.google.common.collect.Maps;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,6 +20,10 @@ public class ChessBoardImpl implements ChessBoard {
     //private static final int BOARD_WIDTH = 8;
 
     private final BiMap<Point2D, Entity> cells;
+    /**
+     * List of observers for board changes.
+     */
+    private final List<BoardObserver> observers = new LinkedList<>();
 
     /**
      * placeholder.
@@ -26,6 +32,11 @@ public class ChessBoardImpl implements ChessBoard {
         this.cells = HashBiMap.create();
     }
 
+    /**
+     * Constructs a new chessboard with the given cells.
+     *
+     * @param cells the cells to initialize the board with.
+     */
     public ChessBoardImpl(final BiMap<Point2D, Entity> cells) {
         this.cells = HashBiMap.create(cells);
     }
@@ -60,7 +71,11 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public void setEntity(final Point2D pos, final Entity newEntity) {
+        if (cells.containsKey(pos)) {
+            removeEntity(pos);
+        }
         cells.put(pos, newEntity);
+        notifyEntityAdded(pos, newEntity);
     }
 
     /**
@@ -70,7 +85,42 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public void removeEntity(final Point2D pos) {
-        cells.remove(pos);
+        final Entity removed = cells.remove(pos);
+        if (removed != null) {
+            notifyEntityRemoved(pos, removed);
+        }
+    }
+
+    /**
+     * Adds an observer to the board.
+     *
+     * @param observer the observer to add.
+     */
+    @Override
+    public void addObserver(final BoardObserver observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * Removes an observer from the board.
+     *
+     * @param observer the observer to remove.
+     */
+    @Override
+    public void removeObserver(final BoardObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyEntityAdded(final Point2D pos, final Entity entity) {
+        for (final BoardObserver observer : observers) {
+            observer.onEntityAdded(pos, entity);
+        }
+    }
+
+    private void notifyEntityRemoved(final Point2D pos, final Entity entity) {
+        for (final BoardObserver observer : observers) {
+            observer.onEntityRemoved(pos, entity);
+        }
     }
 
     /**
