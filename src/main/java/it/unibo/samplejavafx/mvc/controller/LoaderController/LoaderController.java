@@ -5,5 +5,6 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import java.util.Map;
 
 public interface LoaderController {
+    void load();
     Map<String, Map<String, Entity>> getEntityCache();
 }
