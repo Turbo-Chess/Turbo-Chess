@@ -67,6 +67,10 @@ dependencies {
 
     // Guava Library
     implementation("com.google.guava:guava:33.5.0-jre")
+
+    // Gson Library
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.21.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.21.0")
 }
 
 tasks.withType<Test> {
