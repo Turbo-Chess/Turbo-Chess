@@ -1,8 +1,6 @@
 {
   "id" : "pawn",
   "name" : "Pawn",
-  "gameId" : 0,
-  "playerColor" : "BLACK",
   "weight" : 3,
   "moveRules" : [ {
     "direction" : {
@@ -19,6 +17,5 @@
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "SLIDING"
   } ],
-  "imagePath" : "/home/giacomo/Documents/pawn.jpg",
-  "hasMoved" : false
+  "imagePath" : "/home/giacomo/Documents/pawn.jpg"
 }
