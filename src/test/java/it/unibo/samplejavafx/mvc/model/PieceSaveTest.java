@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import it.unibo.samplejavafx.mvc.model.Loader.JsonViews;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
@@ -20,20 +21,20 @@ public class PieceSaveTest {
     void test() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        Piece p = new Piece("pawn", "Pawn", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
+        Piece p = new Piece("pawn", "Pawn", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.NONE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                 new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
         ));
 
-            mapper.writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Pawn.json"), p);
+            mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Pawn.json"), p);
         }
 
     @Test
-    void testInitPawn() throws IOException {
+    void testPawnFirstLoading() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Piece pInit = mapper.readValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Pawn.json"), Piece.class);
-        Piece p = new Piece("pawn", "Pawn", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
+        Piece pInit = mapper.readerWithView(JsonViews.FirstLoading.class).readValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Pawn.json"), Piece.class);
+        Piece p = new Piece("pawn", "Pawn", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.NONE,
                 3, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                 new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
@@ -42,11 +43,11 @@ public class PieceSaveTest {
     }
 
     @Test
-    void testInitRook() throws IOException {
+    void testRookFirstLoading() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Piece pInit = mapper.readValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Rook.json"), Piece.class);
-        Piece r = new Piece("rook", "Rook", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.BLACK,
-                3, List.of(
+        Piece pInit = mapper.readerWithView(JsonViews.FirstLoading.class).readValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Rook.json"), Piece.class);
+        Piece r = new Piece("rook", "Rook", 0, "/home/giacomo/Documents/pawn.jpg", PlayerColor.NONE,
+                5, List.of(
                 new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                 new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                 new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
