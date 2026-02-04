@@ -13,6 +13,7 @@ import java.util.Objects;
  * two main entities of the game.
  */
 @Getter
+@EqualsAndHashCode
 public abstract class AbstractEntity implements Entity {
     @JsonView(JsonViews.FirstLoading.class)
     private final String id;
@@ -47,30 +48,5 @@ public abstract class AbstractEntity implements Entity {
         this.gameId = gameId;
         this.imagePath = path;
         this.playerColor = (playerColor == null) ? PlayerColor.NONE : playerColor;
-    }
-
-    /**
-     * placeholder.
-     *
-     * @param o placeholder.
-     * @return placeholder.
-     */
-    @Override
-    public boolean equals(final Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final AbstractEntity that = (AbstractEntity) o;
-        return gameId == that.gameId && Objects.equals(id, that.id) && playerColor == that.playerColor;
-    }
-
-    /**
-     * placeholder.
-     *
-     * @return placeholder.
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, gameId, playerColor);
     }
 }

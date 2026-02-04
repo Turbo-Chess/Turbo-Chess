@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Optional;
  * and calculates the cells in which he could move to, based on its specific {@link MoveRules}
  */
 @Getter
+@EqualsAndHashCode(callSuper = true)
 //@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
 public class Piece extends AbstractEntity implements Moveable {
     private final int weight;

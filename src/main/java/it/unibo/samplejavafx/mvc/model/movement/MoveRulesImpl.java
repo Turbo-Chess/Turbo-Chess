@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Optional;
 /**
  * placeholder.
  */
+@EqualsAndHashCode
 @Getter
 public class MoveRulesImpl implements MoveRules {
     private final Point2D direction;
