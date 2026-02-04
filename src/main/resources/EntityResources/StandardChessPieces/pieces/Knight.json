@@ -1,0 +1,63 @@
+{
+  "id" : "knight",
+  "name" : "Knight",
+  "weight" : 3,
+  "moveRules" : [ {
+    "direction" : {
+      "x" : 2,
+      "y" : 1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : 2,
+      "y" : -1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : -2,
+      "y" : 1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : -2,
+      "y" : -1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : 1,
+      "y" : 2
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : 1,
+      "y" : -2
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : -1,
+      "y" : 2
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : -1,
+      "y" : -2
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  } ],
+  "imagePath" : ""
+}

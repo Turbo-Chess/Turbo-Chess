@@ -1,32 +1,32 @@
 {
-  "id" : "rook",
-  "name" : "Rook",
-  "weight" : 5,
+  "id" : "bishop",
+  "name" : "Bishop",
+  "weight" : 3,
   "moveRules" : [ {
     "direction" : {
-      "x" : 0,
+      "x" : 1,
       "y" : 1
     },
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "SLIDING"
   }, {
     "direction" : {
-      "x" : 0,
+      "x" : 1,
       "y" : -1
     },
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "SLIDING"
   }, {
     "direction" : {
-      "x" : 1,
-      "y" : 0
+      "x" : -1,
+      "y" : 1
     },
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "SLIDING"
   }, {
     "direction" : {
       "x" : -1,
-      "y" : 0
+      "y" : -1
     },
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "SLIDING"

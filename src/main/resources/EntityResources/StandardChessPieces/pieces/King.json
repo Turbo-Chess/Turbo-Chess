@@ -1,0 +1,63 @@
+{
+  "id" : "king",
+  "name" : "King",
+  "weight" : 100,
+  "moveRules" : [ {
+    "direction" : {
+      "x" : 0,
+      "y" : 1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : 0,
+      "y" : -1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : 1,
+      "y" : 0
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : -1,
+      "y" : 0
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : 1,
+      "y" : 1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : 1,
+      "y" : -1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : -1,
+      "y" : 1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : -1,
+      "y" : -1
+    },
+    "restriction" : "MOVE_AND_EAT",
+    "moveStrategy" : "JUMPING"
+  } ],
+  "imagePath" : ""
+}
