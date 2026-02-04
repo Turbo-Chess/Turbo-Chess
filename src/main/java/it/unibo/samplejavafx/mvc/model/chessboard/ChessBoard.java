@@ -6,6 +6,8 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import java.util.List;
 import java.util.Optional;
 
+import com.google.common.collect.BiMap;
+
 /**
  * Represents the board where the match is played.
  */
@@ -63,5 +65,5 @@ public interface ChessBoard {
      *
      * @return placeholder.
      */
-    List<Point2D> getCells();
+    BiMap<Point2D, Entity> getCells();
 }

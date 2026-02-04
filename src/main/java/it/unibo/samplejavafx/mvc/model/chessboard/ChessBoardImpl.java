@@ -2,6 +2,8 @@ package it.unibo.samplejavafx.mvc.model.chessboard;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableBiMap;
+
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
@@ -26,10 +28,19 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
+     * placeholder.
+     * 
+     * @param board placeholder.
+     */
+    public ChessBoardImpl(final BiMap<Point2D, Entity> board) {
+        this.cells = HashBiMap.create(board);
+    }
+
+    /**
      * Returns the entity on the board.
      *
      * @param pos position of the entity.
-     * @return the optional containing the entity (or an optional empty if no entities are present).
+     * @return the Optional containing the entity (or an optional empty if no entities are present).
      */
     @Override
     public Optional<Entity> getEntity(final Point2D pos) {
@@ -97,7 +108,7 @@ public class ChessBoardImpl implements ChessBoard {
      * @return placeholder.
      */
     @Override
-    public List<Point2D> getCells() {
-        return cells.keySet().stream().toList();
+    public BiMap<Point2D, Entity> getCells() {
+        return ImmutableBiMap.copyOf(this.cells);
     }
 }
