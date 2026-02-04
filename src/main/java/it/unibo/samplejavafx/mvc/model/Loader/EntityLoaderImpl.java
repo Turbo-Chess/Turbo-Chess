@@ -29,7 +29,7 @@ public class EntityLoaderImpl implements EntityLoader {
     private Entity parseEntityFile(final Path filePath, final Class<? extends Entity> classToLoad) {
         try  {
             final ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(new File(filePath.toString()), classToLoad);
+            return mapper.readerWithView(JsonViews.FirstLoading.class).readValue(new File(filePath.toString()), classToLoad);
         } catch (final Exception e) {
             System.out.println(Arrays.toString(e.getStackTrace()));
             return null;
