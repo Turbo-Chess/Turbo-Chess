@@ -3,7 +3,6 @@ package it.unibo.samplejavafx.mvc.model.chessboard;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.google.common.collect.BiMap;

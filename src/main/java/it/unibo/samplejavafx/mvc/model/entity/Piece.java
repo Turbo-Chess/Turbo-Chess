@@ -19,7 +19,7 @@ import java.util.Optional;
 //@edu.umd.cs.findbugs.annotations.SuppressFBWarnings("URF_UNREAD_FIELD")
 public class Piece extends AbstractEntity implements Moveable {
     private final int weight;
-    private PieceType type;
+    private final PieceType type;
     private boolean hasMoved;
     private final List<Point2D> availableCells = new ArrayList<>();
     private final List<MoveRules> moveRules;
