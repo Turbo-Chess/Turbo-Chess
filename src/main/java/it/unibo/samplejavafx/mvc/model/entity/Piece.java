@@ -29,6 +29,7 @@ public class Piece extends AbstractEntity implements Moveable {
     @JsonView(JsonViews.FirstLoading.class)
     private final int weight;
     @JsonView(JsonViews.FullLoading.class)
+    // private final PieceType type;
     private boolean hasMoved;
     // Available cells will be moved to its own cache class
     @Deprecated
@@ -47,6 +48,7 @@ public class Piece extends AbstractEntity implements Moveable {
      * @param path file path with the image of the piece.
      * @param playerColor color of the player owning this piece.
      * @param weight positive int value that represents the importance (and score) value of the piece.
+     * @param type type of the piece
      * @param moveRules non-null list of rules defining how the piece can move.
      */
     @JsonCreator
@@ -62,7 +64,9 @@ public class Piece extends AbstractEntity implements Moveable {
         super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
+        // this.type = type;
         this.hasMoved = false;
+
     }
 
     /**
