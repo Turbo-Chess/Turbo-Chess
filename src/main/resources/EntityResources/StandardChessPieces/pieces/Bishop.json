@@ -2,6 +2,7 @@
   "id" : "bishop",
   "name" : "Bishop",
   "weight" : 3,
+  "type" : "INFERIOR",
   "moveRules" : [ {
     "direction" : {
       "x" : 1,

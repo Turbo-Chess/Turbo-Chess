@@ -3,11 +3,11 @@ package it.unibo.samplejavafx.mvc.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
+import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loader.JsonViews;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -16,37 +16,39 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreateBasePieces {
+class CreateBasePiecesTest {
     private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
 
     @Test
     void createPawn() throws IOException {
-        final Piece Pawn = new Piece(
+        final Piece pawn = new Piece(
                 "pawn",
                 "Pawn",
                 0,
                 "",
                 PlayerColor.NONE,
                 1,
+                PieceType.PAWN,
                 List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Pawn.json"), Pawn);
+        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Pawn.json"), pawn);
     }
 
     @Test
     void createKnight() throws IOException {
-        final Piece Knight = new Piece(
+        final Piece knight = new Piece(
                 "knight",
                 "Knight",
                 0,
                 "",
                 PlayerColor.NONE,
                 3,
+                PieceType.INFERIOR,
                 List.of(
                         new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
@@ -58,18 +60,19 @@ class CreateBasePieces {
                         new MoveRulesImpl(new Point2D(-1, -2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Knight.json"), Knight);
+        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Knight.json"), knight);
     }
 
     @Test
     void createBishop() throws IOException {
-        final Piece Bishop = new Piece(
+        final Piece bishop = new Piece(
                 "bishop",
                 "Bishop",
                 0,
                 "",
                 PlayerColor.NONE,
                 3,
+                PieceType.INFERIOR,
                 List.of(
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
@@ -77,18 +80,19 @@ class CreateBasePieces {
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Bishop.json"), Bishop);
+        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Bishop.json"), bishop);
     }
 
     @Test
     void createRook() throws IOException {
-        final Piece Rook = new Piece(
+        final Piece rook = new Piece(
                 "rook",
                 "Rook",
                 0,
                 "",
                 PlayerColor.NONE,
                 5,
+                PieceType.TOWER,
                 List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
@@ -96,18 +100,19 @@ class CreateBasePieces {
                         new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Rook.json"), Rook);
+        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Rook.json"), rook);
     }
 
     @Test
     void createQueen() throws IOException {
-        final Piece Queen = new Piece(
+        final Piece queen = new Piece(
                 "queen",
                 "Queen",
                 0,
                 "",
                 PlayerColor.NONE,
                 9,
+                PieceType.SUPERIOR,
                 List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
@@ -119,18 +124,19 @@ class CreateBasePieces {
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Queen.json"), Queen);
+        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Queen.json"), queen);
     }
 
     @Test
     void createKing() throws IOException {
-        final Piece King = new Piece(
+        final Piece king = new Piece(
                 "king",
                 "King",
                 0,
                 "",
                 PlayerColor.NONE,
                 100,
+                PieceType.KING,
                 List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
@@ -142,7 +148,7 @@ class CreateBasePieces {
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/King.json"), King);
+        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/King.json"), king);
     }
 
     @Test

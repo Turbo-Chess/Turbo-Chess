@@ -24,6 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ChessPieceMovementTest {
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
+    private static final String PAWN_JSON = "Pawn.json";
+    private static final String KNIGHT_JSON = "Knight.json";
+    private static final String BISHOP_JSON = "Bishop.json";
+    private static final String ROOK_JSON = "Rook.json";
+    private static final String QUEEN_JSON = "Queen.json";
+    private static final String KING_JSON = "King.json";
     private final ObjectMapper mapper = new ObjectMapper();
     private ChessBoard board;
     private int gameIdCounter;
@@ -34,24 +40,26 @@ class ChessPieceMovementTest {
         gameIdCounter = 0;
     }
 
-    private Piece loadPieceFromJson(String filename, PlayerColor color) throws IOException {
-        Piece piece = mapper.readerWithView(JsonViews.FirstLoading.class)
+    private Piece loadPieceFromJson(final String filename, final PlayerColor color) throws IOException {
+        gameIdCounter++;
+       final Piece piece = mapper.readerWithView(JsonViews.FirstLoading.class)
                 .readValue(new File(PIECES_PATH + filename), Piece.class);
         return new Piece(
                 piece.getId(),
                 piece.getName(),
-                gameIdCounter++,
+                gameIdCounter,
                 piece.getImagePath(),
                 color,
                 piece.getWeight(),
+                piece.getType(),
                 piece.getMoveRules()
         );
     }
 
     @Test
     void testPawnMovementAndCapture() throws IOException {
-        Piece whitePawn = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece blackPawn = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
+        final Piece whitePawn = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece blackPawn = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
 
         // Test: Forward movement for both colors, diagonal captures, blocking, can't capture friendly
         board.setEntity(new Point2D(4, 6), whitePawn);
@@ -62,10 +70,10 @@ class ChessPieceMovementTest {
         board.removeEntity(new Point2D(4, 1));
 
         // White pawn with captures, blocking
-        Piece whitePawn2 = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece blackEnemy1 = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
-        Piece blackEnemy2 = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
-        Piece blocker = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
+        final Piece whitePawn2 = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece blackEnemy1 = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
+        final Piece blackEnemy2 = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
+        final Piece blocker = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
 
         board.setEntity(new Point2D(4, 4), whitePawn);
         board.setEntity(new Point2D(3, 3), blackEnemy1);
@@ -102,10 +110,10 @@ class ChessPieceMovementTest {
 
     @Test
     void testKnightMovement() throws IOException {
-        Piece whiteKnight = loadPieceFromJson("Knight.json", PlayerColor.WHITE);
-        Piece whitePawn = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece whitePawn2 = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece blackPawn = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
+        final Piece whiteKnight = loadPieceFromJson(KNIGHT_JSON, PlayerColor.WHITE);
+        final Piece whitePawn = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece whitePawn2 = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece blackPawn = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
 
         // All L-shaped moves, jumping, capturing, blocking
         board.setEntity(new Point2D(4, 4), whiteKnight);
@@ -144,16 +152,16 @@ class ChessPieceMovementTest {
 
     @Test
     void testBishopDiagonalMovement() throws IOException {
-        Piece whiteBishop = loadPieceFromJson("Bishop.json", PlayerColor.WHITE);
-        Piece whitePawn = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece blackPawn = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
+        final Piece whiteBishop = loadPieceFromJson(BISHOP_JSON, PlayerColor.WHITE);
+        final Piece whitePawn = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece blackPawn = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
 
         // Diagonal sliding, blocking, capturing
         board.setEntity(new Point2D(4, 4), whiteBishop);
         board.setEntity(new Point2D(6, 6), whitePawn);   // Blocks
         board.setEntity(new Point2D(2, 2), blackPawn);   // Can capture
 
-        List<Point2D> moves = whiteBishop.getValidMoves(new Point2D(4, 4), board);
+        final List<Point2D> moves = whiteBishop.getValidMoves(new Point2D(4, 4), board);
         Set<Point2D> expectedMoves = Set.of(
                 new Point2D(5, 5),                                    // Up-right (blocked at 6,6)
                 new Point2D(3, 3), new Point2D(2, 2),                // Down-left (capture at 2,2)
@@ -178,11 +186,11 @@ class ChessPieceMovementTest {
 
     @Test
     void testRookStraightMovement() throws IOException {
-        Piece whiteRook = loadPieceFromJson("Rook.json", PlayerColor.WHITE);
-        Piece whitePawn = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece whitePawn2 = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece blackPawn = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
-        Piece blackPawn2 = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
+        final Piece whiteRook = loadPieceFromJson(ROOK_JSON, PlayerColor.WHITE);
+        final Piece whitePawn = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece whitePawn2 = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece blackPawn = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
+        final Piece blackPawn2 = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
 
         // Straight sliding, blocking, capturing in 4 directions
         board.setEntity(new Point2D(4, 4), whiteRook);
@@ -191,8 +199,8 @@ class ChessPieceMovementTest {
         board.setEntity(new Point2D(4, 2), blackPawn);   // Can capture down
         board.setEntity(new Point2D(2, 4), blackPawn2);   // Can capture left
 
-        List<Point2D> moves = whiteRook.getValidMoves(new Point2D(4, 4), board);
-        Set<Point2D> expectedMoves = Set.of(
+        final List<Point2D> moves = whiteRook.getValidMoves(new Point2D(4, 4), board);
+        final Set<Point2D> expectedMoves = Set.of(
                 new Point2D(4, 5),                       // Up (blocked at 6)
                 new Point2D(4, 3), new Point2D(4, 2),    // Down (capture at 2)
                 new Point2D(5, 4),                       // Right (blocked at 6)
@@ -218,11 +226,11 @@ class ChessPieceMovementTest {
 
     @Test
     void testQueenCombinedMovement() throws IOException {
-        Piece whiteQueen = loadPieceFromJson("Queen.json", PlayerColor.WHITE);
-        Piece whitePawn1 = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece whitePawn2 = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece blackPawn1 = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
-        Piece blackPawn2 = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
+        final Piece whiteQueen = loadPieceFromJson(QUEEN_JSON, PlayerColor.WHITE);
+        final Piece whitePawn1 = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece whitePawn2 = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece blackPawn1 = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
+        final Piece blackPawn2 = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
 
         // Combines bishop + rook moves (8 directions)
         board.setEntity(new Point2D(4, 4), whiteQueen);
@@ -274,9 +282,9 @@ class ChessPieceMovementTest {
 
     @Test
     void testKingMovement() throws IOException {
-        Piece whiteKing = loadPieceFromJson("King.json", PlayerColor.WHITE);
-        Piece whitePawn = loadPieceFromJson("Pawn.json", PlayerColor.WHITE);
-        Piece blackPawn = loadPieceFromJson("Pawn.json", PlayerColor.BLACK);
+        final Piece whiteKing = loadPieceFromJson(KING_JSON, PlayerColor.WHITE);
+        final Piece whitePawn = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+        final Piece blackPawn = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
 
         // All 8 adjacent squares, capturing, blocking
         board.setEntity(new Point2D(4, 4), whiteKing);
@@ -292,7 +300,7 @@ class ChessPieceMovementTest {
         board.setEntity(new Point2D(5, 5), whitePawn);   // Can't land on friendly
         board.setEntity(new Point2D(3, 3), blackPawn);   // Can capture enemy
 
-        List<Point2D> moves = whiteKing.getValidMoves(new Point2D(4, 4), board);
+        final List<Point2D> moves = whiteKing.getValidMoves(new Point2D(4, 4), board);
         assertFalse(moves.contains(new Point2D(5, 5)), "Can't land on friendly");
         assertTrue(moves.contains(new Point2D(3, 3)), "Can capture enemy");
         assertEquals(
@@ -322,21 +330,21 @@ class ChessPieceMovementTest {
 
     @Test
     void testMultiplePiecesInteraction() throws IOException {
-        Piece whiteKnight = loadPieceFromJson("Knight.json", PlayerColor.WHITE);
-        Piece whiteRook = loadPieceFromJson("Rook.json", PlayerColor.WHITE);
-        Piece blackBishop = loadPieceFromJson("Bishop.json", PlayerColor.BLACK);
+        final Piece whiteKnight = loadPieceFromJson(KNIGHT_JSON, PlayerColor.WHITE);
+        final Piece whiteRook = loadPieceFromJson(ROOK_JSON, PlayerColor.WHITE);
+        final Piece blackBishop = loadPieceFromJson(BISHOP_JSON, PlayerColor.BLACK);
 
         board.setEntity(new Point2D(4, 4), whiteKnight);
         board.setEntity(new Point2D(0, 4), whiteRook);
         board.setEntity(new Point2D(6, 6), blackBishop);
 
         // Rook blocked by knight (can't reach 4,4 or beyond)
-        List<Point2D> rookMoves = whiteRook.getValidMoves(new Point2D(0, 4), board);
+        final List<Point2D> rookMoves = whiteRook.getValidMoves(new Point2D(0, 4), board);
         assertFalse(rookMoves.contains(new Point2D(4, 4)), "Rook blocked by friendly knight");
         assertTrue(rookMoves.contains(new Point2D(3, 4)), "Rook can move up to blocking piece");
 
         // Bishop can move freely in its diagonals
-        List<Point2D> bishopMoves = blackBishop.getValidMoves(new Point2D(6, 6), board);
+        final List<Point2D> bishopMoves = blackBishop.getValidMoves(new Point2D(6, 6), board);
         assertTrue(bishopMoves.contains(new Point2D(5, 5)), "Bishop diagonal movement");
         assertTrue(bishopMoves.contains(new Point2D(7, 7)), "Bishop diagonal movement");
         assertTrue(bishopMoves.contains(new Point2D(4, 4)), "Bishop can capture knight");

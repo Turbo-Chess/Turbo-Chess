@@ -2,6 +2,7 @@
   "id" : "knight",
   "name" : "Knight",
   "weight" : 3,
+  "type" : "INFERIOR",
   "moveRules" : [ {
     "direction" : {
       "x" : 2,

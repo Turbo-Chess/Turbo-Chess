@@ -2,6 +2,7 @@
   "id" : "king",
   "name" : "King",
   "weight" : 100,
+  "type" : "KING",
   "moveRules" : [ {
     "direction" : {
       "x" : 0,

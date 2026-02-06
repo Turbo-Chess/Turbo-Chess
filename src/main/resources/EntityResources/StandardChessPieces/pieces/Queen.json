@@ -2,6 +2,7 @@
   "id" : "queen",
   "name" : "Queen",
   "weight" : 9,
+  "type" : "SUPERIOR",
   "moveRules" : [ {
     "direction" : {
       "x" : 0,

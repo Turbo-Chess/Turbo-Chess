@@ -2,6 +2,7 @@
   "id" : "rook",
   "name" : "Rook",
   "weight" : 5,
+  "type" : "TOWER",
   "moveRules" : [ {
     "direction" : {
       "x" : 0,

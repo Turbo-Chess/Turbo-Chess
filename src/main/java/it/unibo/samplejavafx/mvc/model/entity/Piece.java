@@ -28,8 +28,9 @@ import java.util.Optional;
 public class Piece extends AbstractEntity implements Moveable {
     @JsonView(JsonViews.FirstLoading.class)
     private final int weight;
+    @JsonView(JsonViews.FirstLoading.class)
+    private final PieceType type;
     @JsonView(JsonViews.FullLoading.class)
-    // private final PieceType type;
     private boolean hasMoved;
     // Available cells will be moved to its own cache class
     @Deprecated
@@ -59,12 +60,13 @@ public class Piece extends AbstractEntity implements Moveable {
             @JsonProperty("path") final String path,
             @JsonProperty("playerColor") final PlayerColor playerColor,
             @JsonProperty("weight") final int weight,
+            @JsonProperty("type") final PieceType type,
             @JsonProperty("moveRules") final List<MoveRules> moveRules
     ) {
         super(id, name, gameId, path, playerColor);
         this.moveRules = List.copyOf(moveRules);
         this.weight = weight;
-        // this.type = type;
+        this.type = type;
         this.hasMoved = false;
 
     }
