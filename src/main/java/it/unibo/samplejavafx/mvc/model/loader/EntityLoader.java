@@ -1,6 +1,8 @@
 package it.unibo.samplejavafx.mvc.model.loader;
 
+import it.unibo.samplejavafx.mvc.model.entity.AbstractEntity;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -17,5 +19,5 @@ public interface EntityLoader {
      * @param classToLoad placeholder.
      * @return placeholder.
      */
-    List<Entity> loadEntityFile(Path filesPath, Class<? extends Entity> classToLoad);
+    List<AbstractEntityDefinition> loadEntityFile(Path filesPath, Class<? extends AbstractEntityDefinition> classToLoad);
 }

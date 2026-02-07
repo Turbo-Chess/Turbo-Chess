@@ -1,5 +1,7 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
@@ -25,10 +27,10 @@ public class LoaderControllerImpl implements LoaderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoaderControllerImpl.class);
 
     private final List<String> entityResRootPath = new ArrayList<>();
-    private final Map<String, Class<? extends Entity>> associations = Map.of(
-            "pieces", Piece.class
+    private final Map<String, Class<? extends AbstractEntityDefinition>> associations = Map.of(
+            "pieces", PieceDefinition.class
     );
-    private final Map<String, Map<String, Entity>> entityCache = new HashMap<>();
+    private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
     /**
@@ -64,7 +66,7 @@ public class LoaderControllerImpl implements LoaderController {
                     .filter(associations::containsKey)
                     .forEach(entityType -> {
                         final Path fullPath = resPackPath.resolve(entityType);
-                        final List<Entity> loadedEntities = entityLoader.loadEntityFile(fullPath, associations.get(entityType));
+                        final List<AbstractEntityDefinition> loadedEntities = entityLoader.loadEntityFile(fullPath, associations.get(entityType));
                         loadIntoCache(loadedEntities, resPackDir.toString());
                     });
 
@@ -73,7 +75,7 @@ public class LoaderControllerImpl implements LoaderController {
         }
     }
 
-    private void loadIntoCache(final List<Entity> entitiesToLoad, final String packName) {
+    private void loadIntoCache(final List<AbstractEntityDefinition> entitiesToLoad, final String packName) {
         for (final var entity : entitiesToLoad) {
             entityCache.get(packName).put(entity.getId(), entity);
         }
@@ -96,7 +98,7 @@ public class LoaderControllerImpl implements LoaderController {
      * @return placeholder.
      */
     @Override
-    public Map<String, Map<String, Entity>> getEntityCache() {
+    public Map<String, Map<String, AbstractEntityDefinition>> getEntityCache() {
         return Collections.unmodifiableMap(entityCache);
     }
 

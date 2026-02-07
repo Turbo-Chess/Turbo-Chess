@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 
 import java.util.Map;
 
@@ -18,5 +19,5 @@ public interface LoaderController {
      *
      * @return placeholder.
      */
-    Map<String, Map<String, Entity>> getEntityCache();
+    Map<String, Map<String, AbstractEntityDefinition>> getEntityCache();
 }
