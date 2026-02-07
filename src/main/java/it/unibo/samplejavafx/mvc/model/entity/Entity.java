@@ -7,18 +7,27 @@ import java.util.Optional;
  */
 public interface Entity {
     /**
-     *  placeholder.
+     * placeholder.
      *
      * @return placeholder.
      */
-    PlayerColor getPlayerColor();
+    String getId();
+
+    String getName();
 
     /**
      * placeholder.
      *
      * @return placeholder.
      */
-    String getId();
+    PieceType getType();
+
+    /**
+     *  placeholder.
+     *
+     * @return placeholder.
+     */
+    PlayerColor getPlayerColor();
 
     /**
      * placeholder.
