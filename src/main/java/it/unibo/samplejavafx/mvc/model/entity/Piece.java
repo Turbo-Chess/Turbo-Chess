@@ -63,7 +63,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Entity, Mo
         }
 
         @Override
-        protected AbstractEntity<PieceDefinition> build() {
+        public Piece build() {
             return new Piece(this);
         }
     }

@@ -63,6 +63,6 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
 
         protected abstract X self();
 
-        protected abstract AbstractEntity<T> build();
+        public abstract AbstractEntity<T> build();
     }
 }
