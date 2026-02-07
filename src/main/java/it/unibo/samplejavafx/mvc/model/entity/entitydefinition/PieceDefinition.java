@@ -3,35 +3,49 @@ package it.unibo.samplejavafx.mvc.model.entity.entitydefinition;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import it.unibo.samplejavafx.mvc.model.entity.PieceType;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString
+@JsonDeserialize(builder = PieceDefinition.Builder.class)
 public class PieceDefinition extends AbstractEntityDefinition {
     private final int weight;
     @JsonDeserialize(contentAs = MoveRulesImpl.class)
     private final List<MoveRules> moveRules;
 
     @JsonCreator
-    public PieceDefinition(
-            @JsonProperty("name") final String name,
-            @JsonProperty("id") final String id,
-            @JsonProperty("imagePath") final String imagePath,
-            @JsonProperty("weight") final int weight,
-            @JsonProperty("pieceType") final PieceType pieceType,
-            @JsonProperty("moveRules") final List<MoveRules> moveRules
-            ) {
-        super(name, id, imagePath, pieceType);
-        this.weight = weight;
-        this.moveRules = List.copyOf(moveRules);
+    public PieceDefinition(final Builder builder) {
+        super(builder);
+        this.weight = builder.weight;
+        this.moveRules = List.copyOf(builder.moveRules);
+    }
+
+    public static class Builder extends AbstractEntityDefinition.Builder {
+        private int weight;
+        private List<MoveRules> moveRules;
+
+        @JsonProperty("weight")
+        public Builder setWeight(final int weight) {
+            this.weight = weight;
+            return this;
+        }
+
+        public Builder setMoveRules(final List<MoveRules> moveRules) {
+            this.moveRules = moveRules;
+            return this;
+        }
+
+        @Override
+        public PieceDefinition build() {
+            return new PieceDefinition(this);
+        }
     }
 }
