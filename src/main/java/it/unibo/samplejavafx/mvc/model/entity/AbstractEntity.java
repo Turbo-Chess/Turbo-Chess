@@ -46,17 +46,17 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
         private int gameId;
         private PlayerColor playerColor;
 
-        public Builder<T, X> setEntityDefinition(final T entityDefinition) {
+        public X setEntityDefinition(final T entityDefinition) {
             this.entityDefinition = entityDefinition;
             return self();
         }
 
-        public Builder<T, X> setGameId(final int gameId) {
+        public X setGameId(final int gameId) {
             this.gameId = gameId;
             return self();
         }
 
-        public Builder<T, X> setPlayerColor(PlayerColor playerColor) {
+        public X setPlayerColor(PlayerColor playerColor) {
             this.playerColor = playerColor;
             return self();
         }
