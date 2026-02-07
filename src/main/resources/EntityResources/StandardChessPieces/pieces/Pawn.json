@@ -1,21 +1,29 @@
 {
   "id" : "pawn",
   "name" : "Pawn",
-  "weight" : 3,
+  "weight" : 1,
+  "type" : "PAWN",
   "moveRules" : [ {
     "direction" : {
       "x" : 0,
       "y" : 1
     },
-    "restriction" : "MOVE_AND_EAT",
+    "restriction" : "MOVE_ONLY",
+    "moveStrategy" : "JUMPING"
+  }, {
+    "direction" : {
+      "x" : -1,
+      "y" : 1
+    },
+    "restriction" : "EAT_ONLY",
     "moveStrategy" : "JUMPING"
   }, {
     "direction" : {
       "x" : 1,
       "y" : 1
     },
-    "restriction" : "MOVE_AND_EAT",
-    "moveStrategy" : "SLIDING"
+    "restriction" : "EAT_ONLY",
+    "moveStrategy" : "JUMPING"
   } ],
-  "imagePath" : "/home/giacomo/Documents/pawn.jpg"
+  "imagePath" : ""
 }
