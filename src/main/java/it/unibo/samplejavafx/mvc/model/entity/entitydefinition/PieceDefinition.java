@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -28,7 +27,7 @@ public class PieceDefinition extends AbstractEntityDefinition {
         this.moveRules = List.copyOf(builder.moveRules);
     }
 
-    public static class Builder extends AbstractEntityDefinition.Builder {
+    public static class Builder extends AbstractEntityDefinition.Builder<PieceDefinition.Builder> {
         private int weight;
         private List<MoveRules> moveRules;
 
@@ -40,6 +39,11 @@ public class PieceDefinition extends AbstractEntityDefinition {
 
         public Builder setMoveRules(final List<MoveRules> moveRules) {
             this.moveRules = moveRules;
+            return this;
+        }
+
+        @Override
+        protected PieceDefinition.Builder self() {
             return this;
         }
 

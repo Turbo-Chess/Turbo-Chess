@@ -13,12 +13,17 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
         this.duration = builder.duration;
     }
 
-    public static abstract class Builder extends AbstractEntityDefinition.Builder {
+    public static class Builder extends AbstractEntityDefinition.Builder<PowerUpDefinition.Builder> {
         private int duration;
 
         public Builder setDuration(final int duration) {
            this.duration = duration;
            return this;
+        }
+
+        @Override
+        protected PowerUpDefinition.Builder self() {
+            return this;
         }
 
         public PowerUpDefinition build() {

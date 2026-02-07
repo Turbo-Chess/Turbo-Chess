@@ -1,13 +1,8 @@
 package it.unibo.samplejavafx.mvc.model.entity.entitydefinition;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -30,31 +25,33 @@ public class AbstractEntityDefinition {
     }
 
     @JsonPOJOBuilder
-    public abstract static class Builder {
+    public abstract static class Builder<X extends Builder<X>> {
         private String name;
         private String id;
         private String imagePath;
         private PieceType pieceType;
 
-        public Builder setName(final String name) {
+        public Builder<X> setName(final String name) {
            this.name = name;
-           return this;
+           return self();
         }
 
-        public Builder setId(final String id) {
+        public X setId(final String id) {
             this.id = id;
-            return this;
+            return self();
         }
 
-        public Builder setImagePath(final String imagePath) {
+        public X setImagePath(final String imagePath) {
             this.imagePath = imagePath;
-            return this;
+            return self();
         }
 
-        public Builder setPieceType(final PieceType pieceType) {
+        public X setType(final PieceType pieceType) {
             this.pieceType = pieceType;
-            return this;
+            return self();
         }
+
+        protected abstract X self();
 
         public abstract AbstractEntityDefinition build();
     }
