@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,19 +9,19 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public abstract class AbstractEntity<X extends AbstractEntityDefinition> implements Entity {
-    private final X entityDefinition;
+public abstract class AbstractEntity<T extends AbstractEntityDefinition> implements Entity {
+    private final T entityDefinition;
     private final int gameId;
     private final PlayerColor playerColor;
 
-    AbstractEntity(final X def, final int gameId, final PlayerColor playerColor) {
-        this.entityDefinition = def;
-        this.gameId = gameId;
-        this.playerColor = playerColor;
+    <X extends AbstractEntity.Builder<T, X>> AbstractEntity(final Builder<T, X> builder) {
+        this.entityDefinition = builder.entityDefinition;
+        this.gameId = builder.gameId;
+        this.playerColor = builder.playerColor;
     }
 
     // Package private field to not break encapsulation
-    protected X getEntityDefinition() {
+    protected T getEntityDefinition() {
         return this.entityDefinition;
     };
 
@@ -37,5 +38,31 @@ public abstract class AbstractEntity<X extends AbstractEntityDefinition> impleme
     @Override
     public PieceType getType() {
         return getEntityDefinition().getPieceType();
+    }
+
+    @JsonPOJOBuilder(withPrefix = "set")
+    public static abstract class Builder<T extends AbstractEntityDefinition, X extends Builder<T, X>> {
+        private T entityDefinition;
+        private int gameId;
+        private PlayerColor playerColor;
+
+        public Builder<T, X> setEntityDefinition(final T entityDefinition) {
+            this.entityDefinition = entityDefinition;
+            return self();
+        }
+
+        public Builder<T, X> setGameId(final int gameId) {
+            this.gameId = gameId;
+            return self();
+        }
+
+        public Builder<T, X> setPlayerColor(PlayerColor playerColor) {
+            this.playerColor = playerColor;
+            return self();
+        }
+
+        protected abstract X self();
+
+        protected abstract AbstractEntity<T> build();
     }
 }
