@@ -21,7 +21,7 @@ public interface GameEvent {
      * @return the turn number when this event occurred.
      */
     int getTurn();
-    
+
     /**
      * Generates a descriptive string for the event.
      * Format: "Event | Entity: X | Description"
