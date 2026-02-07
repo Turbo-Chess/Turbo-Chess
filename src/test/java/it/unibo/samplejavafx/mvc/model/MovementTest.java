@@ -41,7 +41,9 @@ class MovementTest {
                 .setPieceType(type)
                 .setMoveRules(moveRules)
                 .build();
-        return new Piece(def, counter++, color, false);
+        final int idVal = counter;
+        counter++;
+        return new Piece(def, idVal, color, false);
     }
 
     @Test

@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.model;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.DespawnEvent;
@@ -28,25 +29,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ReplayTest {
-    private static final String PIECE_ID = "test";
-    private static final String PIECE_NAME = "test-piece";
-    private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
-    private static final Piece TEST_PIECE = new Piece(
-        PIECE_ID, 
-        PIECE_NAME, 
-        0, 
-        IMAGE_PATH, 
-        PlayerColor.WHITE, 
-        1,
-        PieceType.PAWN,
-        List.of(
-            new MoveRulesImpl(
-                new Point2D(0, 1), 
-                MoveRulesImpl.MoveType.MOVE_AND_EAT, 
-                MoveRulesImpl.MoveStrategy.JUMPING
-            )
-        )
-    );
+    private Piece createTestPiece(final int gameId, final PlayerColor color) {
+        final PieceDefinition def = new PieceDefinition.Builder()
+            .setName("test-piece")
+            .setId("test")
+            .setImagePath("/home/giacomo/Documents/pawn.jpg")
+            .setWeight(3)
+            .setPieceType(PieceType.INFERIOR)
+            .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+            .build();
+        return new Piece(def, gameId, color, false);
+    }
+    
 
     @Test
     void testSaveAndLoad() throws IOException {
@@ -57,7 +51,7 @@ class ReplayTest {
         history.addEvent(
             new MoveEvent(
                 1, 
-                TEST_PIECE,
+                createTestPiece(1, PlayerColor.WHITE),
                 new Point2D(0, 0),
                 new Point2D(0, 1)
             )
@@ -67,7 +61,7 @@ class ReplayTest {
         history.addEvent(
             new SpawnEvent(
                 2, 
-                TEST_PIECE, 
+                createTestPiece(1, PlayerColor.WHITE),
                 new Point2D(4, 4)
             )
         );
@@ -76,7 +70,7 @@ class ReplayTest {
         history.addEvent(
             new DespawnEvent(
                 3, 
-                TEST_PIECE,
+                createTestPiece(1, PlayerColor.WHITE),  
                 new Point2D(5, 5)
             )
         );
@@ -113,7 +107,7 @@ class ReplayTest {
         final SpawnEvent se = (SpawnEvent) loaded.getEvents().get(1);
         assertEquals(2, se.getTurn());
         assertTrue(se.entity() instanceof Piece);
-        assertEquals(PIECE_NAME, se.entity().getName());
+        assertEquals("test-piece", se.entity().getName());
     }
 
     @Test
@@ -136,7 +130,7 @@ class ReplayTest {
 
         final GameHistory history = new GameHistory();
         // Move: (0,0) -> (0,1)
-        history.addEvent(new MoveEvent(1, TEST_PIECE, new Point2D(0, 0), new Point2D(0, 1)));
+        history.addEvent(new MoveEvent(1, createTestPiece(1, PlayerColor.WHITE), new Point2D(0, 0), new Point2D(0, 1)));
         
         controller.loadHistory(history);
 
