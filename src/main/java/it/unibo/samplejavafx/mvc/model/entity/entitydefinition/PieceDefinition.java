@@ -22,7 +22,7 @@ public class PieceDefinition extends AbstractEntityDefinition {
     private final List<MoveRules> moveRules;
 
     @JsonCreator
-    public PieceDefinition(final Builder builder) {
+   protected PieceDefinition(final Builder builder) {
         super(builder);
         this.weight = builder.weight;
         this.moveRules = List.copyOf(builder.moveRules);

@@ -28,7 +28,12 @@ class ChessboardTest {
                 .setPieceType(PieceType.INFERIOR)
                 .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
                 .build();
-        return new Piece(def, gameId, color, false);
+        return new Piece.Builder()
+                .setHasMoved(false)
+                .setEntityDefinition(def)
+                .setGameId(gameId)
+                .setPlayerColor(color)
+                .build();
     }
 
     /**

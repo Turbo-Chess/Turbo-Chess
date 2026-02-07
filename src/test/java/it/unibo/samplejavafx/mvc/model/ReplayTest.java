@@ -29,18 +29,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ReplayTest {
-    private Piece createTestPiece(final int gameId, final PlayerColor color) {
-        final PieceDefinition def = new PieceDefinition.Builder()
-            .setName("test-piece")
-            .setId("test")
-            .setImagePath("/home/giacomo/Documents/pawn.jpg")
-            .setWeight(3)
-            .setPieceType(PieceType.INFERIOR)
-            .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
-            .build();
-        return new Piece(def, gameId, color, false);
-    }
-    
+    private static final String PIECE_ID = "test";
+    private static final String PIECE_NAME = "test-piece";
+    private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
+    private static final Piece TEST_PIECE = new Piece.Builder()
+        .setHasMoved(false)
+        .setEntityDefinition(new PieceDefinition.Builder()
+            .setName(PIECE_NAME)
+            .setId(PIECE_ID)
+            .setImagePath(IMAGE_PATH)
+            .setWeight(1)
+            .setPieceType(PieceType.PAWN)
+            .setMoveRules(List.of(
+                new MoveRulesImpl(
+                    new Point2D(0, 1),
+                    MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                    MoveRulesImpl.MoveStrategy.JUMPING
+                )
+            ))
+            .build())
+        .setGameId(0)
+        .setPlayerColor(PlayerColor.WHITE)
+        .build();
 
     @Test
     void testSaveAndLoad() throws IOException {
@@ -51,7 +61,7 @@ class ReplayTest {
         history.addEvent(
             new MoveEvent(
                 1, 
-                createTestPiece(1, PlayerColor.WHITE),
+                TEST_PIECE,
                 new Point2D(0, 0),
                 new Point2D(0, 1)
             )
@@ -61,7 +71,7 @@ class ReplayTest {
         history.addEvent(
             new SpawnEvent(
                 2, 
-                createTestPiece(1, PlayerColor.WHITE),
+                TEST_PIECE,
                 new Point2D(4, 4)
             )
         );
@@ -70,7 +80,7 @@ class ReplayTest {
         history.addEvent(
             new DespawnEvent(
                 3, 
-                createTestPiece(1, PlayerColor.WHITE),  
+                TEST_PIECE,  
                 new Point2D(5, 5)
             )
         );

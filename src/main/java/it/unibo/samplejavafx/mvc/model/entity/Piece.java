@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -16,11 +17,11 @@ import java.util.Optional;
 public class Piece extends AbstractEntity<PieceDefinition> implements Entity, Moveable {
     private final boolean hasMoved;
     @Deprecated
-    private List<Point2D> availableCells = new ArrayList<>();
+    private final List<Point2D> availableCells = new ArrayList<>();
 
-    public Piece(final PieceDefinition def , final int gameId, final PlayerColor playerColor, final boolean hasMoved) {
-        super(def, gameId, playerColor);
-        this.hasMoved = hasMoved;
+     protected Piece(final Builder builder) {
+        super(builder);
+        this.hasMoved = builder.hasMoved;
     }
 
     @Override
@@ -44,6 +45,26 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Entity, Mo
     }
 
     public boolean hasMoved() {
-        return !this.hasMoved;
+        return this.hasMoved;
+    }
+
+    @JsonPOJOBuilder(withPrefix = "set")
+    public static class Builder extends AbstractEntity.Builder<PieceDefinition, Builder> {
+        private boolean hasMoved = false;
+
+        public Builder setHasMoved(final boolean hasMoved) {
+            this.hasMoved = hasMoved;
+            return this;
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
+        }
+
+        @Override
+        public Piece build() {
+            return new Piece(this);
+        }
     }
 }
