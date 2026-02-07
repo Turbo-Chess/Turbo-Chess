@@ -264,7 +264,7 @@ class ReplayControllerImplTest {
      * Stub implementation of ChessBoard for testing.
      * Tracks all setEntity and removeEntity calls.
      */
-    private static class StubChessBoard implements ChessBoard {
+    private static final class StubChessBoard implements ChessBoard {
         private final Map<Point2D, Entity> entities = new HashMap<>();
         private final Map<Point2D, Entity> addedEntities = new HashMap<>();
         private final Map<Point2D, Entity> removedEntities = new HashMap<>();
@@ -311,7 +311,7 @@ class ReplayControllerImplTest {
 
         @Override
         public com.google.common.collect.BiMap<Point2D, Entity> getBoard() {
-            return null; // Not needed for these tests
+            return com.google.common.collect.HashBiMap.create(); // Return empty BiMap instead of null
         }
 
         @Override
