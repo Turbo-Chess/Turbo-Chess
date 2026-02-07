@@ -40,7 +40,7 @@ public interface ReplayController {
     void jumpToEnd();
 
     /**
-     * @return the current turn index (0-based index of the last applied event).
+     * @return the current turn index (0-based index of the next event to apply).
      */
     int getCurrentIndex();
 
