@@ -55,7 +55,7 @@ public final class AdvancedRules {
     }
 
     /*public static boolean secondaryCheck(final ChessBoard cb, final PlayerColor currentColor, final Piece pastAttacker) {
-        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getCells());
+        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
         cells.remove(cb.getPosByEntity(pastAttacker));
         final ChessBoard board = new ChessBoardImpl(cells);
         final Optional<Piece> king = getKing(cb, swapColor(currentColor));
@@ -200,7 +200,7 @@ public final class AdvancedRules {
      * @return an {@code Optional} containing the attacking piece if there is any, returns an empty Optional otherwise.
      */
     private static Optional<Piece> underAttack(final ChessBoard cb, final PlayerColor currentColor, final Point2D target) {
-        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getCells());
+        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
         cells.remove(target);
         final ChessBoard board = new ChessBoardImpl(cells);
         final Set<Optional<Entity>> set = getPiecesOfColor(board, currentColor);
@@ -226,7 +226,7 @@ public final class AdvancedRules {
      */
     public static Set<Optional<Entity>> getPiecesOfColor(final ChessBoard cb, final PlayerColor currentColor) {
         final Set<Optional<Entity>> container = new HashSet<>();
-        final Set<Point2D> set = cb.getCells().keySet().stream()
+        final Set<Point2D> set = cb.getBoard().keySet().stream()
                 .filter(pos -> !cb.isFree(pos))
                 .filter(pos -> {
                     final Optional<Entity> e = cb.getEntity(pos);
@@ -248,7 +248,7 @@ public final class AdvancedRules {
      * @return an {@code Optional} containing the king of the given color, an empty otherwise.
      */
     public static Optional<Piece> getKing(final ChessBoard cb, final PlayerColor color) {
-        return cb.getCells().values().stream()
+        return cb.getBoard().values().stream()
                 .filter(e -> e.asMoveable().isPresent())
                 .map(e -> (Piece) e)
                 .filter(p -> p.getPlayerColor() == color && p.getType() == PieceType.KING)

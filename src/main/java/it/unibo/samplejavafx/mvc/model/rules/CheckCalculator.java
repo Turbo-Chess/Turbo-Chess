@@ -158,7 +158,7 @@ public final class CheckCalculator {
      */
     private static boolean isMoveSafe(final ChessBoard cb, final Piece piece, final Point2D from,
                                     final Point2D to, final PlayerColor kingColor) {
-        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getCells());
+        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
 
         // Perform move
         cells.remove(from);

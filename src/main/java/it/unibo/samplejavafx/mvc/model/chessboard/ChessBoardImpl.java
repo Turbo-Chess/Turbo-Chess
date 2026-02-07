@@ -152,7 +152,7 @@ public class ChessBoardImpl implements ChessBoard {
      * @return placeholder.
      */
     @Override
-    public BiMap<Point2D, Entity> getCells() {
+    public BiMap<Point2D, Entity> getBoard() {
         return ImmutableBiMap.copyOf(this.cells);
     }
 }
