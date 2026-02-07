@@ -15,4 +15,9 @@ public record DespawnEvent(int turn, Entity entity, Point2D position) implements
     public int getTurn() {
         return turn;
     }
+
+    @Override
+    public String getEventDescription() {
+        return String.format("Despawn | %s | %s", entity.getName(), position);
+    }
 }
