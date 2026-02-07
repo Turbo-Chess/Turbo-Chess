@@ -2,8 +2,8 @@
   "name" : "King",
   "id" : "king",
   "imagePath" : "",
-  "weight" : 100,
   "pieceType" : "KING",
+  "weight" : 100,
   "moveRules" : [ {
     "direction" : {
       "x" : 0,

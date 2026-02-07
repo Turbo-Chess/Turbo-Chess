@@ -33,7 +33,14 @@ class MovementTest {
     }
 
     private Piece createPiece(final String id, final String name, final PlayerColor color, final int weight, final PieceType type, final List<MoveRules> moveRules) {
-        final PieceDefinition def = new PieceDefinition(name, id, IMAGE_PATH, weight, type, moveRules);
+        final PieceDefinition def = new PieceDefinition.Builder()
+                .setName(name)
+                .setId(id)
+                .setImagePath(IMAGE_PATH)
+                .setWeight(weight)
+                .setPieceType(type)
+                .setMoveRules(moveRules)
+                .build();
         return new Piece(def, counter++, color, false);
     }
 

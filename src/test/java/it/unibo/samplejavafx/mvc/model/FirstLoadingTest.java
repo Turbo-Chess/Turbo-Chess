@@ -1,8 +1,6 @@
 package it.unibo.samplejavafx.mvc.model;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
-import it.unibo.samplejavafx.mvc.model.entity.Entity;
-import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
@@ -21,32 +19,31 @@ class FirstLoadingTest {
 
     @Test
     void testFirstLoadingPiece() {
-
-        final PieceDefinition pawn = new PieceDefinition(
-                "Pawn",
-                "pawn",
-                "",
-                1,
-                PieceType.PAWN,
-                List.of(
+        final PieceDefinition pawn = new PieceDefinition.Builder()
+                .setName("Pawn")
+                .setId("pawn")
+                .setImagePath("")
+                .setWeight(1)
+                .setPieceType(PieceType.PAWN)
+                .setMoveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING)
-                )
-        );
-        final PieceDefinition rook = new PieceDefinition(
-                "Rook",
-                "rook",
-                "",
-                5,
-                PieceType.TOWER,
-                List.of(
+                ))
+                .build();
+        final PieceDefinition rook = new PieceDefinition.Builder()
+                .setName("Rook")
+                .setId("rook")
+                .setImagePath("")
+                .setWeight(5)
+                .setPieceType(PieceType.TOWER)
+                .setMoveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
-                )
-        );
+                ))
+                .build();
 
         final var loaderController = new LoaderControllerImpl(List.of(INTERNAL_ENTITIES_PATH));
         loaderController.load();

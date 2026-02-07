@@ -2,8 +2,8 @@
   "name" : "Pawn",
   "id" : "pawn",
   "imagePath" : "",
-  "weight" : 1,
   "pieceType" : "PAWN",
+  "weight" : 1,
   "moveRules" : [ {
     "direction" : {
       "x" : 0,

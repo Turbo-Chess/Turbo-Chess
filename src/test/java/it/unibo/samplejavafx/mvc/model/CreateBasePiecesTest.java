@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.Test;
@@ -21,30 +20,30 @@ class CreateBasePiecesTest {
 
     @Test
     void createPawn() throws IOException {
-        final PieceDefinition pawn = new PieceDefinition(
-                "Pawn",
-                "pawn",
-                "",
-                1,
-                PieceType.PAWN,
-                List.of(
+        final PieceDefinition pawn = new PieceDefinition.Builder()
+                .setName("Pawn")
+                .setId("pawn")
+                .setImagePath("")
+                .setWeight(1)
+                .setPieceType(PieceType.PAWN)
+                .setMoveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING)
-                )
-        );
+                ))
+                .build();
         mapper.writeValue(new File(PIECES_PATH + "Pawn.json"), pawn);
     }
 
     @Test
     void createKnight() throws IOException {
-        final PieceDefinition knight = new PieceDefinition(
-                "Knight",
-                "knight",
-                "",
-                3,
-                PieceType.INFERIOR,
-                List.of(
+        final PieceDefinition knight = new PieceDefinition.Builder()
+                .setName("Knight")
+                .setId("knight")
+                .setImagePath("")
+                .setWeight(3)
+                .setPieceType(PieceType.INFERIOR)
+                .setMoveRules(List.of(
                         new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
@@ -53,56 +52,56 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(1, -2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, 2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, -2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
-                )
-        );
+                ))
+                .build();
         mapper.writeValue(new File(PIECES_PATH + "Knight.json"), knight);
     }
 
     @Test
     void createBishop() throws IOException {
-        final PieceDefinition bishop = new PieceDefinition(
-                "Bishop",
-                "bishop",
-                "",
-                3,
-                PieceType.INFERIOR,
-                List.of(
+        final PieceDefinition bishop = new PieceDefinition.Builder()
+                .setName("Bishop")
+                .setId("bishop")
+                .setImagePath("")
+                .setWeight(3)
+                .setPieceType(PieceType.INFERIOR)
+                .setMoveRules(List.of(
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
-                )
-        );
+                ))
+                .build();
         mapper.writeValue(new File(PIECES_PATH + "Bishop.json"), bishop);
     }
 
     @Test
     void createRook() throws IOException {
-        final PieceDefinition rook = new PieceDefinition(
-                "Rook",
-                "rook",
-                "",
-                5,
-                PieceType.TOWER,
-                List.of(
+        final PieceDefinition rook = new PieceDefinition.Builder()
+                .setName("Rook")
+                .setId("rook")
+                .setImagePath("")
+                .setWeight(5)
+                .setPieceType(PieceType.TOWER)
+                .setMoveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
-                )
-        );
+                ))
+                .build();
         mapper.writeValue(new File(PIECES_PATH + "Rook.json"), rook);
     }
 
     @Test
     void createQueen() throws IOException {
-        final PieceDefinition queen = new PieceDefinition(
-                "Queen",
-                "queen",
-                "",
-                9,
-                PieceType.SUPERIOR,
-                List.of(
+        final PieceDefinition queen = new PieceDefinition.Builder()
+                .setName("Queen")
+                .setId("queen")
+                .setImagePath("")
+                .setWeight(9)
+                .setPieceType(PieceType.SUPERIOR)
+                .setMoveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
@@ -111,20 +110,20 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
-                )
-        );
+                ))
+                .build();
         mapper.writeValue(new File(PIECES_PATH + "Queen.json"), queen);
     }
 
     @Test
     void createKing() throws IOException {
-        final PieceDefinition king = new PieceDefinition(
-                "King",
-                "king",
-                "",
-                100,
-                PieceType.KING,
-                List.of(
+        final PieceDefinition king = new PieceDefinition.Builder()
+                .setName("King")
+                .setId("king")
+                .setImagePath("")
+                .setWeight(100)
+                .setPieceType(PieceType.KING)
+                .setMoveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
@@ -133,8 +132,8 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
-                )
-        );
+                ))
+                .build();
         mapper.writeValue(new File(PIECES_PATH + "King.json"), king);
     }
 

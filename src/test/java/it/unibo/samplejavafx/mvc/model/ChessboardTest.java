@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ChessboardTest {
 
     private Piece createTestPiece(final int gameId, final PlayerColor color) {
-        final PieceDefinition def = new PieceDefinition(
-                "test-piece",
-                "test",
-                "/home/giacomo/Documents/pawn.jpg",
-                3,
-                PieceType.INFERIOR,
-                List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING))
-        );
+        final PieceDefinition def = new PieceDefinition.Builder()
+                .setName("test-piece")
+                .setId("test")
+                .setImagePath("/home/giacomo/Documents/pawn.jpg")
+                .setWeight(3)
+                .setPieceType(PieceType.INFERIOR)
+                .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .build();
         return new Piece(def, gameId, color, false);
     }
 

@@ -2,8 +2,8 @@
   "name" : "Queen",
   "id" : "queen",
   "imagePath" : "",
-  "weight" : 9,
   "pieceType" : "SUPERIOR",
+  "weight" : 9,
   "moveRules" : [ {
     "direction" : {
       "x" : 0,

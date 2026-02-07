@@ -2,8 +2,8 @@
   "name" : "Rook",
   "id" : "rook",
   "imagePath" : "",
-  "weight" : 5,
   "pieceType" : "TOWER",
+  "weight" : 5,
   "moveRules" : [ {
     "direction" : {
       "x" : 0,
