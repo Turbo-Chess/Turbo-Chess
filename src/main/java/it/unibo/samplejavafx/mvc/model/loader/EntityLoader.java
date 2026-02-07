@@ -1,7 +1,5 @@
 package it.unibo.samplejavafx.mvc.model.loader;
 
-import it.unibo.samplejavafx.mvc.model.entity.AbstractEntity;
-import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 
 import java.nio.file.Path;

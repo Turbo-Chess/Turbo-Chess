@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,10 @@ public class EntityLoaderImpl implements EntityLoader {
      * {@inheritDoc}
      */
     @Override
-    public List<AbstractEntityDefinition> loadEntityFile(final Path filesPath, final Class<? extends AbstractEntityDefinition> classToLoad) {
+    public List<AbstractEntityDefinition> loadEntityFile(
+            final Path filesPath,
+            final Class<? extends AbstractEntityDefinition> classToLoad
+    ) {
         try (Stream<Path> paths = Files.walk(filesPath)) {
            return paths.filter(Files::isRegularFile)
                    .filter(file -> file.toString().endsWith(".json"))
@@ -37,7 +39,10 @@ public class EntityLoaderImpl implements EntityLoader {
 
     }
 
-    private AbstractEntityDefinition parseEntityFile(final Path filePath, final Class<? extends AbstractEntityDefinition> classToLoad) {
+    private AbstractEntityDefinition parseEntityFile(
+            final Path filePath,
+            final Class<? extends AbstractEntityDefinition> classToLoad
+    ) {
         try {
             final ObjectMapper mapper = new ObjectMapper();
             //return mapper.readerWithView(JsonViews.FirstLoading.class).readValue(new File(filePath.toString()), classToLoad);

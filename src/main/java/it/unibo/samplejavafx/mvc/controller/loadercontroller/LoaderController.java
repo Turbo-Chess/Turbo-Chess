@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
-import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 
 import java.util.Map;
