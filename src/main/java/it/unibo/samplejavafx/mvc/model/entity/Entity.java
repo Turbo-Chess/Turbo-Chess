@@ -29,6 +29,13 @@ public interface Entity {
     String getId();
 
     /**
+     * Returns the name of the entity.
+     *
+     * @return the name.
+     */
+    String getName();
+
+    /**
      * placeholder.
      *
      * @return placeholder.

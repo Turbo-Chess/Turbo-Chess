@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -15,10 +16,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = SpawnEvent.class, name = "spawn"),
   @JsonSubTypes.Type(value = DespawnEvent.class, name = "despawn")
 })
-@FunctionalInterface
 public interface GameEvent {
     /**
      * @return the turn number when this event occurred.
      */
     int getTurn();
+
+    /**
+     * Generates a descriptive string for the event.
+     * Format: "Event | Entity: X | Description"
+     *
+     * @return the formatted event description string.
+     */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    String getEventDescription();
 }
