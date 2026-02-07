@@ -21,6 +21,10 @@ public final class ReplayControllerImpl implements ReplayController {
     /**
      * @param board the board to control during playback.
      */
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2", 
+        justification = "The controller needs to modify the provided board state directly."
+    )
     public ReplayControllerImpl(final ChessBoard board) {
         this.board = board;
         this.history = new GameHistory();
