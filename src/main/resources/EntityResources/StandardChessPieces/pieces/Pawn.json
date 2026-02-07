@@ -1,8 +1,9 @@
 {
-  "id" : "pawn",
   "name" : "Pawn",
+  "id" : "pawn",
+  "imagePath" : "",
   "weight" : 1,
-  "type" : "PAWN",
+  "pieceType" : "PAWN",
   "moveRules" : [ {
     "direction" : {
       "x" : 0,
@@ -24,6 +25,5 @@
     },
     "restriction" : "EAT_ONLY",
     "moveStrategy" : "JUMPING"
-  } ],
-  "imagePath" : ""
+  } ]
 }

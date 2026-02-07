@@ -1,8 +1,9 @@
 {
-  "id" : "king",
   "name" : "King",
+  "id" : "king",
+  "imagePath" : "",
   "weight" : 100,
-  "type" : "KING",
+  "pieceType" : "KING",
   "moveRules" : [ {
     "direction" : {
       "x" : 0,
@@ -59,6 +60,5 @@
     },
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "JUMPING"
-  } ],
-  "imagePath" : ""
+  } ]
 }

@@ -2,10 +2,9 @@ package it.unibo.samplejavafx.mvc.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import it.unibo.samplejavafx.mvc.model.entity.Piece;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.loader.JsonViews;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.Test;
@@ -22,12 +21,10 @@ class CreateBasePiecesTest {
 
     @Test
     void createPawn() throws IOException {
-        final Piece pawn = new Piece(
-                "pawn",
+        final PieceDefinition pawn = new PieceDefinition(
                 "Pawn",
-                0,
+                "pawn",
                 "",
-                PlayerColor.NONE,
                 1,
                 PieceType.PAWN,
                 List.of(
@@ -36,17 +33,15 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Pawn.json"), pawn);
+        mapper.writeValue(new File(PIECES_PATH + "Pawn.json"), pawn);
     }
 
     @Test
     void createKnight() throws IOException {
-        final Piece knight = new Piece(
-                "knight",
+        final PieceDefinition knight = new PieceDefinition(
                 "Knight",
-                0,
+                "knight",
                 "",
-                PlayerColor.NONE,
                 3,
                 PieceType.INFERIOR,
                 List.of(
@@ -60,17 +55,15 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(-1, -2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Knight.json"), knight);
+        mapper.writeValue(new File(PIECES_PATH + "Knight.json"), knight);
     }
 
     @Test
     void createBishop() throws IOException {
-        final Piece bishop = new Piece(
-                "bishop",
+        final PieceDefinition bishop = new PieceDefinition(
                 "Bishop",
-                0,
+                "bishop",
                 "",
-                PlayerColor.NONE,
                 3,
                 PieceType.INFERIOR,
                 List.of(
@@ -80,17 +73,15 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Bishop.json"), bishop);
+        mapper.writeValue(new File(PIECES_PATH + "Bishop.json"), bishop);
     }
 
     @Test
     void createRook() throws IOException {
-        final Piece rook = new Piece(
-                "rook",
+        final PieceDefinition rook = new PieceDefinition(
                 "Rook",
-                0,
+                "rook",
                 "",
-                PlayerColor.NONE,
                 5,
                 PieceType.TOWER,
                 List.of(
@@ -100,17 +91,15 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Rook.json"), rook);
+        mapper.writeValue(new File(PIECES_PATH + "Rook.json"), rook);
     }
 
     @Test
     void createQueen() throws IOException {
-        final Piece queen = new Piece(
-                "queen",
+        final PieceDefinition queen = new PieceDefinition(
                 "Queen",
-                0,
+                "queen",
                 "",
-                PlayerColor.NONE,
                 9,
                 PieceType.SUPERIOR,
                 List.of(
@@ -124,17 +113,15 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/Queen.json"), queen);
+        mapper.writeValue(new File(PIECES_PATH + "Queen.json"), queen);
     }
 
     @Test
     void createKing() throws IOException {
-        final Piece king = new Piece(
-                "king",
+        final PieceDefinition king = new PieceDefinition(
                 "King",
-                0,
+                "king",
                 "",
-                PlayerColor.NONE,
                 100,
                 PieceType.KING,
                 List.of(
@@ -148,13 +135,12 @@ class CreateBasePiecesTest {
                         new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
                 )
         );
-        mapper.writerWithView(JsonViews.FirstLoading.class).writeValue(new File("src/main/resources/EntityResources/StandardChessPieces/pieces/King.json"), king);
+        mapper.writeValue(new File(PIECES_PATH + "King.json"), king);
     }
 
     @Test
     void testLoadPawnFromJson() throws IOException {
-        final Piece pawn = mapper.readerWithView(JsonViews.FirstLoading.class)
-                .readValue(new File(PIECES_PATH + "Pawn.json"), Piece.class);
+        final PieceDefinition pawn = mapper.readValue(new File(PIECES_PATH + "Pawn.json"), PieceDefinition.class);
         assertNotNull(pawn);
         assertEquals("pawn", pawn.getId());
         assertEquals("Pawn", pawn.getName());
@@ -164,8 +150,7 @@ class CreateBasePiecesTest {
 
     @Test
     void testLoadKnightFromJson() throws IOException {
-        final Piece knight = mapper.readerWithView(JsonViews.FirstLoading.class)
-                .readValue(new File(PIECES_PATH + "Knight.json"), Piece.class);
+        final PieceDefinition knight = mapper.readValue(new File(PIECES_PATH + "Knight.json"), PieceDefinition.class);
         assertNotNull(knight);
         assertEquals("knight", knight.getId());
         assertEquals("Knight", knight.getName());
@@ -175,8 +160,7 @@ class CreateBasePiecesTest {
 
     @Test
     void testLoadBishopFromJson() throws IOException {
-        final Piece bishop = mapper.readerWithView(JsonViews.FirstLoading.class)
-                .readValue(new File(PIECES_PATH + "Bishop.json"), Piece.class);
+        final PieceDefinition bishop = mapper.readValue(new File(PIECES_PATH + "Bishop.json"), PieceDefinition.class);
         assertNotNull(bishop);
         assertEquals("bishop", bishop.getId());
         assertEquals("Bishop", bishop.getName());
@@ -186,8 +170,7 @@ class CreateBasePiecesTest {
 
     @Test
     void testLoadRookFromJson() throws IOException {
-        final Piece rook = mapper.readerWithView(JsonViews.FirstLoading.class)
-                .readValue(new File(PIECES_PATH + "Rook.json"), Piece.class);
+        final PieceDefinition rook = mapper.readValue(new File(PIECES_PATH + "Rook.json"), PieceDefinition.class);
         assertNotNull(rook);
         assertEquals("rook", rook.getId());
         assertEquals("Rook", rook.getName());
@@ -197,8 +180,7 @@ class CreateBasePiecesTest {
 
     @Test
     void testLoadQueenFromJson() throws IOException {
-        final Piece queen = mapper.readerWithView(JsonViews.FirstLoading.class)
-                .readValue(new File(PIECES_PATH + "Queen.json"), Piece.class);
+        final PieceDefinition queen = mapper.readValue(new File(PIECES_PATH + "Queen.json"), PieceDefinition.class);
         assertNotNull(queen);
         assertEquals("queen", queen.getId());
         assertEquals("Queen", queen.getName());
@@ -208,8 +190,7 @@ class CreateBasePiecesTest {
 
     @Test
     void testLoadKingFromJson() throws IOException {
-        final Piece king = mapper.readerWithView(JsonViews.FirstLoading.class)
-                .readValue(new File(PIECES_PATH + "King.json"), Piece.class);
+        final PieceDefinition king = mapper.readValue(new File(PIECES_PATH + "King.json"), PieceDefinition.class);
         assertNotNull(king);
         assertEquals("king", king.getId());
         assertEquals("King", king.getName());

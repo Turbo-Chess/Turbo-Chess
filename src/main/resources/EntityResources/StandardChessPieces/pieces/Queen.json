@@ -1,8 +1,9 @@
 {
-  "id" : "queen",
   "name" : "Queen",
+  "id" : "queen",
+  "imagePath" : "",
   "weight" : 9,
-  "type" : "SUPERIOR",
+  "pieceType" : "SUPERIOR",
   "moveRules" : [ {
     "direction" : {
       "x" : 0,
@@ -59,6 +60,5 @@
     },
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "SLIDING"
-  } ],
-  "imagePath" : ""
+  } ]
 }

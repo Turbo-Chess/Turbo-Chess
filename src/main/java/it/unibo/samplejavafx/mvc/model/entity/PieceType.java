@@ -8,5 +8,6 @@ public enum PieceType {
     INFERIOR,
     SUPERIOR,
     TOWER,
-    KING
+    KING,
+    POWERUP
 }

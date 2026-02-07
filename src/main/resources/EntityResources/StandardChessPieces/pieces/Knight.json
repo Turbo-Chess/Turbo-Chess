@@ -1,8 +1,9 @@
 {
-  "id" : "knight",
   "name" : "Knight",
+  "id" : "knight",
+  "imagePath" : "",
   "weight" : 3,
-  "type" : "INFERIOR",
+  "pieceType" : "INFERIOR",
   "moveRules" : [ {
     "direction" : {
       "x" : 2,
@@ -59,6 +60,5 @@
     },
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "JUMPING"
-  } ],
-  "imagePath" : ""
+  } ]
 }

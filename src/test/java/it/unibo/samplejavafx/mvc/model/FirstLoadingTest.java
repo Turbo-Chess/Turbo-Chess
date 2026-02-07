@@ -4,7 +4,8 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImp
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.Test;
@@ -21,12 +22,10 @@ class FirstLoadingTest {
     @Test
     void testFirstLoadingPiece() {
 
-        final Piece pawn = new Piece(
-                "pawn",
+        final PieceDefinition pawn = new PieceDefinition(
                 "Pawn",
-                0,
+                "pawn",
                 "",
-                PlayerColor.NONE,
                 1,
                 PieceType.PAWN,
                 List.of(
@@ -35,12 +34,10 @@ class FirstLoadingTest {
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING)
                 )
         );
-        final Piece rook = new Piece(
-                "rook",
+        final PieceDefinition rook = new PieceDefinition(
                 "Rook",
-                0,
+                "rook",
                 "",
-                PlayerColor.NONE,
                 5,
                 PieceType.TOWER,
                 List.of(
@@ -53,7 +50,7 @@ class FirstLoadingTest {
 
         final var loaderController = new LoaderControllerImpl(List.of(INTERNAL_ENTITIES_PATH));
         loaderController.load();
-        final Map<String, Entity> pieces = loaderController.getEntityCache().values().stream()
+        final Map<String, AbstractEntityDefinition> pieces = loaderController.getEntityCache().values().stream()
                 .flatMap(entry -> entry.entrySet().stream())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,

@@ -1,8 +1,9 @@
 {
-  "id" : "bishop",
   "name" : "Bishop",
+  "id" : "bishop",
+  "imagePath" : "",
   "weight" : 3,
-  "type" : "INFERIOR",
+  "pieceType" : "INFERIOR",
   "moveRules" : [ {
     "direction" : {
       "x" : 1,
@@ -31,6 +32,5 @@
     },
     "restriction" : "MOVE_AND_EAT",
     "moveStrategy" : "SLIDING"
-  } ],
-  "imagePath" : ""
+  } ]
 }

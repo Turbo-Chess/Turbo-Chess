@@ -5,7 +5,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.loader.JsonViews;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,18 +42,8 @@ class ChessPieceMovementTest {
 
     private Piece loadPieceFromJson(final String filename, final PlayerColor color) throws IOException {
         gameIdCounter++;
-       final Piece piece = mapper.readerWithView(JsonViews.FirstLoading.class)
-                .readValue(new File(PIECES_PATH + filename), Piece.class);
-        return new Piece(
-                piece.getId(),
-                piece.getName(),
-                gameIdCounter,
-                piece.getImagePath(),
-                color,
-                piece.getWeight(),
-                piece.getType(),
-                piece.getMoveRules()
-        );
+        final PieceDefinition def = mapper.readValue(new File(PIECES_PATH + filename), PieceDefinition.class);
+        return new Piece(def, gameIdCounter, color, false);
     }
 
     @Test
