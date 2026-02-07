@@ -53,6 +53,9 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.12")
     implementation("org.slf4j:slf4j-api:2.0.7")
     
+    // JSON serialization
+    implementation("com.google.code.gson:gson:2.10.1")
+    
     // The BOM (Bill of Materials) synchronizes all the versions of Junit coherently.
     testImplementation(platform("org.junit:junit-bom:6.0.1"))
     // The annotations, assertions and other elements we want to have access when compiling our tests.
@@ -73,6 +76,13 @@ dependencies {
 tasks.withType<Test> {
     // Enables JUnit 5 Jupiter module
     useJUnitPlatform()
+    
+    // Add JVM arguments to open Java modules for Gson reflection access
+    jvmArgs(
+        "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+        "--add-opens", "java.base/java.util=ALL-UNNAMED",
+        "--add-opens", "java.base/java.nio.file=ALL-UNNAMED"
+    )
 }
 
 val main: String by project

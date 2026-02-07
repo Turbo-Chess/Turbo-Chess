@@ -3,18 +3,26 @@ skinparam classAttributeIconSize 0
 hide empty fields
 hide empty methods
 
-interface chessBoard {
-    getEntity() : Entity
+interface ChessBoard {
+    isFree(pos : Point2D) : boolean
+    setEntity(pos : Point2D, newEntity : Entity) : void
+    getEntity(pos : Point2D) : Optional<Entity>
+    checkBounds(pos : Point2D) : boolean
+    getBoard() : Map<Point2D, Optional<Entity>>
 }
 
-class chessBoardImpl {
+class ChessBoardImpl {
     - {static} BOARD_HEIGHT : int
     - {static} BOARD_LENGTH : int
     - cells : List<Cell>
 
-    + getEntity() : Entity
+    + isFree(pos : Point2D) : boolean
+    + setEntity(pos : Point2D, newEntity : Entity) : void
+    + getEntity(pos : Point2D) : Optional<Entity>
+    + checkBounds(pos : Point2D) : boolean
+    + getBoard() : Map<Point2D, Optional<Entity>>
 }
 
-chessBoard <|.. chessBoardImpl
+ChessBoard <|.. ChessBoardImpl
 
 @enduml

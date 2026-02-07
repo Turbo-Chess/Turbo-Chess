@@ -47,4 +47,9 @@ public record Point2D(int x, int y) {
     public Point2D invertY() {
         return new Point2D(this.x(), -this.y());
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }
