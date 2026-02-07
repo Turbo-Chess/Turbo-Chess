@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model;
 
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
+import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -24,13 +25,14 @@ class ReplayTest {
     private static final String PIECE_ID = "test";
     private static final String PIECE_NAME = "test-piece";
     private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
-    private static final Piece testPiece = new Piece(
+    private static final Piece TEST_PIECE = new Piece(
         PIECE_ID, 
         PIECE_NAME, 
         0, 
         IMAGE_PATH, 
         PlayerColor.WHITE, 
         1,
+        PieceType.PAWN,
         List.of(
             new MoveRulesImpl(
                 new Point2D(0, 1), 
@@ -49,7 +51,7 @@ class ReplayTest {
         history.addEvent(
             new MoveEvent(
                 1, 
-                testPiece,
+                TEST_PIECE,
                 new Point2D(0, 0),
                 new Point2D(0, 1)
             )
@@ -59,7 +61,7 @@ class ReplayTest {
         history.addEvent(
             new SpawnEvent(
                 2, 
-                testPiece, 
+                TEST_PIECE, 
                 new Point2D(4, 4)
             )
         );
@@ -68,6 +70,7 @@ class ReplayTest {
         history.addEvent(
             new DespawnEvent(
                 3, 
+                TEST_PIECE,
                 new Point2D(5, 5)
             )
         );
@@ -86,7 +89,6 @@ class ReplayTest {
 
         assertTrue(saved);
         assertTrue(file.exists());
-        System.out.println("Replay saved to: " + file.getAbsolutePath());
 
         final GameHistory loaded = manager.loadGame(file.toPath());
 
