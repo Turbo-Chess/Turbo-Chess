@@ -24,7 +24,7 @@ public class AbstractEntityDefinition {
         this.pieceType = builder.pieceType;
     }
 
-    @JsonPOJOBuilder
+    @JsonPOJOBuilder(withPrefix = "set")
     public abstract static class Builder<X extends Builder<X>> {
         private String name;
         private String id;
@@ -46,7 +46,7 @@ public class AbstractEntityDefinition {
             return self();
         }
 
-        public X setType(final PieceType pieceType) {
+        public X setPieceType(final PieceType pieceType) {
             this.pieceType = pieceType;
             return self();
         }

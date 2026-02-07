@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.model.entity.entitydefinition;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import lombok.EqualsAndHashCode;
@@ -27,11 +28,12 @@ public class PieceDefinition extends AbstractEntityDefinition {
         this.moveRules = List.copyOf(builder.moveRules);
     }
 
+    @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder extends AbstractEntityDefinition.Builder<PieceDefinition.Builder> {
         private int weight;
+        @JsonDeserialize(contentAs = MoveRulesImpl.class)
         private List<MoveRules> moveRules;
 
-        @JsonProperty("weight")
         public Builder setWeight(final int weight) {
             this.weight = weight;
             return this;

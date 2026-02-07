@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity.entitydefinition;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -13,6 +14,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
         this.duration = builder.duration;
     }
 
+    @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder extends AbstractEntityDefinition.Builder<PowerUpDefinition.Builder> {
         private int duration;
 
