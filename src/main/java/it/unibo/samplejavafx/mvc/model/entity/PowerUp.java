@@ -28,7 +28,7 @@ public class PowerUp extends AbstractEntity {
      * Applies the effect on the board.
      */
     public void applyEffect() {
-        // TODO: implement method
+        throw new UnsupportedOperationException("PowerUp.applyEffect()");
     }
 
     /**
