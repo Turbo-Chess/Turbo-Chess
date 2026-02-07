@@ -41,7 +41,12 @@ class MovementTest {
                 .setPieceType(type)
                 .setMoveRules(moveRules)
                 .build();
-        return new Piece(def, counter++, color, false);
+        return new Piece.Builder()
+            .setHasMoved(false)
+            .setEntityDefinition(def)
+            .setGameId(counter++)
+            .setPlayerColor(color)
+            .build();
     }
 
     @Test

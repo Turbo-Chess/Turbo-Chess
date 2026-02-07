@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.model;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.DespawnEvent;
@@ -31,22 +32,25 @@ class ReplayTest {
     private static final String PIECE_ID = "test";
     private static final String PIECE_NAME = "test-piece";
     private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
-    private static final Piece TEST_PIECE = new Piece(
-        PIECE_ID, 
-        PIECE_NAME, 
-        0, 
-        IMAGE_PATH, 
-        PlayerColor.WHITE, 
-        1,
-        PieceType.PAWN,
-        List.of(
-            new MoveRulesImpl(
-                new Point2D(0, 1), 
-                MoveRulesImpl.MoveType.MOVE_AND_EAT, 
-                MoveRulesImpl.MoveStrategy.JUMPING
-            )
-        )
-    );
+    private static final Piece TEST_PIECE = new Piece.Builder()
+        .setHasMoved(false)
+        .setEntityDefinition(new PieceDefinition.Builder()
+            .setName(PIECE_NAME)
+            .setId(PIECE_ID)
+            .setImagePath(IMAGE_PATH)
+            .setWeight(1)
+            .setPieceType(PieceType.PAWN)
+            .setMoveRules(List.of(
+                new MoveRulesImpl(
+                    new Point2D(0, 1),
+                    MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                    MoveRulesImpl.MoveStrategy.JUMPING
+                )
+            ))
+            .build())
+        .setGameId(0)
+        .setPlayerColor(PlayerColor.WHITE)
+        .build();
 
     @Test
     void testSaveAndLoad() throws IOException {

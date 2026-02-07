@@ -43,7 +43,12 @@ class ChessPieceMovementTest {
     private Piece loadPieceFromJson(final String filename, final PlayerColor color) throws IOException {
         gameIdCounter++;
         final PieceDefinition def = mapper.readValue(new File(PIECES_PATH + filename), PieceDefinition.class);
-        return new Piece(def, gameIdCounter, color, false);
+        return new Piece.Builder()
+            .setHasMoved(false)
+            .setEntityDefinition(def)
+            .setGameId(gameIdCounter)
+            .setPlayerColor(color)
+            .build();
     }
 
     @Test
