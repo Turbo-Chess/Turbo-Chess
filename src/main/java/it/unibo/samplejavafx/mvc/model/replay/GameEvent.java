@@ -24,7 +24,8 @@ public interface GameEvent {
 
     /**
      * Generates a descriptive string for the event.
-     * Format: "Event | Entity: X | Description"
+     * Format: "EventType | EntityName | Details"
+     * Examples: "Move | Pawn | (0,0)->(0,1)", "Spawn | Knight | (4,4)", "Despawn | Rook | (5,5)"
      *
      * @return the formatted event description string.
      */
