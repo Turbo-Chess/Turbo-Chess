@@ -16,7 +16,7 @@ import java.nio.file.Path;
  * Manages saving and loading of game replays.
  */
 public class ReplayManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReplayManager.class);  
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReplayManager.class);
     private final ObjectMapper mapper;
 
     /**
@@ -32,13 +32,14 @@ public class ReplayManager {
      *
      * @param history the history to save.
      * @param path the destination file path.
+     * @return true if successful, false otherwise.
      */
     public boolean saveGame(final GameHistory history, final Path path) {
         try (OutputStream os = Files.newOutputStream(path)) {
             mapper.writeValue(os, history);
             return true;
         } catch (final IOException e) {
-            LOGGER.error("Error saving game history to file: {}", path, e); 
+            LOGGER.error("Error saving game history to file: {}", path, e);
             return false;
         }
     }
