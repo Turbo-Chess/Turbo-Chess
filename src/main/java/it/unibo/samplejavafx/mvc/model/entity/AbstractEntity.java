@@ -14,7 +14,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
     private final int gameId;
     private final PlayerColor playerColor;
 
-    <X extends AbstractEntity.Builder<T, X>> AbstractEntity(final Builder<T, X> builder) {
+    protected <X extends AbstractEntity.Builder<T, X>> AbstractEntity(final Builder<T, X> builder) {
         this.entityDefinition = builder.entityDefinition;
         this.gameId = builder.gameId;
         this.playerColor = builder.playerColor;

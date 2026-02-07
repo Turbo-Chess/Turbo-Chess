@@ -17,7 +17,7 @@ public class AbstractEntityDefinition {
     private final String imagePath;
     private final PieceType pieceType;
 
-    public <T extends Builder<T>> AbstractEntityDefinition (final Builder<T> builder) {
+    protected <T extends Builder<T>> AbstractEntityDefinition (final Builder<T> builder) {
         this.name = builder.name;
         this.id = builder.id;
         this.imagePath = builder.imagePath;

@@ -19,7 +19,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Entity, Mo
     @Deprecated
     private final List<Point2D> availableCells = new ArrayList<>();
 
-     public Piece(final Builder builder) {
+     protected Piece(final Builder builder) {
         super(builder);
         this.hasMoved = builder.hasMoved;
     }
