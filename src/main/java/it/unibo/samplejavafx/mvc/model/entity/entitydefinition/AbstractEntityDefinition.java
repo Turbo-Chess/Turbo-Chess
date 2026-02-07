@@ -17,7 +17,7 @@ public class AbstractEntityDefinition {
     private final String imagePath;
     private final PieceType pieceType;
 
-    public AbstractEntityDefinition (final Builder builder) {
+    public <T extends Builder<T>> AbstractEntityDefinition (final Builder<T> builder) {
         this.name = builder.name;
         this.id = builder.id;
         this.imagePath = builder.imagePath;
@@ -31,7 +31,7 @@ public class AbstractEntityDefinition {
         private String imagePath;
         private PieceType pieceType;
 
-        public Builder<X> setName(final String name) {
+        public X setName(final String name) {
            this.name = name;
            return self();
         }
