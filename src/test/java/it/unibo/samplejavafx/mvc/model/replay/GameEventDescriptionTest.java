@@ -5,7 +5,6 @@ import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -18,16 +17,16 @@ class GameEventDescriptionTest {
     void testMoveEventDescription() {
         final Piece piece = new Piece.Builder()
             .setHasMoved(false)
-            .setEntityDefinition(new PieceDefinition.Builder()
-                .setName("Pawn")
-                .setId("p1")
-                .setImagePath("packs/default/pieces/Pawn.png")
-                .setWeight(1)
-                .setPieceType(PieceType.PAWN)
-                .setMoveRules(Collections.emptyList())
+            .entityDefinition(new PieceDefinition.Builder()
+                .name("Pawn")
+                .id("p1")
+                .imagePath("packs/default/pieces/Pawn.png")
+                .weight(1)
+                .pieceType(PieceType.PAWN)
+                .moveRules(Collections.emptyList())
                 .build())
-            .setGameId(1)
-            .setPlayerColor(PlayerColor.WHITE)
+            .gameId(1)
+            .playerColor(PlayerColor.WHITE)
             .build();
         final Point2D from = new Point2D(0, 6);
         final Point2D to = new Point2D(0, 5);
@@ -42,16 +41,16 @@ class GameEventDescriptionTest {
     void testSpawnEventDescription() {
         final Piece piece = new Piece.Builder()
             .setHasMoved(false)
-            .setEntityDefinition(new PieceDefinition.Builder()
-                .setName("King")
-                .setId("k1")
-                .setImagePath("packs/default/pieces/King.png")
-                .setWeight(10)
-                .setPieceType(PieceType.KING)
-                .setMoveRules(Collections.emptyList())
+            .entityDefinition(new PieceDefinition.Builder()
+                .name("King")
+                .id("k1")
+                .imagePath("packs/default/pieces/King.png")
+                .weight(10)
+                .pieceType(PieceType.KING)
+                .moveRules(Collections.emptyList())
                 .build())
-            .setGameId(1)
-            .setPlayerColor(PlayerColor.BLACK)
+            .gameId(1)
+            .playerColor(PlayerColor.BLACK)
             .build();
         final Point2D pos = new Point2D(4, 0);
         final SpawnEvent event = new SpawnEvent(1, piece, pos);
@@ -65,16 +64,16 @@ class GameEventDescriptionTest {
     void testDespawnEventDescription() {
         final Piece piece = new Piece.Builder()
             .setHasMoved(false)
-            .setEntityDefinition(new PieceDefinition.Builder()
-                .setName("Queen")
-                .setId("q1")
-                .setImagePath("packs/default/pieces/Queen.png")
-                .setWeight(9)
-                .setPieceType(PieceType.SUPERIOR)
-                .setMoveRules(Collections.emptyList())
+            .entityDefinition(new PieceDefinition.Builder()
+                .name("Queen")
+                .id("q1")
+                .imagePath("packs/default/pieces/Queen.png")
+                .weight(9)
+                .pieceType(PieceType.SUPERIOR)
+                .moveRules(Collections.emptyList())
                 .build())
-            .setGameId(1)
-            .setPlayerColor(PlayerColor.WHITE)
+            .gameId(1)
+            .playerColor(PlayerColor.WHITE)
             .build();
         final Point2D pos = new Point2D(3, 3);
         final DespawnEvent event = new DespawnEvent(5, piece, pos);

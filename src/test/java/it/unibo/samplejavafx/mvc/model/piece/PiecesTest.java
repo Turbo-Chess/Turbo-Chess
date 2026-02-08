@@ -23,12 +23,12 @@ class PiecesTest {
     @Test
     void testPieceDefinitionInitialization() {
         final PieceDefinition p = new PieceDefinition.Builder()
-                .setName("test-piece")
-                .setId("test")
-                .setImagePath("/home/giacomo/Documents/pawn.jpg")
-                .setWeight(3)
-                .setPieceType(PieceType.INFERIOR)
-                .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .name("test-piece")
+                .id("test")
+                .imagePath("/home/giacomo/Documents/pawn.jpg")
+                .weight(3)
+                .pieceType(PieceType.INFERIOR)
+                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
                 .build();
 
         assertEquals("test", p.getId());
@@ -41,17 +41,17 @@ class PiecesTest {
     @Test
     void testFullPieceCreation() {
         final PieceDefinition p = new PieceDefinition.Builder()
-                .setName("test-piece")
-                .setId("test")
-                .setImagePath("/home/giacomo/Documents/pawn.jpg")
-                .setWeight(3)
-                .setPieceType(PieceType.INFERIOR)
-                .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .name("test-piece")
+                .id("test")
+                .imagePath("/home/giacomo/Documents/pawn.jpg")
+                .weight(3)
+                .pieceType(PieceType.INFERIOR)
+                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
                 .build();
-        Piece piece = new Piece.Builder()
-                .setEntityDefinition(p)
-                .setGameId(1)
-                .setPlayerColor(PlayerColor.BLACK)
+        final Piece piece = new Piece.Builder()
+                .entityDefinition(p)
+                .gameId(1)
+                .playerColor(PlayerColor.BLACK)
                 .build();
         assertNotNull(piece);
         assertEquals(p.getId(), piece.getId());
@@ -65,18 +65,18 @@ class PiecesTest {
      */
     @Test
     void testInitializationFromResourceJson() throws IOException {
-        String resourcePath = "/EntityResources/StandardChessPieces/pieces/Pawn.json";
-        ObjectMapper mapper = new ObjectMapper();
+        final String resourcePath = "/EntityResources/StandardChessPieces/pieces/Pawn.json";
+        final ObjectMapper mapper = new ObjectMapper();
         try (var is = getClass().getResourceAsStream(resourcePath)) {
             assertNotNull(is, "Resource not found: " + resourcePath);
-            PieceDefinition def = mapper.readValue(is, PieceDefinition.class);
+            final PieceDefinition def = mapper.readValue(is, PieceDefinition.class);
             assertNotNull(def);
             assertEquals("pawn", def.getId());
             assertEquals("Pawn", def.getName());
-            Piece piece = new Piece.Builder()
-                .setEntityDefinition(def)
-                .setGameId(1)
-                .setPlayerColor(PlayerColor.BLACK)
+            final Piece piece = new Piece.Builder()
+                .entityDefinition(def)
+                .gameId(1)
+                .playerColor(PlayerColor.BLACK)
                 .build();
             assertNotNull(piece);
             assertEquals(def.getId(), piece.getId());

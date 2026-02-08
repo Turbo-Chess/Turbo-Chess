@@ -36,18 +36,20 @@ class MovementTest {
 
     private Piece createPiece(final String id, final String name, final PlayerColor color, final int weight, final PieceType type, final List<MoveRules> moveRules) {
         final PieceDefinition def = new PieceDefinition.Builder()
-                .setName(name)
-                .setId(id)
-                .setImagePath(IMAGE_PATH)
-                .setWeight(weight)
-                .setPieceType(type)
-                .setMoveRules(moveRules)
+                .name(name)
+                .id(id)
+                .imagePath(IMAGE_PATH)
+                .weight(weight)
+                .pieceType(type)
+                .moveRules(moveRules)
                 .build();
+        final int currentGameId = counter;
+        counter++;
         return new Piece.Builder()
             .setHasMoved(false)
-            .setEntityDefinition(def)
-            .setGameId(counter++)
-            .setPlayerColor(color)
+            .entityDefinition(def)
+            .gameId(currentGameId)
+            .playerColor(color)
             .build();
     }
 

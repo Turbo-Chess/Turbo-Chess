@@ -45,9 +45,9 @@ class ChessPieceMovementTest {
         final PieceDefinition def = mapper.readValue(new File(PIECES_PATH + filename), PieceDefinition.class);
         return new Piece.Builder()
             .setHasMoved(false)
-            .setEntityDefinition(def)
-            .setGameId(gameIdCounter)
-            .setPlayerColor(color)
+            .entityDefinition(def)
+            .gameId(gameIdCounter)
+            .playerColor(color)
             .build();
     }
 

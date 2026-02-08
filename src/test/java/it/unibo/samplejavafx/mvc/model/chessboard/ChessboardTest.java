@@ -19,18 +19,18 @@ class ChessboardTest {
 
     private Piece createTestPiece(final int gameId, final PlayerColor color) {
         final PieceDefinition def = new PieceDefinition.Builder()
-                .setName("test-piece")
-                .setId("test")
-                .setImagePath("/home/giacomo/Documents/pawn.jpg")
-                .setWeight(3)
-                .setPieceType(PieceType.INFERIOR)
-                .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .name("test-piece")
+                .id("test")
+                .imagePath("/home/giacomo/Documents/pawn.jpg")
+                .weight(3)
+                .pieceType(PieceType.INFERIOR)
+                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
                 .build();
         return new Piece.Builder()
                 .setHasMoved(false)
-                .setEntityDefinition(def)
-                .setGameId(gameId)
-                .setPlayerColor(color)
+                .entityDefinition(def)
+                .gameId(gameId)
+                .playerColor(color)
                 .build();
     }
 

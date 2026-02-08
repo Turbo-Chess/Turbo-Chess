@@ -7,52 +7,102 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Placeholder.
+ */
 @Getter
 @EqualsAndHashCode
 @ToString
-@JsonDeserialize(builder = AbstractEntityDefinition.Builder.class)
-public class AbstractEntityDefinition {
+@JsonDeserialize(builder = AbstractEntityDefinition.AbstractBuilder.class)
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
+// The class is abstract because it mustn't be instantiated on its own, even if it hasn't abstract methods.
+public abstract class AbstractEntityDefinition {
     private final String name;
     private final String id;
     private final String imagePath;
     private final PieceType pieceType;
 
-    protected <T extends Builder<T>> AbstractEntityDefinition (final Builder<T> builder) {
+    /**
+     * Placeholder.
+     *
+     * @param builder Placeholder.
+     * @param <T> Placeholder.
+     */
+    protected <T extends AbstractBuilder<T>> AbstractEntityDefinition(final AbstractBuilder<T> builder) {
         this.name = builder.name;
         this.id = builder.id;
         this.imagePath = builder.imagePath;
         this.pieceType = builder.pieceType;
     }
 
-    @JsonPOJOBuilder(withPrefix = "set")
-    public abstract static class Builder<X extends Builder<X>> {
+    /**
+     * Placeholder.
+     *
+     * @param <X> Placeholder.
+     */
+    @JsonPOJOBuilder(withPrefix = "")
+    public abstract static class AbstractBuilder<X extends AbstractBuilder<X>> {
         private String name;
         private String id;
         private String imagePath;
         private PieceType pieceType;
 
-        public X setName(final String name) {
-           this.name = name;
+        /**
+         * Placeholder.
+         *
+         * @param newName Placeholder.
+         * @return Placeholder.
+         */
+        public X name(final String newName) {
+           this.name = newName;
            return self();
         }
 
-        public X setId(final String id) {
-            this.id = id;
+        /**
+         * Placeholder.
+         *
+         * @param newId Placeholder.
+         * @return Placeholder.
+         */
+        public X id(final String newId) {
+            this.id = newId;
             return self();
         }
 
-        public X setImagePath(final String imagePath) {
-            this.imagePath = imagePath;
+        /**
+         * Placeholder.
+         *
+         * @param newImagePath Placeholder.
+         * @return Placeholder.
+         */
+        public X imagePath(final String newImagePath) {
+            this.imagePath = newImagePath;
             return self();
         }
 
-        public X setPieceType(final PieceType pieceType) {
-            this.pieceType = pieceType;
+        /**
+         * Placeholder.
+         *
+         * @param newPieceType Placeholder.
+         * @return Placeholder.
+         */
+        public X pieceType(final PieceType newPieceType) {
+            this.pieceType = newPieceType;
             return self();
         }
 
+        /**
+         * Placeholder.
+         *
+         * @return Placeholder.
+         */
         protected abstract X self();
 
+        /**
+         * Placeholder.
+         *
+         * @return Placeholder.
+         */
         public abstract AbstractEntityDefinition build();
     }
 }

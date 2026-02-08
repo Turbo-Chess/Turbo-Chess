@@ -29,13 +29,13 @@ class ReplayTest {
     private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
     private static final Piece TEST_PIECE = new Piece.Builder()
         .setHasMoved(false)
-        .setEntityDefinition(new PieceDefinition.Builder()
-            .setName(PIECE_NAME)
-            .setId(PIECE_ID)
-            .setImagePath(IMAGE_PATH)
-            .setWeight(1)
-            .setPieceType(PieceType.PAWN)
-            .setMoveRules(List.of(
+        .entityDefinition(new PieceDefinition.Builder()
+            .name(PIECE_NAME)
+            .id(PIECE_ID)
+            .imagePath(IMAGE_PATH)
+            .weight(1)
+            .pieceType(PieceType.PAWN)
+            .moveRules(List.of(
                 new MoveRulesImpl(
                     new Point2D(0, 1),
                     MoveRulesImpl.MoveType.MOVE_AND_EAT,
@@ -43,8 +43,8 @@ class ReplayTest {
                 )
             ))
             .build())
-        .setGameId(0)
-        .setPlayerColor(PlayerColor.WHITE)
+        .gameId(0)
+        .playerColor(PlayerColor.WHITE)
         .build();
 
     @Test

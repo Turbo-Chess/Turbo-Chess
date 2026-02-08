@@ -4,8 +4,6 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDef
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
-import it.unibo.samplejavafx.mvc.model.entity.Entity;
-import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +64,10 @@ public class LoaderControllerImpl implements LoaderController {
                     .filter(associations::containsKey)
                     .forEach(entityType -> {
                         final Path fullPath = resPackPath.resolve(entityType);
-                        final List<AbstractEntityDefinition> loadedEntities = entityLoader.loadEntityFile(fullPath, associations.get(entityType));
+                        final List<AbstractEntityDefinition> loadedEntities =
+                                entityLoader.loadEntityFile(
+                                        fullPath,
+                                        associations.get(entityType));
                         loadIntoCache(loadedEntities, resPackDir.toString());
                     });
 

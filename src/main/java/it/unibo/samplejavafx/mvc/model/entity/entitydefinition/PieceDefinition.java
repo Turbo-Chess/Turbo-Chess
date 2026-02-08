@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity.entitydefinition;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
@@ -12,6 +11,9 @@ import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * Placeholder.
+ */
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString
@@ -21,6 +23,11 @@ public class PieceDefinition extends AbstractEntityDefinition {
     @JsonDeserialize(contentAs = MoveRulesImpl.class)
     private final List<MoveRules> moveRules;
 
+    /**
+     * Placeholder.
+     *
+     * @param builder Placeholder.
+     */
     @JsonCreator
    protected PieceDefinition(final Builder builder) {
         super(builder);
@@ -28,27 +35,48 @@ public class PieceDefinition extends AbstractEntityDefinition {
         this.moveRules = List.copyOf(builder.moveRules);
     }
 
-    @JsonPOJOBuilder(withPrefix = "set")
-    public static class Builder extends AbstractEntityDefinition.Builder<PieceDefinition.Builder> {
+    /**
+     * Placeholder.
+     */
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class Builder extends AbstractEntityDefinition.AbstractBuilder<PieceDefinition.Builder> {
         private int weight;
         @JsonDeserialize(contentAs = MoveRulesImpl.class)
         private List<MoveRules> moveRules;
 
-        public Builder setWeight(final int weight) {
-            this.weight = weight;
+        /**
+         * Placeholder.
+         *
+         * @param newWeight Placeholder.
+         * @return Placeholder.
+         */
+        public Builder weight(final int newWeight) {
+            this.weight = newWeight;
             return this;
         }
 
-        public Builder setMoveRules(final List<MoveRules> moveRules) {
-            this.moveRules = moveRules;
+        /**
+         * Placeholder.
+         *
+         * @param newMoveRules Placeholder.
+         * @return Placeholder.
+         */
+        public Builder moveRules(final List<MoveRules> newMoveRules) {
+            this.moveRules = List.copyOf(newMoveRules);
             return this;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected PieceDefinition.Builder self() {
             return this;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public PieceDefinition build() {
             return new PieceDefinition(this);

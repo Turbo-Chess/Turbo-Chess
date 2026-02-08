@@ -23,24 +23,24 @@ class FirstLoadingTest {
     @Test
     void testFirstLoadingPiece() {
         final PieceDefinition pawn = new PieceDefinition.Builder()
-                .setName("Pawn")
-                .setId("pawn")
-                .setImagePath("")
-                .setWeight(1)
-                .setPieceType(PieceType.PAWN)
-                .setMoveRules(List.of(
+                .name("Pawn")
+                .id("pawn")
+                .imagePath("")
+                .weight(1)
+                .pieceType(PieceType.PAWN)
+                .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING)
                 ))
                 .build();
         final PieceDefinition rook = new PieceDefinition.Builder()
-                .setName("Rook")
-                .setId("rook")
-                .setImagePath("")
-                .setWeight(5)
-                .setPieceType(PieceType.TOWER)
-                .setMoveRules(List.of(
+                .name("Rook")
+                .id("rook")
+                .imagePath("")
+                .weight(5)
+                .pieceType(PieceType.TOWER)
+                .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),

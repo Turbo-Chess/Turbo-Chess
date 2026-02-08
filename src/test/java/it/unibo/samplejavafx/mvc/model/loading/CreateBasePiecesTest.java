@@ -25,12 +25,12 @@ class CreateBasePiecesTest {
     @Test
     void createPawn() throws IOException {
         final PieceDefinition pawn = new PieceDefinition.Builder()
-                .setName("Pawn")
-                .setId("pawn")
-                .setImagePath("")
-                .setWeight(1)
-                .setPieceType(PieceType.PAWN)
-                .setMoveRules(List.of(
+                .name("Pawn")
+                .id("pawn")
+                .imagePath("")
+                .weight(1)
+                .pieceType(PieceType.PAWN)
+                .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING)
@@ -42,12 +42,12 @@ class CreateBasePiecesTest {
     @Test
     void createKnight() throws IOException {
         final PieceDefinition knight = new PieceDefinition.Builder()
-                .setName("Knight")
-                .setId("knight")
-                .setImagePath("")
-                .setWeight(3)
-                .setPieceType(PieceType.INFERIOR)
-                .setMoveRules(List.of(
+                .name("Knight")
+                .id("knight")
+                .imagePath("")
+                .weight(3)
+                .pieceType(PieceType.INFERIOR)
+                .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
@@ -64,12 +64,12 @@ class CreateBasePiecesTest {
     @Test
     void createBishop() throws IOException {
         final PieceDefinition bishop = new PieceDefinition.Builder()
-                .setName("Bishop")
-                .setId("bishop")
-                .setImagePath("")
-                .setWeight(3)
-                .setPieceType(PieceType.INFERIOR)
-                .setMoveRules(List.of(
+                .name("Bishop")
+                .id("bishop")
+                .imagePath("")
+                .weight(3)
+                .pieceType(PieceType.INFERIOR)
+                .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
@@ -82,12 +82,12 @@ class CreateBasePiecesTest {
     @Test
     void createRook() throws IOException {
         final PieceDefinition rook = new PieceDefinition.Builder()
-                .setName("Rook")
-                .setId("rook")
-                .setImagePath("")
-                .setWeight(5)
-                .setPieceType(PieceType.TOWER)
-                .setMoveRules(List.of(
+                .name("Rook")
+                .id("rook")
+                .imagePath("")
+                .weight(5)
+                .pieceType(PieceType.TOWER)
+                .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
@@ -100,12 +100,12 @@ class CreateBasePiecesTest {
     @Test
     void createQueen() throws IOException {
         final PieceDefinition queen = new PieceDefinition.Builder()
-                .setName("Queen")
-                .setId("queen")
-                .setImagePath("")
-                .setWeight(9)
-                .setPieceType(PieceType.SUPERIOR)
-                .setMoveRules(List.of(
+                .name("Queen")
+                .id("queen")
+                .imagePath("")
+                .weight(9)
+                .pieceType(PieceType.SUPERIOR)
+                .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
@@ -122,12 +122,12 @@ class CreateBasePiecesTest {
     @Test
     void createKing() throws IOException {
         final PieceDefinition king = new PieceDefinition.Builder()
-                .setName("King")
-                .setId("king")
-                .setImagePath("")
-                .setWeight(100)
-                .setPieceType(PieceType.KING)
-                .setMoveRules(List.of(
+                .name("King")
+                .id("king")
+                .imagePath("")
+                .weight(100)
+                .pieceType(PieceType.KING)
+                .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
                         new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),

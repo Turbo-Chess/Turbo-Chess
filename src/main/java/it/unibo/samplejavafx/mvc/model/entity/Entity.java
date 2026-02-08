@@ -13,8 +13,18 @@ public interface Entity {
      */
     String getId();
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     String getName();
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     String getImagePath();
 
     /**
