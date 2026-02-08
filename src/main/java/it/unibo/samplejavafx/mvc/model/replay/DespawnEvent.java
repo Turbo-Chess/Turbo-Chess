@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
@@ -10,7 +11,11 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * @param entity the entity that disappeared.
  * @param position the position where the piece disappeared.
  */
-public record DespawnEvent(int turn, Entity entity, Point2D position) implements GameEvent {
+public record DespawnEvent(
+    @JsonProperty("turn") int turn, 
+    @JsonProperty("entity") Entity entity, 
+    @JsonProperty("position") Point2D position
+) implements GameEvent {
     @Override
     public int getTurn() {
         return turn;

@@ -1,21 +1,9 @@
 package it.unibo.samplejavafx.mvc.model.point2d;
 
-/**
- * A record that represents a point in a 2D Cartesian system.
- * Used to give a position to an existing piece on the board.
- * By convention, the values are 0-indexed, where the top-left corner is the (0, 0) point.
- * Points can also be used as "movement vectors" to represent the direction of the movement of a piece.
- *
- * @param x the horizontal coordinate.
- * @param y the vertical coordinate.
- */
-public record Point2D(int x, int y) {
-    /**
-     *  placeholder.
-     *
-     * @param p placeholder.
-     * @return placeholder.
-     */
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record Point2D(@JsonProperty("x") int x, @JsonProperty("y") int y) {
+
     public Point2D sum(final Point2D p) {
         return new Point2D(this.x() + p.x(), this.y() + p.y());
     }
@@ -33,7 +21,7 @@ public record Point2D(int x, int y) {
     /**
      * p placeholder.
      *
-     * @retur placeholdern.
+     * @return placeholder.
      */
     public Point2D invertX() {
         return new Point2D(-this.x(), this.y());

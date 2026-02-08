@@ -29,28 +29,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ReplayTest {
-    private static final String PIECE_ID = "test";
-    private static final String PIECE_NAME = "test-piece";
-    private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
-    private static final Piece TEST_PIECE = new Piece.Builder()
-        .setHasMoved(false)
-        .setEntityDefinition(new PieceDefinition.Builder()
-            .setName(PIECE_NAME)
-            .setId(PIECE_ID)
-            .setImagePath(IMAGE_PATH)
-            .setWeight(1)
-            .setPieceType(PieceType.PAWN)
-            .setMoveRules(List.of(
-                new MoveRulesImpl(
-                    new Point2D(0, 1),
-                    MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                    MoveRulesImpl.MoveStrategy.JUMPING
-                )
-            ))
-            .build())
-        .setGameId(0)
-        .setPlayerColor(PlayerColor.WHITE)
-        .build();
+
+    private Piece createTestPiece(final int gameId, final PlayerColor color) {
+        final PieceDefinition def = new PieceDefinition.Builder()
+                .setName("test-piece")
+                .setId("test")
+                .setImagePath("/home/giacomo/Documents/pawn.jpg")
+                .setWeight(3)
+                .setPieceType(PieceType.INFERIOR)
+                .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .build();
+        return new Piece.Builder()
+                .setHasMoved(false)
+                .setEntityDefinition(def)
+                .setGameId(gameId)
+                .setPlayerColor(color)
+                .build();
+    }
+
 
     @Test
     void testSaveAndLoad() throws IOException {
@@ -61,7 +57,7 @@ class ReplayTest {
         history.addEvent(
             new MoveEvent(
                 1, 
-                TEST_PIECE,
+                createTestPiece(1, PlayerColor.WHITE),
                 new Point2D(0, 0),
                 new Point2D(0, 1)
             )
@@ -71,7 +67,7 @@ class ReplayTest {
         history.addEvent(
             new SpawnEvent(
                 2, 
-                TEST_PIECE,
+                createTestPiece(2, PlayerColor.WHITE),
                 new Point2D(4, 4)
             )
         );
@@ -80,7 +76,7 @@ class ReplayTest {
         history.addEvent(
             new DespawnEvent(
                 3, 
-                TEST_PIECE,  
+                createTestPiece(3, PlayerColor.WHITE),  
                 new Point2D(5, 5)
             )
         );
@@ -144,33 +140,9 @@ class ReplayTest {
         
         controller.loadHistory(history);
 
-        // Pre-condition: board empty
         assertTrue(events.isEmpty());
-
-        // Step 1: Execute MoveEvent
-        // Logic: remove from (0,0), add to (0,1)
-        // Wait... the board is empty initially. 
-        // ReplayController logic: 
-        // removeEntity(from) -> remove (0,0)
-        // setEntity(to, entity) -> add (0,1)
-        // But removeEntity only notifies if something was removed.
-        // Since board is empty, removeEntity(0,0) does nothing if check is inside.
-        // Let's check ChessBoardImpl.removeEntity again.
-        // "final Entity removed = cells.remove(pos); if (removed != null) notify..."
-        // So if board is empty, removeEntity won't trigger observer.
-        
-        // So we expect only ADDED to (0,1) if the controller doesn't check existence?
-        // Controller calls board.removeEntity(move.from());
-        // board.removeEntity implementation checks return value of Map.remove.
-        // So if nothing at (0,0), no notification.
-        // Then board.setEntity(move.to(), entity) -> notifies ADDED (and REMOVED if replacing).
         
         assertTrue(controller.next());
-        
-        // Depending on whether we pre-populated the board.
-        // In a real replay, the board state should match.
-        // But here we are starting with empty board.
-        // So we expect 1 event: ADDED: (0, 1) test-piece
         
         assertEquals(1, events.size());
         assertEquals("ADDED: (0, 1) test-piece", events.get(0));

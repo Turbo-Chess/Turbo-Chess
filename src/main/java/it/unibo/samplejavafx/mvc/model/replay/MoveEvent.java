@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
@@ -11,7 +12,12 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * @param from source position.
  * @param to destination position.
  */
-public record MoveEvent(int turn, Entity entity, Point2D from, Point2D to) implements GameEvent {
+public record MoveEvent(
+    @JsonProperty("turn") int turn, 
+    @JsonProperty("entity") Entity entity, 
+    @JsonProperty("from") Point2D from, 
+    @JsonProperty("to") Point2D to
+) implements GameEvent {
 
     @Override
     public int getTurn() {

@@ -5,44 +5,35 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.List;  
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameEventDescriptionTest {
+
     private Piece createTestPiece(final int gameId, final PlayerColor color) {
         final PieceDefinition def = new PieceDefinition.Builder()
-            .setName("test-piece")
-            .setId("test")
-            .setImagePath("/home/giacomo/Documents/pawn.jpg")
-            .setWeight(3)
-            .setPieceType(PieceType.INFERIOR)
-            .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
-            .build();
-        return new Piece(def, gameId, color, false);
+                .setName("test-piece")
+                .setId("test")
+                .setImagePath("/home/giacomo/Documents/pawn.jpg")
+                .setWeight(3)
+                .setPieceType(PieceType.INFERIOR)
+                .setMoveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .build();
+        return new Piece.Builder()
+                .setHasMoved(false)
+                .setEntityDefinition(def)
+                .setGameId(gameId)
+                .setPlayerColor(color)
+                .build();
     }
 
     @Test
     void testMoveEventDescription() {
-        final Piece piece = new Piece.Builder()
-            .setHasMoved(false)
-            .setEntityDefinition(new PieceDefinition.Builder()
-                .setName("Pawn")
-                .setId("p1")
-                .setImagePath("packs/default/pieces/Pawn.png")
-                .setWeight(1)
-                .setPieceType(PieceType.PAWN)
-                .setMoveRules(Collections.emptyList())
-                .build())
-            .setGameId(1)
-            .setPlayerColor(PlayerColor.WHITE)
-            .build();
+        final Piece piece = createTestPiece(1, PlayerColor.WHITE);
         final Point2D from = new Point2D(0, 6);
         final Point2D to = new Point2D(0, 5);
         final MoveEvent event = new MoveEvent(1, piece, from, to);
@@ -54,42 +45,18 @@ class GameEventDescriptionTest {
 
     @Test
     void testSpawnEventDescription() {
-        final Piece piece = new Piece.Builder()
-            .setHasMoved(false)
-            .setEntityDefinition(new PieceDefinition.Builder()
-                .setName("King")
-                .setId("k1")
-                .setImagePath("packs/default/pieces/King.png")
-                .setWeight(10)
-                .setPieceType(PieceType.KING)
-                .setMoveRules(Collections.emptyList())
-                .build())
-            .setGameId(1)
-            .setPlayerColor(PlayerColor.BLACK)
-            .build();
+        final Piece piece = createTestPiece(1, PlayerColor.WHITE);
         final Point2D pos = new Point2D(4, 0);
         final SpawnEvent event = new SpawnEvent(1, piece, pos);
 
         final String description = event.getEventDescription();
 
-        assertTrue(description.startsWith("Spawn | test-piece | (4, 0)"));
+        assertTrue(description.startsWith("Spawn | Pawn | (4, 0)"));
     }
 
     @Test
     void testDespawnEventDescription() {
-        final Piece piece = new Piece.Builder()
-            .setHasMoved(false)
-            .setEntityDefinition(new PieceDefinition.Builder()
-                .setName("Queen")
-                .setId("q1")
-                .setImagePath("packs/default/pieces/Queen.png")
-                .setWeight(9)
-                .setPieceType(PieceType.SUPERIOR)
-                .setMoveRules(Collections.emptyList())
-                .build())
-            .setGameId(1)
-            .setPlayerColor(PlayerColor.WHITE)
-            .build();
+        final Piece piece = createTestPiece(1, PlayerColor.WHITE);
         final Point2D pos = new Point2D(3, 3);
         final DespawnEvent event = new DespawnEvent(5, piece, pos);
 
