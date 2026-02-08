@@ -6,13 +6,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
 @EqualsAndHashCode
 @ToString
 public abstract class AbstractEntity<T extends AbstractEntityDefinition> implements Entity {
     private final T entityDefinition;
-    private final int gameId;
-    private final PlayerColor playerColor;
+    private final @Getter int gameId;
+    private final @Getter PlayerColor playerColor;
 
     protected <X extends AbstractEntity.Builder<T, X>> AbstractEntity(final Builder<T, X> builder) {
         this.entityDefinition = builder.entityDefinition;
@@ -33,6 +32,11 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
     @Override
     public String getName() {
         return getEntityDefinition().getName();
+    }
+
+    @Override
+    public String getImagePath() {
+        return this.getEntityDefinition().getImagePath();
     }
 
     @Override

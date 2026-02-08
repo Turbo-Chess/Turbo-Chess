@@ -15,6 +15,8 @@ public interface Entity {
 
     String getName();
 
+    String getImagePath();
+
     /**
      * placeholder.
      *
