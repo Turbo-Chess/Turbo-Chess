@@ -41,10 +41,12 @@ class MovementTest {
                 .setPieceType(type)
                 .setMoveRules(moveRules)
                 .build();
+        final int gameId = counter;
+        counter++;
         return new Piece.Builder()
             .setHasMoved(false)
             .setEntityDefinition(def)
-            .setGameId(counter++)
+            .setGameId(gameId)
             .setPlayerColor(color)
             .build();
     }
