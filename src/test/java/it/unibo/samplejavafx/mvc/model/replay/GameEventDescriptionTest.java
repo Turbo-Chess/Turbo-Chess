@@ -51,7 +51,7 @@ class GameEventDescriptionTest {
 
         final String description = event.getEventDescription();
 
-        assertTrue(description.startsWith("Spawn | Pawn | (4, 0)"));
+        assertTrue(description.startsWith("Spawn | test-piece | (4, 0)"));
     }
 
     @Test
