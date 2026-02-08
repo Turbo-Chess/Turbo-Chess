@@ -1,42 +1,68 @@
-//package it.unibo.samplejavafx.mvc.model.entity;
-//
-///**
-// * PowerUps are special entities that applies effect on the board that can affect both players.
-// * Each power up has a duration.
-// */
-//public class PowerUp extends AbstractEntity {
-//    private final int duration;
-//
-//    /**
-//     * Constructs a new power up with the following properties.
-//     *
-//     * @param id unique identifier for the piece.
-//     * @param name the name of the piece displayed.
-//     * @param gameId the id that the class will get at runtime.
-//     * @param path file path with the image of the piece.
-//     * @param playerColor color of the player owning this power up.
-//     * @param duration positive int value that represents the duration of the applied effect.
-//     */
-////    PowerUp(final String id, final String name, final int gameId, final String path,
-////            final PlayerColor playerColor, final int duration
-////    ) {
-////        super(id, name, gameId, path, playerColor);
-////        this.duration = duration;
-////    }
-//
-//    /**
-//     * Applies the effect on the board.
-//     */
-//    public void applyEffect() {
-//        // TO-DO: implement method
-//    }
-//
-//    /**
-//     * Return the duration of the effect.
-//     *
-//     * @return a non-negative int value representing the duration of the applied effect.
-//     */
-//    public int getDuration() {
-//        return this.duration;
-//    }
-//}
+package it.unibo.samplejavafx.mvc.model.entity;
+
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PowerUpDefinition;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+/**
+ * PowerUps are special entities that applies effect on the board that can affect both players.
+ * Each power up has a duration.
+ */
+@Getter
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class PowerUp extends AbstractEntity<PowerUpDefinition> {
+    private final int duration;
+
+    /**
+     * Constructs a new power up with the builder configuration obtained in input.
+     *
+     * @param builder The builder to construct the object.
+     */
+    PowerUp(final Builder builder) {
+        super(builder);
+        this.duration = builder.duration;
+    }
+
+    /**
+     * Applies the effect on the board.
+     */
+    public void applyEffect() {
+         //TO DO: implement method
+    }
+
+    /**
+     * placeholder.
+     */
+    public static class Builder extends AbstractEntity.AbstractBuilder<PowerUpDefinition, Builder> {
+        private int duration;
+
+        /**
+         * placeholder.
+         *
+         * @param newDuration placeholder.
+         * @return placeholder.
+         */
+        public Builder duration(final int newDuration) {
+            this.duration = newDuration;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Builder self() {
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public PowerUp build() {
+            return new PowerUp(this);
+        }
+    }
+}
