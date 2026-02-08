@@ -1,7 +1,5 @@
-package it.unibo.samplejavafx.mvc.model;
+package it.unibo.samplejavafx.mvc.model.chessboard;
 
-import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
-import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;

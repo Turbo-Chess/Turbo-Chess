@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.model;
+package it.unibo.samplejavafx.mvc.model.movement;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
@@ -6,8 +6,6 @@ import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
-import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +16,10 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class made to test the general behavior of the move rules, pieces created on the spot just to verify
+ * that the rules are working.
+ */
 class MovementTest {
     private static final String PIECE_ID = "test";
     private static final String PIECE_NAME = "test-piece";

@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.model;
+package it.unibo.samplejavafx.mvc.model.loading;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class made to verify that the loading controller and caching system works correctly.
+ */
 class FirstLoadingTest {
     private static final String INTERNAL_ENTITIES_PATH = "src/main/resources/EntityResources";
 

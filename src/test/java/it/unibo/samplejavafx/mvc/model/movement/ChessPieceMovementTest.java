@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.model;
+package it.unibo.samplejavafx.mvc.model.movement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;

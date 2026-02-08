@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.model;
+package it.unibo.samplejavafx.mvc.model.loading;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -14,6 +14,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class made to be able to create the JSON files for the basic chess pieces implementation
+ * and test that the loading for that is also correct.
+ */
 class CreateBasePiecesTest {
     private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";

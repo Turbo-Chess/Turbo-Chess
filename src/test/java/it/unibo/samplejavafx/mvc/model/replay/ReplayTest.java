@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.model;
+package it.unibo.samplejavafx.mvc.model.replay;
 
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
@@ -6,11 +6,6 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import it.unibo.samplejavafx.mvc.model.replay.DespawnEvent;
-import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
-import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
-import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
-import it.unibo.samplejavafx.mvc.model.replay.SpawnEvent;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
