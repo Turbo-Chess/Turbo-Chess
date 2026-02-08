@@ -5,6 +5,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class Piece extends AbstractEntity<PieceDefinition> implements Entity, Moveable {
@@ -46,6 +48,10 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Entity, Mo
 
     public boolean hasMoved() {
         return this.hasMoved;
+    }
+
+    public int getWeight() {
+         return super.getEntityDefinition().getWeight();
     }
 
     @JsonPOJOBuilder(withPrefix = "set")
