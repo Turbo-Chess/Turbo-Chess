@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

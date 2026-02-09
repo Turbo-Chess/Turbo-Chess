@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.model;
+package it.unibo.samplejavafx.mvc.model.movement;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;

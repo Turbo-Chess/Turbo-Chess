@@ -2,8 +2,20 @@ package it.unibo.samplejavafx.mvc.model.point2d;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * placeholder.
+ *
+ * @param x placeholder.
+ * @param y placeholder.
+ */
 public record Point2D(@JsonProperty("x") int x, @JsonProperty("y") int y) {
 
+    /**
+     * placeholder.
+     *
+     * @param p placeholder.
+     * @return placeholder.
+     */
     public Point2D sum(final Point2D p) {
         return new Point2D(this.x() + p.x(), this.y() + p.y());
     }

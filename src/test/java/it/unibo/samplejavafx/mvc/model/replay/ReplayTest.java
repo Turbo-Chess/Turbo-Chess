@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.model;
+package it.unibo.samplejavafx.mvc.model.replay;
 
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
