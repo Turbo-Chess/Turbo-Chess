@@ -83,6 +83,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
      *
      * @return Placeholder.
      */
+    @JsonIgnore
     public int getWeight() {
          return super.getEntityDefinition().getWeight();
     }
