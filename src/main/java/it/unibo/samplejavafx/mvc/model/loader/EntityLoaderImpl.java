@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,7 @@ public class EntityLoaderImpl implements EntityLoader {
             final Class<? extends AbstractEntityDefinition> classToLoad) {
         try {
             final ObjectMapper mapper = new ObjectMapper();
+            //return mapper.readerWithView(JsonViews.FirstLoading.class).readValue(new File(filePath.toString()), classToLoad);
             return mapper.readValue(new File(filePath.toString()), classToLoad);
         } catch (final IOException e) {
             LOGGER.error("Cannot read file: {}", filePath, e);

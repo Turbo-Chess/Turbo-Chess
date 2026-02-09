@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import lombok.EqualsAndHashCode;
@@ -11,8 +12,8 @@ import lombok.ToString;
  *
  * @param <T> Placeholder.
  */
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
 public abstract class AbstractEntity<T extends AbstractEntityDefinition> implements Entity {
     private final T entityDefinition;
     @Getter
@@ -32,11 +33,13 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
         this.playerColor = builder.playerColor;
     }
 
+    // Package private field to not break encapsulation
     /**
      * Placeholder.
      *
      * @return Placeholder.
      */
+    @JsonProperty("entityDefinition")
     protected T getEntityDefinition() {
         return this.entityDefinition;
     }
