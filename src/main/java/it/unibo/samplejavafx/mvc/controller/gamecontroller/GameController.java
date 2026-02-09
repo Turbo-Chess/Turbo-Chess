@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface GameController {
     List<Point2D> getAvailableCells(int pieceGameId);
+    void cacheAvailableCells(int pieceGameId, List<Point2D> moves);
+    void clearCache();
 }
