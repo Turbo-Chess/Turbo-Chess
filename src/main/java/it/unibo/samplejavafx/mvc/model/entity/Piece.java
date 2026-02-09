@@ -1,5 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString
+@JsonDeserialize(builder = Piece.Builder.class)
 public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     private final boolean hasMoved;
     @Deprecated
@@ -52,6 +55,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
      * {@inheritDoc}
      */
     @Override
+    @JsonIgnore
     public final List<Point2D> getAvailableCells() {
         return Collections.unmodifiableList(this.availableCells);
     }

@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
@@ -86,6 +87,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
      * @param <X> Placeholder.
      */
     @JsonPOJOBuilder(withPrefix = "")
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public abstract static class AbstractBuilder<T extends AbstractEntityDefinition, X extends AbstractBuilder<T, X>> {
         private T entityDefinition;
         private int gameId;

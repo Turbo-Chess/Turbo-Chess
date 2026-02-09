@@ -1,5 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PowerUpDefinition;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,6 +14,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString
+@JsonDeserialize(builder = PowerUp.Builder.class)
 public class PowerUp extends AbstractEntity<PowerUpDefinition> {
     private final int duration;
 
@@ -35,6 +38,7 @@ public class PowerUp extends AbstractEntity<PowerUpDefinition> {
     /**
      * placeholder.
      */
+    @JsonPOJOBuilder(withPrefix = "")
     public static class Builder extends AbstractEntity.AbstractBuilder<PowerUpDefinition, Builder> {
         private int duration;
 

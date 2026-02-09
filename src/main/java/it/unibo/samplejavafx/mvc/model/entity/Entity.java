@@ -11,7 +11,7 @@ import java.util.Optional;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "type"
+    property = "entityType"
 )
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Piece.class, name = "piece")
