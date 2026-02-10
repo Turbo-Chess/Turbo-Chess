@@ -1,0 +1,43 @@
+.root {
+    -fx-background-color: #181a1b;
+}
+
+#GameMainPane {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+}
+
+#chessboardGridPane {
+    -fx-background-color: #23272e;
+    -fx-hgap: 0;
+    -fx-vgap: 0;
+    -fx-grid-lines-visible: true;
+    -fx-border-color: #444a54;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-padding: 24px;
+
+    -fx-pref-width: 600px;
+    -fx-pref-height: 600px;
+    -fx-max-width: 1000px;
+    -fx-max-height: 1000px;
+    -fx-min-width: 320px;
+    -fx-min-height: 320px;
+    -fx-alignment: center;
+}
+
+#chessboardGridPane .button {
+    -fx-background-color: #2c2c2c;
+    -fx-border-color: transparent;
+    -fx-max-width: 9999px;
+    -fx-max-height: 9999px;
+    -fx-min-width: 0;
+    -fx-min-height: 0;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f1f1f1;
+}
+
+#chessboardGridPane .button:focused {
+    -fx-background-color: #444a54;
+}

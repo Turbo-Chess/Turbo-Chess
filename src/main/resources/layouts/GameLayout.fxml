@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<StackPane id="GameMainPane" fx:id="GameMainPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <GridPane id="chessboardGridPane" fx:id="chessboardGridPane" gridLinesVisible="true" styleClass="chessboard-grid">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="12.5" />
+                <ColumnConstraints percentWidth="12.5" />
+                <ColumnConstraints percentWidth="12.5" />
+                <ColumnConstraints percentWidth="12.5" />
+                <ColumnConstraints percentWidth="12.5" />
+                <ColumnConstraints percentWidth="12.5" />
+                <ColumnConstraints percentWidth="12.5" />
+                <ColumnConstraints percentWidth="12.5" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints percentHeight="12.5" />
+                <RowConstraints percentHeight="12.5" />
+                <RowConstraints percentHeight="12.5" />
+                <RowConstraints percentHeight="12.5" />
+                <RowConstraints percentHeight="12.5" />
+                <RowConstraints percentHeight="12.5" />
+                <RowConstraints percentHeight="12.5" />
+                <RowConstraints percentHeight="12.5" />
+            </rowConstraints>
+            <children>
+                <!-- Buttons will be added dynamically in code -->
+            </children>
+        </GridPane>
+    </children>
+</StackPane>
