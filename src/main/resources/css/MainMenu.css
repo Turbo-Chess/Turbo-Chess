@@ -1,0 +1,47 @@
+.root {
+    -fx-background-color: #121212;
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.vbox {
+    -fx-alignment: center;
+    -fx-spacing: 32px;
+    -fx-padding: 40px 0 40px 0;
+}
+
+#TitleLabel {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0 0 24px 0;
+    -fx-effect: dropshadow(gaussian, #00000088, 8, 0.3, 0, 2);
+    -fx-letter-spacing: 2px;
+}
+
+.button {
+    -fx-background-color: #424242;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px 32px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000088, 4, 0.2, 0, 2);
+    -fx-border-color: #373737;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-transition: background-color 0.2s;
+    -fx-max-width: 400px;
+    -fx-min-width: 220px;
+    -fx-pref-width: 300px;
+    -fx-alignment: center;
+}
+
+.button:hover {
+    -fx-background-color: #2c2c2c;
+    -fx-text-fill: #ffffff;
+}
+
+.button:pressed {
+    -fx-background-color: #212121;
+}

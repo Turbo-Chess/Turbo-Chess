@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="32.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label id="TitleLabel" text="Turbo Chess" />
+      <Button id="NewGameButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="New Game" VBox.vgrow="NEVER" />
+      <Button id="LoadoutButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Loadout" VBox.vgrow="NEVER" />
+      <Button id="SettingsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Settings" VBox.vgrow="NEVER" />
+      <Button id="QuitButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Quit" VBox.vgrow="NEVER" />
+   </children>
+</VBox>
