@@ -17,6 +17,7 @@
     -fx-border-radius: 8px;
     -fx-padding: 24px;
 
+    /* Change that to non-fixed values */
     -fx-pref-width: 600px;
     -fx-pref-height: 600px;
     -fx-max-width: 1000px;
@@ -29,6 +30,7 @@
 #chessboardGridPane .button {
     -fx-background-color: #2c2c2c;
     -fx-border-color: transparent;
+    /* Change that to non fixed values */
     -fx-max-width: 9999px;
     -fx-max-height: 9999px;
     -fx-min-width: 0;

@@ -2,10 +2,10 @@
 
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
-<StackPane id="GameMainPane" fx:id="GameMainPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane id="GameMainPane" fx:id="GameMainPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController">
     <children>
         <GridPane id="chessboardGridPane" fx:id="chessboardGridPane" gridLinesVisible="true" styleClass="chessboard-grid">
             <columnConstraints>
