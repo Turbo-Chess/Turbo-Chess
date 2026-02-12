@@ -8,20 +8,5 @@ import java.util.List;
 import java.util.Map;
 
 public class GameControllerImpl implements GameController {
-    private final Map<Integer, List<Point2D>> movementCache = new HashMap<>();
 
-    @Override
-    public List<Point2D> getAvailableCells(int pieceGameId) {
-        return movementCache.getOrDefault(pieceGameId, Collections.emptyList());
-    }
-
-    @Override
-    public void cacheAvailableCells(int pieceGameId, List<Point2D> moves) {
-        movementCache.put(pieceGameId, List.copyOf(moves));
-    }
-
-    @Override
-    public void clearCache() {
-        movementCache.clear();
-    }
 }
