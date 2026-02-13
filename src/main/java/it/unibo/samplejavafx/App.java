@@ -20,7 +20,7 @@ public class App extends Application {
 //        }
         coordinator = new GameCoordinator(stage);
         Parent root = loader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 800, 800);
 
         var cssLocation = getClass().getResource("/css/MainMenu.css");
         if (cssLocation != null) {

@@ -30,7 +30,7 @@ public class GameCoordinator {
         viewController.setGameController(this.gameController);
 
         var cssLocation = getClass().getResource("/css/GameLayout.css");
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 800, 800);
         stage.setTitle("TurboChess - Game");
         stage.setScene(scene);
         scene.getStylesheets().add(cssLocation.toExternalForm());
