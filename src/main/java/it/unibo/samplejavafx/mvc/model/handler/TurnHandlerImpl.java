@@ -6,7 +6,11 @@ import java.util.Optional;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveStrategy;
+import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 
 /**
  * Placeholder.
@@ -15,12 +19,14 @@ public class TurnHandlerImpl {
     private int turn;
     private ChessBoard board;
     private GameState state;
+    private PlayerColor currentColor;
     private Optional<Piece> currentPiece;
     private List<Point2D> pieceMoves;
 
     public TurnHandlerImpl(final int turn, final ChessBoard board) {
         this.turn = turn;
         this.board = board;
+        this.currentColor = PlayerColor.WHITE;
     }
 
     /**
@@ -33,17 +39,43 @@ public class TurnHandlerImpl {
         if (board.isFree(pos) && currentPiece.isEmpty()) {
             return Collections.emptyList();
         }
-        if (board.isFree(pos)) {
-            
+        if (board.isFree(pos) && pieceMoves.contains(pos)) {
+            executeTurn(MoveType.MOVE_ONLY, pos);
+            return List.of(pos);
         }
+        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor().equals(currentColor)) {
+            var newPiece = (Piece) board.getEntity(pos).get();
+            this.currentPiece = Optional.of(newPiece);
+            this.pieceMoves = newPiece.getValidMoves(pos, board);
+            return this.pieceMoves;
+        }
+        if (!board.isFree(pos)
+            && board.getEntity(pos).get().getPlayerColor().equals(AdvancedRules.swapColor(currentColor))
+            && currentPiece.isPresent()) {
+            switch(currentPiece.get().getType()) {
+                case PAWN:
+                    executeTurn(MoveType.EAT_ONLY, pos);
+                    return List.of(pos);
+                default:
+                    executeTurn(MoveType.MOVE_AND_EAT, pos);
+                    return List.of(pos);
+            }
+        }
+        if (!pieceMoves.contains(pos)) {
+            this.currentPiece = Optional.empty();
+            this.pieceMoves = Collections.emptyList();
+            return this.pieceMoves;
+        }
+        return Collections.emptyList(); // unreachable
     }
 
     /**
      *  placeholder.
      *
-     * 
+     * @param moveAction placeholder.
+     * @param target placeholder.
      */
-    public void executeTurn() {
+    public void executeTurn(final MoveType moveAction, final Point2D target) {
 
     }
 }
