@@ -52,21 +52,14 @@ public class TurnHandlerImpl {
         if (!board.isFree(pos)
             && board.getEntity(pos).get().getPlayerColor().equals(AdvancedRules.swapColor(currentColor))
             && currentPiece.isPresent()) {
-            switch(currentPiece.get().getType()) {
-                case PAWN:
-                    executeTurn(MoveType.EAT_ONLY, pos);
-                    return List.of(pos);
-                default:
-                    executeTurn(MoveType.MOVE_AND_EAT, pos);
-                    return List.of(pos);
+            if (pieceMoves.contains(pos)) {
+                executeTurn(MoveType.MOVE_AND_EAT, pos);
+                return List.of(pos);
             }
         }
-        if (!pieceMoves.contains(pos)) {
-            this.currentPiece = Optional.empty();
-            this.pieceMoves = Collections.emptyList();
-            return this.pieceMoves;
-        }
-        return Collections.emptyList(); // unreachable
+        this.currentPiece = Optional.empty();
+        this.pieceMoves = Collections.emptyList();
+        return this.pieceMoves;
     }
 
     /**
@@ -76,6 +69,16 @@ public class TurnHandlerImpl {
      * @param target placeholder.
      */
     public void executeTurn(final MoveType moveAction, final Point2D target) {
+        switch (moveAction) {
+            case MOVE_ONLY:
 
+                break;
+            case MOVE_AND_EAT:
+
+                break;
+            default:
+
+                break;
+        }
     }
 }
