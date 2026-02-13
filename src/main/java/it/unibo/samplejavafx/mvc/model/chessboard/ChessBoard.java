@@ -79,4 +79,20 @@ public interface ChessBoard {
      * @param observer the observer to remove.
      */
     void removeObserver(BoardObserver observer);
+
+    /**
+     * placeholder.
+     * 
+     * @param start placeholder.
+     * @param end placeholder.
+     */
+    void move(Point2D start, Point2D end);
+
+    /**
+     * placeholder.
+     * 
+     * @param start placeholder.
+     * @param end placeholder.
+     */
+    void eat(Point2D start, Point2D end);
 }
