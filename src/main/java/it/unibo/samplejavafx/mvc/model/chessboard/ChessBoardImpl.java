@@ -155,4 +155,24 @@ public class ChessBoardImpl implements ChessBoard {
     public BiMap<Point2D, Entity> getBoard() {
         return ImmutableBiMap.copyOf(this.cells);
     }
+
+    /**
+     * placeholder.
+     * 
+     * @param start placeholder.
+     * @param end placeholder.
+     */
+    public void move(Point2D start, Point2D end) {
+
+    }
+
+    /**
+     * placeholder.
+     * 
+     * @param start placeholder.
+     * @param end placeholder.
+     */
+    public void eat(Point2D start, Point2D end) {
+
+    }
 }
