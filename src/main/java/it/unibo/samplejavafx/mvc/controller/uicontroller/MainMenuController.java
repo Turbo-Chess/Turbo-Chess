@@ -15,6 +15,6 @@ public class MainMenuController {
     }
 
     public void startNewGame(ActionEvent e) throws IOException {
-        this.coordinator.initGame(e);
+        this.coordinator.initGame();
     }
 }

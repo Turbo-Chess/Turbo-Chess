@@ -6,13 +6,10 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControlle
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import lombok.Setter;
 
-import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class GameCoordinator {
@@ -25,7 +22,7 @@ public class GameCoordinator {
         this.stage = stage;
     }
 
-    public void initGame(final ActionEvent e) throws IOException {
+    public void initGame() throws IOException {
         final ChessMatch match = new ChessMatchImpl();
         Parent root = loader.load();
         final ChessboardViewController viewController = loader.getController();
