@@ -44,10 +44,13 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     @Override
     public final List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
         this.availableCells.clear();
+        final List<Point2D> res = new ArrayList<>();
         for (final var movement : super.getEntityDefinition().getMoveRules()) {
-            availableCells.addAll(movement.getValidMoves(start, board, super.getPlayerColor()));
+            res.addAll(movement.getValidMoves(start, board, super.getPlayerColor()));
+            // This is maintained for now for compatibility, well be removed as well as "availableCells"
+            availableCells.addAll(res);
         }
-        return Collections.unmodifiableList(this.availableCells);
+        return Collections.unmodifiableList(res);
     }
 
 
