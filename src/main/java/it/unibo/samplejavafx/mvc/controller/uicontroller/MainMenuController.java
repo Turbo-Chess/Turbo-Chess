@@ -11,10 +11,13 @@ public class MainMenuController {
     private GameCoordinator coordinator;
 
     public void initialize() {
-
     }
 
     public void startNewGame(ActionEvent e) throws IOException {
         this.coordinator.initGame();
+    }
+
+    public void setup() {
+        coordinator.loadPieces();
     }
 }

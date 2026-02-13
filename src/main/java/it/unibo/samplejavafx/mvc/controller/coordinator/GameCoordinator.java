@@ -1,7 +1,9 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
+import ch.qos.logback.core.util.Loader;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
@@ -20,6 +22,11 @@ public class GameCoordinator {
 
     public GameCoordinator(final Stage stage) {
         this.stage = stage;
+    }
+
+    public void loadPieces() {
+        gameController.getLoaderController().load();
+        System.out.println(gameController.getLoaderController().getEntityCache());
     }
 
     public void initGame() throws IOException {

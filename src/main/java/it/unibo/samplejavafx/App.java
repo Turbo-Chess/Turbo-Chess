@@ -31,6 +31,8 @@ public class App extends Application {
 
         final MainMenuController controller = loader.getController();
         controller.setCoordinator(coordinator);
+        // TODO: Refactor with javafx factories
+        controller.setup();
 
         stage.setTitle("TurboChess - Main Menù");
         stage.setScene(scene);
