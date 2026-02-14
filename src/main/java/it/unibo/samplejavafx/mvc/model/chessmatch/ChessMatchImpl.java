@@ -13,8 +13,11 @@ import lombok.ToString;
 public class ChessMatchImpl implements ChessMatch {
     @Getter
     private GameState gameState;
+    @Getter
     private PlayerColor currentPlayer;
-private int turnNumber;
+    @Getter
+    private int turnNumber;
+    @Getter
     private final ChessBoard board;
 
     public ChessMatchImpl() {

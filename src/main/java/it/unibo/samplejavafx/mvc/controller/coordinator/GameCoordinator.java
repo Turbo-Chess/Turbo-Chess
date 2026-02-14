@@ -7,12 +7,19 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
+import it.unibo.samplejavafx.mvc.model.entity.Piece;
+import it.unibo.samplejavafx.mvc.model.entity.PieceType;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
+import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class GameCoordinator {
     private final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
@@ -42,5 +49,20 @@ public class GameCoordinator {
         stage.setScene(scene);
         scene.getStylesheets().add(cssLocation.toExternalForm());
         stage.show();
+        //Only for testing
+        final PieceDefinition p = new PieceDefinition.Builder()
+                .name("test-piece")
+                .id("test")
+                .imagePath("/home/giacomo/Documents/pawn.jpg")
+                .weight(3)
+                .pieceType(PieceType.INFERIOR)
+                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .build();
+        final Piece piece = new Piece.Builder()
+                .entityDefinition(p)
+                .gameId(1)
+                .playerColor(PlayerColor.BLACK)
+                .build();
+        this.match.getBoard().setEntity(new Point2D(1, 1), piece);
     }
 }
