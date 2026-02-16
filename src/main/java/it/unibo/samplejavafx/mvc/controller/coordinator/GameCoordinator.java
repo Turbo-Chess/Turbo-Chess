@@ -50,19 +50,48 @@ public class GameCoordinator {
         scene.getStylesheets().add(cssLocation.toExternalForm());
         stage.show();
         //Only for testing
-        final PieceDefinition p = new PieceDefinition.Builder()
-                .name("test-piece")
-                .id("test")
+        final PieceDefinition rook = new PieceDefinition.Builder()
+                .name("Rook")
+                .id("rook")
                 .imagePath("/home/giacomo/Documents/pawn.jpg")
-                .weight(3)
-                .pieceType(PieceType.INFERIOR)
-                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .weight(5)
+                .pieceType(PieceType.TOWER)
+                .moveRules(List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING)
+                ))
                 .build();
         final Piece piece = new Piece.Builder()
-                .entityDefinition(p)
+                .entityDefinition(rook)
                 .gameId(1)
                 .playerColor(PlayerColor.BLACK)
                 .build();
+
+        final PieceDefinition kingDef = new PieceDefinition.Builder()
+                .name("King")
+                .id("king")
+                .imagePath("/home/giacomo/Documents/king.jpg")
+                .weight(100)
+                .pieceType(PieceType.KING)
+                .moveRules(List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
+                        new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
+                        new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
+                        new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING),
+                        new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)
+                ))
+                .build();
+        final Piece king = new Piece.Builder()
+                .entityDefinition(kingDef)
+                .gameId(2)
+                .playerColor(PlayerColor.WHITE)
+                .build();
         this.match.getBoard().setEntity(new Point2D(1, 1), piece);
+        this.match.getBoard().setEntity(new Point2D(6, 7), king);
     }
 }
