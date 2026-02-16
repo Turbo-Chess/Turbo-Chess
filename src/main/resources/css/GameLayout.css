@@ -51,3 +51,9 @@
 #chessboardGridPane .button:focused {
     -fx-background-color: #444a54;
 }
+
+#chessboardGridPane .button:valid_movement {
+    -fx-background-color: rgba(255, 255, 0, 0.5); /* Semi-transparent yellow highlight */
+    -fx-border-color: gold;
+    -fx-border-width: 2;
+}
