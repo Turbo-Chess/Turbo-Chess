@@ -1,9 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.handler;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
-import javafx.geometry.Point2D;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
  * Placeholder.
@@ -13,7 +11,9 @@ public interface TurnHandler {
     /**
      *  placeholder.
      *
-     * 
+     * @param moveAction placeholder.
+     * @param target placeholder.
+     * @return placeholder.
      */
     boolean executeTurn(final MoveType moveAction, final Point2D target);
 }
