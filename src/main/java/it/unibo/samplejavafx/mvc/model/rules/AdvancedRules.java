@@ -79,8 +79,8 @@ public final class AdvancedRules {
      * @param interposingMoves empty map that will contain the result of getInterposingPieces().
      * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
      */
-    static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
-                             final Map<Piece, List<Point2D>> interposingMoves) {
+    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
+                                    Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
         final List<Point2D> possibleMoves = new LinkedList<>();
@@ -94,15 +94,12 @@ public final class AdvancedRules {
             switch (state) {
                 case CHECK:
                     if (possibleMoves.isEmpty()) {
-                        return CheckCalculator.getInterposingPieces(cb, currentColor).isEmpty();
-                        // ADD Map<Piece, List<Point2D>> to get moves
+                        interposingPieces = Map.copyOf(CheckCalculator.getInterposingPieces(cb, currentColor));
+                        return interposingPieces.isEmpty() ? true : false; 
                     }
                     break;
                 case DOUBLE_CHECK:
-                    if (possibleMoves.isEmpty()) {
-                        return true;
-                    }
-                    break;
+                    return possibleMoves.isEmpty() ? true : false;
                 default:
                     return false;
             }
@@ -150,7 +147,7 @@ public final class AdvancedRules {
             final var piece = (Piece) cb.getEntity(kingPos).get().asMoveable().get();
             if (piece.getType() == PieceType.KING && !piece.hasMoved()) {
                 if (hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y())) 
-                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))) {
+                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))) { // AGGIUNGERE CONDIZIONI SU CELLE LIBERE
                     return CastleCondition.CASTLE_BOTH;
                 } else if (hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y()))) {
                     return CastleCondition.CASTLE_LEFT;
