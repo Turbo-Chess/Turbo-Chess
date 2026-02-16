@@ -83,13 +83,8 @@ public final class AdvancedRules {
                                     Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
-        final List<Point2D> possibleMoves = new LinkedList<>();
+        final List<Point2D> possibleMoves = kingPossibleMoves(kingCells, cb, currentColor);
 
-        for (final Point2D cell : kingCells) {
-            if (underAttack(cb, swapColor(currentColor), cell).isEmpty()) {
-                possibleMoves.add(cell);
-            }
-        }
         if (!king.isEmpty()) {
             switch (state) {
                 case CHECK:
@@ -182,7 +177,7 @@ public final class AdvancedRules {
      * Utility method to scan a certain cell and see if it's under attack by any piece owned by the opposing player.
      * 
      * @param cb chessboard of the current game.
-     * @param currentColor color of the current player.
+     * @param currentColor color of the enemy player.
      * @param target the cell we want to check.
      * @return an {@code Optional} containing the attacking piece if there is any, returns an empty Optional otherwise.
      */
@@ -202,6 +197,25 @@ public final class AdvancedRules {
             }
         }
         return Optional.empty(); // otherwise
+    }
+
+    /**
+     * placeholder.
+     * 
+     * @param kingCells placeholder.
+     * @param cb placeholder.
+     * @param currentColor placeholder.
+     * @return placeholder.
+     */
+    public static List<Point2D> kingPossibleMoves(final List<Point2D> kingCells,
+            final ChessBoard cb, final PlayerColor currentColor) {
+        final List<Point2D> possibleMoves = new LinkedList<>();
+        for (final Point2D cell : kingCells) {
+            if (underAttack(cb, swapColor(currentColor), cell).isEmpty()) {
+                possibleMoves.add(cell);
+            }
+        }
+        return possibleMoves;
     }
 
     /**
