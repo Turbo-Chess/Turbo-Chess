@@ -179,16 +179,6 @@ public final class AdvancedRules {
     }
 
     /**
-     * An enum containing all the possible scenarios regarding the ability to castle during a game of chess.
-     */
-    enum CastleCondition {
-        NO_CASTLE,
-        CASTLE_LEFT,
-        CASTLE_RIGHT,
-        CASTLE_BOTH
-    }
-
-    /**
      * Utility method to scan a certain cell and see if it's under attack by any piece owned by the opposing player.
      * 
      * @param cb chessboard of the current game.
