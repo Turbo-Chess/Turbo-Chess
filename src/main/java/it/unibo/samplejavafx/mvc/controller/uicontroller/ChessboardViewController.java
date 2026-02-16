@@ -11,20 +11,26 @@ import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
+
 
 public class ChessboardViewController implements BoardObserver {
     private ChessMatch match = new ChessMatchImpl();
     @Setter
     private GameController gameController;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
+    private Point2D lastPointClicked;
+    private final Set<Point2D> lastPossibleMoves = new HashSet<>();
 
     @FXML
     private GridPane chessboardGridPane;
@@ -44,8 +50,22 @@ public class ChessboardViewController implements BoardObserver {
                 button.setOnAction(event -> {
                     //TODO: mettere il codice del turn handler
                     System.out.println("codice che chiama il turn handler");
-                    //Only for testing
-                    match.getBoard().removeEntity(cells.inverse().get(event.getSource()));
+
+                    lastPointClicked = cells.inverse().get((Button) event.getSource());
+                    final Set<Point2D> moves = new HashSet<>(match.getBoard().getEntity(lastPointClicked).get().asMoveable().get().getValidMoves(lastPointClicked, match.getBoard()));
+
+                    if (!lastPossibleMoves.equals(moves)) {
+                        for (final var move : lastPossibleMoves) {
+                            cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+                        }
+                    }
+
+                    lastPossibleMoves.clear();
+                    lastPossibleMoves.addAll(moves);
+
+                    for (final var move : moves) {
+                        cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
+                    }
                 });
 
                 button.getStyleClass().add("material-surface");
@@ -68,7 +88,7 @@ public class ChessboardViewController implements BoardObserver {
         final Button btn = cells.get(pos);
         btn.setText(entity.getName());
         btn.setText("");
-        btn.setGraphic(new ImageView(new Image("file:" + "/home/giacomo/Documents/pawn.jpg", 120, 120, true, true)));
+        btn.setGraphic(new ImageView(new Image("file:" + entity.getImagePath(), 120, 120, true, true)));
     }
 
     @Override
