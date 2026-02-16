@@ -2,7 +2,10 @@ package it.unibo.samplejavafx.mvc.model.rules;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,13 +37,13 @@ public final class CheckCalculator {
      * @param kingColor the color of the king under check.
      * @return a list of pieces that can block the check, sorted by weight (ascending).
      */
-    public static List<Piece> getInterposingPieces(final ChessBoard cb, final PlayerColor kingColor) {
+    public static Map<Piece, List<Point2D>> getInterposingPieces(final ChessBoard cb, final PlayerColor kingColor) {
         final List<Piece> attackers = getAttackers(cb, kingColor);
 
         final Piece attacker = attackers.get(0);
         final Optional<Piece> kingOpt = AdvancedRules.getKing(cb, kingColor);
         if (kingOpt.isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
         final Piece king = kingOpt.get();
         final Point2D kingPos = cb.getPosByEntity(king);
@@ -50,17 +53,18 @@ public final class CheckCalculator {
         final List<Point2D> path = getLineOfSight(kingPos, attackerPos);
 
         if (path.isEmpty()) {
-            return Collections.emptyList(); // Check for non-sliding pieces
+            return Collections.emptyMap(); // Check for non-sliding pieces
         }
 
-        final List<Piece> candidates = new ArrayList<>();
+        final Map<Piece, List<Point2D>> candidates = new HashMap<>();
+        final List<Point2D> holder = new LinkedList<>();
         final Set<Optional<Entity>> friends = AdvancedRules.getPiecesOfColor(cb, kingColor);
 
         for (final Optional<Entity> friendOpt : friends) {
             if (friendOpt.isPresent() && friendOpt.get().asMoveable().isPresent()) {
                 final Piece friend = (Piece) friendOpt.get();
-                if (friend.getType() == PieceType.KING) {
-                    continue; // King cannot block check for itself (it moves away)
+                if (friend.getType().equals(PieceType.KING)) {
+                    continue; // King cannot block check for itself
                 }
 
                 final Point2D startPos = cb.getPosByEntity(friend);
@@ -69,11 +73,12 @@ public final class CheckCalculator {
                 // Check if piece can move to any cell in the path
                 for (final Point2D cell : path) {
                     if (moves.contains(cell) && isMoveSafe(cb, friend, startPos, cell, kingColor)) {
-                        candidates.add(friend);
+                        holder.add(cell);
                         break;
-                        // NEEDS revision in order to work with custom pieces
                     }
                 }
+                candidates.put(friend, holder);
+                holder.clear();
             }
         }
         return candidates;
@@ -156,7 +161,7 @@ public final class CheckCalculator {
      * @param kingColor the color of the king given in input.
      * @return {@code true} if the move doesn't leave the king in check, {@code false} otherwise.
      */
-    private static boolean isMoveSafe(final ChessBoard cb, final Piece piece, final Point2D from,
+    public static boolean isMoveSafe(final ChessBoard cb, final Piece piece, final Point2D from,
                                     final Point2D to, final PlayerColor kingColor) {
         final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
 
