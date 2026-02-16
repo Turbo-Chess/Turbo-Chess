@@ -7,5 +7,6 @@ public enum GameState {
     NORMAL,
     CHECK,
     DOUBLE_CHECK,
-    CHECKMATE
+    CHECKMATE,
+    DRAW
 }
