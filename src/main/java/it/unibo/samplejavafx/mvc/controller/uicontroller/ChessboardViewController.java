@@ -2,7 +2,6 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
@@ -18,7 +17,9 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
@@ -28,13 +29,13 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  */
 public final class ChessboardViewController implements BoardObserver {
     private static final int IMAGE_SIZE = 120;
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewController.class);
 
     private ChessMatch match = new ChessMatchImpl();
     @Setter
     private GameController gameController;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
-    private Point2D lastPointClicked;
+    private Point2D lastPointClicked = new Point2D(-1, -1);
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
 
     @FXML
@@ -62,9 +63,23 @@ public final class ChessboardViewController implements BoardObserver {
                     //TODO: mettere il codice del turn handler
                     LOGGER.warn("codice che chiama il turn handler");
 
-                    lastPointClicked = cells.inverse().get((Button) event.getSource());
+                    final Point2D pointClicked = cells.inverse().get((Button) event.getSource());
+                    if (!this.match.getBoard().checkBounds(lastPointClicked)) {
+                        lastPointClicked = pointClicked;
+                    }
+
+                       if (lastPossibleMoves.contains(pointClicked)) {
+                           if (match.getBoard().isFree(pointClicked)) {
+                               match.getBoard().move(lastPointClicked, pointClicked);
+                           } else {
+                               match.getBoard().eat(lastPointClicked, pointClicked);
+                           }
+                       }
+
+                    lastPointClicked = pointClicked;
+
                     if (match.getBoard().getEntity(lastPointClicked).isPresent()
-                        && match.getBoard().getEntity(lastPointClicked).get().asMoveable().isPresent()) {
+                            && match.getBoard().getEntity(lastPointClicked).get().asMoveable().isPresent()) {
                         final Set<Point2D> moves = new HashSet<>(
                                 match.getBoard()
                                         .getEntity(lastPointClicked)
@@ -86,6 +101,7 @@ public final class ChessboardViewController implements BoardObserver {
                             cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
                         }
                     }
+
                 });
 
                 button.getStyleClass().add("material-surface");
