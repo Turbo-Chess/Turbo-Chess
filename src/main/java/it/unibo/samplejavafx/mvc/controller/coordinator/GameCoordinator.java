@@ -63,8 +63,11 @@ public final class GameCoordinator {
     public void initGame() throws IOException {
         final Parent root = loader.load();
         final ChessboardViewController viewController = loader.getController();
+        // TODO: remove reference of the match in the view controller
         viewController.setMatch(this.match);
         viewController.setGameController(this.gameController);
+        match.getBoard().addObserver(viewController);
+        gameController.setMatch(match);
 
         final var cssLocation = getClass().getResource("/css/GameLayout.css");
         final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);

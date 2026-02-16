@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.model.chessmatch;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
+import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 
 /**
  * placeholder.
@@ -35,4 +36,11 @@ public interface ChessMatch {
      * @return placeholder.
      */
     ChessBoard getBoard();
+
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    TurnHandler getTurnHandler();
 }

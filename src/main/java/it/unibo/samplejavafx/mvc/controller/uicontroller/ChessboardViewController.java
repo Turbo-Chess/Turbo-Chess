@@ -31,11 +31,12 @@ public final class ChessboardViewController implements BoardObserver {
     private static final int IMAGE_SIZE = 120;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewController.class);
 
+    // TODO: remove reference of the match in the view controller
     private ChessMatch match = new ChessMatchImpl();
     @Setter
     private GameController gameController;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
-    private Point2D lastPointClicked = new Point2D(-1, -1);
+    private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
 
     @FXML
@@ -60,13 +61,16 @@ public final class ChessboardViewController implements BoardObserver {
                 final Button button = new Button();
 
                 button.setOnAction(event -> {
-                    //TODO: mettere il codice del turn handler
-                    LOGGER.warn("codice che chiama il turn handler");
-
+                    // Lista:
+                    // Vuota: click fa schifo
+                    // Piena: mosse da mostrare
+                    // Una sola (che deve essere la stessa cliccata): chiamato eat o move
                     final Point2D pointClicked = cells.inverse().get((Button) event.getSource());
-                    if (!this.match.getBoard().checkBounds(lastPointClicked)) {
-                        lastPointClicked = pointClicked;
-                    }
+                    //gameController.handleClick();
+
+                    // Call the turn handler
+                    //turnHandler.thinking();
+
 
                        if (lastPossibleMoves.contains(pointClicked)) {
                            if (match.getBoard().isFree(pointClicked)) {
@@ -78,8 +82,10 @@ public final class ChessboardViewController implements BoardObserver {
 
                     lastPointClicked = pointClicked;
 
+
                     if (match.getBoard().getEntity(lastPointClicked).isPresent()
                             && match.getBoard().getEntity(lastPointClicked).get().asMoveable().isPresent()) {
+                        // Turn handler call result
                         final Set<Point2D> moves = new HashSet<>(
                                 match.getBoard()
                                         .getEntity(lastPointClicked)
@@ -89,17 +95,17 @@ public final class ChessboardViewController implements BoardObserver {
                                         .getValidMoves(lastPointClicked, match.getBoard()));
 
                         if (!lastPossibleMoves.equals(moves)) {
-                            for (final var move : lastPossibleMoves) {
-                                cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
-                            }
+                            hideMovementCells(lastPossibleMoves);
                         }
 
+                       showMovementCells(moves);
+
+
+                        // Update variables to keep track of the state
                         lastPossibleMoves.clear();
                         lastPossibleMoves.addAll(moves);
+                        lastPointClicked = pointClicked;
 
-                        for (final var move : moves) {
-                            cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
-                        }
                     }
 
                 });
@@ -120,7 +126,6 @@ public final class ChessboardViewController implements BoardObserver {
      */
     public void setMatch(final ChessMatch match) {
         this.match = match;
-        this.match.getBoard().addObserver(this);
     }
 
     @Override
@@ -138,5 +143,17 @@ public final class ChessboardViewController implements BoardObserver {
         final Button btn = cells.get(pos);
         btn.setText("");
         btn.setGraphic(null);
+    }
+
+    private void showMovementCells(final Set<Point2D> cellsToShow) {
+        for (final var move : cellsToShow) {
+            cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
+        }
+    }
+
+    private void hideMovementCells(final Set<Point2D> cellsToHide) {
+        for (final var move : cellsToHide) {
+            cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+        }
     }
 }

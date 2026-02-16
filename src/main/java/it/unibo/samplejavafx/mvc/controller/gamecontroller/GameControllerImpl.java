@@ -4,8 +4,10 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
+import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ public final class GameControllerImpl implements GameController {
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
+    @Setter
+    private ChessMatch match;
 
     @Override
     public List<Point2D> getAvailableCells(final int pieceGameId) {
@@ -31,5 +35,10 @@ public final class GameControllerImpl implements GameController {
     @Override
     public void clearCache() {
         moveCache.clearCache();
+    }
+
+    @Override
+    public List<Point2D> handleClick(final Point2D pointClicked) {
+        return match.getTurnHandler().thinking(pointClicked);
     }
 }
