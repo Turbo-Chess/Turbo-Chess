@@ -1,10 +1,19 @@
 package it.unibo.samplejavafx;
 
-import it.unibo.samplejavafx.App;
-import javafx.application.Application;
+/**
+ * placeholder.
+ */
+public final class Main {
 
-public class Main {
-    public static void main(String[] args) {
+    private Main() {
+    }
+
+    /**
+     * placeholder.
+     *
+     * @param args placeholder.
+     */
+    public static void main(final String[] args) {
         App.main(args);
     }
 }

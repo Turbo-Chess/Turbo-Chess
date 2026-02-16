@@ -7,31 +7,45 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class App extends Application {
-    private static final String layoutsFolder = "src/main/resources/layouts/";
-    private FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
-    private GameCoordinator coordinator;
+/**
+ * placeholder.
+ */
+public final class App extends Application {
+    private static final int WINDOW_WIDTH = 800;
+    private static final int WINDOW_HEIGHT = 800;
+    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+
+    private final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
+
+    /**
+     * placeholder.
+     *
+     * @param stage placeholder.
+     * @throws Exception placeholder.
+     */
     @Override
-    public void start(Stage stage) throws Exception {
-//        var fxmlLocation = getClass().getResource( "/layouts/MainMenu.fxml");
-//        if (fxmlLocation == null) {
-//            throw new RuntimeException("CRITICAL: MainMenu.fxml not found in the classpath!");
-//        }
-        coordinator = new GameCoordinator(stage);
-        Parent root = loader.load();
-        Scene scene = new Scene(root, 800, 800);
+    public void start(final Stage stage) throws Exception {
+        //var fxmlLocation = getClass().getResource( "/layouts/MainMenu.fxml");
+        //if (fxmlLocation == null) {
+        //    throw new RuntimeException("CRITICAL: MainMenu.fxml not found in the classpath!");
+        //}
+        final GameCoordinator coordinator = new GameCoordinator(stage);
+        final Parent root = loader.load();
+        final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        var cssLocation = getClass().getResource("/css/MainMenu.css");
+        final var cssLocation = getClass().getResource("/css/MainMenu.css");
         if (cssLocation != null) {
             scene.getStylesheets().add(cssLocation.toExternalForm());
         } else {
-            System.err.println("Warning: MainMenu.css not found, loading without styles.");
+            LOGGER.warn("Warning: MainMenu.css not found, loading without styles.");
         }
 
         final MainMenuController controller = loader.getController();
         controller.setCoordinator(coordinator);
-        // TODO: Refactor with javafx factories
+        //TODO: Refactor with javafx factories
         controller.setup();
 
         stage.setTitle("TurboChess - Main Menù");
@@ -39,7 +53,12 @@ public class App extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    /**
+     * placeholder.
+     *
+     * @param args placeholder.
+     */
+    public static void main(final String[] args) {
         launch(args);
     }
 }

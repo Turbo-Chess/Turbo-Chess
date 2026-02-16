@@ -8,11 +8,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * placeholder.
+ */
 @EqualsAndHashCode
 @ToString
 public class ChessMatchImpl implements ChessMatch {
     @Getter
-    private GameState gameState;
+    private GameState gameState; //NOPMD
     @Getter
     private PlayerColor currentPlayer;
     @Getter
@@ -20,6 +23,9 @@ public class ChessMatchImpl implements ChessMatch {
     @Getter
     private final ChessBoard board;
 
+    /**
+     * placeholder.
+     */
     public ChessMatchImpl() {
         gameState = GameState.NORMAL;
         this.board = new ChessBoardImpl();

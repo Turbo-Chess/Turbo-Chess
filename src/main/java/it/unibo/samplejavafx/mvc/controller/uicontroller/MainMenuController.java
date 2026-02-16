@@ -1,29 +1,39 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
-import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
-import it.unibo.samplejavafx.mvc.model.entity.Entity;
-import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.Setter;
 
 import javafx.event.ActionEvent;
 import java.io.IOException;
 
-public class MainMenuController {
+/**
+ * placeholder.
+ */
+public final class MainMenuController {
     @Setter
     private GameCoordinator coordinator;
 
+    /**
+     * placeholder.
+     */
     public void initialize() {
 
     }
 
-    public void startNewGame(ActionEvent e) throws IOException {
+    /**
+     * placeholder.
+     *
+     * @param e placeholder.
+     * @throws IOException placeholder.
+     */
+    public void startNewGame(final ActionEvent e) throws IOException {
         this.coordinator.initGame();
     }
 
+    /**
+     * placeholder.
+     */
     public void setup() {
         coordinator.loadPieces();
     }
-
-
 }
