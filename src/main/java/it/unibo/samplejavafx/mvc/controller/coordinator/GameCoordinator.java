@@ -138,7 +138,31 @@ public final class GameCoordinator {
                 .gameId(2)
                 .playerColor(PlayerColor.WHITE)
                 .build();
+
+        final PieceDefinition bishopDef = new PieceDefinition.Builder()
+                .name("Bishop")
+                .id("bishop")
+                .imagePath("/home/giacomo/Documents/bishop.jpg")
+                .weight(3)
+                .pieceType(PieceType.INFERIOR)
+                .moveRules(List.of(
+                        new MoveRulesImpl(new Point2D(-1, -1),
+                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING),
+                        new MoveRulesImpl(new Point2D(-1, 1),
+                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING)
+
+                ))
+                .build();
+        final Piece bishop = new Piece.Builder()
+                .entityDefinition(bishopDef)
+                .gameId(3)
+                .playerColor(PlayerColor.WHITE)
+                .build();
         this.match.getBoard().setEntity(new Point2D(1, 1), piece);
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
+        this.match.getBoard().setEntity(new Point2D(4, 4), bishop);
+
     }
 }
