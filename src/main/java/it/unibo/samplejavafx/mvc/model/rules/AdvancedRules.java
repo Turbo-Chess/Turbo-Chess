@@ -76,7 +76,7 @@ public final class AdvancedRules {
      * @param cb chessboard of the current game.
      * @param currentColor color of the player.
      * @param state current game-state.
-     * @param interposingMoves empty map that will contain the result of getInterposingPieces().
+     * @param interposingPieces empty map that will contain the result of getInterposingPieces().
      * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
      */
     public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
