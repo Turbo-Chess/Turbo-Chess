@@ -77,7 +77,9 @@ public final class CheckCalculator {
                         break;
                     }
                 }
-                candidates.put(friend, holder);
+                if (!holder.isEmpty()) {
+                    candidates.put(friend, holder);
+                }
                 holder.clear();
             }
         }
@@ -165,12 +167,9 @@ public final class CheckCalculator {
                                     final Point2D to, final PlayerColor kingColor) {
         final ChessBoard tempBoard = new ChessBoardImpl(cb.getBoard());
         if (tempBoard.isFree(to)) {
-            if (tempBoard.isFree(from)) {
-                System.out.println("vuoto");
-            }
-            tempBoard.move(tempBoard.getPosByEntity(piece), to);
+            tempBoard.move(from, to);
         } else {
-            tempBoard.eat(tempBoard.getPosByEntity(piece), to);
+            tempBoard.eat(from, to);
         }
 
         return getAttackers(tempBoard, kingColor).isEmpty();
