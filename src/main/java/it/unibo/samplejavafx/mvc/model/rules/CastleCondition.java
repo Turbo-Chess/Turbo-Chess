@@ -7,5 +7,5 @@ public enum CastleCondition {
     NO_CASTLE,
     CASTLE_LEFT,
     CASTLE_RIGHT,
-    CASTLE_BOTH    
+    CASTLE_BOTH
 }

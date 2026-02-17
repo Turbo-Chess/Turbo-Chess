@@ -6,14 +6,15 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 /**
  * Placeholder.
  */
+@FunctionalInterface
 public interface TurnHandler {
 
     /**
-     *  placeholder.
+     * placeholder.
      *
      * @param moveAction placeholder.
      * @param target placeholder.
      * @return placeholder.
      */
-    boolean executeTurn(final MoveType moveAction, final Point2D target);
+    boolean executeTurn(MoveType moveAction, Point2D target);
 }

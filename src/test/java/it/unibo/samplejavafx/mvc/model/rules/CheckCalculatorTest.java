@@ -1,23 +1,17 @@
 package it.unibo.samplejavafx.mvc.model.rules;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
-import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-import it.unibo.samplejavafx.mvc.model.movement.JumpingMovement;
-import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
-import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
-import it.unibo.samplejavafx.mvc.model.movement.SlidingMovement;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CheckCalculatorTest {
-    private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    private final ObjectMapper mapper = new ObjectMapper();
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
     private ChessBoard board;
     private int idCount;
@@ -44,7 +38,7 @@ class CheckCalculatorTest {
         board.setEntity(new Point2D(7, 0), createRook(PlayerColor.BLACK));
         board.setEntity(new Point2D(4, 4), createRook(PlayerColor.WHITE));
 
-        List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
+        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
         assertEquals(1, blockers.size());
         assertEquals(new Point2D(4, 4), board.getPosByEntity(blockers.get(0)));
     }
@@ -55,7 +49,7 @@ class CheckCalculatorTest {
         board.setEntity(new Point2D(4, 7), createQueen(PlayerColor.BLACK));
         board.setEntity(new Point2D(2, 2), createBishop(PlayerColor.WHITE));
 
-        List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
+        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
         assertEquals(1, blockers.size());
         assertEquals(new Point2D(2, 2), board.getPosByEntity(blockers.get(0)));
     }
@@ -66,7 +60,7 @@ class CheckCalculatorTest {
         board.setEntity(new Point2D(7, 7), createBishop(PlayerColor.BLACK));
         board.setEntity(new Point2D(0, 5), createRook(PlayerColor.WHITE));
 
-        List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
+        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
         assertEquals(1, blockers.size());
         assertEquals(new Point2D(0, 5), board.getPosByEntity(blockers.get(0)));
     }
@@ -77,7 +71,7 @@ class CheckCalculatorTest {
         board.setEntity(new Point2D(6, 5), createKnight(PlayerColor.BLACK));
         board.setEntity(new Point2D(4, 5), createRook(PlayerColor.WHITE));
 
-        List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
+        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
         assertTrue(blockers.isEmpty());
     }
 
@@ -87,7 +81,7 @@ class CheckCalculatorTest {
         board.setEntity(new Point2D(0, 1), createRook(PlayerColor.BLACK));
         board.setEntity(new Point2D(5, 5), createRook(PlayerColor.WHITE));
 
-        List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
+        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
         assertTrue(blockers.isEmpty());
     }
 
@@ -105,7 +99,7 @@ class CheckCalculatorTest {
         board.setEntity(new Point2D(7, 7), createBishop(PlayerColor.BLACK));
         board.setEntity(new Point2D(3, 3), createQueen(PlayerColor.WHITE));
         
-        List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
+        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
         // The queen at 3,3 cannot move to 3,0 because it would expose the king to the bishop.
         assertTrue(blockers.isEmpty());
     }
@@ -136,27 +130,27 @@ class CheckCalculatorTest {
         return new Piece.Builder().entityDefinition(p).gameId(id).playerColor(color).build();
     }
 
-    private Piece createKing(PlayerColor color) throws StreamReadException, DatabindException, IOException {
+    private Piece createKing(final PlayerColor color) throws StreamReadException, DatabindException, IOException {
         final PieceDefinition king = mapper.readValue(new File(PIECES_PATH + "King.json"), PieceDefinition.class);
         return createPiece(color, idCount, king);
     }
 
-    private Piece createRook(PlayerColor color) throws StreamReadException, DatabindException, IOException {
+    private Piece createRook(final PlayerColor color) throws StreamReadException, DatabindException, IOException {
         final PieceDefinition rook = mapper.readValue(new File(PIECES_PATH + "Rook.json"), PieceDefinition.class);
         return createPiece(color, idCount, rook);
     }
 
-    private Piece createBishop(PlayerColor color) throws StreamReadException, DatabindException, IOException {
+    private Piece createBishop(final PlayerColor color) throws StreamReadException, DatabindException, IOException {
         final PieceDefinition bishop = mapper.readValue(new File(PIECES_PATH + "Bishop.json"), PieceDefinition.class);
         return createPiece(color, idCount, bishop);
     }
 
-    private Piece createQueen(PlayerColor color) throws StreamReadException, DatabindException, IOException {
+    private Piece createQueen(final PlayerColor color) throws StreamReadException, DatabindException, IOException {
         final PieceDefinition queen = mapper.readValue(new File(PIECES_PATH + "Queen.json"), PieceDefinition.class);
         return createPiece(color, idCount, queen);
     }
 
-    private Piece createKnight(PlayerColor color) throws StreamReadException, DatabindException, IOException {
+    private Piece createKnight(final PlayerColor color) throws StreamReadException, DatabindException, IOException {
         final PieceDefinition knight = mapper.readValue(new File(PIECES_PATH + "Knight.json"), PieceDefinition.class);
         return createPiece(color, idCount, knight);
     }
