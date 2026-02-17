@@ -24,7 +24,7 @@ public class TurnHandlerImpl implements TurnHandler {
     private GameState state;
     private CastleCondition castlingOptions;
     private PlayerColor currentColor;
-    private Optional<Piece> currentPiece;
+    private Optional<Piece> currentPiece = Optional.empty();
     private List<Point2D> pieceMoves;
     private Map<Piece, List<Point2D>> interposingPieces;
 
