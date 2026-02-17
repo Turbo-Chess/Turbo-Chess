@@ -108,6 +108,13 @@ public class TurnHandlerImpl implements TurnHandler {
         if (board.isFree(pos) && pieceMoves.contains(pos)) {
             return executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
         }
+        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor().equals(currentColor)
+                && board.getEntity(pos).get().getType().equals(PieceType.KING)) {
+            var king = (Piece) board.getEntity(pos).get();
+            this.currentPiece = Optional.of(king);
+            this.pieceMoves = AdvancedRules.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            return this.pieceMoves;
+        }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor().equals(currentColor)) {
             var newPiece = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(newPiece);

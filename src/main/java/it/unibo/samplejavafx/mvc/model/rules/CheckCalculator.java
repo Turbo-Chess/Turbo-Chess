@@ -163,7 +163,6 @@ public final class CheckCalculator {
      */
     public static boolean isMoveSafe(final ChessBoard cb, final Piece piece, final Point2D from,
                                     final Point2D to, final PlayerColor kingColor) {
-        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
 
         final ChessBoard tempBoard = new ChessBoardImpl(cb.getBoard());
         if (tempBoard.isFree(to)) {
@@ -174,10 +173,6 @@ public final class CheckCalculator {
         } else {
             tempBoard.eat(tempBoard.getPosByEntity(piece), to);
         }
-
-        // Perform move
-        // cells.remove(from);
-        // cells.put(to, piece);
 
         return getAttackers(tempBoard, kingColor).isEmpty();
     }

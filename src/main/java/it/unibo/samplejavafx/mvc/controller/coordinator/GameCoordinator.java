@@ -164,9 +164,16 @@ public final class GameCoordinator {
                 .gameId(3)
                 .playerColor(PlayerColor.WHITE)
                 .build();
+
+        final Piece bishop2 = new Piece.Builder()
+                .entityDefinition(bishopDef)
+                .gameId(4)
+                .playerColor(PlayerColor.WHITE)
+                .build();
         this.match.getBoard().setEntity(new Point2D(1, 1), piece);
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
         this.match.getBoard().setEntity(new Point2D(4, 4), bishop);
+        this.match.getBoard().setEntity(new Point2D(5, 3), bishop2);
 
     }
 }

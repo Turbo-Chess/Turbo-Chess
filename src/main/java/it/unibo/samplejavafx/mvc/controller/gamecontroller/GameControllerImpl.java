@@ -10,7 +10,6 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +46,7 @@ public final class GameControllerImpl implements GameController {
     }
 
     @Override
-    public List<Point2D> handleClick(final Point2D pointClicked) {
+    public void handleClick(final Point2D pointClicked) {
         // TODO: implement using the cache
         // TODO: think of using sets instead of lists
 
@@ -66,6 +65,5 @@ public final class GameControllerImpl implements GameController {
         lastPointClicked = pointClicked;
         lastPossibleMoves.clear();
         lastPossibleMoves.addAll(result);
-        return null;
     }
 }

@@ -43,9 +43,8 @@ public interface GameController {
      * placeholder.
      *
      * @param pointClicked placeholder.
-     * @return placeholder.
      */
-    public List<Point2D> handleClick(Point2D pointClicked);
+    public void handleClick(Point2D pointClicked);
 
     /**
      * placeholder.
