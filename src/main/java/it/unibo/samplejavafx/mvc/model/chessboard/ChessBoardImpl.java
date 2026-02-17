@@ -162,8 +162,11 @@ public class ChessBoardImpl implements ChessBoard {
      * @param start placeholder.
      * @param end placeholder.
      */
-    public void move(Point2D start, Point2D end) {
-
+    @Override
+    public void move(final Point2D start, final Point2D end) {
+        final Entity temp = this.getEntity(start).get();
+        this.removeEntity(start);
+        this.setEntity(end, temp);
     }
 
     /**
@@ -172,7 +175,11 @@ public class ChessBoardImpl implements ChessBoard {
      * @param start placeholder.
      * @param end placeholder.
      */
-    public void eat(Point2D start, Point2D end) {
-
+    @Override
+    public void eat(final Point2D start, final Point2D end) {
+        final Entity temp = this.getEntity(start).get();
+        this.removeEntity(end);
+        this.removeEntity(start);
+        this.setEntity(end, temp);
     }
 }

@@ -95,12 +95,12 @@ class MovementTest {
         //Verify the jumping movement of the black piece, assuming it remains on board limits
         board.setEntity(new Point2D(1, 2), blackJumpingPiece);
         blackJumpingPiece.getValidMoves(new Point2D(1, 2), board);
-        assertEquals(List.of(new Point2D(1,3), new Point2D(1, 1), new Point2D(2, 2), new Point2D(0, 2)), blackJumpingPiece.getAvailableCells());
+        assertEquals(Set.of(new Point2D(1,3), new Point2D(1, 1), new Point2D(2, 2), new Point2D(0, 2)), new HashSet<>(blackJumpingPiece.getAvailableCells()));
 
         //Verify the jumping movement of the white piece, assuming it remains on board limits
         board.setEntity(new Point2D(5, 6), whiteJumpingPiece);
         whiteJumpingPiece.getValidMoves(new Point2D(5, 6), board);
-        assertEquals(List.of(new Point2D(5,5), new Point2D(5, 7), new Point2D(6, 6), new Point2D(4, 6)), whiteJumpingPiece.getAvailableCells());
+        assertEquals(Set.of(new Point2D(5,5), new Point2D(5, 7), new Point2D(6, 6), new Point2D(4, 6)), new HashSet<>(whiteJumpingPiece.getAvailableCells()));
 
         board.removeEntity(new Point2D(1, 2));
         board.removeEntity(new Point2D(5, 6));
@@ -108,12 +108,12 @@ class MovementTest {
         //Verify the jumping movement of the black piece, assuming it goes out of board limits
         board.setEntity(new Point2D(0, 0), blackJumpingPiece);
         blackJumpingPiece.getValidMoves(new Point2D(0, 0), board);
-        assertEquals(List.of(new Point2D(0, 1), new Point2D(1, 0)), blackJumpingPiece.getAvailableCells());
+        assertEquals(Set.of(new Point2D(0, 1), new Point2D(1, 0)), new HashSet<>(blackJumpingPiece.getAvailableCells()));
 
         //Verify the jumping movement of the white piece, assuming it remains on board limits
         board.setEntity(new Point2D(7, 7), whiteJumpingPiece);
         whiteJumpingPiece.getValidMoves(new Point2D(7, 7), board);
-        assertEquals(List.of(new Point2D(7,6), new Point2D(6, 7)), whiteJumpingPiece.getAvailableCells());
+        assertEquals(Set.of(new Point2D(7,6), new Point2D(6, 7)), new HashSet<>(whiteJumpingPiece.getAvailableCells()));
     }
 
     @Test

@@ -7,16 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameControllerImpl implements GameController {
+/**
+ * placeholder.
+ */
+public final class GameControllerImpl implements GameController {
     private final Map<Integer, List<Point2D>> movementCache = new HashMap<>();
 
     @Override
-    public List<Point2D> getAvailableCells(int pieceGameId) {
+    public List<Point2D> getAvailableCells(final int pieceGameId) {
         return movementCache.getOrDefault(pieceGameId, Collections.emptyList());
     }
 
     @Override
-    public void cacheAvailableCells(int pieceGameId, List<Point2D> moves) {
+    public void cacheAvailableCells(final int pieceGameId, final List<Point2D> moves) {
         movementCache.put(pieceGameId, List.copyOf(moves));
     }
 

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -19,7 +18,6 @@ import java.util.Optional;
  * Placeholder.
  */
 @Getter
-@EqualsAndHashCode(callSuper = true)
 @ToString
 @JsonDeserialize(builder = Piece.Builder.class)
 public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {

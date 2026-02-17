@@ -76,33 +76,26 @@ public final class AdvancedRules {
      * @param cb chessboard of the current game.
      * @param currentColor color of the player.
      * @param state current game-state.
-     * @param interposingMoves empty map that will contain the result of getInterposingPieces().
+     * @param interposingPieces empty map that will contain the result of getInterposingPieces().
      * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
      */
-    static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
-                             final Map<Piece, List<Point2D>> interposingMoves) {
+    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
+                                    final Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
-        final List<Point2D> possibleMoves = new LinkedList<>();
+        final List<Point2D> possibleMoves = kingPossibleMoves(kingCells, cb, currentColor);
 
-        for (final Point2D cell : kingCells) {
-            if (underAttack(cb, swapColor(currentColor), cell).isEmpty()) {
-                possibleMoves.add(cell);
-            }
-        }
         if (!king.isEmpty()) {
             switch (state) {
                 case CHECK:
                     if (possibleMoves.isEmpty()) {
-                        return CheckCalculator.getInterposingPieces(cb, currentColor).isEmpty();
-                        // ADD Map<Piece, List<Point2D>> to get moves
+                        final Map<Piece, List<Point2D>> interpPieces =
+                                Map.copyOf(CheckCalculator.getInterposingPieces(cb, currentColor));
+                        return interpPieces.isEmpty();
                     }
                     break;
                 case DOUBLE_CHECK:
-                    if (possibleMoves.isEmpty()) {
-                        return true;
-                    }
-                    break;
+                    return possibleMoves.isEmpty();
                 default:
                     return false;
             }
@@ -150,7 +143,7 @@ public final class AdvancedRules {
             final var piece = (Piece) cb.getEntity(kingPos).get().asMoveable().get();
             if (piece.getType() == PieceType.KING && !piece.hasMoved()) {
                 if (hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y())) 
-                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))) {
+                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))) { // AGGIUNGERE CONDIZIONI SU CELLE LIBERE
                     return CastleCondition.CASTLE_BOTH;
                 } else if (hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y()))) {
                     return CastleCondition.CASTLE_LEFT;
@@ -182,20 +175,10 @@ public final class AdvancedRules {
     }
 
     /**
-     * An enum containing all the possible scenarios regarding the ability to castle during a game of chess.
-     */
-    enum CastleCondition {
-        NO_CASTLE,
-        CASTLE_LEFT,
-        CASTLE_RIGHT,
-        CASTLE_BOTH
-    }
-
-    /**
      * Utility method to scan a certain cell and see if it's under attack by any piece owned by the opposing player.
      * 
      * @param cb chessboard of the current game.
-     * @param currentColor color of the current player.
+     * @param currentColor color of the enemy player.
      * @param target the cell we want to check.
      * @return an {@code Optional} containing the attacking piece if there is any, returns an empty Optional otherwise.
      */
@@ -215,6 +198,25 @@ public final class AdvancedRules {
             }
         }
         return Optional.empty(); // otherwise
+    }
+
+    /**
+     * placeholder.
+     * 
+     * @param kingCells placeholder.
+     * @param cb placeholder.
+     * @param currentColor placeholder.
+     * @return placeholder.
+     */
+    public static List<Point2D> kingPossibleMoves(final List<Point2D> kingCells,
+            final ChessBoard cb, final PlayerColor currentColor) {
+        final List<Point2D> possibleMoves = new LinkedList<>();
+        for (final Point2D cell : kingCells) {
+            if (underAttack(cb, swapColor(currentColor), cell).isEmpty()) {
+                possibleMoves.add(cell);
+            }
+        }
+        return possibleMoves;
     }
 
     /**
