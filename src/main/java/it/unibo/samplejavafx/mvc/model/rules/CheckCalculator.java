@@ -165,11 +165,20 @@ public final class CheckCalculator {
                                     final Point2D to, final PlayerColor kingColor) {
         final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
 
-        // Perform move
-        cells.remove(from);
-        cells.put(to, piece);
+        final ChessBoard tempBoard = new ChessBoardImpl(cb.getBoard());
+        if (tempBoard.isFree(to)) {
+            if (tempBoard.isFree(from)) {
+                System.out.println("vuoto");
+            }
+            tempBoard.move(tempBoard.getPosByEntity(piece), to);
+        } else {
+            tempBoard.eat(tempBoard.getPosByEntity(piece), to);
+        }
 
-        final ChessBoard tempBoard = new ChessBoardImpl(cells);
+        // Perform move
+        // cells.remove(from);
+        // cells.put(to, piece);
+
         return getAttackers(tempBoard, kingColor).isEmpty();
     }
 }
