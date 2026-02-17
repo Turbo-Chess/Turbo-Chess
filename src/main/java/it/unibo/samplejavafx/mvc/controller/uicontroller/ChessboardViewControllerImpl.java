@@ -30,7 +30,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
 
     // TODO: remove reference of the match in the view controller
-    private ChessMatch match = new ChessMatchImpl();
     @Setter
     private GameController gameController;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
@@ -77,15 +76,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         }
     }
 
-    /**
-     * placeholder.
-     *
-     * @param match placeholder.
-     */
-    public void setMatch(final ChessMatch match) {
-        this.match = match;
-    }
-
     @Override
     public void onEntityAdded(final Point2D pos, final Entity entity) {
         LOGGER.debug("Added Entity: " + entity.getClass() + " at pos: " + pos);
@@ -117,48 +107,3 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         }
     }
 }
-
-/**
- *
- //gameController.handleClick();
-
- // Call the turn handler
- //turnHandler.thinking();
-
-
- if (lastPossibleMoves.contains(pointClicked)) {
- if (match.getBoard().isFree(pointClicked)) {
- match.getBoard().move(lastPointClicked, pointClicked);
- } else {
- match.getBoard().eat(lastPointClicked, pointClicked);
- }
- }
-
- lastPointClicked = pointClicked;
-
-
- if (match.getBoard().getEntity(lastPointClicked).isPresent()
- && match.getBoard().getEntity(lastPointClicked).get().asMoveable().isPresent()) {
- // Turn handler call result
- final Set<Point2D> moves = new HashSet<>(
- match.getBoard()
- .getEntity(lastPointClicked)
- .get()
- .asMoveable()
- .get()
- .getValidMoves(lastPointClicked, match.getBoard()));
-
- if (!lastPossibleMoves.equals(moves)) {
- hideMovementCells(lastPossibleMoves);
- }
-
- showMovementCells(moves);
-
-
- // Update variables to keep track of the state
- lastPossibleMoves.clear();
- lastPossibleMoves.addAll(moves);
- lastPointClicked = pointClicked;
-
- }
- */
