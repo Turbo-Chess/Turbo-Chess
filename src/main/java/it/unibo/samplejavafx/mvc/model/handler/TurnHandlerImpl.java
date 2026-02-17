@@ -42,6 +42,7 @@ public class TurnHandlerImpl implements TurnHandler {
      * @param pos placeholder.
      * @return placeholder.
      */
+    @Override
     public List<Point2D> thinking(final Point2D pos) {
         if (state.equals(GameState.NORMAL)) {
             return doIfNormal(pos);
@@ -63,8 +64,8 @@ public class TurnHandlerImpl implements TurnHandler {
      */
     @Override
     public boolean executeTurn(final MoveType moveAction, final Point2D target) {
-        if (!CheckCalculator.isMoveSafe(board, currentPiece.get(), 
-            board.getPosByEntity(currentPiece.get()), target, currentColor)) {
+        if (!CheckCalculator.isMoveSafe(board, currentPiece.get(),
+           board.getPosByEntity(currentPiece.get()), target, currentColor)) {
                 return false; // the move wasn't safe, so we cancel it and go back
         }
         switch (moveAction) {
