@@ -23,7 +23,7 @@ public class ChessMatchImpl implements ChessMatch {
     @Getter
     private int turnNumber;
     @Getter
-    private TurnHandler turnHandler = new TurnHandlerImpl();
+    private final TurnHandler turnHandler;
     @Getter
     private final ChessBoard board;
 
@@ -33,5 +33,7 @@ public class ChessMatchImpl implements ChessMatch {
     public ChessMatchImpl() {
         gameState = GameState.NORMAL;
         this.board = new ChessBoardImpl();
+        // TODO: chech turn number passed to turn handler
+        this.turnHandler = new TurnHandlerImpl(this.turnNumber, this.board);
     }
 }
