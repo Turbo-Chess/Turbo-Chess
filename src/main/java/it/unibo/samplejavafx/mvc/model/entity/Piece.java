@@ -19,7 +19,6 @@ import java.util.Optional;
  * Placeholder.
  */
 @Getter
-@EqualsAndHashCode(callSuper = true)
 @ToString
 @JsonDeserialize(builder = Piece.Builder.class)
 public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
