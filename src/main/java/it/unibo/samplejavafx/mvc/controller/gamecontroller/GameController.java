@@ -44,19 +44,19 @@ public interface GameController {
      *
      * @param pointClicked placeholder.
      */
-    public void handleClick(Point2D pointClicked);
+    void handleClick(Point2D pointClicked);
 
     /**
      * placeholder.
      *
      * @param match placeholder.
      */
-    public void setMatch(ChessMatch match);
+    void setMatch(ChessMatch match);
 
     /**
      * placeholder.
      *
      * @param chessboardViewController placeholder.
      */
-    public void setChessboardViewController(ChessboardViewController chessboardViewController);
+    void setChessboardViewController(ChessboardViewController chessboardViewController);
 }

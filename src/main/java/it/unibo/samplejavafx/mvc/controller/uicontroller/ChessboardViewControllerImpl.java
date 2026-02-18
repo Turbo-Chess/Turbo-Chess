@@ -4,8 +4,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
-import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
-import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.fxml.FXML;
@@ -17,7 +15,6 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
@@ -32,7 +29,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @Setter
     private GameController gameController;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
-
 
     @FXML
     private GridPane chessboardGridPane;
@@ -62,7 +58,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                     // Una sola (che deve essere la stessa cliccata): chiamato eat o move
                     final Point2D pointClicked = cells.inverse().get((Button) event.getSource());
                     gameController.handleClick(pointClicked);
-
 
                 });
 

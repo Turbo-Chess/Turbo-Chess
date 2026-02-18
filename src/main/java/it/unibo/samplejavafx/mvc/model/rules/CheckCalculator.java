@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
@@ -63,7 +60,7 @@ public final class CheckCalculator {
         for (final Optional<Entity> friendOpt : friends) {
             if (friendOpt.isPresent() && friendOpt.get().asMoveable().isPresent()) {
                 final Piece friend = (Piece) friendOpt.get();
-                if (friend.getType().equals(PieceType.KING)) {
+                if (friend.getType() == PieceType.KING) {
                     continue; // King cannot block check for itself
                 }
 
@@ -81,7 +78,7 @@ public final class CheckCalculator {
                     candidates.put(friend, holder);
                 }
                 holder.clear();
-            };
+            }
         }
         return candidates;
     }

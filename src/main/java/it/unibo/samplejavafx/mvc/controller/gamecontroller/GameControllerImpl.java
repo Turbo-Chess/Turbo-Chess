@@ -50,7 +50,8 @@ public final class GameControllerImpl implements GameController {
         // TODO: implement using the cache
         // TODO: think of using sets instead of lists
 
-        //final Set<Point2D> moves = new HashSet<>(match.getBoard().getEntity(pointClicked).get().asMoveable().get().getValidMoves(pointClicked, match.getBoard()));
+        // final Set<Point2D> moves = new HashSet<>(match.getBoard().getEntity(pointClicked).get()
+        //     .asMoveable().get().getValidMoves(pointClicked, match.getBoard()));
         final Set<Point2D> result = new HashSet<>(match.getTurnHandler().thinking(pointClicked));
 
         if (result.isEmpty()) {

@@ -4,8 +4,21 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.Set;
 
+/**
+ * placeholder.
+ */
 public interface ChessboardViewController {
-    public void showMovementCells(final Set<Point2D> cellsToShow);
+    /**
+     * placeholder.
+     *
+     * @param cellsToShow placeholder.
+     */
+    void showMovementCells(Set<Point2D> cellsToShow);
 
-    public void hideMovementCells(final Set<Point2D> cellsToHide);
+    /**
+     * placeholder.
+     *
+     * @param cellsToHide placeholder.
+     */
+    void hideMovementCells(Set<Point2D> cellsToHide);
 }

@@ -17,7 +17,7 @@ public interface TurnHandler {
      * @param target placeholder.
      * @return placeholder.
      */
-    boolean executeTurn(final MoveType moveAction, final Point2D target);
+    boolean executeTurn(MoveType moveAction, Point2D target);
 
     /**
      * placeholder.
@@ -25,5 +25,5 @@ public interface TurnHandler {
      * @param pos placeholder.
      * @return placeholder.
      */
-    public List<Point2D> thinking(final Point2D pos);
+    List<Point2D> thinking(Point2D pos);
 }

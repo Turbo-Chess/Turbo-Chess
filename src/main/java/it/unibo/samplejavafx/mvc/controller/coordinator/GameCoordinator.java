@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +32,7 @@ public final class GameCoordinator {
     private static final int KING_WEIGHT = 100;
     private static final int KING_POS_X = 6;
     private static final int KING_POS_Y = 7;
+    private static final int BISHOP_POS_X = 5;
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinator.class);
 
     private final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
@@ -50,7 +50,7 @@ public final class GameCoordinator {
     }
 
     /**
-ì    * placeholder.
+     * placeholder.
      */
     public void loadPieces() {
         gameController.getLoaderController().load();
@@ -180,7 +180,7 @@ public final class GameCoordinator {
         this.match.getBoard().setEntity(new Point2D(1, 1), piece);
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
         this.match.getBoard().setEntity(new Point2D(4, 4), bishop);
-        this.match.getBoard().setEntity(new Point2D(5, 3), bishop2);
+        this.match.getBoard().setEntity(new Point2D(BISHOP_POS_X, 3), bishop2);
 
     }
 }
