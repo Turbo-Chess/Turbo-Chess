@@ -1,9 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.handler;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -34,6 +31,7 @@ public class TurnHandlerImpl implements TurnHandler {
         this.currentColor = PlayerColor.WHITE;
         this.castlingOptions = CastleCondition.NO_CASTLE;
         this.state = GameState.NORMAL;
+        this.interposingPieces = new HashMap<>();
     }
 
     /**

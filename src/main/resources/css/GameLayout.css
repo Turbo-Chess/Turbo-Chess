@@ -57,3 +57,56 @@
     -fx-border-color: gold;
     -fx-border-width: 2;
 }
+
+#labelBox {
+    -fx-background-color: #2c2c2c;
+    -fx-padding: 16px 24px;
+    -fx-spacing: 0;
+    -fx-alignment: center;
+    -fx-border-color: #373737;
+    -fx-border-width: 0 0 2px 0;
+}
+
+#turnLabel, #playerColorLabel, #timeLabel {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-family: "System";
+    -fx-max-width: Infinity;
+}
+
+#turnLabel {
+    -fx-alignment: center-left;
+}
+
+#playerColorLabel {
+    -fx-alignment: center;
+}
+
+#timeLabel {
+    -fx-alignment: center-right;
+}
+
+/* Menu button styling */
+#menuButton {
+    -fx-background-color: #1e88e5;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 24px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-margin: 16px;
+}
+
+#menuButton:hover {
+    -fx-background-color: #1565c0;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+#menuButton:pressed {
+    -fx-background-color: #0d47a1;
+}
+

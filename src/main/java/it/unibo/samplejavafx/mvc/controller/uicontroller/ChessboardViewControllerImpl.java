@@ -28,8 +28,7 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver {
     private static final int IMAGE_SIZE = 120;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
-
-    // TODO: remove reference of the match in the view controller
+    // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     @Setter
     private GameController gameController;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
