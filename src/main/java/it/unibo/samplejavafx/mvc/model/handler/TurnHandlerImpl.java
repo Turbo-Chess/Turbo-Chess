@@ -90,6 +90,7 @@ public class TurnHandlerImpl implements TurnHandler {
         this.castlingOptions = AdvancedRules.castle(board, AdvancedRules.swapColor(currentColor));
         this.turn += 1;
         this.currentColor = AdvancedRules.swapColor(currentColor);
+        unsetCurrentPiece();
         return true;
     }
 
