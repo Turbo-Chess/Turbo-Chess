@@ -22,13 +22,16 @@ public final class GameControllerImpl implements GameController {
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
-    @Setter
-    private ChessMatch match;
+    private final ChessMatch match;
     @Setter
     private ChessboardViewController chessboardViewController;
 
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
+
+    public GameControllerImpl(final ChessMatch match) {
+        this.match = match;
+    }
 
     @Override
     public List<Point2D> getAvailableCells(final int pieceGameId) {
@@ -54,13 +57,18 @@ public final class GameControllerImpl implements GameController {
         //     .asMoveable().get().getValidMoves(pointClicked, match.getBoard()));
         final Set<Point2D> result = new HashSet<>(match.getTurnHandler().thinking(pointClicked));
 
-        if (result.isEmpty()) {
-            chessboardViewController.hideMovementCells(lastPossibleMoves);
-        } else if (result.size() == 1 && pointClicked.equals(lastPointClicked)) {
-            chessboardViewController.hideMovementCells(lastPossibleMoves);
-        } else {
-            chessboardViewController.hideMovementCells(lastPossibleMoves);
-            chessboardViewController.showMovementCells(result);
+        // Added this check to silence the spot bugs error
+        // The view is created and injected after the controller instantiation
+        // so it needs to be injected by a setter later
+        if (chessboardViewController != null) {
+            if (result.isEmpty()) {
+                chessboardViewController.hideMovementCells(lastPossibleMoves);
+            } else if (result.size() == 1 && pointClicked.equals(lastPointClicked)) {
+                chessboardViewController.hideMovementCells(lastPossibleMoves);
+            } else {
+                chessboardViewController.hideMovementCells(lastPossibleMoves);
+                chessboardViewController.showMovementCells(result);
+            }
         }
 
         lastPointClicked = pointClicked;

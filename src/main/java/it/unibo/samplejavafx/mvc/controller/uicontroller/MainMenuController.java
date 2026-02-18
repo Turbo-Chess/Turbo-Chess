@@ -10,14 +10,10 @@ import java.io.IOException;
  * placeholder.
  */
 public final class MainMenuController {
-    @Setter
-    private GameCoordinator coordinator;
+    private final GameCoordinator coordinator;
 
-    /**
-     * placeholder.
-     */
-    public void initialize() {
-
+    public MainMenuController(final GameCoordinator coordinator) {
+        this.coordinator = coordinator;
     }
 
     /**

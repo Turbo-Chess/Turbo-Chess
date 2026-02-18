@@ -49,13 +49,6 @@ public interface GameController {
     /**
      * placeholder.
      *
-     * @param match placeholder.
-     */
-    void setMatch(ChessMatch match);
-
-    /**
-     * placeholder.
-     *
      * @param chessboardViewController placeholder.
      */
     void setChessboardViewController(ChessboardViewController chessboardViewController);

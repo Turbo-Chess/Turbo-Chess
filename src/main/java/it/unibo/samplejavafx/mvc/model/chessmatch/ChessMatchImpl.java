@@ -34,6 +34,7 @@ public class ChessMatchImpl implements ChessMatch {
         gameState = GameState.NORMAL;
         this.board = new ChessBoardImpl();
         this.turnNumber = 1;
+        this.currentPlayer = PlayerColor.WHITE;
         // TODO: chech turn number passed to turn handler
         this.turnHandler = new TurnHandlerImpl(this.turnNumber, this.board);
     }

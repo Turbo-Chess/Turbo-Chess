@@ -33,6 +33,7 @@ public final class App extends Application {
         //    throw new RuntimeException("CRITICAL: MainMenu.fxml not found in the classpath!");
         //}
         final GameCoordinator coordinator = new GameCoordinator(stage);
+        loader.setControllerFactory(c -> new MainMenuController(coordinator));
         final Parent root = loader.load();
         final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -44,7 +45,7 @@ public final class App extends Application {
         }
 
         final MainMenuController controller = loader.getController();
-        controller.setCoordinator(coordinator);
+        //controller.setCoordinator(coordinator);
         //TODO: Refactor with javafx factories
         controller.setup();
 

@@ -3,6 +3,8 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
+import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
+import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
@@ -47,7 +49,8 @@ class GameControllerCacheTest {
                 .playerColor(PlayerColor.WHITE)
                 .build();
 
-        final GameController controller = new GameControllerImpl();
+        final ChessMatch match = new ChessMatchImpl();
+        final GameController controller = new GameControllerImpl(match);
         final ChessBoard board = new ChessBoardImpl();
 
         final Point2D knightPos = new Point2D(4, 4);

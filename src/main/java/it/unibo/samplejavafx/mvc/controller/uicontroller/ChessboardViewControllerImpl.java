@@ -26,9 +26,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private static final int IMAGE_SIZE = 120;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
-    @Setter
-    private GameController gameController;
+    private final GameController gameController;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
+
+    public ChessboardViewControllerImpl(final GameController gameController) {
+        this.gameController = gameController;
+    }
 
     @FXML
     private GridPane chessboardGridPane;

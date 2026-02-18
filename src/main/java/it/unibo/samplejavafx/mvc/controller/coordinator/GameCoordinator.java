@@ -32,13 +32,12 @@ public final class GameCoordinator {
     private static final int KING_WEIGHT = 100;
     private static final int KING_POS_X = 6;
     private static final int KING_POS_Y = 7;
-    private static final int BISHOP_POS_X = 5;
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinator.class);
 
     private final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
     private final Stage stage;
     private final ChessMatch match = new ChessMatchImpl();
-    private final GameController gameController = new GameControllerImpl();
+    private final GameController gameController = new GameControllerImpl(match);
 
     /**
      * placeholder.
@@ -63,12 +62,11 @@ public final class GameCoordinator {
      * @throws IOException placeholder.
      */
     public void initGame() throws IOException {
+        loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController));
         final Parent root = loader.load();
         final ChessboardViewControllerImpl viewController = loader.getController();
         // TODO: remove reference of the match in the view controller
-        viewController.setGameController(this.gameController);
         match.getBoard().addObserver(viewController);
-        gameController.setMatch(match);
         gameController.setChessboardViewController(viewController);
 
         final var cssLocation = getClass().getResource("/css/GameLayout.css");
@@ -180,7 +178,7 @@ public final class GameCoordinator {
         this.match.getBoard().setEntity(new Point2D(1, 1), piece);
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
         this.match.getBoard().setEntity(new Point2D(4, 4), bishop);
-        this.match.getBoard().setEntity(new Point2D(BISHOP_POS_X, 3), bishop2);
+        this.match.getBoard().setEntity(new Point2D(5, 3), bishop2);
 
     }
 }
