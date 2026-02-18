@@ -77,9 +77,11 @@ public final class CheckCalculator {
                         break;
                     }
                 }
-                candidates.put(friend, holder);
+                if (!holder.isEmpty()) {
+                    candidates.put(friend, holder);
+                }
                 holder.clear();
-            }
+            };
         }
         return candidates;
     }

@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +66,6 @@ public final class GameCoordinator {
         final Parent root = loader.load();
         final ChessboardViewControllerImpl viewController = loader.getController();
         // TODO: remove reference of the match in the view controller
-        viewController.setMatch(this.match);
         viewController.setGameController(this.gameController);
         match.getBoard().addObserver(viewController);
         gameController.setMatch(match);
@@ -154,6 +155,12 @@ public final class GameCoordinator {
                                 MoveRulesImpl.MoveType.MOVE_AND_EAT,
                                 MoveRulesImpl.MoveStrategy.SLIDING),
                         new MoveRulesImpl(new Point2D(-1, 1),
+                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING),
+                        new MoveRulesImpl(new Point2D(1, 1),
+                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING),
+                        new MoveRulesImpl(new Point2D(1, -1),
                                 MoveRulesImpl.MoveType.MOVE_AND_EAT,
                                 MoveRulesImpl.MoveStrategy.SLIDING)
 
