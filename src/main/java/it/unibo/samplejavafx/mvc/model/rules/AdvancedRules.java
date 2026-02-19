@@ -137,6 +137,9 @@ public final class AdvancedRules {
         } else {
             kingPos = BKING_POS;
         }
+        if (cb.getEntity(kingPos).isEmpty()) {
+            return CastleCondition.NO_CASTLE;
+        }
 
         if (cb.getEntity(kingPos).get().asMoveable().isPresent()) {
             final var piece = (Piece) cb.getEntity(kingPos).get().asMoveable().get();
