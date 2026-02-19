@@ -49,9 +49,21 @@ class GameEventDescriptionTest {
 
     @Test
     void testDespawnEventDescription() {
-        final String entityName = "Queen";
+        final Piece piece = new Piece.Builder()
+            .setHasMoved(false)
+            .entityDefinition(new PieceDefinition.Builder()
+                .name("Queen")
+                .id("q1")
+                .imagePath("path/Queen.png")
+                .weight(10)
+                .pieceType(PieceType.KING)
+                .moveRules(Collections.emptyList())
+                .build())
+            .gameId(1)
+            .playerColor(PlayerColor.BLACK)
+            .build();
         final Point2D pos = new Point2D(3, 3);
-        final DespawnEvent event = new DespawnEvent(5, entityName, pos);
+        final DespawnEvent event = new DespawnEvent(5, piece, pos);
 
         final String description = event.getEventDescription();
 

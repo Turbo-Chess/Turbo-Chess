@@ -2,11 +2,14 @@ package it.unibo.samplejavafx.mvc.controller.replay;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
+import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.replay.DespawnEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.SpawnEvent;
+
+import java.util.Optional;
 
 /**
  * Implementation of ReplayController.
@@ -94,8 +97,12 @@ public final class ReplayControllerImpl implements ReplayController {
 
     private void applyEvent(final GameEvent event) {
         if (event instanceof MoveEvent move) {
-            board.removeEntity(move.from());
-            board.setEntity(move.to(), move.entity());
+            final Optional<Entity> entityOpt = board.getEntity(move.from());
+            if (entityOpt.isPresent()) {
+                final Entity entity = entityOpt.get();
+                board.removeEntity(move.from());
+                board.setEntity(move.to(), entity);
+            }
         } else if (event instanceof SpawnEvent spawn) {
             board.setEntity(spawn.position(), spawn.entity());
         } else if (event instanceof DespawnEvent despawn) {
@@ -105,8 +112,11 @@ public final class ReplayControllerImpl implements ReplayController {
 
     private void revertEvent(final GameEvent event) {
         if (event instanceof MoveEvent move) {
-            board.removeEntity(move.to());
-            board.setEntity(move.from(), move.entity());
+            final Optional<Entity> entityOpt = board.getEntity(move.to());
+            if (entityOpt.isPresent()) {
+                board.removeEntity(move.to());
+                board.setEntity(move.from(), entityOpt.get());
+            }
         } else if (event instanceof SpawnEvent spawn) {
             board.removeEntity(spawn.position());
         } else if (event instanceof DespawnEvent despawn) {
