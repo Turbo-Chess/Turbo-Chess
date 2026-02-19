@@ -29,25 +29,42 @@ public final class GameControllerImpl implements GameController {
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
 
+    /**
+     * placeholder.
+     *
+     * @param match placeholder.
+     */
     public GameControllerImpl(final ChessMatch match) {
         this.match = match;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point2D> getAvailableCells(final int pieceGameId) {
         return moveCache.getAvailableCells(pieceGameId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void cacheAvailableCells(final int pieceGameId, final List<Point2D> moves) {
         moveCache.cacheAvailableCells(pieceGameId, moves);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearCache() {
         moveCache.clearCache();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handleClick(final Point2D pointClicked) {
         // TODO: implement using the cache
