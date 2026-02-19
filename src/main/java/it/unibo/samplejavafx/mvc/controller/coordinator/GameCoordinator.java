@@ -67,6 +67,7 @@ public final class GameCoordinator {
         final ChessboardViewControllerImpl viewController = loader.getController();
         // TODO: remove reference of the match in the view controller
         match.getBoard().addObserver(viewController);
+        match.addObserver(viewController);
         gameController.setChessboardViewController(viewController);
 
         final var cssLocation = getClass().getResource("/css/GameLayout.css");

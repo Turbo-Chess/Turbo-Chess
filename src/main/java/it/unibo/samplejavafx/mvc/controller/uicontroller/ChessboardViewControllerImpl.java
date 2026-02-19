@@ -4,10 +4,13 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
+import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -21,7 +24,7 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
 /**
  * placeholder.
  */
-public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver {
+public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final int IMAGE_SIZE = 120;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
@@ -39,6 +42,15 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @FXML
     private GridPane chessboardGridPane;
+
+    @FXML
+    private Label turnValueLabel;
+
+    @FXML
+    private Label playerColorValueLabel;
+
+    @FXML
+    private Label timeValueLabel;
 
     /**
      * placeholder.
@@ -75,6 +87,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                 chessboardGridPane.add(button, col, row);
             }
         }
+
+        turnValueLabel.setText("1");
+        playerColorValueLabel.setText("WHITE");
     }
 
     @Override
@@ -106,5 +121,15 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         for (final var move : cellsToHide) {
             cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
         }
+    }
+
+    @Override
+    public void onTurnUpdated(final int turnNumber) {
+        turnValueLabel.setText(String.valueOf(turnNumber));
+    }
+
+    @Override
+    public void onPlayerUpdated(final PlayerColor playerColor) {
+        playerColorValueLabel.setText(String.valueOf(playerColor));
     }
 }
