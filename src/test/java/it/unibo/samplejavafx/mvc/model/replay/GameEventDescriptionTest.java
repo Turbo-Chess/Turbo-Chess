@@ -15,25 +15,12 @@ class GameEventDescriptionTest {
 
     @Test
     void testMoveEventDescription() {
-        final Piece piece = new Piece.Builder()
-            .setHasMoved(false)
-            .entityDefinition(new PieceDefinition.Builder()
-                .name("Pawn")
-                .id("p1")
-                .imagePath("packs/default/pieces/Pawn.png")
-                .weight(1)
-                .pieceType(PieceType.PAWN)
-                .moveRules(Collections.emptyList())
-                .build())
-            .gameId(1)
-            .playerColor(PlayerColor.WHITE)
-            .build();
+        final String entityName = "Pawn";
         final Point2D from = new Point2D(0, 6);
         final Point2D to = new Point2D(0, 5);
-        final MoveEvent event = new MoveEvent(1, piece, from, to);
+        final MoveEvent event = new MoveEvent(1, entityName, from, to);
 
         final String description = event.getEventDescription();
-
         assertTrue(description.startsWith("Move | Pawn | (0, 6)->(0, 5)"));
     }
 
@@ -67,19 +54,20 @@ class GameEventDescriptionTest {
             .entityDefinition(new PieceDefinition.Builder()
                 .name("Queen")
                 .id("q1")
-                .imagePath("packs/default/pieces/Queen.png")
-                .weight(9)
-                .pieceType(PieceType.SUPERIOR)
+                .imagePath("path/Queen.png")
+                .weight(10)
+                .pieceType(PieceType.KING)
                 .moveRules(Collections.emptyList())
                 .build())
             .gameId(1)
-            .playerColor(PlayerColor.WHITE)
+            .playerColor(PlayerColor.BLACK)
             .build();
         final Point2D pos = new Point2D(3, 3);
         final DespawnEvent event = new DespawnEvent(5, piece, pos);
 
         final String description = event.getEventDescription();
 
+        // Expect Name
         assertTrue(description.startsWith("Despawn | Queen | (3, 3)"));
     }
 }

@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -34,14 +35,13 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
         this.playerColor = builder.playerColor;
     }
 
-    // Package private field to not break encapsulation
     /**
      * Placeholder.
      *
      * @return Placeholder.
      */
     @JsonProperty("entityDefinition")
-    protected T getEntityDefinition() {
+    public T getEntityDefinition() {
         return this.entityDefinition;
     }
 
@@ -49,6 +49,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
      * {@inheritDoc}
      */
     @Override
+    @JsonIgnore
     public String getId() {
         return getEntityDefinition().getId();
     }
@@ -58,6 +59,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
      * {@inheritDoc}
      */
     @Override
+    @JsonIgnore
     public String getName() {
         return getEntityDefinition().getName();
     }
@@ -67,6 +69,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
      * {@inheritDoc}
      */
     @Override
+    @JsonIgnore
     public String getImagePath() {
         return this.getEntityDefinition().getImagePath();
     }
@@ -76,6 +79,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
      * {@inheritDoc}
      */
     @Override
+    @JsonIgnore
     public PieceType getType() {
         return getEntityDefinition().getPieceType();
     }
