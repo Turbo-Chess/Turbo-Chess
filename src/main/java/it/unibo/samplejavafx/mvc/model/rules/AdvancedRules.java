@@ -89,12 +89,12 @@ public final class AdvancedRules {
             switch (state) {
                 case CHECK:
                     if (possibleMoves.isEmpty()) {
-                        interposingPieces = Map.copyOf(CheckCalculator.getInterposingPieces(cb, currentColor));
-                        return interposingPieces.isEmpty() ? true : false;
+                        interposingPieces.putAll(CheckCalculator.getInterposingPieces(cb, currentColor));
+                        return interposingPieces.isEmpty();
                     }
                     break;
                 case DOUBLE_CHECK:
-                    return possibleMoves.isEmpty() ? true : false;
+                    return possibleMoves.isEmpty();
                 default:
                     return false;
             }
