@@ -75,7 +75,7 @@ public final class CheckCalculator {
                     }
                 }
                 if (!holder.isEmpty()) {
-                    candidates.put(friend, holder);
+                    candidates.put(friend, List.copyOf(holder));
                 }
                 holder.clear();
             }
