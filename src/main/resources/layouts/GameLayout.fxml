@@ -46,12 +46,25 @@
       <Button id="menuButton" fx:id="menuButton" mnemonicParsing="false" text="Button" BorderPane.alignment="BOTTOM_RIGHT" />
    </bottom>
    <top>
-      <HBox id="labelBox" fx:id="labelBox" BorderPane.alignment="CENTER">
-         <children>
-            <Label id="turnLabel" fx:id="turnLabel" text="Turn: " HBox.hgrow="ALWAYS" />
-            <Label id="playerColorLabel" fx:id="playerColorLabel" text="Player: " HBox.hgrow="ALWAYS" />
-            <Label id="timeLabel" fx:id="timeLabel" text="Time of the Match: " HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
+      <BorderPane id="infoBar" fx:id="infoBar" BorderPane.alignment="CENTER" styleClass="info-bar">
+         <left>
+            <HBox alignment="CENTER_LEFT" spacing="4">
+               <Label id="turnLabel" fx:id="turnLabel" text="Turn: " />
+               <Label id="turnValueLabel" fx:id="turnValueLabel" text="" />
+            </HBox>
+         </left>
+         <center>
+            <HBox alignment="CENTER" spacing="4">
+               <Label id="playerColorLabel" fx:id="playerColorLabel" text="Player: " />
+               <Label id="playerColorValueLabel" fx:id="playerColorValueLabel" text="" />
+            </HBox>
+         </center>
+         <right>
+            <HBox alignment="CENTER_RIGHT" spacing="4">
+               <Label id="timeLabel" fx:id="timeLabel" text="Time of the Match: " />
+               <Label id="timeValueLabel" fx:id="timeValueLabel" text="" />
+            </HBox>
+         </right>
+      </BorderPane>
    </top>
 </BorderPane>
