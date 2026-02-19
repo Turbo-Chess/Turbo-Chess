@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.handler;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class TurnHandlerImpl implements TurnHandler {
     private PlayerColor currentColor;
     private Optional<Piece> currentPiece = Optional.empty();
     private List<Point2D> pieceMoves;
-    private Map<Piece, List<Point2D>> interposingPieces;
+    private final Map<Piece, List<Point2D>> interposingPieces;
 
     /**
      * placeholder.
@@ -40,6 +41,7 @@ public class TurnHandlerImpl implements TurnHandler {
         this.currentColor = PlayerColor.WHITE;
         this.castlingOptions = CastleCondition.NO_CASTLE;
         this.state = GameState.NORMAL;
+        this.interposingPieces = new HashMap<>();
     }
 
     /**
@@ -48,6 +50,7 @@ public class TurnHandlerImpl implements TurnHandler {
      * @param pos placeholder.
      * @return placeholder.
      */
+    @Override
     public List<Point2D> thinking(final Point2D pos) {
         if (state == GameState.NORMAL) {
             return doIfNormal(pos);
@@ -69,8 +72,8 @@ public class TurnHandlerImpl implements TurnHandler {
      */
     @Override
     public boolean executeTurn(final MoveType moveAction, final Point2D target) {
-        if (!CheckCalculator.isMoveSafe(board, currentPiece.get(), 
-            board.getPosByEntity(currentPiece.get()), target, currentColor)) {
+        if (!CheckCalculator.isMoveSafe(board, currentPiece.get(),
+           board.getPosByEntity(currentPiece.get()), target, currentColor)) {
                 return false; // the move wasn't safe, so we cancel it and go back
         }
         switch (moveAction) {
@@ -84,23 +87,21 @@ public class TurnHandlerImpl implements TurnHandler {
                 // the move wasn't safe, so we cancel the move and go back
         }
         this.state = AdvancedRules.check(board, AdvancedRules.swapColor(currentColor));
-        if (state == GameState.CHECK || state == GameState.DOUBLE_CHECK) {
-            if (AdvancedRules.checkmate(board, AdvancedRules.swapColor(currentColor), state, interposingPieces)) {
-                // call to another function that ends the match
-                // will be removed
-                System.out.println("Checkmate detected"); //NOPMD
-            }
+        if ((state == GameState.CHECK || state == GameState.DOUBLE_CHECK)
+                && AdvancedRules.checkmate(board, AdvancedRules.swapColor(currentColor), state, interposingPieces)) {
+            // call to another function that ends the match
+            System.out.println("to be implemented"); //NOPMD
         }
         if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor))) {
             // call to another function that ends the match
-            // will be removed
-            System.out.println("Checkmate detected"); //NOPMD
+            System.out.println("to be implemented"); //NOPMD
         }
 
         // Changing variables for the next turn iteration
         this.castlingOptions = AdvancedRules.castle(board, AdvancedRules.swapColor(currentColor));
         this.turn += 1;
         this.currentColor = AdvancedRules.swapColor(currentColor);
+        unsetCurrentPiece();
         return true;
     }
 
@@ -116,6 +117,13 @@ public class TurnHandlerImpl implements TurnHandler {
         }
         if (board.isFree(pos) && pieceMoves.contains(pos)) {
             return executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
+        }
+        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
+                && board.getEntity(pos).get().getType() == PieceType.KING) {
+            final var king = (Piece) board.getEntity(pos).get();
+            this.currentPiece = Optional.of(king);
+            this.pieceMoves = AdvancedRules.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            return this.pieceMoves;
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
             final var newPiece = (Piece) board.getEntity(pos).get();
