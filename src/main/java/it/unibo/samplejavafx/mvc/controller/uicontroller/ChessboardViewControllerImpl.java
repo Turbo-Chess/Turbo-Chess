@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,6 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  * placeholder.
  */
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
-    private static final int IMAGE_SIZE = 120;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
@@ -42,6 +42,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @FXML
     private GridPane chessboardGridPane;
+
+    @FXML
+    private StackPane GameMainPane;
 
     @FXML
     private Label turnValueLabel;
@@ -66,23 +69,28 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @FXML
     public void initChessboardPane() {
         final int size = 8;
+
+        // Bind GridPane size to the minimum of StackPane width/height to keep it square
+        final javafx.beans.binding.NumberBinding squareSize = javafx.beans.binding.Bindings.min(
+            GameMainPane.widthProperty(), GameMainPane.heightProperty()
+        );
+        chessboardGridPane.prefWidthProperty().bind(squareSize);
+        chessboardGridPane.prefHeightProperty().bind(squareSize);
+        chessboardGridPane.maxWidthProperty().bind(squareSize);
+        chessboardGridPane.maxHeightProperty().bind(squareSize);
+
+
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 final Button button = new Button();
 
                 button.setOnAction(event -> {
-                    // Lista:
-                    // Vuota: click fa schifo
-                    // Piena: mosse da mostrare
-                    // Una sola (che deve essere la stessa cliccata): chiamato eat o move
                     final Point2D pointClicked = cells.inverse().get((Button) event.getSource());
                     gameController.handleClick(pointClicked);
-
                 });
 
                 button.getStyleClass().add("material-surface");
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                //button.setText("x: " + col + " y: " + row);
                 cells.put(new Point2D(col, row), button);
                 chessboardGridPane.add(button, col, row);
             }
@@ -92,14 +100,30 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         playerColorValueLabel.setText("WHITE");
     }
 
+    /**
+     * Creates an ImageView whose size tracks the button's actual size.
+     *
+     * @param imagePath path to the image file.
+     * @param button    the button to track.
+     * @return a responsive ImageView.
+     */
+    private ImageView createResponsiveImageView(final String imagePath, final Button button) {
+        final ImageView imageView = new ImageView(new Image("file:" + imagePath));
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+
+        imageView.fitHeightProperty().bind(button.widthProperty().multiply(0.8));
+        imageView.fitWidthProperty().bind(button.widthProperty().multiply(0.8));
+
+        return imageView;
+    }
+
     @Override
     public void onEntityAdded(final Point2D pos, final Entity entity) {
         LOGGER.debug("Added Entity: " + entity.getClass() + " at pos: " + pos);
         final Button btn = cells.get(pos);
-        btn.setText(entity.getName());
         btn.setText("");
-        btn.setGraphic(new ImageView(new Image("file:" + entity.getImagePath(),
-                IMAGE_SIZE, IMAGE_SIZE, true, true)));
+        btn.setGraphic(createResponsiveImageView(entity.getImagePath(), btn));
     }
 
     @Override

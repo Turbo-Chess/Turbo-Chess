@@ -72,6 +72,7 @@ public final class GameCoordinator {
 
         final var cssLocation = getClass().getResource("/css/GameLayout.css");
         final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
         stage.setTitle("TurboChess - Game");
         stage.setScene(scene);
         scene.getStylesheets().add(cssLocation.toExternalForm());

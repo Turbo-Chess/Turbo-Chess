@@ -15,15 +15,12 @@
     -fx-border-color: #444a54;
     -fx-border-width: 2px;
     -fx-border-radius: 8px;
-    -fx-padding: 24px;
-
-    /* Change that to non-fixed values */
-    -fx-pref-width: 600px;
-    -fx-pref-height: 600px;
-    -fx-max-width: 1000px;
-    -fx-max-height: 1000px;
     -fx-min-width: 320px;
     -fx-min-height: 320px;
+    -fx-max-width: Infinity;
+    -fx-max-height: Infinity;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
     -fx-alignment: center;
 }
 
