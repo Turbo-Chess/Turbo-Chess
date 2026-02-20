@@ -115,12 +115,29 @@ public final class AdvancedRules {
         final Set<Point2D> container = new HashSet<>();
 
         for (final Optional<Entity> piece : set) {
-            if (piece.get().asMoveable().isPresent()) { // if the piece is a moveable we can use its movement methods
+            if (piece.get().asMoveable().isPresent()) {
                 container.addAll(piece.get().asMoveable().get().getValidMoves(cb.getPosByEntity(piece.get()), cb).stream()
                         .collect(Collectors.toSet()));
             }
         }
-        return container.isEmpty();
+        if (container.isEmpty()) {
+            return true;
+        }
+        final List<Entity> holder = cb.getBoard().inverse().keySet().stream()
+                .filter(e -> e.getType() != PieceType.POWERUP)
+                .toList();
+        if (holder.size() == 2) {
+            return true;
+        }
+        if (holder.size() == 3) {
+            final List<Entity> list = holder.stream()
+                .filter(e -> e.getType() != PieceType.KING)
+                .toList();
+            if (list.size() == 1 && list.getFirst().getType() == PieceType.INFERIOR) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
