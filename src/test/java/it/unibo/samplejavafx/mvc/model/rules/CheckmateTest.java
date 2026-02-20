@@ -19,19 +19,15 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
-import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
-import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 public class CheckmateTest {
     private ChessBoard board;
-    private TurnHandler handler;
     private Integer idCount;
 
     @BeforeEach
     void setUp() {
         this.board = new ChessBoardImpl();
-        this.handler = new TurnHandlerImpl(0, board);
         this.idCount = 0;
     }
 
