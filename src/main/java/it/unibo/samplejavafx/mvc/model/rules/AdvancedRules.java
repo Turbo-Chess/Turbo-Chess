@@ -112,12 +112,16 @@ public final class AdvancedRules {
      */
     public static boolean draw(final ChessBoard cb, final PlayerColor currentColor) {
         final Set<Optional<Entity>> set = getPiecesOfColor(cb, currentColor);
-        final Set<Point2D> container = new HashSet<>();
+        final List<Point2D> container = new LinkedList<>();
 
         for (final Optional<Entity> piece : set) {
             if (piece.get().asMoveable().isPresent()) {
-                container.addAll(piece.get().asMoveable().get().getValidMoves(cb.getPosByEntity(piece.get()), cb).stream()
+                if (piece.get().getType() == PieceType.KING) {
+                    container.addAll(AdvancedRules.kingPossibleMoves(piece.get().asMoveable().get().getValidMoves(cb.getPosByEntity(piece.get()), cb), cb, currentColor));
+                } else {
+                    container.addAll(piece.get().asMoveable().get().getValidMoves(cb.getPosByEntity(piece.get()), cb).stream()
                         .collect(Collectors.toSet()));
+                }
             }
         }
         if (container.isEmpty()) {
