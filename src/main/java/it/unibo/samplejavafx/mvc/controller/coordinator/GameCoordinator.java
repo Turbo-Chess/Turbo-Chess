@@ -70,6 +70,8 @@ public final class GameCoordinator {
         match.addObserver(viewController);
         gameController.setChessboardViewController(viewController);
 
+        gameController.getLoaderController().load();
+
         final var cssLocation = getClass().getResource("/css/GameLayout.css");
         final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -78,109 +80,41 @@ public final class GameCoordinator {
         scene.getStylesheets().add(cssLocation.toExternalForm());
         stage.show();
         //Only for testing
-        final PieceDefinition rook = new PieceDefinition.Builder()
-                .name("Rook")
-                .id("rook")
-                .imagePath("/home/giacomo/Documents/pawn.jpg")
-                .weight(ROOK_WEIGHT)
-                .pieceType(PieceType.TOWER)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(0, 1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.SLIDING),
-                        new MoveRulesImpl(new Point2D(0, -1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.SLIDING),
-                        new MoveRulesImpl(new Point2D(1, 0),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.SLIDING),
-                        new MoveRulesImpl(new Point2D(-1, 0),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.SLIDING)
-                ))
-                .build();
-        final Piece piece = new Piece.Builder()
-                .entityDefinition(rook)
+        final Piece rook = new Piece.Builder()
+                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("rook"))
                 .gameId(1)
                 .playerColor(PlayerColor.BLACK)
                 .build();
 
-        final PieceDefinition kingDef = new PieceDefinition.Builder()
-                .name("King")
-                .id("king")
-                .imagePath("/home/giacomo/Documents/king.jpg")
-                .weight(KING_WEIGHT)
-                .pieceType(PieceType.KING)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(0, 1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.JUMPING),
-                        new MoveRulesImpl(new Point2D(0, -1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.JUMPING),
-                        new MoveRulesImpl(new Point2D(1, 0),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.JUMPING),
-                        new MoveRulesImpl(new Point2D(-1, 0),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.JUMPING),
-                        new MoveRulesImpl(new Point2D(1, 1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.JUMPING),
-                        new MoveRulesImpl(new Point2D(1, -1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.JUMPING),
-                        new MoveRulesImpl(new Point2D(-1, 1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.JUMPING),
-                        new MoveRulesImpl(new Point2D(-1, -1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.JUMPING)
-                ))
+        final Piece newPiece = new Piece.Builder()
+                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("TestPack").get("new"))
+                .gameId(5)
+                .playerColor(PlayerColor.BLACK)
                 .build();
+
         final Piece king = new Piece.Builder()
-                .entityDefinition(kingDef)
+                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("king"))
                 .gameId(2)
                 .playerColor(PlayerColor.WHITE)
                 .build();
 
-        final PieceDefinition bishopDef = new PieceDefinition.Builder()
-                .name("Bishop")
-                .id("bishop")
-                .imagePath("/home/giacomo/Documents/bishop.jpg")
-                .weight(3)
-                .pieceType(PieceType.INFERIOR)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(-1, -1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.SLIDING),
-                        new MoveRulesImpl(new Point2D(-1, 1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.SLIDING),
-                        new MoveRulesImpl(new Point2D(1, 1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.SLIDING),
-                        new MoveRulesImpl(new Point2D(1, -1),
-                                MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                                MoveRulesImpl.MoveStrategy.SLIDING)
-
-                ))
-                .build();
         final Piece bishop = new Piece.Builder()
-                .entityDefinition(bishopDef)
+                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("bishop"))
                 .gameId(3)
                 .playerColor(PlayerColor.WHITE)
                 .build();
 
         final Piece bishop2 = new Piece.Builder()
-                .entityDefinition(bishopDef)
+                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("bishop"))
                 .gameId(4)
                 .playerColor(PlayerColor.WHITE)
                 .build();
-        this.match.getBoard().setEntity(new Point2D(1, 1), piece);
+
+        this.match.getBoard().setEntity(new Point2D(1, 1), rook);
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
         this.match.getBoard().setEntity(new Point2D(4, 4), bishop);
         this.match.getBoard().setEntity(new Point2D(5, 3), bishop2);
+        this.match.getBoard().setEntity(new Point2D(5, 5), newPiece);
 
     }
 }
