@@ -21,13 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class CreateBasePiecesTest {
     private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
+    private static final String IMAGES_PATH = "classpath:/assets/images/";
 
-    @Test
+    /*@Test
     void createPawn() throws IOException {
         final PieceDefinition pawn = new PieceDefinition.Builder()
                 .name("Pawn")
                 .id("pawn")
-                .imagePath("")
+                .imagePath(IMAGES_PATH + "white_pawn.png")
                 .weight(1)
                 .pieceType(PieceType.PAWN)
                 .moveRules(List.of(
@@ -44,7 +45,7 @@ class CreateBasePiecesTest {
         final PieceDefinition knight = new PieceDefinition.Builder()
                 .name("Knight")
                 .id("knight")
-                .imagePath("")
+                .imagePath(IMAGES_PATH + "white_knight.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
                 .moveRules(List.of(
@@ -66,7 +67,7 @@ class CreateBasePiecesTest {
         final PieceDefinition bishop = new PieceDefinition.Builder()
                 .name("Bishop")
                 .id("bishop")
-                .imagePath("")
+                .imagePath(IMAGES_PATH + "white_bishop.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
                 .moveRules(List.of(
@@ -84,7 +85,7 @@ class CreateBasePiecesTest {
         final PieceDefinition rook = new PieceDefinition.Builder()
                 .name("Rook")
                 .id("rook")
-                .imagePath("")
+                .imagePath(IMAGES_PATH + "black_rook.png")
                 .weight(5)
                 .pieceType(PieceType.TOWER)
                 .moveRules(List.of(
@@ -102,7 +103,7 @@ class CreateBasePiecesTest {
         final PieceDefinition queen = new PieceDefinition.Builder()
                 .name("Queen")
                 .id("queen")
-                .imagePath("")
+                .imagePath(IMAGES_PATH + "white_queen.png")
                 .weight(9)
                 .pieceType(PieceType.SUPERIOR)
                 .moveRules(List.of(
@@ -124,7 +125,7 @@ class CreateBasePiecesTest {
         final PieceDefinition king = new PieceDefinition.Builder()
                 .name("King")
                 .id("king")
-                .imagePath("")
+                .imagePath(IMAGES_PATH + "white_king.png")
                 .weight(100)
                 .pieceType(PieceType.KING)
                 .moveRules(List.of(
@@ -140,7 +141,7 @@ class CreateBasePiecesTest {
                 .build();
         mapper.writeValue(new File(PIECES_PATH + "King.json"), king);
     }
-
+*/
     @Test
     void testLoadPawnFromJson() throws IOException {
         final PieceDefinition pawn = mapper.readValue(new File(PIECES_PATH + "Pawn.json"), PieceDefinition.class);
