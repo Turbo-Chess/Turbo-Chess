@@ -76,7 +76,11 @@ public abstract class AbstractEntityDefinition {
          * @return Placeholder.
          */
         public X imagePath(final String newImagePath) {
-            this.imagePath = newImagePath;
+            if (newImagePath.startsWith("classpath:")) {
+                this.imagePath = newImagePath.replace("classpath:", "");
+            } else {
+                this.imagePath = "file:" + newImagePath;
+            }
             return self();
         }
 
