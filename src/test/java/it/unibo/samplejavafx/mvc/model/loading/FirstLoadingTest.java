@@ -25,7 +25,7 @@ class FirstLoadingTest {
         final PieceDefinition pawn = new PieceDefinition.Builder()
                 .name("Pawn")
                 .id("pawn")
-                .imagePath("")
+                .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(1)
                 .pieceType(PieceType.PAWN)
                 .moveRules(List.of(
@@ -37,7 +37,7 @@ class FirstLoadingTest {
         final PieceDefinition rook = new PieceDefinition.Builder()
                 .name("Rook")
                 .id("rook")
-                .imagePath("")
+                .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(5)
                 .pieceType(PieceType.TOWER)
                 .moveRules(List.of(
