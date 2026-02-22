@@ -1,7 +1,7 @@
 {
   "name" : "Bishop",
   "id" : "bishop",
-  "imagePath" : "",
+  "imagePath" : "classpath:/assets/images/white_bishop.png",
   "pieceType" : "INFERIOR",
   "weight" : 3,
   "moveRules" : [ {

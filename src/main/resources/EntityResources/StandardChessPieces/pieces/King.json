@@ -1,7 +1,7 @@
 {
   "name" : "King",
   "id" : "king",
-  "imagePath" : "",
+  "imagePath" : "classpath:/assets/images/white_king.png",
   "pieceType" : "KING",
   "weight" : 100,
   "moveRules" : [ {

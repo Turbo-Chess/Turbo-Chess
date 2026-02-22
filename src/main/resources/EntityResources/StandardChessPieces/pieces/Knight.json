@@ -1,7 +1,7 @@
 {
   "name" : "Knight",
   "id" : "knight",
-  "imagePath" : "",
+  "imagePath" : "classpath:/assets/images/white_knight.png",
   "pieceType" : "INFERIOR",
   "weight" : 3,
   "moveRules" : [ {

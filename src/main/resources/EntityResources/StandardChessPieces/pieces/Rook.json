@@ -1,7 +1,7 @@
 {
   "name" : "Rook",
   "id" : "rook",
-  "imagePath" : "",
+  "imagePath" : "classpath:/assets/images/black_rook.png",
   "pieceType" : "TOWER",
   "weight" : 5,
   "moveRules" : [ {
