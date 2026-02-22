@@ -10,6 +10,8 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +20,9 @@ import java.util.Set;
  * placeholder.
  */
 public final class GameControllerImpl implements GameController {
-    private static final List<String> PATHS = List.of("src/main/resources/EntityResources/");
+    // TODO: This path will be taken from settings
+    private static final Path tcPath  = Paths.get(System.getProperty("user.home"), "/TurboChess/Mods");
+    private static final List<String> PATHS = List.of("src/main/resources/EntityResources/", tcPath.toString());
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
