@@ -1,4 +1,5 @@
 {
+  "type": "PIECE",
   "name" : "Queen",
   "id" : "queen",
   "imagePath" : "classpsath:/assets/images/white_queen.png",

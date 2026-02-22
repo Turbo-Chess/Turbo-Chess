@@ -1,4 +1,5 @@
 {
+  "type": "PIECE",
   "name" : "Pawn",
   "id" : "pawn",
   "imagePath" : "classpath:/assets/images/white_pawn.png",

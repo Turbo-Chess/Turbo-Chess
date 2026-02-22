@@ -1,4 +1,5 @@
 {
+  "type": "PIECE",
   "name" : "Rook",
   "id" : "rook",
   "imagePath" : "classpath:/assets/images/black_rook.png",

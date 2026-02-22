@@ -115,6 +115,5 @@ public final class GameCoordinator {
         this.match.getBoard().setEntity(new Point2D(4, 4), bishop);
         this.match.getBoard().setEntity(new Point2D(5, 3), bishop2);
         this.match.getBoard().setEntity(new Point2D(5, 5), newPiece);
-
     }
 }

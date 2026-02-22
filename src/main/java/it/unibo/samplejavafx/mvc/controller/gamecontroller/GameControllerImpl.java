@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public final class GameControllerImpl implements GameController {
     // TODO: This path will be taken from settings
-    private static final Path tcPath  = Paths.get(System.getProperty("user.home"), "/TurboChess/Mods");
+    private static final Path tcPath  = Paths.get(System.getProperty("user.home"), "/.TurboChess/Mods");
     private static final List<String> PATHS = List.of("src/main/resources/EntityResources/", tcPath.toString());
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);

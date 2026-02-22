@@ -25,9 +25,6 @@ public class LoaderControllerImpl implements LoaderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoaderControllerImpl.class);
 
     private final List<String> entityResRootPath = new ArrayList<>();
-    private final Map<String, Class<? extends AbstractEntityDefinition>> associations = Map.of(
-            "pieces", PieceDefinition.class
-    );
     private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
@@ -58,16 +55,9 @@ public class LoaderControllerImpl implements LoaderController {
         try (Stream<Path> entityTypeDirs = Files.list(resPackPath)) {
             entityTypeDirs
                     .filter(Files::isDirectory)
-                    .filter(Objects::nonNull)
-                    .map(Path::getFileName)
-                    .map(Path::toString)
-                    .filter(associations::containsKey)
-                    .forEach(entityType -> {
-                        final Path fullPath = resPackPath.resolve(entityType);
+                    .forEach(fullPath -> {
                         final List<AbstractEntityDefinition> loadedEntities =
-                                entityLoader.loadEntityFile(
-                                        fullPath,
-                                        associations.get(entityType));
+                                entityLoader.loadEntityFile(fullPath, AbstractEntityDefinition.class);
                         loadIntoCache(loadedEntities, resPackDir.toString());
                     });
 
