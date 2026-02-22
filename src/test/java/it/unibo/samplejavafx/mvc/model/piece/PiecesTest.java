@@ -33,7 +33,7 @@ class PiecesTest {
 
         assertEquals("test", p.getId());
         assertEquals("test-piece", p.getName());
-        assertEquals("/home/giacomo/Documents/pawn.jpg", p.getImagePath());
+        assertEquals("file:/home/giacomo/Documents/pawn.jpg", p.getImagePath());
         assertEquals(3, p.getWeight());
         assertEquals(1, p.getMoveRules().size());
     }
