@@ -20,9 +20,20 @@ class Loadout {
     + withName(newName : String) : Loadout
     + withEntries(newEntries : List<LoadoutEntry>) : Loadout
     + duplicate(newName : String) : Loadout
-    + isValid(definitions : Map<String, PieceDefinition>, expectedWeight : int) : boolean
+    + isValid(definitions : Map<String, PieceDefinition>, expectedWeight : int, standardLoadout : Loadout) : boolean
 }
-
+@
+class LoadoutManager {
+    - loadoutDir : Path
+    - mapper : ObjectMapper
+    
+    + save(loadout : Loadout) : void
+    + load(id : String) : Optional<Loadout>
+    + getAll() : List<Loadout>
+    + delete(id : String) : void
+}
+@
+LoadoutManager "1" ..> "*" Loadout : manages
 Loadout "1" *-- "*" LoadoutEntry : contains
 
 @enduml
