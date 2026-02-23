@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -41,11 +42,11 @@ public abstract class AbstractEntityDefinition {
      */
     protected <T extends AbstractBuilder<T>> AbstractEntityDefinition(final AbstractBuilder<T> builder) {
         if (builder.name == null || builder.name.isEmpty()) {
-            throw new IllegalArgumentException("Missing required filed: name");
+            throw new IllegalArgumentException("Missing required field: name");
         }
 
         if (builder.id == null || builder.id.isEmpty()) {
-            throw new IllegalArgumentException("Missing required filed: id");
+            throw new IllegalArgumentException("Missing required field: id");
         }
 
         if (builder.imagePath == null || builder.imagePath.isEmpty()) {
@@ -53,7 +54,7 @@ public abstract class AbstractEntityDefinition {
         }
 
         if (builder.pieceType == null) {
-            throw new IllegalArgumentException("Missing required filed: name");
+            throw new IllegalArgumentException("Missing required field: name");
         }
 
         this.name = builder.name;
