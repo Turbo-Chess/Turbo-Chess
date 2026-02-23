@@ -31,10 +31,10 @@ public class standardLoadout {
         entries.add(new LoadoutEntry(new Point2D(1, backLines), packId, "knight"));
         entries.add(new LoadoutEntry(new Point2D(2, backLines), packId, "bishop"));
         entries.add(new LoadoutEntry(new Point2D(3, backLines), packId, "queen"));
-        entries.add(new LoadoutEntry(new Point2D(4, backRank), packId, "king"));
-        entries.add(new LoadoutEntry(new Point2D(5, backRank), packId, "bishop"));
-        entries.add(new LoadoutEntry(new Point2D(6, backRank), packId, "knight"));
-        entries.add(new LoadoutEntry(new Point2D(7, backRank), packId, "rook"));
+        entries.add(new LoadoutEntry(new Point2D(4, backLines), packId, "king"));
+        entries.add(new LoadoutEntry(new Point2D(5, backLines), packId, "bishop"));
+        entries.add(new LoadoutEntry(new Point2D(6, backLines), packId, "knight"));
+        entries.add(new LoadoutEntry(new Point2D(7, backLines), packId, "rook"));   
 
         for (int x = 0; x < 8; x++) {
             entries.add(new LoadoutEntry(new Point2D(x, pawnsRank), packId, "pawn"));
