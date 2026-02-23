@@ -1,0 +1,119 @@
+{
+  "id" : "f836b695-a116-46c9-98ed-6ee8b2ac1330",
+  "name" : "Standard Chess",
+  "createdAt" : 1771861713778,
+  "updatedAt" : 1771861713778,
+  "entries" : [ {
+    "position" : {
+      "x" : 0,
+      "y" : 7
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "rook"
+  }, {
+    "position" : {
+      "x" : 1,
+      "y" : 7
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "knight"
+  }, {
+    "position" : {
+      "x" : 2,
+      "y" : 7
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "bishop"
+  }, {
+    "position" : {
+      "x" : 3,
+      "y" : 7
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "queen"
+  }, {
+    "position" : {
+      "x" : 4,
+      "y" : 7
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "king"
+  }, {
+    "position" : {
+      "x" : 5,
+      "y" : 7
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "bishop"
+  }, {
+    "position" : {
+      "x" : 6,
+      "y" : 7
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "knight"
+  }, {
+    "position" : {
+      "x" : 7,
+      "y" : 7
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "rook"
+  }, {
+    "position" : {
+      "x" : 0,
+      "y" : 6
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "pawn"
+  }, {
+    "position" : {
+      "x" : 1,
+      "y" : 6
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "pawn"
+  }, {
+    "position" : {
+      "x" : 2,
+      "y" : 6
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "pawn"
+  }, {
+    "position" : {
+      "x" : 3,
+      "y" : 6
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "pawn"
+  }, {
+    "position" : {
+      "x" : 4,
+      "y" : 6
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "pawn"
+  }, {
+    "position" : {
+      "x" : 5,
+      "y" : 6
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "pawn"
+  }, {
+    "position" : {
+      "x" : 6,
+      "y" : 6
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "pawn"
+  }, {
+    "position" : {
+      "x" : 7,
+      "y" : 6
+    },
+    "packId" : "StandardChessPieces",
+    "pieceId" : "pawn"
+  } ]
+}
