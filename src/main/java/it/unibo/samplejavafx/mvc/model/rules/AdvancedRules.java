@@ -165,12 +165,20 @@ public final class AdvancedRules {
         if (cb.getEntity(kingPos).get().asMoveable().isPresent()) {
             final var piece = (Piece) cb.getEntity(kingPos).get().asMoveable().get();
             if (piece.getType() == PieceType.KING && !piece.hasMoved()) {
-                if (hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y())) 
-                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))) { // AGGIUNGERE CONDIZIONI SU CELLE LIBERE
+                if (cb.getEntity(new Point2D(TOWERS_X.x(), kingPos.y())).isPresent()
+                        && cb.getEntity(new Point2D(TOWERS_X.y(), kingPos.y())).isPresent() 
+                        && hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y())) 
+                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))
+                        && castleLeft(cb, kingPos, currentColor)
+                        && castleRight(cb, kingPos, currentColor)) { // AGGIUNGERE CONDIZIONI SU CELLE LIBERE
                     return CastleCondition.CASTLE_BOTH;
-                } else if (hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y()))) {
+                } else if (cb.getEntity(new Point2D(TOWERS_X.x(), kingPos.y())).isPresent()
+                        && hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y()))
+                        && castleLeft(cb, kingPos, currentColor)) {
                     return CastleCondition.CASTLE_LEFT;
-                } else if (hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))) {
+                } else if (cb.getEntity(new Point2D(TOWERS_X.y(), kingPos.y())).isPresent()
+                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))
+                        && castleRight(cb, kingPos, currentColor)) {
                     return CastleCondition.CASTLE_RIGHT;
                 } else {
                     return CastleCondition.NO_CASTLE;
@@ -178,6 +186,43 @@ public final class AdvancedRules {
             }
         }
         return CastleCondition.NO_CASTLE; // cell is empty or king has moved
+    }
+
+    /**
+     * placeholder.
+     * 
+     * @param cb placeholder.
+     * @param kingPos placeholder.
+     * @param currentColor placeholder.
+     * @return placeholder.
+     */
+    private static boolean castleLeft(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
+        if (cb.isFree(new Point2D(kingPos.x()-1, kingPos.y()))
+                && cb.isFree(new Point2D(kingPos.x()-2, kingPos.y()))
+                && cb.isFree(new Point2D(kingPos.x()-3, kingPos.y()))
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()-1, kingPos.y())).isEmpty()
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()-2, kingPos.y())).isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * placeholder.
+     * 
+     * @param cb placeholder.
+     * @param kingPos placeholder.
+     * @param currentColor placeholder.
+     * @return placeholder.
+     */
+    private static boolean castleRight(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
+        if (cb.isFree(new Point2D(kingPos.x()+1, kingPos.y()))
+                && cb.isFree(new Point2D(kingPos.x()+2, kingPos.y()))
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()+1, kingPos.y())).isEmpty()
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()+2, kingPos.y())).isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
     /**
