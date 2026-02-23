@@ -33,7 +33,7 @@ public class EntityLoaderImpl implements EntityLoader {
                    .toList();
         } catch (final IOException e) {
             LOGGER.error("Cannot get files inside: {}", filesPath, e);
-            return List.of();
+            throw new RuntimeException("Cannot access files in: " + filesPath);
         }
 
     }

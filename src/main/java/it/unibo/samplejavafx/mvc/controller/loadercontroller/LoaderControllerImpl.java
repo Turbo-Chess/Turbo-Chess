@@ -63,6 +63,7 @@ public class LoaderControllerImpl implements LoaderController {
 
         } catch (final IOException e) {
             LOGGER.error("Could not read files from the specified folder: {}", resPackPath, e);
+            throw new RuntimeException("Could not read files from the specified folder: " + resPackPath);
         }
     }
 
@@ -78,6 +79,7 @@ public class LoaderControllerImpl implements LoaderController {
             res.addAll(paths.filter(Files::isDirectory).map(Path::getFileName).toList());
         } catch (final IOException e) {
             LOGGER.error("Cannot get directories: {}", rootResDir, e);
+            throw new RuntimeException("Cannot get directories: "  + rootResDir);
         }
 
         return res;

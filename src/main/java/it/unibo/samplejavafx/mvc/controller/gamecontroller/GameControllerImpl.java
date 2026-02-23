@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +21,7 @@ import java.util.Set;
  * placeholder.
  */
 public final class GameControllerImpl implements GameController {
-    // TODO: This path will be taken from settings
-    private static final Path tcPath  = Paths.get(System.getProperty("user.home"), "/.TurboChess/Mods");
-    private static final List<String> PATHS = List.of("src/main/resources/EntityResources/", tcPath.toString());
+    private static final List<String> PATHS = List.of("src/main/resources/EntityResources/", GameProperties.MOD_FOLDER.getPath());
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
