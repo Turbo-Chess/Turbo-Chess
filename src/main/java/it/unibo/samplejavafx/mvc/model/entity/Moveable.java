@@ -25,4 +25,9 @@ public interface Moveable {
      * @return placeholder.
      */
     List<Point2D> getAvailableCells();
+
+    /**
+     * Placeholder.
+     */
+    void setHasMoved();
 }
