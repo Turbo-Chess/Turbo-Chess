@@ -31,6 +31,15 @@ public class PieceDefinition extends AbstractEntityDefinition {
     @JsonCreator
    protected PieceDefinition(final Builder builder) {
         super(builder);
+
+        if (builder.weight <= 0) {
+           throw new IllegalArgumentException("Weight must be a positive non-0 number");
+        }
+
+        if (builder.moveRules == null) {
+            throw new IllegalArgumentException("A piece must have at least one move rule");
+        }
+
         this.weight = builder.weight;
         this.moveRules = List.copyOf(builder.moveRules);
     }

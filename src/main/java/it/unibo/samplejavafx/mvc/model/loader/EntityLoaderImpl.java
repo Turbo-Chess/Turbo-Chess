@@ -47,7 +47,7 @@ public class EntityLoaderImpl implements EntityLoader {
             return mapper.readValue(new File(filePath.toString()), classToLoad);
         } catch (final IOException e) {
             LOGGER.error("Cannot read file: {}", filePath, e);
-            return null;
+            throw new RuntimeException("Fatal error loading json configuration of: " + filePath, e);
         }
     }
 }

@@ -19,6 +19,11 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
      */
     public PowerUpDefinition(final Builder builder) {
         super(builder);
+
+        if (builder.duration <= 0) {
+            throw new IllegalArgumentException("Duration must be a positive non-0 value");
+        }
+
         this.duration = builder.duration;
     }
 

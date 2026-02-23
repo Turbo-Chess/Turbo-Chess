@@ -40,6 +40,22 @@ public abstract class AbstractEntityDefinition {
      * @param <T> Placeholder.
      */
     protected <T extends AbstractBuilder<T>> AbstractEntityDefinition(final AbstractBuilder<T> builder) {
+        if (builder.name == null || builder.name.isEmpty()) {
+            throw new IllegalArgumentException("Missing required filed: name");
+        }
+
+        if (builder.id == null || builder.id.isEmpty()) {
+            throw new IllegalArgumentException("Missing required filed: id");
+        }
+
+        if (builder.imagePath == null || builder.imagePath.isEmpty()) {
+            throw new IllegalArgumentException("Missing required filed: imagePath");
+        }
+
+        if (builder.pieceType == null) {
+            throw new IllegalArgumentException("Missing required filed: name");
+        }
+
         this.name = builder.name;
         this.id = builder.id;
         this.imagePath = builder.imagePath;
