@@ -88,6 +88,9 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
         return super.getEntityDefinition().getWeight();
     }
 
+    /**
+     * placeholder.
+     */
     public void setHasMoved() {
         this.hasMoved = true;
     }
