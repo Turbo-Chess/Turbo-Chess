@@ -86,11 +86,11 @@ public final class GameCoordinator {
                 .playerColor(PlayerColor.BLACK)
                 .build();
 
-        final Piece newPiece = new Piece.Builder()
+        /*final Piece newPiece = new Piece.Builder()
                 .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("TestPack").get("new"))
                 .gameId(5)
                 .playerColor(PlayerColor.BLACK)
-                .build();
+                .build();*/
 
         final Piece king = new Piece.Builder()
                 .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("king"))
@@ -114,6 +114,6 @@ public final class GameCoordinator {
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
         this.match.getBoard().setEntity(new Point2D(4, 4), bishop);
         this.match.getBoard().setEntity(new Point2D(5, 3), bishop2);
-        this.match.getBoard().setEntity(new Point2D(5, 5), newPiece);
+        /*this.match.getBoard().setEntity(new Point2D(5, 5), newPiece);*/
     }
 }

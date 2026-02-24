@@ -21,7 +21,7 @@ import java.util.Set;
  * placeholder.
  */
 public final class GameControllerImpl implements GameController {
-    private static final List<String> PATHS = List.of(GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(), GameProperties.MOD_FOLDER.getPath());
+    private static final List<String> PATHS = List.of(GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(), GameProperties.EXTERNAL_MOD_FOLDER.getPath());
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
