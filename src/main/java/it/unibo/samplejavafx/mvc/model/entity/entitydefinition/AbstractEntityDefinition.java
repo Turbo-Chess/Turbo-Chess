@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,6 +52,8 @@ public abstract class AbstractEntityDefinition {
 
         if (builder.imagePath == null || builder.imagePath.isEmpty()) {
             throw new IllegalArgumentException("Missing required filed: imagePath");
+        } else if (!builder.imagePath.startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath()) && !builder.imagePath.startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())) {
+            throw new IllegalArgumentException("Path does not start with the correct base path");
         }
 
         if (builder.pieceType == null) {
@@ -59,7 +62,7 @@ public abstract class AbstractEntityDefinition {
 
         this.name = builder.name;
         this.id = builder.id;
-        this.imagePath = builder.imagePath;
+        this.imagePath = LoadingUtils.getCorrectPath(builder.imagePath).toString();
         this.pieceType = builder.pieceType;
     }
 
@@ -104,11 +107,12 @@ public abstract class AbstractEntityDefinition {
          * @return Placeholder.
          */
         public X imagePath(final String newImagePath) {
-            if (newImagePath.startsWith("classpath:")) {
-                this.imagePath = newImagePath.replace("classpath:", "");
-            } else {
+            if (!newImagePath.startsWith("classpath:")) {
                 this.imagePath = "file:" + newImagePath;
+            } else {
+                this.imagePath = newImagePath;
             }
+
             return self();
         }
 

@@ -65,7 +65,7 @@ class PiecesTest {
      */
     @Test
     void testInitializationFromResourceJson() throws IOException {
-        final String resourcePath = "/EntityResources/StandardChessPieces/pieces/Pawn.json";
+        final String resourcePath = "/EntityResources/StandardChessPieces/Pawn.json";
         final ObjectMapper mapper = new ObjectMapper();
         try (var is = getClass().getResourceAsStream(resourcePath)) {
             assertNotNull(is, "Resource not found: " + resourcePath);

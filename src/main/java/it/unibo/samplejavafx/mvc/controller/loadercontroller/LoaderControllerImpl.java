@@ -4,12 +4,16 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDef
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,30 +46,20 @@ public class LoaderControllerImpl implements LoaderController {
      */
     @Override
     public void load() {
+        // Get a path from URI
         for (final String basePathString : entityResRootPath) {
-            final Path basePath = Path.of(basePathString);
-            getDirs(basePath).forEach(resPackDir -> loadResourcePack(basePath, resPackDir));
+            final Path unifiedBasePath = LoadingUtils.getCorrectPath(basePathString);
+            getDirs(unifiedBasePath).forEach(resPackDir -> loadResourcePack(unifiedBasePath, resPackDir));
         }
     }
 
     private void loadResourcePack(final Path basePath, final Path resPackDir) {
         final Path resPackPath = basePath.resolve(resPackDir);
         entityCache.computeIfAbsent(resPackDir.toString(), map -> new HashMap<>());
-
-        try (Stream<Path> entityTypeDirs = Files.list(resPackPath)) {
-            entityTypeDirs
-                    .filter(Files::isDirectory)
-                    .forEach(fullPath -> {
-                        final List<AbstractEntityDefinition> loadedEntities =
-                                entityLoader.loadEntityFile(fullPath, AbstractEntityDefinition.class);
-                        loadIntoCache(loadedEntities, resPackDir.toString());
-                    });
-
-        } catch (final IOException e) {
-            LOGGER.error("Could not read files from the specified folder: {}", resPackPath, e);
-            throw new RuntimeException("Could not read files from the specified folder: " + resPackPath);
-        }
-    }
+        final List<AbstractEntityDefinition> loadedEntities =
+                entityLoader.loadEntityFile(resPackPath, AbstractEntityDefinition.class);
+        loadIntoCache(loadedEntities, resPackDir.toString());
+   }
 
     private void loadIntoCache(final List<AbstractEntityDefinition> entitiesToLoad, final String packName) {
         for (final var entity : entitiesToLoad) {

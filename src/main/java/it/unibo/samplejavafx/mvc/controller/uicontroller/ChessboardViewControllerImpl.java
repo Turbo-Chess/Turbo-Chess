@@ -108,6 +108,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * @return a responsive ImageView.
      */
     private ImageView createResponsiveImageView(final String imagePath, final Button button) {
+        System.out.println(imagePath);
         final ImageView imageView = new ImageView(new Image(imagePath));
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
@@ -121,7 +122,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         LOGGER.debug("Added Entity: " + entity.getClass() + " at pos: " + pos);
         final Button btn = cells.get(pos);
         btn.setText("");
-        btn.setGraphic(createResponsiveImageView(entity.getImagePath(), btn));
+        btn.setGraphic(createResponsiveImageView("file:" + entity.getImagePath(), btn));
     }
 
     @Override
