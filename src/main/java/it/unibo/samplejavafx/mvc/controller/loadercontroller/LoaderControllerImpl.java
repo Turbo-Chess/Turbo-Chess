@@ -5,6 +5,7 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,12 @@ public class LoaderControllerImpl implements LoaderController {
         // Get a path from URI
         for (final String basePathString : entityResRootPath) {
             final Path unifiedBasePath = LoadingUtils.getCorrectPath(basePathString);
+            try {
+                Files.createDirectories(unifiedBasePath);
+            } catch (final IOException e) {
+                LOGGER.error("Cannot create the directory " + unifiedBasePath);
+                throw new RuntimeException("Cannot create the directory " + unifiedBasePath);
+            }
             getDirs(unifiedBasePath).forEach(resPackDir -> loadResourcePack(unifiedBasePath, resPackDir));
         }
     }
