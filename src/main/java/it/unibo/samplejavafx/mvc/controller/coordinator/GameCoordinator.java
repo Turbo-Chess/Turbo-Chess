@@ -190,6 +190,6 @@ public final class GameCoordinator {
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
         this.match.getBoard().setEntity(new Point2D(BISHOP_POS_X, BISHOP_POS_Y), bishop);
         this.match.getBoard().setEntity(new Point2D(BISHOP2_POS_X, BISHOP2_POS_Y), bishop2);
-        /*this.match.getBoard().setEntity(new Point2D(5, 5), newPiece);*/
+        //this.match.getBoard().setEntity(new Point2D(5, 5), newPiece);
     }
 }
