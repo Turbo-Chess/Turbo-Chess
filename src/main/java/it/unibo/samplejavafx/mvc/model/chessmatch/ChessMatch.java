@@ -49,10 +49,15 @@ public interface ChessMatch {
     /**
      * placeholder.
      */
-    void updateTurn();
+    void updateTurn(final int turn);
 
     /**
      * placeholder.
      */
-    void updatePlayerColor();
+    void updatePlayerColor(final PlayerColor currentColor);
+
+    /**
+     * placeholder.
+     */
+    void updateGameState(final GameState state);
 }

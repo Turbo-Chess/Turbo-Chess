@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -155,5 +156,10 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @Override
     public void onPlayerUpdated(final PlayerColor playerColor) {
         playerColorValueLabel.setText(String.valueOf(playerColor));
+    }
+
+    @Override
+    public void onGameStateUpdated(final GameState gameState) {
+        // TODO: set label
     }
 }

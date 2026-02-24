@@ -94,20 +94,4 @@ public final class GameControllerImpl implements GameController {
         lastPossibleMoves.clear();
         lastPossibleMoves.addAll(result);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateTurn() {
-        match.updateTurn();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updatePlayerColor() {
-        match.updatePlayerColor();
-    }
 }

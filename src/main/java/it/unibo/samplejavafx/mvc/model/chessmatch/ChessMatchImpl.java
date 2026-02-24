@@ -40,7 +40,7 @@ public class ChessMatchImpl implements ChessMatch {
         this.turnNumber = 1;
         this.currentPlayer = PlayerColor.WHITE;
         // TODO: chech turn number passed to turn handler
-        this.turnHandler = new TurnHandlerImpl(this.turnNumber, this.board);
+        this.turnHandler = new TurnHandlerImpl(this);
     }
 
     @Override
@@ -57,20 +57,21 @@ public class ChessMatchImpl implements ChessMatch {
     }
 
     @Override
-    public void updateTurn() {
-       this.turnNumber++;
+    public void updateTurn(final int turn) {
+       this.turnNumber = turn;
        this.notifyTurnUpdated(this.turnNumber);
     }
 
     @Override
-    public void updatePlayerColor() {
-        if (this.currentPlayer == PlayerColor.WHITE) {
-            this.currentPlayer = PlayerColor.BLACK;
-        } else {
-            this.currentPlayer = PlayerColor.WHITE;
-        }
-
+    public void updatePlayerColor(final PlayerColor currentColor) {
+        this.currentPlayer = currentColor;
         this.notifyPlayerColorUpdated(this.currentPlayer);
+    }
+
+    @Override
+    public void updateGameState(final GameState state) {
+        this.gameState = state;
+        // TODO: this.notifyGameStateUpdated(this.gameState);
     }
     // TODO: aggiungere per il timer
 

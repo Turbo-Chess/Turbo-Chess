@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.DatabindException;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 public class DrawTest {
@@ -35,7 +36,7 @@ public class DrawTest {
         board.setEntity(new Point2D(7, 1), TestUtilities.createRook(PlayerColor.BLACK, idCount));
         countInc();
 
-        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE));
+        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
     }
 
     @Test
@@ -47,7 +48,7 @@ public class DrawTest {
         board.setEntity(new Point2D(7, 1), TestUtilities.createRook(PlayerColor.BLACK, idCount));
         countInc();
 
-        assertFalse(AdvancedRules.draw(board, PlayerColor.WHITE));
+        assertFalse(AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
     }
 
     @Test
@@ -61,7 +62,7 @@ public class DrawTest {
         board.setEntity(new Point2D(2, 0), TestUtilities.createPawn(PlayerColor.BLACK, idCount));
         countInc();
 
-        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE));
+        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
     }
 
     @Test
@@ -71,7 +72,7 @@ public class DrawTest {
         board.setEntity(new Point2D(1, 7), TestUtilities.createKing(PlayerColor.BLACK, idCount));
         countInc();
 
-        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE));
+        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
     }
 
     @Test
@@ -83,7 +84,7 @@ public class DrawTest {
         board.setEntity(new Point2D(4, 5), TestUtilities.createKnight(PlayerColor.BLACK, idCount));
         countInc();
 
-        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE));
+        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
     }
 
     @Test
@@ -95,7 +96,7 @@ public class DrawTest {
         board.setEntity(new Point2D(4, 5), TestUtilities.createBishop(PlayerColor.BLACK, idCount));
         countInc();
 
-        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE));
+        assertTrue(AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
     }
 
     @Test
@@ -107,7 +108,7 @@ public class DrawTest {
         board.setEntity(new Point2D(4, 5), TestUtilities.createRook(PlayerColor.BLACK, idCount));
         countInc();
 
-        assertFalse(AdvancedRules.draw(board, PlayerColor.WHITE));
+        assertFalse(AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
     }
 
     // Implement test for PowerUps whenever they are fully functioning

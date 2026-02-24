@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
+import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
+import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
@@ -20,14 +22,15 @@ import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
  * Placeholder.
  */
 public class TurnHandlerImpl implements TurnHandler {
-    private int turn;
+    private final ChessMatch match;
     private final ChessBoard board;
+    private final Map<Piece, List<Point2D>> interposingPieces;
     private GameState state;
     private CastleCondition castlingOptions;
     private PlayerColor currentColor;
+    private int turn;
     private Optional<Piece> currentPiece = Optional.empty();
     private List<Point2D> pieceMoves;
-    private final Map<Piece, List<Point2D>> interposingPieces;
 
     /**
      * placeholder.
@@ -35,12 +38,13 @@ public class TurnHandlerImpl implements TurnHandler {
      * @param turn placeholder.
      * @param board placeholder.
      */
-    public TurnHandlerImpl(final int turn, final ChessBoard board) {
-        this.turn = turn;
-        this.board = board;
-        this.currentColor = PlayerColor.WHITE;
+    public TurnHandlerImpl(final ChessMatch match) {
+        this.match = match;
+        this.turn = match.getTurnNumber();
+        this.board = match.getBoard();
+        this.currentColor = match.getCurrentPlayer();
+        this.state = match.getGameState();
         this.castlingOptions = CastleCondition.NO_CASTLE;
-        this.state = GameState.NORMAL;
         this.interposingPieces = new HashMap<>();
     }
 
@@ -91,14 +95,15 @@ public class TurnHandlerImpl implements TurnHandler {
                 && AdvancedRules.checkmate(board, AdvancedRules.swapColor(currentColor), state, interposingPieces)) {
             return false;
         }
+
+        this.turn += 1;
+        this.currentColor = AdvancedRules.swapColor(currentColor);
+        updateStats();
+
         if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor), state)) {
             return false;
         }
-
-        // Changing variables for the next turn iteration
         this.castlingOptions = AdvancedRules.castle(board, AdvancedRules.swapColor(currentColor));
-        this.turn += 1;
-        this.currentColor = AdvancedRules.swapColor(currentColor);
         this.interposingPieces.clear();
         unsetCurrentPiece();
         return true;
@@ -219,9 +224,9 @@ public class TurnHandlerImpl implements TurnHandler {
      * @param currentTurn placeholder.
      * @param state placeholder.
      */
-    public void updateStats(PlayerColor currentColor, int currentTurn, GameState state) {
-        currentColor = this.currentColor;
-        currentTurn = this.turn;
-        state = this.state;
+    public void updateStats() {
+        match.updateGameState(state);
+        match.updatePlayerColor(currentColor);
+        match.updateTurn(turn);
     }
 }
