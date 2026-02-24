@@ -11,8 +11,6 @@ import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +19,9 @@ import java.util.Set;
  * placeholder.
  */
 public final class GameControllerImpl implements GameController {
-    private static final List<String> PATHS = List.of(GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(), GameProperties.EXTERNAL_MOD_FOLDER.getPath());
+    private static final List<String> PATHS = List.of(
+            GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
+            GameProperties.EXTERNAL_MOD_FOLDER.getPath());
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();

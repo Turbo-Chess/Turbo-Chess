@@ -23,7 +23,7 @@ public class TurnHandlerImpl implements TurnHandler {
     private int turn;
     private final ChessBoard board;
     private GameState state;
-    private CastleCondition castlingOptions;
+    private CastleCondition castlingOptions; //NOPMD will be implemented
     private PlayerColor currentColor;
     private Optional<Piece> currentPiece = Optional.empty();
     private List<Point2D> pieceMoves;

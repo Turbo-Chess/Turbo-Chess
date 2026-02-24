@@ -33,7 +33,7 @@ public class EntityLoaderImpl implements EntityLoader {
                    .toList();
         } catch (final IOException e) {
             LOGGER.error("Cannot get files inside: {}", filesPath, e);
-            throw new RuntimeException("Cannot access files in: " + filesPath);
+            throw new IllegalStateException("Cannot access files in: " + filesPath, e);
         }
 
     }
@@ -47,7 +47,7 @@ public class EntityLoaderImpl implements EntityLoader {
             return mapper.readValue(new File(filePath.toString()), classToLoad);
         } catch (final IOException e) {
             LOGGER.error("Cannot read file: {}", filePath, e);
-            throw new RuntimeException("Fatal error loading json configuration of: " + filePath, e);
+            throw new IllegalStateException("Fatal error loading json configuration of: " + filePath, e);
         }
     }
 }

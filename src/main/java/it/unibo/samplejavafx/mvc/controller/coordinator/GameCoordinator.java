@@ -5,10 +5,8 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
-import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +25,13 @@ import org.slf4j.LoggerFactory;
 public final class GameCoordinator {
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 800;
-    private static final int ROOK_WEIGHT = 5;
-    private static final int KING_WEIGHT = 100;
     private static final int KING_POS_X = 6;
     private static final int KING_POS_Y = 7;
+    private static final int BISHOP_POS_X = 4;
+    private static final int BISHOP_POS_Y = 4;
+    private static final int BISHOP2_POS_X = 5;
+    private static final int BISHOP2_POS_Y = 3;
+    private static final String STANDARD_PACK = "StandardChessPieces";
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinator.class);
 
     private final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
@@ -80,40 +80,46 @@ public final class GameCoordinator {
         scene.getStylesheets().add(cssLocation.toExternalForm());
         stage.show();
         //Only for testing
+        final var entityCache = gameController.getLoaderController().getEntityCache();
         final Piece rook = new Piece.Builder()
-                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("rook"))
+                .entityDefinition(
+                        (PieceDefinition) entityCache.get(STANDARD_PACK).get("rook"))
                 .gameId(1)
                 .playerColor(PlayerColor.BLACK)
                 .build();
 
         /*final Piece newPiece = new Piece.Builder()
-                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("TestPack").get("new"))
+                .entityDefinition(
+                        (PieceDefinition) entityCache.get("TestPack").get("new"))
                 .gameId(5)
                 .playerColor(PlayerColor.BLACK)
                 .build();*/
 
         final Piece king = new Piece.Builder()
-                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("king"))
+                .entityDefinition(
+                        (PieceDefinition) entityCache.get(STANDARD_PACK).get("king"))
                 .gameId(2)
                 .playerColor(PlayerColor.WHITE)
                 .build();
 
         final Piece bishop = new Piece.Builder()
-                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("bishop"))
+                .entityDefinition(
+                        (PieceDefinition) entityCache.get(STANDARD_PACK).get("bishop"))
                 .gameId(3)
                 .playerColor(PlayerColor.WHITE)
                 .build();
 
         final Piece bishop2 = new Piece.Builder()
-                .entityDefinition((PieceDefinition) gameController.getLoaderController().getEntityCache().get("StandardChessPieces").get("bishop"))
+                .entityDefinition(
+                        (PieceDefinition) entityCache.get(STANDARD_PACK).get("bishop"))
                 .gameId(4)
                 .playerColor(PlayerColor.WHITE)
                 .build();
 
         this.match.getBoard().setEntity(new Point2D(1, 1), rook);
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
-        this.match.getBoard().setEntity(new Point2D(4, 4), bishop);
-        this.match.getBoard().setEntity(new Point2D(5, 3), bishop2);
+        this.match.getBoard().setEntity(new Point2D(BISHOP_POS_X, BISHOP_POS_Y), bishop);
+        this.match.getBoard().setEntity(new Point2D(BISHOP2_POS_X, BISHOP2_POS_Y), bishop2);
         /*this.match.getBoard().setEntity(new Point2D(5, 5), newPiece);*/
     }
 }

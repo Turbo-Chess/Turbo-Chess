@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 public final class App extends Application {
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 800;
+    private static final int MIN_WINDOW_SIZE = 500;
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     private final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
@@ -31,8 +32,8 @@ public final class App extends Application {
     @Override
     public void start(final Stage stage) throws Exception {
         try {
-            stage.setMinHeight(500);
-            stage.setMinWidth(500);
+            stage.setMinHeight(MIN_WINDOW_SIZE);
+            stage.setMinWidth(MIN_WINDOW_SIZE);
             final GameCoordinator coordinator = new GameCoordinator(stage);
             loader.setControllerFactory(c -> new MainMenuController(coordinator));
             final Parent root = loader.load();
@@ -57,24 +58,27 @@ public final class App extends Application {
         stage.show();
 
         // If a not-caught exception is thrown it will be managed here
-        } catch (Exception e) {
+        } catch (final RuntimeException e) {
             showFatalStartupError(e);
         }
     }
 
-    private void showFatalStartupError(Throwable e) {
-        e.printStackTrace(); //TODO: use the logger
+    private void showFatalStartupError(final Throwable e) {
+        LOGGER.error("Fatal startup error", e);
 
         // An exception thrown by jackson is re-thrown as its own, so it needs to be unwrapped
         Throwable rootCause = e;
-        while (rootCause.getCause() != null && rootCause.getCause() != rootCause) {
+        while (rootCause.getCause() != null && !rootCause.getCause().equals(rootCause)) {
             rootCause = rootCause.getCause();
         }
 
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        final Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Configuration Error");
         alert.setHeaderText("Invalid JSON Configuration");
-        alert.setContentText(rootCause.getMessage() != null ? e.getMessage() + " \nReason: " + rootCause.getMessage() : "Unknown error");
+        final String content = rootCause.getMessage() != null
+                ? e.getMessage() + " \nReason: " + rootCause.getMessage()
+                : "Unknown error";
+        alert.setContentText(content);
 
         alert.showAndWait();
 
@@ -82,7 +86,13 @@ public final class App extends Application {
         System.exit(1);
     }
 
-    public static void main(String[] args) {
+    /**
+     * placeholder.
+     *
+     * @param args placeholder.
+     */
+    public static void main(final String[] args) {
         launch(args);
     }
 }
+

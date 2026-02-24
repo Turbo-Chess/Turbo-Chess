@@ -27,24 +27,16 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  */
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
+    private static final double IMAGE_SCALE = 0.8;
     // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
-
-    /**
-     * placeholder.
-     *
-     * @param gameController placeholder.
-     */
-    public ChessboardViewControllerImpl(final GameController gameController) {
-        this.gameController = gameController;
-    }
 
     @FXML
     private GridPane chessboardGridPane;
 
     @FXML
-    private StackPane GameMainPane;
+    private StackPane gameMainPane;
 
     @FXML
     private Label turnValueLabel;
@@ -54,6 +46,15 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @FXML
     private Label timeValueLabel;
+
+    /**
+     * placeholder.
+     *
+     * @param gameController placeholder.
+     */
+    public ChessboardViewControllerImpl(final GameController gameController) {
+        this.gameController = gameController;
+    }
 
     /**
      * placeholder.
@@ -72,13 +73,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
         // Bind GridPane size to the minimum of StackPane width/height to keep it square
         final javafx.beans.binding.NumberBinding squareSize = javafx.beans.binding.Bindings.min(
-            GameMainPane.widthProperty(), GameMainPane.heightProperty()
+            gameMainPane.widthProperty(), gameMainPane.heightProperty()
         );
         chessboardGridPane.prefWidthProperty().bind(squareSize);
         chessboardGridPane.prefHeightProperty().bind(squareSize);
         chessboardGridPane.maxWidthProperty().bind(squareSize);
         chessboardGridPane.maxHeightProperty().bind(squareSize);
-
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
@@ -111,8 +111,8 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         final ImageView imageView = new ImageView(new Image(imagePath));
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
-        imageView.fitHeightProperty().bind(button.heightProperty().multiply(0.8));
-        imageView.fitWidthProperty().bind(button.widthProperty().multiply(0.8));
+        imageView.fitHeightProperty().bind(button.heightProperty().multiply(IMAGE_SCALE));
+        imageView.fitWidthProperty().bind(button.widthProperty().multiply(IMAGE_SCALE));
         return imageView;
     }
 

@@ -80,7 +80,7 @@ public final class AdvancedRules {
      * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
      */
     public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
-                                    Map<Piece, List<Point2D>> interposingPieces) {
+                                    final Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
         final List<Point2D> possibleMoves = kingPossibleMoves(kingCells, cb, currentColor);
@@ -89,12 +89,14 @@ public final class AdvancedRules {
             switch (state) {
                 case CHECK:
                     if (possibleMoves.isEmpty()) {
-                        interposingPieces = Map.copyOf(CheckCalculator.getInterposingPieces(cb, currentColor));
-                        return interposingPieces.isEmpty() ? true : false;
+                        final Map<Piece, List<Point2D>> computed =
+                                Map.copyOf(CheckCalculator.getInterposingPieces(cb, currentColor));
+                        interposingPieces.putAll(computed);
+                        return computed.isEmpty();
                     }
                     break;
                 case DOUBLE_CHECK:
-                    return possibleMoves.isEmpty() ? true : false;
+                    return possibleMoves.isEmpty();
                 default:
                     return false;
             }

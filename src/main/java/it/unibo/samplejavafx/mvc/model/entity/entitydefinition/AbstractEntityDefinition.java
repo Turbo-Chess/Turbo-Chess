@@ -52,7 +52,8 @@ public abstract class AbstractEntityDefinition {
 
         if (builder.imagePath == null || builder.imagePath.isEmpty()) {
             throw new IllegalArgumentException("Missing required filed: imagePath");
-        } else if (!builder.imagePath.startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath()) && !builder.imagePath.startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())) {
+        } else if (!builder.imagePath.startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath())
+                && !builder.imagePath.startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())) {
             throw new IllegalArgumentException("Path does not start with the correct base path");
         }
 

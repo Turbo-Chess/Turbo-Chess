@@ -1,26 +1,20 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
-import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -54,7 +48,7 @@ public class LoaderControllerImpl implements LoaderController {
                 Files.createDirectories(unifiedBasePath);
             } catch (final IOException e) {
                 LOGGER.error("Cannot create the directory " + unifiedBasePath);
-                throw new RuntimeException("Cannot create the directory " + unifiedBasePath);
+                throw new IllegalStateException("Cannot create the directory " + unifiedBasePath, e);
             }
             getDirs(unifiedBasePath).forEach(resPackDir -> loadResourcePack(unifiedBasePath, resPackDir));
         }
@@ -80,7 +74,7 @@ public class LoaderControllerImpl implements LoaderController {
             res.addAll(paths.filter(Files::isDirectory).map(Path::getFileName).toList());
         } catch (final IOException e) {
             LOGGER.error("Cannot get directories: {}", rootResDir, e);
-            throw new RuntimeException("Cannot get directories: "  + rootResDir);
+            throw new IllegalStateException("Cannot get directories: " + rootResDir, e);
         }
 
         return res;

@@ -18,7 +18,7 @@ import java.util.List;
  */
 @EqualsAndHashCode
 @ToString
-public class ChessMatchImpl implements ChessMatch {
+public final class ChessMatchImpl implements ChessMatch {
     @Getter
     private GameState gameState; //NOPMD
     @Getter
@@ -29,7 +29,7 @@ public class ChessMatchImpl implements ChessMatch {
     private final TurnHandler turnHandler;
     @Getter
     private final ChessBoard board;
-    private final List<ChessMatchObserver> subscribers = new ArrayList<ChessMatchObserver>();
+    private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 
     /**
      * placeholder.
@@ -43,13 +43,16 @@ public class ChessMatchImpl implements ChessMatch {
         this.turnHandler = new TurnHandlerImpl(this.turnNumber, this.board);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addObserver(final ChessMatchObserver observer) {
         subscribers.add(observer);
     }
 
-    private void notifyTurnUpdated(final int turnNumber) {
-        subscribers.forEach(sub -> sub.onTurnUpdated(turnNumber));
+    private void notifyTurnUpdated(final int turn) {
+        subscribers.forEach(sub -> sub.onTurnUpdated(turn));
     }
 
     private void notifyPlayerColorUpdated(final PlayerColor playerColor) {

@@ -3,14 +3,10 @@ package it.unibo.samplejavafx.mvc.model.loading;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-import it.unibo.samplejavafx.mvc.model.entity.PieceType;
-import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
-import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class CreateBasePiecesTest {
     private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
-    private static final String IMAGES_PATH = "classpath:/assets/images/";
 
     /*@Test
     void createPawn() throws IOException {
