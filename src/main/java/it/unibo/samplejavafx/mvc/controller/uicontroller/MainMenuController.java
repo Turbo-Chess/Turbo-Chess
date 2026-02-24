@@ -31,9 +31,29 @@ public final class MainMenuController {
     }
 
     /**
-     * placeholder.
+     * Opens the loadout menu.
+     *
+     * @param e the action event
      */
-    public void setup() {
-        coordinator.loadPieces();
+    public void openLoadout(final ActionEvent e) {
+        this.coordinator.initLoadout();
+    }
+
+    /**
+     * Opens the settings menu.
+     *
+     * @param e the action event
+     */
+    public void openSettings(final ActionEvent e) {
+        this.coordinator.initSettings();
+    }
+
+    /**
+     * Quits the application.
+     *
+     * @param e the action event
+     */
+    public void quit(final ActionEvent e) {
+        this.coordinator.quit();
     }
 }
