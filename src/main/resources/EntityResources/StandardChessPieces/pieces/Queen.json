@@ -1,7 +1,8 @@
 {
+  "type": "PIECE",
   "name" : "Queen",
   "id" : "queen",
-  "imagePath" : "",
+  "imagePath" : "classpath:/assets/images/white_queen.png",
   "pieceType" : "SUPERIOR",
   "weight" : 9,
   "moveRules" : [ {

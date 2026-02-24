@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,9 @@ import java.util.Set;
  * placeholder.
  */
 public final class GameControllerImpl implements GameController {
-    private static final List<String> PATHS = List.of("src/main/resources/EntityResources/");
+    private static final List<String> PATHS = List.of(
+            GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
+            GameProperties.EXTERNAL_MOD_FOLDER.getPath());
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();

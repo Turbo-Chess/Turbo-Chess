@@ -33,7 +33,7 @@ class PiecesTest {
 
         assertEquals("test", p.getId());
         assertEquals("test-piece", p.getName());
-        assertEquals("/home/giacomo/Documents/pawn.jpg", p.getImagePath());
+        assertEquals("file:/home/giacomo/Documents/pawn.jpg", p.getImagePath());
         assertEquals(3, p.getWeight());
         assertEquals(1, p.getMoveRules().size());
     }
@@ -65,7 +65,7 @@ class PiecesTest {
      */
     @Test
     void testInitializationFromResourceJson() throws IOException {
-        final String resourcePath = "/EntityResources/StandardChessPieces/pieces/Pawn.json";
+        final String resourcePath = "/EntityResources/StandardChessPieces/Pawn.json";
         final ObjectMapper mapper = new ObjectMapper();
         try (var is = getClass().getResourceAsStream(resourcePath)) {
             assertNotNull(is, "Resource not found: " + resourcePath);

@@ -44,6 +44,11 @@ public interface ChessMatch {
      */
     TurnHandler getTurnHandler();
 
+    /**
+     * placeholder.
+     *
+     * @param observer placeholder.
+     */
     void addObserver(ChessMatchObserver observer);
 
     /**

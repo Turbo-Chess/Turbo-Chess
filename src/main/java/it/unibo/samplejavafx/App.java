@@ -26,10 +26,10 @@ public final class App extends Application {
         stage.setMinHeight(500);
         stage.setMinWidth(500);
         final GameCoordinator coordinator = new GameCoordinator(stage);
-        
+
         // Load game resources
         coordinator.loadPieces();
-        
+
         // Start with Main Menu
         coordinator.initMainMenu();
     }
@@ -43,3 +43,4 @@ public final class App extends Application {
         launch(args);
     }
 }
+
