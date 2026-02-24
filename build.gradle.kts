@@ -28,7 +28,15 @@ java {
 
 val javaFXModules = listOf("base", "controls", "fxml", "swing", "graphics")
 
-val supportedPlatforms = listOf("linux", "mac", "win") // All required for OOP
+val osName = System.getProperty("os.name").lowercase()
+val osArch = System.getProperty("os.arch").lowercase()
+
+val platform = when {
+    osName.contains("win") -> "win"
+    osName.contains("mac") -> if (osArch.contains("aarch64")) "mac-aarch64" else "mac"
+    osName.contains("nux") -> "linux"
+    else -> "linux" // Default or fallback
+}
 
 dependencies {
     // Suppressions for SpotBugs
@@ -38,13 +46,12 @@ dependencies {
     // implementation("com.google.guava:guava:28.1-jre")
 
     // JavaFX: comment out if you do not need them
-    val javaFxVersion = "23.0.2"
-    implementation("org.openjfx:javafx:$javaFxVersion")
-    for (platform in supportedPlatforms) {
-        for (module in javaFXModules) {
-            implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
-        }
-    }
+    val javaFxVersion = "21.0.1"
+    implementation("org.openjfx:javafx-controls:$javaFxVersion:$platform")
+    implementation("org.openjfx:javafx-fxml:$javaFxVersion:$platform")
+    implementation("org.openjfx:javafx-graphics:$javaFxVersion:$platform")
+    implementation("org.openjfx:javafx-base:$javaFxVersion:$platform")
+    implementation("org.openjfx:javafx-swing:$javaFxVersion:$platform")
     
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
@@ -73,6 +80,37 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.21.0")
 }
 
+val mainApp = "it.unibo.samplejavafx.App"
+
+// JavaFX modules to include
+val javaFXOptions = javaFXModules.map { "javafx.$it" }
+
+application {
+    // Define the main class for the application
+    mainClass.set(mainApp)
+    
+    // Add JavaFX modules to the application run task
+    // applicationDefaultJvmArgs = listOf("--add-modules", "javafx.controls,javafx.fxml,javafx.graphics")
+}
+
+tasks.withType<JavaExec> {
+    // Ensure JavaFX modules are available at runtime
+    jvmArgs(
+        "--module-path", classpath.asPath,
+        "--add-modules", javaFXOptions.joinToString(","),
+        "--add-opens", "javafx.graphics/com.sun.javafx.tk=ALL-UNNAMED",
+        "--add-opens", "javafx.graphics/com.sun.javafx.tk.quantum=ALL-UNNAMED",
+        "--add-opens", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED",
+        "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+        "--add-opens", "java.base/java.util=ALL-UNNAMED",
+        "--add-opens", "java.base/java.nio.file=ALL-UNNAMED"
+    )
+    
+    // Explicitly select pipeline
+    // systemProperty("prism.order", "es2")
+    // systemProperty("prism.verbose", "true")
+}
+
 tasks.withType<Test> {
     // Enables JUnit 5 Jupiter module
     useJUnitPlatform()
@@ -83,13 +121,6 @@ tasks.withType<Test> {
         "--add-opens", "java.base/java.util=ALL-UNNAMED",
         "--add-opens", "java.base/java.nio.file=ALL-UNNAMED"
     )
-}
-
-val main: String by project
-
-application {
-    // Define the main class for the application
-    mainClass.set(main)
 }
 
 // Disabilita Checkstyle per il set di sorgenti di test
