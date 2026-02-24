@@ -1,13 +1,16 @@
 package it.unibo.samplejavafx.mvc.model.rules;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
@@ -35,9 +38,9 @@ public final class CheckCalculator {
      * @return a list of pieces that can block the check, sorted by weight (ascending).
      */
     public static Map<Piece, List<Point2D>> getInterposingPieces(final ChessBoard cb, final PlayerColor kingColor) {
-        final List<Piece> attackers = getAttackers(cb, kingColor);
+        final Set<Piece> attackers = getAttackers(cb, kingColor).stream().collect(Collectors.toSet());
 
-        final Piece attacker = attackers.get(0);
+        final Piece attacker = attackers.iterator().next();
         final Optional<Piece> kingOpt = AdvancedRules.getKing(cb, kingColor);
         if (kingOpt.isEmpty()) {
             return Collections.emptyMap();
@@ -54,7 +57,7 @@ public final class CheckCalculator {
         }
 
         final Map<Piece, List<Point2D>> candidates = new HashMap<>();
-        final List<Point2D> holder = new LinkedList<>();
+        final Set<Point2D> holder = new HashSet<>();
         final Set<Optional<Entity>> friends = AdvancedRules.getPiecesOfColor(cb, kingColor);
 
         for (final Optional<Entity> friendOpt : friends) {
@@ -65,7 +68,7 @@ public final class CheckCalculator {
                 }
 
                 final Point2D startPos = cb.getPosByEntity(friend);
-                final List<Point2D> moves = friend.getValidMoves(startPos, cb);
+                final Set<Point2D> moves = friend.getValidMoves(startPos, cb).stream().collect(Collectors.toSet());
 
                 // Check if piece can move to any cell in the path
                 for (final Point2D cell : path) {
@@ -75,7 +78,7 @@ public final class CheckCalculator {
                     }
                 }
                 if (!holder.isEmpty()) {
-                    candidates.put(friend, List.copyOf(holder));
+                    candidates.put(friend, Set.copyOf(holder).stream().toList());
                 }
                 holder.clear();
             }
@@ -128,10 +131,10 @@ public final class CheckCalculator {
      * @return a List containing all pieces that are attacking the king.
      */
     public static List<Piece> getAttackers(final ChessBoard cb, final PlayerColor kingColor) {
-        final List<Piece> attackers = new ArrayList<>();
+        final Set<Piece> attackers = new HashSet<>();
         final Optional<Piece> kingOpt = AdvancedRules.getKing(cb, kingColor);
         if (kingOpt.isEmpty()) {
-            return attackers;
+            return attackers.stream().toList();
         }
         final Point2D kingPos = cb.getPosByEntity(kingOpt.get());
         final PlayerColor enemyColor = AdvancedRules.swapColor(kingColor);
@@ -147,7 +150,7 @@ public final class CheckCalculator {
                 }
             }
         }
-        return attackers;
+        return attackers.stream().toList();
     }
 
     /**
