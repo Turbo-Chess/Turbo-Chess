@@ -79,7 +79,7 @@ public final class AdvancedRules {
      * @param interposingPieces empty map that will contain the result of getInterposingPieces().
      * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
      */
-    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
+    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, GameState state,
                                     Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
@@ -90,11 +90,17 @@ public final class AdvancedRules {
                 case CHECK:
                     if (possibleMoves.isEmpty()) {
                         interposingPieces.putAll(CheckCalculator.getInterposingPieces(cb, currentColor));
-                        return interposingPieces.isEmpty();
+                        if (interposingPieces.isEmpty()) {
+                            state = GameState.CHECKMATE;
+                            return true;
+                        }
                     }
                     break;
                 case DOUBLE_CHECK:
-                    return possibleMoves.isEmpty();
+                    if (possibleMoves.isEmpty()) {
+                        state = GameState.CHECKMATE;
+                        return true;
+                    }
                 default:
                     return false;
             }
@@ -110,7 +116,7 @@ public final class AdvancedRules {
      * @param currentColor color of the player.
      * @return {@code true} if the current player has no legal moves left, {@code false} otherwise.
      */
-    public static boolean draw(final ChessBoard cb, final PlayerColor currentColor) {
+    public static boolean draw(final ChessBoard cb, final PlayerColor currentColor, GameState state) {
         final Set<Optional<Entity>> set = getPiecesOfColor(cb, currentColor);
         final List<Point2D> container = new LinkedList<>();
 
@@ -125,12 +131,14 @@ public final class AdvancedRules {
             }
         }
         if (container.isEmpty()) {
+            state = GameState.DRAW;
             return true;
         }
         final List<Entity> holder = cb.getBoard().inverse().keySet().stream()
                 .filter(e -> e.getType() != PieceType.POWERUP)
                 .toList();
         if (holder.size() == 2) {
+            state = GameState.DRAW;
             return true;
         }
         if (holder.size() == 3) {
@@ -138,6 +146,7 @@ public final class AdvancedRules {
                 .filter(e -> e.getType() != PieceType.KING)
                 .toList();
             if (list.size() == 1 && list.getFirst().getType() == PieceType.INFERIOR) {
+                state = GameState.DRAW;
                 return true;
             }
         }
@@ -172,17 +181,18 @@ public final class AdvancedRules {
                         && castleLeft(cb, kingPos, currentColor)
                         && castleRight(cb, kingPos, currentColor)) { // AGGIUNGERE CONDIZIONI SU CELLE LIBERE
                     return CastleCondition.CASTLE_BOTH;
-                } else if (cb.getEntity(new Point2D(TOWERS_X.x(), kingPos.y())).isPresent()
+                } 
+                if (cb.getEntity(new Point2D(TOWERS_X.x(), kingPos.y())).isPresent()
                         && hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y()))
                         && castleLeft(cb, kingPos, currentColor)) {
                     return CastleCondition.CASTLE_LEFT;
-                } else if (cb.getEntity(new Point2D(TOWERS_X.y(), kingPos.y())).isPresent()
+                }
+                if (cb.getEntity(new Point2D(TOWERS_X.y(), kingPos.y())).isPresent()
                         && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))
                         && castleRight(cb, kingPos, currentColor)) {
                     return CastleCondition.CASTLE_RIGHT;
-                } else {
-                    return CastleCondition.NO_CASTLE;
                 }
+                return CastleCondition.NO_CASTLE;
             }
         }
         return CastleCondition.NO_CASTLE; // cell is empty or king has moved

@@ -89,18 +89,17 @@ public class TurnHandlerImpl implements TurnHandler {
         this.state = AdvancedRules.check(board, AdvancedRules.swapColor(currentColor));
         if ((state == GameState.CHECK || state == GameState.DOUBLE_CHECK)
                 && AdvancedRules.checkmate(board, AdvancedRules.swapColor(currentColor), state, interposingPieces)) {
-            // call to another function that ends the match
-            System.out.println("to be implemented"); //NOPMD
+            return false;
         }
-        if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor))) {
-            // call to another function that ends the match
-            System.out.println("to be implemented"); //NOPMD
+        if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor), state)) {
+            return false;
         }
 
         // Changing variables for the next turn iteration
         this.castlingOptions = AdvancedRules.castle(board, AdvancedRules.swapColor(currentColor));
         this.turn += 1;
         this.currentColor = AdvancedRules.swapColor(currentColor);
+        this.interposingPieces.clear();
         unsetCurrentPiece();
         return true;
     }
@@ -216,9 +215,13 @@ public class TurnHandlerImpl implements TurnHandler {
     /**
      * placeholder.
      * 
-     * @return placeholder.
+     * @param currentColor placeholder.
+     * @param currentTurn placeholder.
+     * @param state placeholder.
      */
-    public int getCurrentTurn() {
-        return this.turn;
+    public void updateStats(PlayerColor currentColor, int currentTurn, GameState state) {
+        currentColor = this.currentColor;
+        currentTurn = this.turn;
+        state = this.state;
     }
 }
