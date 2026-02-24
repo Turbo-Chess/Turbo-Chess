@@ -8,8 +8,8 @@
    <children>
       <Label id="TitleLabel" fx:id="TitleLabel" text="Turbo Chess" />
       <Button id="NewGameButton" fx:id="NewGameButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#startNewGame" text="New Game" VBox.vgrow="NEVER" />
-      <Button id="LoadoutButton" fx:id="LoadoutButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Loadout" VBox.vgrow="NEVER" />
-      <Button id="SettingsButton" fx:id="SettingsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Settings" VBox.vgrow="NEVER" />
-      <Button id="QuitButton" fx:id="QuitButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Quit" VBox.vgrow="NEVER" />
+      <Button id="LoadoutButton" fx:id="LoadoutButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#openLoadout" text="Loadout" VBox.vgrow="NEVER" />
+      <Button id="SettingsButton" fx:id="SettingsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#openSettings" text="Settings" VBox.vgrow="NEVER" />
+      <Button id="QuitButton" fx:id="QuitButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#quit" text="Quit" VBox.vgrow="NEVER" />
    </children>
 </VBox>
