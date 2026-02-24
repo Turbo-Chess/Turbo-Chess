@@ -34,7 +34,6 @@ public final class GameCoordinator {
     private static final int WKING_POS_Y = 7;
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinator.class);
 
-    private final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
     private final Stage stage;
     private final ChessMatch match = new ChessMatchImpl();
     private final GameController gameController = new GameControllerImpl(match);
@@ -57,12 +56,83 @@ public final class GameCoordinator {
     }
 
     /**
+     * Initializes the main menu.
+     */
+    public void initMainMenu() {
+        try {
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
+            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController(this));
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final var cssLocation = getClass().getResource("/css/MainMenu.css");
+            if (cssLocation != null) {
+                scene.getStylesheets().add(cssLocation.toExternalForm());
+            }
+            stage.setTitle("TurboChess - Main Menu");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            LOGGER.error("Failed to load Main Menu", e);
+        }
+    }
+
+    /**
+     * Initializes the settings scene.
+     */
+    public void initSettings() {
+        try {
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Settings.fxml"));
+            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController(this));
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final var cssLocation = getClass().getResource("/css/MainMenu.css");
+            if (cssLocation != null) {
+                scene.getStylesheets().add(cssLocation.toExternalForm());
+            }
+            stage.setTitle("TurboChess - Settings");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            LOGGER.error("Failed to load Settings", e);
+        }
+    }
+
+    /**
+     * Initializes the loadout scene.
+     */
+    public void initLoadout() {
+        try {
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Loadout.fxml"));
+            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutController(this));
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final var cssLocation = getClass().getResource("/css/MainMenu.css");
+            if (cssLocation != null) {
+                scene.getStylesheets().add(cssLocation.toExternalForm());
+            }
+            stage.setTitle("TurboChess - Loadout");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            LOGGER.error("Failed to load Loadout", e);
+        }
+    }
+
+    /**
+     * Quits the application.
+     */
+    public void quit() {
+        stage.close();
+    }
+
+    /**
      * placeholder.
      *
      * @throws IOException placeholder.
      */
     public void initGame() throws IOException {
-        loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
+        loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
         final Parent root = loader.load();
         final ChessboardViewControllerImpl viewController = loader.getController();
         // TODO: remove reference of the match in the view controller

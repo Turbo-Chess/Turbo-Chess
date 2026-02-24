@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
@@ -30,22 +31,25 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
+    private final GameCoordinator coordinator;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
 
     /**
      * placeholder.
      *
      * @param gameController placeholder.
+     * @param coordinator placeholder.
      */
-    public ChessboardViewControllerImpl(final GameController gameController) {
+    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
         this.gameController = gameController;
+        this.coordinator = coordinator;
     }
 
     @FXML
     private GridPane chessboardGridPane;
 
     @FXML
-    private StackPane GameMainPane;
+    private StackPane gameMainPane;
 
     @FXML
     private Label turnValueLabel;
@@ -56,12 +60,17 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @FXML
     private Label timeValueLabel;
 
+    @FXML
+    private Button menuButton;
+
     /**
      * placeholder.
      */
     @FXML
     public void initialize() {
         initChessboardPane();
+        menuButton.setText("Surrender");
+        menuButton.setOnAction(e -> coordinator.initMainMenu());
     }
 
     /**
@@ -73,7 +82,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
         // Bind GridPane size to the minimum of StackPane width/height to keep it square
         final javafx.beans.binding.NumberBinding squareSize = javafx.beans.binding.Bindings.min(
-            GameMainPane.widthProperty(), GameMainPane.heightProperty()
+            gameMainPane.widthProperty(), gameMainPane.heightProperty()
         );
         chessboardGridPane.prefWidthProperty().bind(squareSize);
         chessboardGridPane.prefHeightProperty().bind(squareSize);
