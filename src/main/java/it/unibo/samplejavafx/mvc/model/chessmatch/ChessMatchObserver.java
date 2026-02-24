@@ -3,11 +3,23 @@ package it.unibo.samplejavafx.mvc.model.chessmatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 
-
+/**
+ * placeholder.
+ */
 public interface ChessMatchObserver {
-    void onTurnUpdated(final int turnNumber);
+    /**
+     * placeholder.
+     *
+     * @param turnNumber placeholder.
+     */
+    void onTurnUpdated(int turnNumber);
 
-    void onPlayerUpdated(final PlayerColor playerColor);
+    /**
+     * placeholder.
+     *
+     * @param playerColor placeholder.
+     */
+    void onPlayerUpdated(PlayerColor playerColor);
 
     void onGameStateUpdated(final GameState gameState);
 

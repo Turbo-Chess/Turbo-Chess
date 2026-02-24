@@ -29,6 +29,7 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  */
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
+    private static final double IMAGE_SCALE = 0.8;
     // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
     private final GameCoordinator coordinator;
@@ -89,7 +90,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         chessboardGridPane.maxWidthProperty().bind(squareSize);
         chessboardGridPane.maxHeightProperty().bind(squareSize);
 
-
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 final Button button = new Button();
@@ -118,13 +118,11 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * @return a responsive ImageView.
      */
     private ImageView createResponsiveImageView(final String imagePath, final Button button) {
-        final ImageView imageView = new ImageView(new Image("file:" + imagePath));
+        final ImageView imageView = new ImageView(new Image(imagePath));
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
-
-        imageView.fitHeightProperty().bind(button.widthProperty().multiply(0.8));
-        imageView.fitWidthProperty().bind(button.widthProperty().multiply(0.8));
-
+        imageView.fitHeightProperty().bind(button.heightProperty().multiply(IMAGE_SCALE));
+        imageView.fitWidthProperty().bind(button.widthProperty().multiply(IMAGE_SCALE));
         return imageView;
     }
 
@@ -133,7 +131,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         LOGGER.debug("Added Entity: " + entity.getClass() + " at pos: " + pos);
         final Button btn = cells.get(pos);
         btn.setText("");
-        btn.setGraphic(createResponsiveImageView(entity.getImagePath(), btn));
+        btn.setGraphic(createResponsiveImageView("file:" + entity.getImagePath(), btn));
     }
 
     @Override

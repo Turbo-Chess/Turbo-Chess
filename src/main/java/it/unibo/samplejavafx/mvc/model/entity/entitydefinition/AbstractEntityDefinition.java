@@ -1,8 +1,12 @@
 package it.unibo.samplejavafx.mvc.model.entity.entitydefinition;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,6 +19,15 @@ import lombok.ToString;
 @ToString
 @JsonDeserialize(builder = AbstractEntityDefinition.AbstractBuilder.class)
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PieceDefinition.class, name = "PIECE"),
+        @JsonSubTypes.Type(value = PowerUpDefinition.class, name = "POWERUP")
+})
 // The class is abstract because it mustn't be instantiated on its own, even if it hasn't abstract methods.
 public abstract class AbstractEntityDefinition {
     private final String name;
@@ -29,9 +42,28 @@ public abstract class AbstractEntityDefinition {
      * @param <T> Placeholder.
      */
     protected <T extends AbstractBuilder<T>> AbstractEntityDefinition(final AbstractBuilder<T> builder) {
+        if (builder.name == null || builder.name.isEmpty()) {
+            throw new IllegalArgumentException("Missing required field: name");
+        }
+
+        if (builder.id == null || builder.id.isEmpty()) {
+            throw new IllegalArgumentException("Missing required field: id");
+        }
+
+        if (builder.imagePath == null || builder.imagePath.isEmpty()) {
+            throw new IllegalArgumentException("Missing required filed: imagePath");
+        } else if (!builder.imagePath.startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath())
+                && !builder.imagePath.startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())) {
+            throw new IllegalArgumentException("Path does not start with the correct base path");
+        }
+
+        if (builder.pieceType == null) {
+            throw new IllegalArgumentException("Missing required field: name");
+        }
+
         this.name = builder.name;
         this.id = builder.id;
-        this.imagePath = builder.imagePath;
+        this.imagePath = LoadingUtils.getCorrectPath(builder.imagePath).toString();
         this.pieceType = builder.pieceType;
     }
 
@@ -76,7 +108,12 @@ public abstract class AbstractEntityDefinition {
          * @return Placeholder.
          */
         public X imagePath(final String newImagePath) {
-            this.imagePath = newImagePath;
+            if (!newImagePath.startsWith("classpath:")) {
+                this.imagePath = "file:" + newImagePath;
+            } else {
+                this.imagePath = newImagePath;
+            }
+
             return self();
         }
 
