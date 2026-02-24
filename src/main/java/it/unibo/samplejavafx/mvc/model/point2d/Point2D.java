@@ -48,6 +48,16 @@ public record Point2D(@JsonProperty("x") int x, @JsonProperty("y") int y) {
         return new Point2D(this.x(), -this.y());
     }
 
+    /**
+     * placeholder.
+     *
+     * @param boardHeight placeholder.
+     * @return placeholder.
+     */
+    public Point2D flipY(final int boardHeight) {
+        return new Point2D(this.x(), (boardHeight - 1) - this.y());
+    }
+
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";

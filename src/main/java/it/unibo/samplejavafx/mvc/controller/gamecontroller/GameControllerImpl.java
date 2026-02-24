@@ -86,10 +86,28 @@ public final class GameControllerImpl implements GameController {
                 chessboardViewController.hideMovementCells(lastPossibleMoves);
                 chessboardViewController.showMovementCells(result);
             }
+
+            chessboardViewController.hideMovementCells(Set.of(pointClicked));
         }
 
         lastPointClicked = pointClicked;
         lastPossibleMoves.clear();
         lastPossibleMoves.addAll(result);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateTurn() {
+        match.updateTurn();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updatePlayerColor() {
+        match.updatePlayerColor();
     }
 }

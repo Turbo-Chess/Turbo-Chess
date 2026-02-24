@@ -1,0 +1,39 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+class LoadoutEntry {
+    - position : Point2D
+    - packId : String
+    - pieceId : String
+}
+
+class Loadout {
+    - id : String
+    - name : String
+    - createdAt : long
+    - updatedAt : long
+    - entries : List<LoadoutEntry>
+    
+    + create(name : String, entries : List<LoadoutEntry>) : Loadout
+    + withName(newName : String) : Loadout
+    + withEntries(newEntries : List<LoadoutEntry>) : Loadout
+    + duplicate(newName : String) : Loadout
+    + isValid(definitions : Map<String, PieceDefinition>, expectedWeight : int, standardLoadout : Loadout) : boolean
+}
+@
+class LoadoutManager {
+    - loadoutDir : Path
+    - mapper : ObjectMapper
+    
+    + save(loadout : Loadout) : void
+    + load(id : String) : Optional<Loadout>
+    + getAll() : List<Loadout>
+    + delete(id : String) : void
+}
+@
+LoadoutManager "1" ..> "*" Loadout : manages
+Loadout "1" *-- "*" LoadoutEntry : contains
+
+@enduml

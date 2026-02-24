@@ -32,6 +32,9 @@ public final class App extends Application {
         //if (fxmlLocation == null) {
         //    throw new RuntimeException("CRITICAL: MainMenu.fxml not found in the classpath!");
         //}
+        // Don't let the window be resized less than 500
+        stage.setMinHeight(500);
+        stage.setMinWidth(500);
         final GameCoordinator coordinator = new GameCoordinator(stage);
         loader.setControllerFactory(c -> new MainMenuController(coordinator));
         final Parent root = loader.load();
