@@ -128,7 +128,25 @@ public class Loadout {
                 .map(LoadoutEntry::position)
                 .allMatch(standardPositions::contains);
 
-        return positionsMatch;
+        if (!positionsMatch) {
+            return false;
+        }
+
+        for (LoadoutEntry entry : entries) {
+            Point2D pos = entry.position();
+            LoadoutEntry standardEntry = standardLoadout.getEntries().stream()
+                    .filter(e -> e.position().equals(pos))
+                    .findFirst().get();
+
+            int entryWeight = definitions.get(entry.pieceId()).getWeight();
+            int standardWeightVal = definitions.get(standardEntry.pieceId()).getWeight();
+
+            if (entryWeight != standardWeightVal) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
