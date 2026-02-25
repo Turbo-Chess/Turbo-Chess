@@ -25,7 +25,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  */
 class LoadoutTest {
 
-    private static final String ENTITY_RES_PATH = "src/main/resources/EntityResources/";
+    private static final String ENTITY_RES_PATH = "file:src/main/resources/EntityResources/";
     private static final String STANDARD_LOADOUT_PATH = "src/main/resources/Loadouts/Standard.json";
     private static Map<String, PieceDefinition> standardDefinitions;
     private static Loadout standardLoadout;
@@ -51,6 +51,41 @@ class LoadoutTest {
                 .map(standardDefinitions::get)
                 .mapToInt(PieceDefinition::getWeight)
                 .sum();
+    }
+
+    @Test
+    void testInvalidWhenSameTotalWeightButDifferentIndividualWeights() {
+        final Point2D rookPos = new Point2D(0, 7);
+        final Point2D pawnPos = new Point2D(0, 6);
+        
+        final List<LoadoutEntry> modifiedEntries = standardLoadout.getEntries().stream()
+                .map(e -> {
+                    if (e.position().equals(rookPos)) {
+                        return new LoadoutEntry(e.position(), e.packId(), "knight");
+                    } else if (e.position().equals(pawnPos)) {
+                        return new LoadoutEntry(e.position(), e.packId(), "bishop");
+                    } else {
+                        return e;
+                    }
+                })
+                .toList();
+        
+        final Loadout modified = standardLoadout.withEntries(modifiedEntries);
+        assertFalse(modified.isValid(standardDefinitions, standardWeight, standardLoadout));
+    }
+
+    @Test
+    void testValidSwapWithSameWeight() {        
+        final Point2D knightPos = new Point2D(1, 7);
+        
+        final List<LoadoutEntry> modifiedEntries = standardLoadout.getEntries().stream()
+                .map(e -> e.position().equals(knightPos)
+                        ? new LoadoutEntry(e.position(), e.packId(), "bishop")
+                        : e)
+                .toList();
+        
+        final Loadout modified = standardLoadout.withEntries(modifiedEntries);
+        assertTrue(modified.isValid(standardDefinitions, standardWeight, standardLoadout));
     }
 
     @Test
