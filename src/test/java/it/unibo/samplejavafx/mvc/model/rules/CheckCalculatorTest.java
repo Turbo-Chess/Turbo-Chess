@@ -13,8 +13,10 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CheckCalculatorTest {
@@ -67,15 +69,36 @@ class CheckCalculatorTest {
     }
 
     @Test
-    void testKnightCheckCannotBlock() throws StreamReadException, DatabindException, IOException {
+    void testKnightCheckCanBeCaptured() throws StreamReadException, DatabindException, IOException {
         board.setEntity(new Point2D(4, 4), TestUtilities.createKing(PlayerColor.WHITE, idCount));
         countInc();
         board.setEntity(new Point2D(6, 5), TestUtilities.createKnight(PlayerColor.BLACK, idCount));
         countInc();
         board.setEntity(new Point2D(4, 5), TestUtilities.createRook(PlayerColor.WHITE, idCount));
 
-        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
-        assertTrue(blockers.isEmpty());
+        final Map<Piece, List<Point2D>> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE);
+        assertFalse(blockers.isEmpty());
+        // Verify that the only valid move is capturing the knight at (6,5)
+        assertEquals(1, blockers.size());
+        final Piece rook = (Piece) board.getEntity(new Point2D(4, 5)).get();
+        assertTrue(blockers.containsKey(rook));
+        assertTrue(blockers.get(rook).contains(new Point2D(6, 5)));
+    }
+
+    @Test
+    void testCaptureSlidingAttacker() throws StreamReadException, DatabindException, IOException {
+        board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(0, 2), TestUtilities.createRook(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(2, 2), TestUtilities.createRook(PlayerColor.WHITE, idCount));
+
+        final Map<Piece, List<Point2D>> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE);
+        assertFalse(blockers.isEmpty());
+        // Verify that the friendly rook can capture the attacker at (0,2)
+        final Piece rook = (Piece) board.getEntity(new Point2D(2, 2)).get();
+        assertTrue(blockers.containsKey(rook));
+        assertTrue(blockers.get(rook).contains(new Point2D(0, 2)));
     }
 
     @Test

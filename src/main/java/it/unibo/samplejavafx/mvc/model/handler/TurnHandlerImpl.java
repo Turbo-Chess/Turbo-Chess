@@ -90,7 +90,13 @@ public class TurnHandlerImpl implements TurnHandler {
             default:
                 // the move wasn't safe, so we cancel the move and go back
         }
+        this.interposingPieces.clear();
         this.state = AdvancedRules.check(board, AdvancedRules.swapColor(currentColor));
+
+        if (this.state == GameState.CHECK) {
+            this.interposingPieces.putAll(CheckCalculator.getInterposingPieces(board, AdvancedRules.swapColor(currentColor)));
+        }
+
         if ((state == GameState.CHECK || state == GameState.DOUBLE_CHECK)
                 && AdvancedRules.checkmate(board, AdvancedRules.swapColor(currentColor), state, interposingPieces)) {
             return false;
@@ -104,7 +110,6 @@ public class TurnHandlerImpl implements TurnHandler {
             return false;
         }
         this.castlingOptions = AdvancedRules.castle(board, AdvancedRules.swapColor(currentColor));
-        this.interposingPieces.clear();
         unsetCurrentPiece();
         return true;
     }
