@@ -15,6 +15,7 @@ public class TestUtilities {
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
 
+    private TestUtilities() {}
 
     private static Piece createPiece(final PlayerColor color, final Integer id, final PieceDefinition p) throws StreamReadException, DatabindException, IOException {
         return new Piece.Builder().entityDefinition(p).gameId(id).playerColor(color).build();

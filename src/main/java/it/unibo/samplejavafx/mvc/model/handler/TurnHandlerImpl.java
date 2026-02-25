@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
-import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
@@ -17,20 +16,19 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.rules.CastleCondition;
 import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
-import javafx.scene.input.PickResult;
 
 /**
  * Placeholder.
  */
 public class TurnHandlerImpl implements TurnHandler {
-    private final static Point2D CASTLE_POS = new Point2D(2, 6);
-    private final static Point2D ROOK_CASTLE_POS = new Point2D(3, 5);
-    private final static Point2D ROOK_START_POS = new Point2D(0, 7);
+    private static final Point2D CASTLE_POS = new Point2D(2, 6);
+    private static final Point2D ROOK_CASTLE_POS = new Point2D(3, 5);
+    private static final Point2D ROOK_START_POS = new Point2D(0, 7);
     private final ChessMatch match;
     private final ChessBoard board;
     private final Map<Piece, List<Point2D>> interposingPieces;
     private GameState state;
-    private CastleCondition castlingOptions; //NOPMD will be implemented
+    private CastleCondition castlingOptions;
     private PlayerColor currentColor;
     private int turn;
     private Optional<Piece> currentPiece = Optional.empty();
@@ -39,8 +37,7 @@ public class TurnHandlerImpl implements TurnHandler {
     /**
      * placeholder.
      *
-     * @param turn placeholder.
-     * @param board placeholder.
+     * @param match placeholder.
      */
     public TurnHandlerImpl(final ChessMatch match) {
         this.match = match;
@@ -256,10 +253,6 @@ public class TurnHandlerImpl implements TurnHandler {
 
     /**
      * placeholder.
-     * 
-     * @param currentColor placeholder.
-     * @param currentTurn placeholder.
-     * @param state placeholder.
      */
     public void updateStats() {
         match.updateGameState(state);

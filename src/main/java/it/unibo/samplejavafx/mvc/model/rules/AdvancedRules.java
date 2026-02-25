@@ -80,7 +80,7 @@ public final class AdvancedRules {
      * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
      */
     public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, GameState state,
-                                    Map<Piece, List<Point2D>> interposingPieces) {
+                                    final Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
         final List<Point2D> possibleMoves = kingPossibleMoves(kingCells, cb, currentColor);
@@ -207,14 +207,11 @@ public final class AdvancedRules {
      * @return placeholder.
      */
     private static boolean castleLeft(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
-        if (cb.isFree(new Point2D(kingPos.x()-1, kingPos.y()))
+        return (cb.isFree(new Point2D(kingPos.x()-1, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x()-2, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x()-3, kingPos.y()))
                 && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()-1, kingPos.y())).isEmpty()
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()-2, kingPos.y())).isEmpty()) {
-            return true;
-        }
-        return false;
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()-2, kingPos.y())).isEmpty());
     }
 
     /**
@@ -226,13 +223,10 @@ public final class AdvancedRules {
      * @return placeholder.
      */
     private static boolean castleRight(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
-        if (cb.isFree(new Point2D(kingPos.x()+1, kingPos.y()))
+        return (cb.isFree(new Point2D(kingPos.x()+1, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x()+2, kingPos.y()))
                 && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()+1, kingPos.y())).isEmpty()
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()+2, kingPos.y())).isEmpty()) {
-            return true;
-        }
-        return false;
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()+2, kingPos.y())).isEmpty());
     }
 
     /**

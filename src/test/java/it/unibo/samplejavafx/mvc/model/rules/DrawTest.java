@@ -17,7 +17,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-public class DrawTest {
+class DrawTest {
     private ChessBoard board;
     private Integer idCount;
 

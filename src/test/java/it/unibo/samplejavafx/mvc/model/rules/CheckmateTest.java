@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.rules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,7 +22,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-public class CheckmateTest {
+class CheckmateTest {
     private ChessBoard board;
     private Integer idCount;
 
@@ -108,7 +109,7 @@ public class CheckmateTest {
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
         assertFalse(AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
-        assertTrue(intPieces.keySet().size() == 2);
+        assertEquals(2, intPieces.keySet().size());
     }
 
     @Test
