@@ -34,6 +34,28 @@ public class LoadoutManager {
         this.loadoutDir = Paths.get(System.getProperty("user.home"), DEFAULT_APP_DIR, LOADOUTS_DIR);
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         createDirIfNotExists();
+        ensureStandardLoadoutExists();
+    }
+
+    private void ensureStandardLoadoutExists() {
+        try {
+            final String standardId = "standard-chess-loadout";
+
+            final Loadout generated = StandardLoadoutFactory.createStandard();
+
+            Loadout standard = new Loadout(
+                standardId,
+                generated.getName(),
+                generated.getCreatedAt(),
+                generated.getUpdatedAt(),
+                generated.getEntries()
+            );
+            save(standard);
+            LOGGER.info("Ensured default Standard Chess loadout exists and is up-to-date");
+            
+        } catch (final Exception e) {
+            LOGGER.error("Failed to ensure standard loadout exists", e);
+        }
     }
 
     private void createDirIfNotExists() {
