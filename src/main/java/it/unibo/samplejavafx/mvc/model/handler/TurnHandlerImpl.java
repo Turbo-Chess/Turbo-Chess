@@ -17,11 +17,15 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.rules.CastleCondition;
 import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
+import javafx.scene.input.PickResult;
 
 /**
  * Placeholder.
  */
 public class TurnHandlerImpl implements TurnHandler {
+    private final static Point2D CASTLE_POS = new Point2D(2, 6);
+    private final static Point2D ROOK_CASTLE_POS = new Point2D(3, 5);
+    private final static Point2D ROOK_START_POS = new Point2D(0, 7);
     private final ChessMatch match;
     private final ChessBoard board;
     private final Map<Piece, List<Point2D>> interposingPieces;
@@ -81,7 +85,21 @@ public class TurnHandlerImpl implements TurnHandler {
                 return false; // the move wasn't safe, so we cancel it and go back
         }
         switch (moveAction) {
-            case MOVE_ONLY: 
+            case MOVE_ONLY:
+                if (currentPiece.get().getType() == PieceType.KING) {
+                    if (target.equals(new Point2D(CASTLE_POS.x(), board.getPosByEntity(currentPiece.get()).y()))
+                            && pieceMoves.contains(target)) {
+                        board.move(board.getPosByEntity(currentPiece.get()), target);
+                        board.move(new Point2D(ROOK_START_POS.x(), target.y()), new Point2D(ROOK_CASTLE_POS.x(), target.y()));
+                        break;
+                    }
+                    if (target.equals(new Point2D(CASTLE_POS.y(), board.getPosByEntity(currentPiece.get()).y()))
+                            && pieceMoves.contains(target)) {
+                        board.move(board.getPosByEntity(currentPiece.get()), target);
+                        board.move(new Point2D(ROOK_START_POS.y(), target.y()), new Point2D(ROOK_CASTLE_POS.y(), target.y()));
+                        break;
+                    }
+                }
                 board.move(board.getPosByEntity(currentPiece.get()), target);
                 break;
             case MOVE_AND_EAT:
@@ -109,7 +127,7 @@ public class TurnHandlerImpl implements TurnHandler {
         if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor), state)) {
             return false;
         }
-        this.castlingOptions = AdvancedRules.castle(board, AdvancedRules.swapColor(currentColor));
+        this.castlingOptions = AdvancedRules.castle(board, currentColor);
         unsetCurrentPiece();
         return true;
     }
@@ -132,6 +150,20 @@ public class TurnHandlerImpl implements TurnHandler {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
             this.pieceMoves = AdvancedRules.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            switch (castlingOptions) {
+                case CASTLE_BOTH:
+                    this.pieceMoves.addAll(List.of(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()), 
+                                                   new Point2D(CASTLE_POS.y(), board.getPosByEntity(king).y())));
+                    break;
+                case CASTLE_LEFT:
+                    this.pieceMoves.add(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()));
+                    break;
+                case CASTLE_RIGHT:
+                    this.pieceMoves.add(new Point2D(CASTLE_POS.y(), board.getPosByEntity(king).y()));
+                    break;
+                case NO_CASTLE:
+                    break;
+            }
             return this.pieceMoves;
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
