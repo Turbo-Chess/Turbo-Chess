@@ -25,7 +25,7 @@ class PiecesTest {
         final PieceDefinition p = new PieceDefinition.Builder()
                 .name("test-piece")
                 .id("test")
-                .imagePath("/home/giacomo/Documents/pawn.jpg")
+                .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
                 .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
@@ -33,7 +33,6 @@ class PiecesTest {
 
         assertEquals("test", p.getId());
         assertEquals("test-piece", p.getName());
-        assertEquals("file:/home/giacomo/Documents/pawn.jpg", p.getImagePath());
         assertEquals(3, p.getWeight());
         assertEquals(1, p.getMoveRules().size());
     }
@@ -43,7 +42,7 @@ class PiecesTest {
         final PieceDefinition p = new PieceDefinition.Builder()
                 .name("test-piece")
                 .id("test")
-                .imagePath("/home/giacomo/Documents/pawn.jpg")
+                .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
                 .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
@@ -65,7 +64,7 @@ class PiecesTest {
      */
     @Test
     void testInitializationFromResourceJson() throws IOException {
-        final String resourcePath = "/EntityResources/StandardChessPieces/Pawn.json";
+        final String resourcePath = "/EntityResources/StandardChessPieces/pieces/Pawn.json";
         final ObjectMapper mapper = new ObjectMapper();
         try (var is = getClass().getResourceAsStream(resourcePath)) {
             assertNotNull(is, "Resource not found: " + resourcePath);

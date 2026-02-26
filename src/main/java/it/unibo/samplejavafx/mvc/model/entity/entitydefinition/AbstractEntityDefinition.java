@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
-import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -63,7 +62,8 @@ public abstract class AbstractEntityDefinition {
 
         this.name = builder.name;
         this.id = builder.id;
-        this.imagePath = LoadingUtils.getCorrectPath(builder.imagePath).toString();
+        // TODO: consider getCorrectPath for compatibility with custom pieces
+        this.imagePath = builder.imagePath;
         this.pieceType = builder.pieceType;
     }
 

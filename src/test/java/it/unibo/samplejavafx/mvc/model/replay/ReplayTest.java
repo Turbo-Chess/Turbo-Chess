@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ReplayTest {
     private static final String PIECE_ID = "test";
     private static final String PIECE_NAME = "test-piece";
-    private static final String IMAGE_PATH = "/home/giacomo/Documents/pawn.jpg";
+    private static final String IMAGE_PATH = "classpath:/assets/images/white_pawn.png";
     private static final Piece TEST_PIECE = new Piece.Builder()
         .setHasMoved(false)
         .entityDefinition(new PieceDefinition.Builder()

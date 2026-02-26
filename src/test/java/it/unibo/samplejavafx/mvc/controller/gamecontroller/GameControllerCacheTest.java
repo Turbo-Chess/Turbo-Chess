@@ -49,9 +49,10 @@ class GameControllerCacheTest {
                 .playerColor(PlayerColor.WHITE)
                 .build();
 
-        final ChessMatch match = new ChessMatchImpl();
-        final GameController controller = new GameControllerImpl(match);
         final ChessBoard board = new ChessBoardImpl();
+        final ChessMatch match = new ChessMatchImpl(board);
+        final GameController controller = new GameControllerImpl();
+        controller.setMatch(match);
 
         final Point2D knightPos = new Point2D(4, 4);
         board.setEntity(knightPos, knight);
@@ -80,6 +81,3 @@ class GameControllerCacheTest {
         assertTrue(movesAfterClear.isEmpty(), "Cache should be empty after clear");
     }
 }
-
-
-
