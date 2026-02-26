@@ -207,11 +207,11 @@ public final class AdvancedRules {
      * @return placeholder.
      */
     private static boolean castleLeft(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
-        return (cb.isFree(new Point2D(kingPos.x()-1, kingPos.y()))
-                && cb.isFree(new Point2D(kingPos.x()-2, kingPos.y()))
-                && cb.isFree(new Point2D(kingPos.x()-3, kingPos.y()))
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()-1, kingPos.y())).isEmpty()
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()-2, kingPos.y())).isEmpty());
+        return cb.isFree(new Point2D(kingPos.x() - 1, kingPos.y()))
+                && cb.isFree(new Point2D(kingPos.x() - 2, kingPos.y()))
+                && cb.isFree(new Point2D(kingPos.x() - 3, kingPos.y()))
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x() - 1, kingPos.y())).isEmpty()
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x() - 2, kingPos.y())).isEmpty();
     }
 
     /**
@@ -223,10 +223,10 @@ public final class AdvancedRules {
      * @return placeholder.
      */
     private static boolean castleRight(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
-        return (cb.isFree(new Point2D(kingPos.x()+1, kingPos.y()))
-                && cb.isFree(new Point2D(kingPos.x()+2, kingPos.y()))
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()+1, kingPos.y())).isEmpty()
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x()+2, kingPos.y())).isEmpty());
+        return cb.isFree(new Point2D(kingPos.x() + 1, kingPos.y()))
+                && cb.isFree(new Point2D(kingPos.x() + 2, kingPos.y()))
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x() + 1, kingPos.y())).isEmpty()
+                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x() + 2, kingPos.y())).isEmpty();
     }
 
     /**
