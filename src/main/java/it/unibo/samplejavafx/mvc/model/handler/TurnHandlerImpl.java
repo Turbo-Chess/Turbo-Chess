@@ -23,7 +23,7 @@ import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
 public class TurnHandlerImpl implements TurnHandler {
     private static final Point2D CASTLE_POS = new Point2D(2, 6);
     private static final Point2D ROOK_CASTLE_POS = new Point2D(3, 5);
-    private static final Point2D ROOK_START_POS = new Point2D(0, 7);
+    private static final Point2D BOUNDARIES = new Point2D(0, 7);
     private final ChessMatch match;
     private final ChessBoard board;
     private final Map<Piece, List<Point2D>> interposingPieces;
@@ -87,13 +87,13 @@ public class TurnHandlerImpl implements TurnHandler {
                     if (target.equals(new Point2D(CASTLE_POS.x(), board.getPosByEntity(currentPiece.get()).y()))
                             && pieceMoves.contains(target)) {
                         board.move(board.getPosByEntity(currentPiece.get()), target);
-                        board.move(new Point2D(ROOK_START_POS.x(), target.y()), new Point2D(ROOK_CASTLE_POS.x(), target.y()));
+                        board.move(new Point2D(BOUNDARIES.x(), target.y()), new Point2D(ROOK_CASTLE_POS.x(), target.y()));
                         break;
                     }
                     if (target.equals(new Point2D(CASTLE_POS.y(), board.getPosByEntity(currentPiece.get()).y()))
                             && pieceMoves.contains(target)) {
                         board.move(board.getPosByEntity(currentPiece.get()), target);
-                        board.move(new Point2D(ROOK_START_POS.y(), target.y()), new Point2D(ROOK_CASTLE_POS.y(), target.y()));
+                        board.move(new Point2D(BOUNDARIES.y(), target.y()), new Point2D(ROOK_CASTLE_POS.y(), target.y()));
                         break;
                     }
                 }
@@ -105,6 +105,9 @@ public class TurnHandlerImpl implements TurnHandler {
             default:
                 // the move wasn't safe, so we cancel the move and go back
         }
+
+        //if (currentColor == PlayerColor.BLACK)
+
         this.interposingPieces.clear();
         this.state = AdvancedRules.check(board, AdvancedRules.swapColor(currentColor));
 
