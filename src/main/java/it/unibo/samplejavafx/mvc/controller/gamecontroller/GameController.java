@@ -20,15 +20,16 @@ public interface GameController {
     LoaderController getLoaderController();
 
     /**
-     * placeholder
+     * placeholder.
      *
      * @param match placeholder.
-     * @return placeholder.
      */
-    void setMatch(final ChessMatch match);
+    void setMatch(ChessMatch match);
 
     /**
      * placeholder.
+     *
+     * @return placeholder.
      */
     LoadoutManager getLoadoutManager();
 

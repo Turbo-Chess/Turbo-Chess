@@ -9,7 +9,7 @@ import java.nio.file.Paths;
  */
 public enum GameProperties {
     USER_HOME_FOLDER(System.getProperty("user.home")),
-    ROOT_RESOURCE_FOLDER( Paths.get(USER_HOME_FOLDER.getPath(), "/.TurboChess").toString()),
+    ROOT_RESOURCE_FOLDER(Paths.get(USER_HOME_FOLDER.getPath(), "/.TurboChess").toString()),
     EXTERNAL_MOD_FOLDER("file:" + Paths.get(ROOT_RESOURCE_FOLDER.getPath(), "/Mods").toString()),
     EXTERNAL_ASSETS_FOLDER("file:" + Paths.get(ROOT_RESOURCE_FOLDER.getPath() + "/Assets").toString()),
     INTERNAL_ASSETS_FOLDER("classpath:/assets"),

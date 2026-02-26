@@ -8,43 +8,47 @@ import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 
-public class BoardFactoryImpl {
+/**
+ * placeholder.
+ */
+public final class BoardFactoryImpl implements BoardFactory {
     private final LoaderController loaderController;
-    private int gameId = 0;
+    private int gameId;
 
+    /**
+     * placeholder.
+     *
+     * @param loaderController placeholder.
+     */
     public BoardFactoryImpl(final LoaderController loaderController) {
         this.loaderController = loaderController;
     }
 
-    public ChessBoard createPopulatedChessboard(final Loadout whiteLoadout, final Loadout blackLoadout, final BoardObserver boardObserver) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ChessBoard createPopulatedChessboard(final Loadout whiteLoadout,
+                                                final Loadout blackLoadout,
+                                                final BoardObserver boardObserver) {
         final ChessBoard board = new ChessBoardImpl();
         board.addObserver(boardObserver);
 
-        whiteLoadout.getEntries().forEach(
-                wEntry -> {
-                    board.setEntity(wEntry.position(), new Piece.Builder()
-                            .entityDefinition((PieceDefinition) loaderController.getEntityCache().get(wEntry.packId()).get(wEntry.pieceId()))
-                            .gameId(gameId)
-                            .playerColor(PlayerColor.WHITE)
-                            .build()
-                    );
-                    gameId++;
-                }
-        );
-
-        blackLoadout.getEntries().forEach(
-                bEntry -> {
-                    board.setEntity(bEntry.position(), new Piece.Builder()
-                            .entityDefinition((PieceDefinition) loaderController.getEntityCache().get(bEntry.packId()).get(bEntry.pieceId()))
-                            .gameId(gameId)
-                            .playerColor(PlayerColor.BLACK)
-                            .build()
-                    );
-                    gameId++;
-                }
-        );
+        whiteLoadout.getEntries().forEach(wEntry -> addPieceToBoard(board, wEntry, PlayerColor.WHITE));
+        blackLoadout.getEntries().forEach(bEntry -> addPieceToBoard(board, bEntry, PlayerColor.BLACK));
         return board;
     }
 
+    private void addPieceToBoard(final ChessBoard board, final LoadoutEntry entry, final PlayerColor color) {
+        board.setEntity(entry.position(), new Piece.Builder()
+                .entityDefinition((PieceDefinition) loaderController.getEntityCache()
+                        .get(entry.packId()).get(entry.pieceId()))
+                .gameId(gameId)
+                .playerColor(color)
+                .build()
+        );
+        gameId++;
+    }
 }

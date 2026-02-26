@@ -55,7 +55,7 @@ public record Point2D(@JsonProperty("x") int x, @JsonProperty("y") int y) {
      * @return placeholder.
      */
     public Point2D flipY(final int boardHeight) {
-        return new Point2D(this.x(), (boardHeight - 1) - this.y());
+        return new Point2D(this.x(), boardHeight - 1 - this.y());
     }
 
     @Override

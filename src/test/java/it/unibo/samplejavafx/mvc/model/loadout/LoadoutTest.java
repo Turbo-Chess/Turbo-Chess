@@ -100,7 +100,7 @@ class LoadoutTest {
     @Test
     void testInvalidWhenMissingKing() {
         final List<LoadoutEntry> modifiedEntries = standardLoadout.getEntries().stream()
-                .filter(e -> !e.pieceId().equals("king")) 
+                .filter(e -> !"king".equals(e.pieceId()))
                 .toList();
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
         assertFalse(modified.isValid(standardDefinitions, standardLoadout));
@@ -109,7 +109,7 @@ class LoadoutTest {
     @Test
     void testInvalidWhenOverlappingPositions() {
         final List<LoadoutEntry> modifiedEntries = standardLoadout.getEntries().stream()
-                .map(e -> e.pieceId().equals("pawn")
+                .map(e -> "pawn".equals(e.pieceId())
                         ? new LoadoutEntry(new Point2D(0, 7), e.packId(), e.pieceId())
                         : e)
                 .toList();
@@ -130,10 +130,10 @@ class LoadoutTest {
         final Point2D blackRookPos = new Point2D(0, 0);
         
         final boolean hasWhiteRook = standardLoadout.getEntries().stream()
-                .anyMatch(e -> e.position().equals(whiteRookPos) && e.pieceId().equals("rook"));
+                .anyMatch(e -> e.position().equals(whiteRookPos) && "rook".equals(e.pieceId()));
         
         final boolean hasBlackRook = mirroredEntries.stream()
-                .anyMatch(e -> e.position().equals(blackRookPos) && e.pieceId().equals("rook"));
+                .anyMatch(e -> e.position().equals(blackRookPos) && "rook".equals(e.pieceId()));
                 
         assertTrue(hasWhiteRook);
         assertTrue(hasBlackRook);
