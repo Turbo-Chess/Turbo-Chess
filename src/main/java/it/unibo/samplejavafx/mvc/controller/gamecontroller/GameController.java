@@ -2,6 +2,8 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
+import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.List;
@@ -16,6 +18,19 @@ public interface GameController {
      * @return placeholder.
      */
     LoaderController getLoaderController();
+
+    /**
+     * placeholder
+     *
+     * @param match placeholder.
+     * @return placeholder.
+     */
+    void setMatch(final ChessMatch match);
+
+    /**
+     * placeholder.
+     */
+    LoadoutManager getLoadoutManager();
 
     /**
      * placeholder.

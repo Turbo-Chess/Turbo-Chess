@@ -2,11 +2,14 @@ package it.unibo.samplejavafx.mvc.controller.coordinator;
 
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
+import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +39,8 @@ public final class GameCoordinator {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinator.class);
 
     private final Stage stage;
-    private final ChessMatch match = new ChessMatchImpl();
-    private final GameController gameController = new GameControllerImpl(match);
+    private ChessMatch match;
+    private final GameController gameController = new GameControllerImpl();
 
     /**
      * placeholder.
@@ -52,7 +56,6 @@ public final class GameCoordinator {
      */
     public void loadPieces() {
         gameController.getLoaderController().load();
-        LOGGER.debug(gameController.getLoaderController().getEntityCache().toString());
     }
 
     /**
@@ -136,10 +139,20 @@ public final class GameCoordinator {
         final Parent root = loader.load();
         final ChessboardViewControllerImpl viewController = loader.getController();
         // TODO: remove reference of the match in the view controller
-        match.getBoard().addObserver(viewController);
+        final String loadoutId = "standard-chess-loadout";
+        final String whiteLoadoutId = "standard-chess-laodout";
+        final Loadout whiteLoadout = gameController.getLoadoutManager().load(loadoutId).get();
+        final Loadout blackLoadout = gameController.getLoadoutManager().load(loadoutId).get().mirrored();
+        this.match = new ChessMatchImpl(
+                new BoardFactoryImpl(gameController.getLoaderController()).createPopulatedChessboard(
+                        whiteLoadout,
+                        blackLoadout,
+                        viewController
+                ));
+        this.gameController.setMatch(match);
+        //match.getBoard().addObserver(viewController);
         match.addObserver(viewController);
         gameController.setChessboardViewController(viewController);
-
         gameController.getLoaderController().load();
 
         final var cssLocation = getClass().getResource("/css/GameLayout.css");
@@ -151,12 +164,12 @@ public final class GameCoordinator {
         stage.show();
         //Only for testing
         final var entityCache = gameController.getLoaderController().getEntityCache();
-        final Piece rook = new Piece.Builder()
+        /*final Piece rook = new Piece.Builder()
                 .entityDefinition(
                         (PieceDefinition) entityCache.get(STANDARD_PACK).get("rook"))
                 .gameId(1)
                 .playerColor(PlayerColor.BLACK)
-                .build();
+                .build();*/
 
         /*final Piece newPiece = new Piece.Builder()
                 .entityDefinition(
@@ -165,7 +178,7 @@ public final class GameCoordinator {
                 .playerColor(PlayerColor.BLACK)
                 .build();*/
 
-        final Piece king = new Piece.Builder()
+        /*final Piece king = new Piece.Builder()
                 .entityDefinition(
                         (PieceDefinition) entityCache.get(STANDARD_PACK).get("king"))
                 .gameId(2)
@@ -189,7 +202,7 @@ public final class GameCoordinator {
         this.match.getBoard().setEntity(new Point2D(1, 1), rook);
         this.match.getBoard().setEntity(new Point2D(KING_POS_X, KING_POS_Y), king);
         this.match.getBoard().setEntity(new Point2D(BISHOP_POS_X, BISHOP_POS_Y), bishop);
-        this.match.getBoard().setEntity(new Point2D(BISHOP2_POS_X, BISHOP2_POS_Y), bishop2);
+        this.match.getBoard().setEntity(new Point2D(BISHOP2_POS_X, BISHOP2_POS_Y), bishop2);*/
         //this.match.getBoard().setEntity(new Point2D(5, 5), newPiece);
     }
 }

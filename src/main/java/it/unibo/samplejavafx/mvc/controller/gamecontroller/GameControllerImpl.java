@@ -6,9 +6,11 @@ import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
@@ -18,6 +20,7 @@ import java.util.Set;
 /**
  * placeholder.
  */
+@NoArgsConstructor(force = true)
 public final class GameControllerImpl implements GameController {
     private static final List<String> PATHS = List.of(
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
@@ -25,21 +28,15 @@ public final class GameControllerImpl implements GameController {
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
-    private final ChessMatch match;
+    @Getter
+    private final LoadoutManager loadoutManager = new LoadoutManager();
+    @Setter
+    private ChessMatch match;
     @Setter
     private ChessboardViewController chessboardViewController;
 
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
-
-    /**
-     * placeholder.
-     *
-     * @param match placeholder.
-     */
-    public GameControllerImpl(final ChessMatch match) {
-        this.match = match;
-    }
 
     /**
      * {@inheritDoc}
@@ -72,6 +69,10 @@ public final class GameControllerImpl implements GameController {
     public void handleClick(final Point2D pointClicked) {
         // TODO: implement using the cache
         // TODO: think of using sets instead of lists
+
+        if (this.match == null) {
+            throw new IllegalStateException("Board should be initialized before using it");
+        }
 
         // final Set<Point2D> moves = new HashSet<>(match.getBoard().getEntity(pointClicked).get()
         //     .asMoveable().get().getValidMoves(pointClicked, match.getBoard()));
