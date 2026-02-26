@@ -106,8 +106,6 @@ public class TurnHandlerImpl implements TurnHandler {
                 // the move wasn't safe, so we cancel the move and go back
         }
 
-        //if (currentColor == PlayerColor.BLACK)
-
         this.interposingPieces.clear();
         this.state = AdvancedRules.check(board, AdvancedRules.swapColor(currentColor));
 
@@ -118,6 +116,13 @@ public class TurnHandlerImpl implements TurnHandler {
         if ((state == GameState.CHECK || state == GameState.DOUBLE_CHECK)
                 && AdvancedRules.checkmate(board, AdvancedRules.swapColor(currentColor), state, interposingPieces)) {
             return false;
+        }
+
+        switch (currentColor) {
+            case WHITE:
+                promotion(BOUNDARIES.x());
+            case BLACK:
+                promotion(BOUNDARIES.y());
         }
 
         this.turn += 1;
@@ -244,6 +249,25 @@ public class TurnHandlerImpl implements TurnHandler {
         }
         unsetCurrentPiece();
         return this.pieceMoves;
+    }
+
+    /**
+     * placeholder.
+     * 
+     * @param height placeholder.
+     * @return placeholder.
+     */
+    private boolean promotion(final int height) {
+        final List<Point2D> pawn = board.getBoard().keySet().stream()
+                .filter(pos -> pos.y() == height)
+                .filter(pos -> board.getEntity(pos).get().getType() == PieceType.PAWN)
+                .toList();
+        if (!pawn.isEmpty()) {
+            currentPiece = Optional.of((Piece) board.getEntity(pawn.getFirst()).get());
+            state = GameState.PROMOTION;
+            return true;
+        }
+        return false;
     }
 
     /**
