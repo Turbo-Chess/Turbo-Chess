@@ -73,12 +73,13 @@ public class Loadout {
     /**
      * create the loadout version for the black player
      */
-    public List<LoadoutEntry> mirrored() {
+    public Loadout mirrored() {
         final int boardHeight = 8;
-        return getEntries().stream()
+        final List<LoadoutEntry> mirroredEntries = getEntries().stream()
                 .map(e -> new LoadoutEntry(e.position(), e.packId(), e.pieceId()))
                 .map(e -> new LoadoutEntry(e.position().flipY(boardHeight), e.packId(), e.pieceId()))
                 .toList();
+        return Loadout.create(this.name + " (Mirrored)", mirroredEntries);
     }
 
     /**
