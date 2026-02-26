@@ -30,21 +30,6 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final double IMAGE_SCALE = 0.8;
-    // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
-    private final GameController gameController;
-    private final GameCoordinator coordinator;
-    private final BiMap<Point2D, Button> cells = HashBiMap.create();
-
-    /**
-     * placeholder.
-     *
-     * @param gameController placeholder.
-     * @param coordinator placeholder.
-     */
-    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
-        this.gameController = gameController;
-        this.coordinator = coordinator;
-    }
 
     @FXML
     private GridPane chessboardGridPane;
@@ -63,6 +48,22 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @FXML
     private Button menuButton;
+
+    // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
+    private final GameController gameController;
+    private final GameCoordinator coordinator;
+    private final BiMap<Point2D, Button> cells = HashBiMap.create();
+
+    /**
+     * placeholder.
+     *
+     * @param gameController placeholder.
+     * @param coordinator placeholder.
+     */
+    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
+        this.gameController = gameController;
+        this.coordinator = coordinator;
+    }
 
     /**
      * placeholder.

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test class made to verify that the loading controller and caching system works correctly.
  */
 class FirstLoadingTest {
-    private static final String INTERNAL_ENTITIES_PATH = "src/main/resources/EntityResources";
+    private static final String INTERNAL_ENTITIES_PATH = "classpath:/EntityResources";
 
     @Test
     void testFirstLoadingPiece() {
@@ -37,7 +37,7 @@ class FirstLoadingTest {
         final PieceDefinition rook = new PieceDefinition.Builder()
                 .name("Rook")
                 .id("rook")
-                .imagePath("classpath:/assets/images/white_pawn.png")
+                .imagePath("classpath:/assets/images/white_rook.png")
                 .weight(5)
                 .pieceType(PieceType.TOWER)
                 .moveRules(List.of(

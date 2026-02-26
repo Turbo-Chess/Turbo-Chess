@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.chessmatch;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
-import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
@@ -33,10 +32,12 @@ public final class ChessMatchImpl implements ChessMatch {
 
     /**
      * placeholder.
+     *
+     * @param board placeholder.
      */
-    public ChessMatchImpl() {
+    public ChessMatchImpl(final ChessBoard board) {
         gameState = GameState.NORMAL;
-        this.board = new ChessBoardImpl();
+        this.board = board;
         this.turnNumber = 1;
         this.currentPlayer = PlayerColor.WHITE;
         // TODO: chech turn number passed to turn handler

@@ -19,10 +19,11 @@ import java.util.stream.Stream;
 /**
  * Loadout manager.
  */
-public class LoadoutManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoadoutManager.class); 
+public final class LoadoutManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoadoutManager.class);
     private static final String DEFAULT_APP_DIR = ".turbochess";
     private static final String LOADOUTS_DIR = "loadouts";
+    private static final String JSON_EXT = ".json";
 
     private final Path loadoutDir;
     private final ObjectMapper mapper;
@@ -34,44 +35,81 @@ public class LoadoutManager {
         this.loadoutDir = Paths.get(System.getProperty("user.home"), DEFAULT_APP_DIR, LOADOUTS_DIR);
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         createDirIfNotExists();
+        ensureStandardLoadoutExists();
+    }
+
+    private void ensureStandardLoadoutExists() {
+        try {
+            final String standardId = "standard-chess-loadout";
+
+            final Loadout generated = StandardLoadoutFactory.createStandard();
+
+            final Loadout standard = new Loadout(
+                standardId,
+                generated.getName(),
+                generated.getCreatedAt(),
+                generated.getUpdatedAt(),
+                generated.getEntries()
+            );
+            save(standard);
+            LOGGER.info("Ensured default Standard Chess loadout exists and is up-to-date");
+        } catch (final IllegalStateException e) {
+            LOGGER.error("Failed to ensure standard loadout exists", e);
+        }
     }
 
     private void createDirIfNotExists() {
         if (!Files.exists(loadoutDir)) {
             try {
                 Files.createDirectories(loadoutDir);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LOGGER.error("Could not create loadout directory: {}", loadoutDir, e);
             }
         }
     }
 
+    /**
+     * placeholder.
+     *
+     * @param loadout placeholder.
+     */
     public void save(final Loadout loadout) {
         createDirIfNotExists();
-        final Path file = loadoutDir.resolve(loadout.getId() + ".json");
+        final Path file = loadoutDir.resolve(loadout.getId() + JSON_EXT);
         try {
             mapper.writeValue(file.toFile(), loadout);
             LOGGER.info("Saved loadout: {}", loadout.getName());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error("Failed to save loadout: {}", loadout.getId(), e);
-            throw new RuntimeException("Failed to save loadout", e);
+            throw new IllegalStateException("Failed to save loadout", e);
         }
     }
 
+    /**
+     * placeholder.
+     *
+     * @param id placeholder.
+     * @return placeholder.
+     */
     public Optional<Loadout> load(final String id) {
-        final Path file = loadoutDir.resolve(id + ".json");
+        final Path file = loadoutDir.resolve(id + JSON_EXT);
         if (!Files.exists(file)) {
             return Optional.empty();
         }
         try {
             final Loadout loadout = mapper.readValue(file.toFile(), Loadout.class);
             return Optional.of(loadout);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error("Failed to load loadout: {}", id, e);
             return Optional.empty();
         }
     }
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     public List<Loadout> getAll() {
         if (!Files.exists(loadoutDir)) {
             return Collections.emptyList();
@@ -79,29 +117,34 @@ public class LoadoutManager {
         try (Stream<Path> files = Files.list(loadoutDir)) {
             return files
                     .filter(Files::isRegularFile)
-                    .filter(p -> p.toString().endsWith(".json"))
+                    .filter(p -> p.toString().endsWith(JSON_EXT))
                     .map(p -> {
                         try {
                             return mapper.readValue(p.toFile(), Loadout.class);
-                        } catch (IOException e) {
+                        } catch (final IOException e) {
                             LOGGER.warn("Failed to parse loadout file: {}", p, e);
                             return null;
                         }
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error("Failed to list loadouts", e);
             return Collections.emptyList();
         }
     }
 
+    /**
+     * placeholder.
+     *
+     * @param id placeholder.
+     */
     public void delete(final String id) {
-        final Path file = loadoutDir.resolve(id + ".json");
+        final Path file = loadoutDir.resolve(id + JSON_EXT);
         try {
             Files.deleteIfExists(file);
             LOGGER.info("Deleted loadout: {}", id);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error("Failed to delete loadout: {}", id, e);
         }
     }

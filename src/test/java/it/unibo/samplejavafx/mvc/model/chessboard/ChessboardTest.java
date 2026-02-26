@@ -21,7 +21,7 @@ class ChessboardTest {
         final PieceDefinition def = new PieceDefinition.Builder()
                 .name("test-piece")
                 .id("test")
-                .imagePath("/home/giacomo/Documents/pawn.jpg")
+                .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
                 .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
