@@ -6,6 +6,8 @@ import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
+import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -97,5 +99,17 @@ public final class GameControllerImpl implements GameController {
         lastPointClicked = pointClicked;
         lastPossibleMoves.clear();
         lastPossibleMoves.addAll(result);
+    }
+
+    /**
+     * placeholder.
+     *
+     * @param entity placeholder.
+     * @return placeholder.
+     */
+    @Override
+    public String calculateImageColorPath(final Entity entity) {
+        final String color = entity.getPlayerColor() == PlayerColor.WHITE ? "white" : "black";
+        return "file:" + entity.getImagePath() + "/" + color + "_" + entity.getId() + ".png";
     }
 }

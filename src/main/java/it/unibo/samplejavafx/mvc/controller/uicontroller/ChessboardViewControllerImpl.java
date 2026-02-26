@@ -132,7 +132,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         LOGGER.debug("Added Entity: " + entity.getClass() + " at pos: " + pos);
         final Button btn = cells.get(pos);
         btn.setText("");
-        btn.setGraphic(createResponsiveImageView("file:" + entity.getImagePath(), btn));
+        btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(entity), btn));
     }
 
     @Override
