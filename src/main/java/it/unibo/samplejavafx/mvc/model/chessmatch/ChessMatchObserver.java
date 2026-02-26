@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.chessmatch;
 
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.handler.GameState;
 
 /**
  * placeholder.
@@ -19,6 +20,8 @@ public interface ChessMatchObserver {
      * @param playerColor placeholder.
      */
     void onPlayerUpdated(PlayerColor playerColor);
+
+    void onGameStateUpdated(final GameState gameState);
 
     // TODO: add for the timer
     //void onTimerUpdated(final PlayerColor playerColor);

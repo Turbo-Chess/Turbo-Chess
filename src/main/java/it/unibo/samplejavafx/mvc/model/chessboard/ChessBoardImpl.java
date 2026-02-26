@@ -166,6 +166,9 @@ public class ChessBoardImpl implements ChessBoard {
     public void move(final Point2D start, final Point2D end) {
         // The move function is called only on cells that are occupied (check is in the turn handler)
         final Entity temp = this.getEntity(start).get();
+        if (temp.asMoveable().isPresent()) {
+            temp.asMoveable().get().setHasMoved();
+        }
         this.removeEntity(start);
         this.setEntity(end, temp);
     }
@@ -180,6 +183,9 @@ public class ChessBoardImpl implements ChessBoard {
     public void eat(final Point2D start, final Point2D end) {
         // The move function is called only on cells that are occupied (check is in the turn handler)
         final Entity temp = this.getEntity(start).get();
+        if (temp.asMoveable().isPresent()) {
+            temp.asMoveable().get().setHasMoved();
+        }
         this.removeEntity(end);
         this.removeEntity(start);
         this.setEntity(end, temp);

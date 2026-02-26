@@ -67,14 +67,4 @@ public interface GameController {
      * @param chessboardViewController placeholder.
      */
     void setChessboardViewController(ChessboardViewController chessboardViewController);
-
-    /**
-     * placeholder.
-     */
-    void updateTurn();
-
-    /**
-     * placeholder.
-     */
-    void updatePlayerColor();
 }

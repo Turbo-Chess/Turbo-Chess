@@ -21,7 +21,7 @@ import java.util.Optional;
 @ToString
 @JsonDeserialize(builder = Piece.Builder.class)
 public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
-    private final boolean hasMoved;
+    private boolean hasMoved;
     @Deprecated
     private final List<Point2D> availableCells = new ArrayList<>();
 
@@ -86,7 +86,14 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
      */
     @JsonIgnore
     public int getWeight() {
-         return super.getEntityDefinition().getWeight();
+        return super.getEntityDefinition().getWeight();
+    }
+
+    /**
+     * placeholder.
+     */
+    public void setHasMoved() {
+        this.hasMoved = true;
     }
 
     /**
