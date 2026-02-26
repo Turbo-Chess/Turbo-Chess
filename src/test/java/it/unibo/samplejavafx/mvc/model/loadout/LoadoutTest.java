@@ -119,9 +119,10 @@ class LoadoutTest {
 
     @Test
     void testMirroredLoadout() {
-        final List<LoadoutEntry> mirrored = standardLoadout.mirrored();            
+        final Loadout mirrored = standardLoadout.mirrored();            
+        final List<LoadoutEntry> mirroredEntries = mirrored.getEntries();
         
-        assertEquals(standardLoadout.getEntries().size(), mirrored.size());
+        assertEquals(standardLoadout.getEntries().size(), mirroredEntries.size());
         
         // Check if positions are correctly flipped
         // Example: White Rook at (0, 7) should become Black Rook at (0, 0)
@@ -131,7 +132,7 @@ class LoadoutTest {
         final boolean hasWhiteRook = standardLoadout.getEntries().stream()
                 .anyMatch(e -> e.position().equals(whiteRookPos) && e.pieceId().equals("rook"));
         
-        final boolean hasBlackRook = mirrored.stream()
+        final boolean hasBlackRook = mirroredEntries.stream()
                 .anyMatch(e -> e.position().equals(blackRookPos) && e.pieceId().equals("rook"));
                 
         assertTrue(hasWhiteRook);
