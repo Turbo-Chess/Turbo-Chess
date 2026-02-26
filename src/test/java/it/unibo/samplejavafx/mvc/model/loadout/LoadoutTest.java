@@ -29,7 +29,6 @@ class LoadoutTest {
     private static final String STANDARD_LOADOUT_PATH = "src/main/resources/Loadouts/Standard.json";
     private static Map<String, PieceDefinition> standardDefinitions;
     private static Loadout standardLoadout;
-    private static int standardWeight;
 
     @BeforeAll
     static void setUp() throws IOException {
@@ -45,12 +44,6 @@ class LoadoutTest {
         final ObjectMapper mapper = new ObjectMapper();
         final String json = Files.readString(Path.of(STANDARD_LOADOUT_PATH));
         standardLoadout = mapper.readValue(json, Loadout.class);
-
-        standardWeight = standardLoadout.getEntries().stream()
-                .map(LoadoutEntry::pieceId)
-                .map(standardDefinitions::get)
-                .mapToInt(PieceDefinition::getWeight)
-                .sum();
     }
 
     @Test
@@ -71,7 +64,7 @@ class LoadoutTest {
                 .toList();
         
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
-        assertFalse(modified.isValid(standardDefinitions, standardWeight, standardLoadout));
+        assertFalse(modified.isValid(standardDefinitions, standardLoadout));
     }
 
     @Test
@@ -85,12 +78,12 @@ class LoadoutTest {
                 .toList();
         
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
-        assertTrue(modified.isValid(standardDefinitions, standardWeight, standardLoadout));
+        assertTrue(modified.isValid(standardDefinitions, standardLoadout));
     }
 
     @Test
     void testStandardLoadoutIsValid() {
-        assertTrue(standardLoadout.isValid(standardDefinitions, standardWeight, standardLoadout));
+        assertTrue(standardLoadout.isValid(standardDefinitions, standardLoadout));
     }
 
     @Test
@@ -101,7 +94,7 @@ class LoadoutTest {
                         : e)
                 .toList();
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
-        assertFalse(modified.isValid(standardDefinitions, standardWeight, standardLoadout));
+        assertFalse(modified.isValid(standardDefinitions, standardLoadout));
     }
 
     @Test
@@ -110,7 +103,7 @@ class LoadoutTest {
                 .filter(e -> !e.pieceId().equals("king")) 
                 .toList();
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
-        assertFalse(modified.isValid(standardDefinitions, standardWeight, standardLoadout));
+        assertFalse(modified.isValid(standardDefinitions, standardLoadout));
     }
 
     @Test
@@ -121,7 +114,7 @@ class LoadoutTest {
                         : e)
                 .toList();
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
-        assertFalse(modified.isValid(standardDefinitions, standardWeight, standardLoadout));
+        assertFalse(modified.isValid(standardDefinitions, standardLoadout));
     }
 
     @Test
