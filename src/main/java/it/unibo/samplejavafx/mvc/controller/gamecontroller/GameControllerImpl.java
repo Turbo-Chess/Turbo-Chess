@@ -39,6 +39,15 @@ public final class GameControllerImpl implements GameController {
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
 
     /**
+     * placeholder.
+     *
+     * @param match placeholder.
+     */
+    public GameControllerImpl(final ChessMatch match) {
+        this.match = match;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
