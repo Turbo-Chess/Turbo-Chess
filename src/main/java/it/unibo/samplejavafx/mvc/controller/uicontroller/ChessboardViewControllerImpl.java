@@ -17,18 +17,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
-import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.*;
 
 /**
  * placeholder.
  */
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final double IMAGE_SCALE = 0.8;
 
     @FXML
@@ -53,6 +50,8 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private final GameController gameController;
     private final GameCoordinator coordinator;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
+    private Point2D lastStart;
+    private Point2D lastEnd;
 
     /**
      * placeholder.
@@ -129,7 +128,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @Override
     public void onEntityAdded(final Point2D pos, final Entity entity) {
-        LOGGER.debug("Added Entity: " + entity.getClass() + " at pos: " + pos);
         final Button btn = cells.get(pos);
         btn.setText("");
         btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(entity), btn));
@@ -145,15 +143,58 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @Override
      public void showMovementCells(final Set<Point2D> cellsToShow) {
         for (final var move : cellsToShow) {
-            cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
+            final Button btn = cells.get(move);
+            if (btn.getGraphic() != null) {
+                btn.pseudoClassStateChanged(VALID_CAPTURE_CELL, true);
+            } else {
+                btn.pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
+            }
         }
     }
 
    @Override
     public void hideMovementCells(final Set<Point2D> cellsToHide) {
         for (final var move : cellsToHide) {
-            cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+            final Button btn = cells.get(move);
+            btn.pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+            btn.pseudoClassStateChanged(VALID_CAPTURE_CELL, false);
         }
+    }
+
+    @Override
+    public void highlightMovement(final Point2D start, final Point2D end) {
+        clearLastHighlight();
+        cells.get(start).pseudoClassStateChanged(START, true);
+        cells.get(end).pseudoClassStateChanged(HASMOVED, true);
+        this.lastStart = start;
+        this.lastEnd = end;
+    }
+
+    @Override
+    public void highlightEat(final Point2D start, final Point2D end) {
+        clearLastHighlight();
+        cells.get(start).pseudoClassStateChanged(START, true);
+        cells.get(end).pseudoClassStateChanged(HASEAT, true);
+        this.lastStart = start;
+        this.lastEnd = end;
+    }
+
+    private void clearLastHighlight() {
+        if (lastStart != null && lastEnd != null) {
+            cells.get(lastStart).pseudoClassStateChanged(START, false);
+            cells.get(lastEnd).pseudoClassStateChanged(HASMOVED, false);
+            cells.get(lastEnd).pseudoClassStateChanged(HASEAT, false);
+        }
+    }
+
+    @Override
+    public void onEntityMoved(final Point2D from, final Point2D to) {
+        highlightMovement(from, to);
+    }
+
+    @Override
+    public void onEntityEaten(final Point2D from, final Point2D to) {
+        highlightEat(from, to);
     }
 
     @Override
@@ -168,6 +209,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @Override
     public void onGameStateUpdated(final GameState gameState) {
-        // TODO: set label
+
     }
 }
