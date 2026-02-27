@@ -7,17 +7,9 @@ import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 /**
  * placeholder.
  */
-@FunctionalInterface
-public interface BoardFactory {
-    /**
-     * placeholder.
-     *
-     * @param whiteLoadout placeholder.
-     * @param blackLoadout placeholder.
-     * @param boardObserver placeholder.
-     * @return placeholder.
-     */
-    ChessBoard createPopulatedChessboard(Loadout whiteLoadout,
-                                         Loadout blackLoadout,
-                                         BoardObserver boardObserver);
+public interface BoardFactory  {
+    public ChessBoard createPopulatedChessboard(final Loadout whiteLoadout,
+                                                final Loadout blackLoadout,
+                                                final BoardObserver boardObserver);
 }
+

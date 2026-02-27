@@ -2,7 +2,6 @@ package it.unibo.samplejavafx.mvc.controller.coordinator;
 
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
@@ -11,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 
 import java.io.IOException;
 
@@ -129,8 +130,9 @@ public final class GameCoordinator {
         final String loadoutId = "standard-chess-loadout";
         final Loadout whiteLoadout = gameController.getLoadoutManager().load(loadoutId).get();
         final Loadout blackLoadout = gameController.getLoadoutManager().load(loadoutId).get().mirrored();
+        final BoardFactory boardFactory = new BoardFactoryImpl(gameController.getLoaderController());
         final ChessMatch match = new ChessMatchImpl(
-                new BoardFactoryImpl(gameController.getLoaderController()).createPopulatedChessboard(
+                boardFactory.createPopulatedChessboard(
                         whiteLoadout,
                         blackLoadout,
                         viewController
