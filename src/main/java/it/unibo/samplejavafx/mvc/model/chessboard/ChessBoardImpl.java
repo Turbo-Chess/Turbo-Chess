@@ -123,6 +123,18 @@ public class ChessBoardImpl implements ChessBoard {
         }
     }
 
+    private void notifyEntityMoved(final Point2D from, final Point2D to) {
+        for (final BoardObserver observer : observers) {
+            observer.onEntityMoved(from, to);
+        }
+    }
+
+    private void notifyEntityEaten(final Point2D from, final Point2D to) {
+        for (final BoardObserver observer : observers) {
+            observer.onEntityEaten(from, to);
+        }
+    }
+
     /**
      * Returns if the cell is free or not.
      * If the cell is free, there will be no entry associated with that key.
@@ -171,6 +183,7 @@ public class ChessBoardImpl implements ChessBoard {
         }
         this.removeEntity(start);
         this.setEntity(end, temp);
+        notifyEntityMoved(start, end);
     }
 
     /**
@@ -189,5 +202,6 @@ public class ChessBoardImpl implements ChessBoard {
         this.removeEntity(end);
         this.removeEntity(start);
         this.setEntity(end, temp);
+        notifyEntityEaten(start, end);
     }
 }
