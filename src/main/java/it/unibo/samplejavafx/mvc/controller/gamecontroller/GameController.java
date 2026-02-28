@@ -76,4 +76,11 @@ public interface GameController {
      * @return placeholder.
      */
     String calculateImageColorPath(Entity entity);
+
+    /**
+     * Sets the game state to checkmate.
+     */
+    void surrender();
+
+    Point2D getKingPos();
 }

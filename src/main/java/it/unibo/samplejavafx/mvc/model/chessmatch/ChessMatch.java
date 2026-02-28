@@ -64,5 +64,5 @@ public interface ChessMatch {
     /**
      * placeholder.
      */
-    void updateGameState(final GameState state);
+    void updateGameState(GameState state, PlayerColor playerColor);
 }

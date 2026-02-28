@@ -7,14 +7,14 @@ import javafx.event.ActionEvent;
  * Controller for the Loadout scene.
  */
 public final class LoadoutController {
-    private final GameCoordinator coordinator;
+    private final GameCoordinatorImpl coordinator;
 
     /**
      * Constructor.
      *
      * @param coordinator the game coordinator
      */
-    public LoadoutController(final GameCoordinator coordinator) {
+    public LoadoutController(final GameCoordinatorImpl coordinator) {
         this.coordinator = coordinator;
     }
 

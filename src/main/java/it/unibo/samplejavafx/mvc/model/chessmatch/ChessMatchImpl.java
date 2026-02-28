@@ -60,6 +60,10 @@ public final class ChessMatchImpl implements ChessMatch {
         subscribers.forEach(sub -> sub.onPlayerUpdated(playerColor));
     }
 
+    private void notifyGameStateUpdated(final GameState gameState, PlayerColor currentPlayer) {
+        subscribers.forEach(sub -> sub.onGameStateUpdated(gameState, currentPlayer));
+    }
+
     @Override
     public void updateTurn(final int turn) {
        this.turnNumber = turn;
@@ -73,9 +77,9 @@ public final class ChessMatchImpl implements ChessMatch {
     }
 
     @Override
-    public void updateGameState(final GameState state) {
+    public void updateGameState(final GameState state, final PlayerColor playerColor) {
         this.gameState = state;
-        // TODO: this.notifyGameStateUpdated(this.gameState);
+        this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
     }
     // TODO: aggiungere per il timer
 

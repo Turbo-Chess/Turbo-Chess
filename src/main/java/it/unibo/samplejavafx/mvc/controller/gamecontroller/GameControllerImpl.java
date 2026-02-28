@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -111,5 +112,19 @@ public final class GameControllerImpl implements GameController {
     public String calculateImageColorPath(final Entity entity) {
         final String color = entity.getPlayerColor() == PlayerColor.WHITE ? "white" : "black";
         return "file:" + entity.getImagePath() + "/" + color + "_" + entity.getId() + ".png";
+    }
+
+    @Override
+    public void surrender() {
+        match.getTurnHandler().surrender();
+    }
+
+    @Override
+    public Point2D getKingPos() {
+        return this.match.getBoard().getPosByEntity(this.match.getBoard().getBoard().inverse().keySet().stream()
+                .filter(e -> e.getType() == PieceType.KING)
+                // Get the king of the opposite player
+                .filter(e -> e.getPlayerColor() != this.match.getCurrentPlayer())
+                .findFirst().get()); // Impossible to not have a king of the specified color
     }
 }
