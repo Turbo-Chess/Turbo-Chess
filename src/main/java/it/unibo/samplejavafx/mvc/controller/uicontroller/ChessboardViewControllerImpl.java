@@ -2,7 +2,7 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
