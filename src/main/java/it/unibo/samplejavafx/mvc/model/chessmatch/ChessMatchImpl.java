@@ -60,8 +60,8 @@ public final class ChessMatchImpl implements ChessMatch {
         subscribers.forEach(sub -> sub.onPlayerUpdated(playerColor));
     }
 
-    private void notifyGameStateUpdated(final GameState gameState, PlayerColor currentPlayer) {
-        subscribers.forEach(sub -> sub.onGameStateUpdated(gameState, currentPlayer));
+    private void notifyGameStateUpdated(final GameState gameState, final PlayerColor playerColor) {
+        subscribers.forEach(sub -> sub.onGameStateUpdated(gameState, playerColor));
     }
 
     @Override

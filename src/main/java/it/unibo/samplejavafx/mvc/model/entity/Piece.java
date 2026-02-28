@@ -92,6 +92,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     /**
      * placeholder.
      */
+    @Override
     public void setHasMoved() {
         this.hasMoved = true;
     }

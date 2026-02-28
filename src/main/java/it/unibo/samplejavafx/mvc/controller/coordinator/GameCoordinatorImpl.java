@@ -49,6 +49,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * Initializes the main menu.
      */
+    @Override
     public void initMainMenu() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
@@ -120,6 +121,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      * placeholder.
      *
      */
+    @Override
     public void initGame() throws IOException {
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
         loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));

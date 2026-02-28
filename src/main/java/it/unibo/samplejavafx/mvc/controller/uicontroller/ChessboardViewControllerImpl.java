@@ -14,22 +14,34 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.*;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.CHECK_KING;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.HASEAT;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.HASMOVED;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.START;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_CAPTURE_CELL;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
 
 /**
  * placeholder.
  */
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final double IMAGE_SCALE = 0.8;
     @FXML
     private GridPane chessboardGridPane;
@@ -242,7 +254,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         try {
             root = loader.load();
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to load GameOver dialog", e);
         }
 
         final GameOverController gameOverController = loader.getController();

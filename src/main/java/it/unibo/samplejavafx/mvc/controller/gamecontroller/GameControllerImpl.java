@@ -116,11 +116,16 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void surrender() {
-        match.getTurnHandler().surrender();
+        if (this.match != null) {
+            match.getTurnHandler().surrender();
+        }
     }
 
     @Override
     public Point2D getKingPos() {
+        if (this.match == null) {
+            throw new IllegalStateException("Match should be initialized before using it");
+        }
         return this.match.getBoard().getPosByEntity(this.match.getBoard().getBoard().inverse().keySet().stream()
                 .filter(e -> e.getType() == PieceType.KING)
                 // Get the king of the opposite player

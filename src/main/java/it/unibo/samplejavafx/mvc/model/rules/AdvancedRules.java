@@ -69,10 +69,10 @@ public final class AdvancedRules {
     }*/
 
     /**
-     * Method that checks if the king of the current player is under attack and can't defend himself, 
+     * Method that checks if the king of the current player is under attack and can't defend himself,
      * therefore ending the game in a checkmate.
      * The method responds in different ways based on the current game-state.
-     * 
+     *
      * @param cb chessboard of the current game.
      * @param currentColor color of the player.
      * @param state current game-state.

@@ -29,7 +29,7 @@ public interface BoardObserver {
      * @param from the starting position.
      * @param to the ending position.
      */
-    default void onEntityMoved(Point2D from, Point2D to) {
+    default void onEntityMoved(final Point2D from, final Point2D to) {
     }
 
     /**
@@ -38,6 +38,6 @@ public interface BoardObserver {
      * @param from the starting position of the capturing entity.
      * @param to the position where the capture occurs.
      */
-    default void onEntityEaten(Point2D from, Point2D to) {
+    default void onEntityEaten(final Point2D from, final Point2D to) {
     }
 }

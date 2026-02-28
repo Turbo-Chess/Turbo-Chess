@@ -82,5 +82,10 @@ public interface GameController {
      */
     void surrender();
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     Point2D getKingPos();
 }

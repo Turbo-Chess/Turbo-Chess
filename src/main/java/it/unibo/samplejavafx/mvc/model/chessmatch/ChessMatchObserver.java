@@ -21,6 +21,12 @@ public interface ChessMatchObserver {
      */
     void onPlayerUpdated(PlayerColor playerColor);
 
+    /**
+     * placeholder.
+     *
+     * @param gameState placeholder.
+     * @param playerColor placeholder.
+     */
     void onGameStateUpdated(GameState gameState, PlayerColor playerColor);
 
     // TODO: add for the timer
