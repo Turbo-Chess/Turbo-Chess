@@ -11,20 +11,23 @@
       "y" : 1
     },
     "restriction" : "MOVE_ONLY",
-    "moveStrategy" : "JUMPING"
+    "moveStrategy" : "JUMPING",
+    "hasMoved" : false
   }, {
     "direction" : {
       "x" : -1,
       "y" : 1
     },
     "restriction" : "EAT_ONLY",
-    "moveStrategy" : "JUMPING"
+    "moveStrategy" : "JUMPING",
+    "hasMoved" : false
   }, {
     "direction" : {
       "x" : 1,
       "y" : 1
     },
     "restriction" : "EAT_ONLY",
-    "moveStrategy" : "JUMPING"
+    "moveStrategy" : "JUMPING",
+    "hasMoved" : false
   } ]
 }

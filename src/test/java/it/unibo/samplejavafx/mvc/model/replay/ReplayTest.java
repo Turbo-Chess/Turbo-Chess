@@ -39,7 +39,8 @@ class ReplayTest {
                 new MoveRulesImpl(
                     new Point2D(0, 1),
                     MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                    MoveRulesImpl.MoveStrategy.JUMPING
+                    MoveRulesImpl.MoveStrategy.JUMPING,
+                    false
                 )
             ))
             .build())
