@@ -114,6 +114,7 @@ public class TurnHandlerImpl implements TurnHandler {
 
         if ((state == GameState.CHECK || state == GameState.DOUBLE_CHECK)
                 && AdvancedRules.checkmate(board, AdvancedRules.swapColor(currentColor), state, interposingPieces)) {
+            surrender();
             return false;
         }
 
