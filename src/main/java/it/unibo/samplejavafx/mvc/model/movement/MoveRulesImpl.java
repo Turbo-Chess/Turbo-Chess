@@ -22,6 +22,9 @@ public class MoveRulesImpl implements MoveRules {
     private final Point2D direction;
     private final MoveType restriction;
     private final MoveStrategy moveStrategy;
+    // False: condition not checked
+    // True: if the piece has already moved, the rule cannot be applied another time
+    private final boolean hasMoved;
 
     /**
      * placeholder.
@@ -34,11 +37,13 @@ public class MoveRulesImpl implements MoveRules {
     public MoveRulesImpl(
             @JsonProperty("direction") final Point2D direction,
             @JsonProperty("restriction") final MoveType restriction,
-            @JsonProperty("moveStrategy") final MoveStrategy moveStrategy
+            @JsonProperty("moveStrategy") final MoveStrategy moveStrategy,
+            @JsonProperty("hasMoved") final boolean hasMoved
     ) {
         this.direction = direction;
         this.restriction = restriction;
         this.moveStrategy = moveStrategy;
+        this.hasMoved = hasMoved;
     }
 
     /**
@@ -46,6 +51,10 @@ public class MoveRulesImpl implements MoveRules {
      */
     @Override
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board, final PlayerColor playerColor) {
+        // If getValidMoves is called the piece exists on the board
+        if (this.hasMoved && board.getEntity(start).get().asMoveable().get().getHasMoved()) {
+            return List.of();
+        }
         final List<Point2D> tempResult = moveStrategy.getStrategy().calculateMoves(
                 start, playerColor == PlayerColor.WHITE ? direction.invertY() : direction, board
         );

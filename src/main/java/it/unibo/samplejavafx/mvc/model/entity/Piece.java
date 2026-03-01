@@ -90,7 +90,15 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean getHasMoved() {
+        return this.hasMoved;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setHasMoved() {
