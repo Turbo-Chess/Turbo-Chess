@@ -33,7 +33,7 @@ public final class GameControllerImpl implements GameController {
             GameProperties.EXTERNAL_MOD_FOLDER.getPath());
 
     // Will the taken from the selected loadout
-    final String loadoutId = "standard-chess-loadout";
+    private static final String LOADOUT_ID = "standard-chess-loadout";
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
@@ -44,10 +44,10 @@ public final class GameControllerImpl implements GameController {
     @Setter
     private ChessboardViewController chessboardViewController;
     @Getter
-    final Loadout whiteLoadout = loadoutManager.load(loadoutId).get();
+    private final Loadout whiteLoadout = loadoutManager.load(LOADOUT_ID).get();
     @Getter
     // Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
-    final Loadout blackLoadout = loadoutManager.load(loadoutId).get().mirrored();
+    private final Loadout blackLoadout = loadoutManager.load(LOADOUT_ID).get().mirrored();
     @Getter
     private final BoardFactory boardFactory = new BoardFactoryImpl(loaderController);
 

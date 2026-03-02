@@ -4,14 +4,11 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
-import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 
 import java.io.IOException;
 
@@ -71,6 +68,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * Initializes the settings scene.
      */
+    @Override
     public void initSettings() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Settings.fxml"));
@@ -92,6 +90,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * Initializes the loadout scene.
      */
+    @Override
     public void initLoadout() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Loadout.fxml"));
@@ -113,6 +112,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * Quits the application.
      */
+    @Override
     public void quit() {
         stage.close();
     }

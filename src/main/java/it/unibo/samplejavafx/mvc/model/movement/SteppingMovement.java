@@ -5,9 +5,12 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.List;
 
-public class SteppingMovement implements MovementStrategy {
+/**
+ * placeholder.
+ */
+public final class SteppingMovement implements MovementStrategy {
     @Override
-    public List<Point2D> calculateMoves(Point2D start, Point2D direction, ChessBoard board) {
+    public List<Point2D> calculateMoves(final Point2D start, final Point2D direction, final ChessBoard board) {
         // Extract the "atomic" movement to perform at each step
         final Point2D xDir = new Point2D(Integer.signum(direction.x()), 0);
         final Point2D yDir = new Point2D(0, Integer.signum(direction.y()));

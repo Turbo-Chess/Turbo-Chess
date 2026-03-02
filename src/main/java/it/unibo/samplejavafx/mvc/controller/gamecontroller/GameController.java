@@ -106,8 +106,9 @@ public interface GameController {
     Loadout getBlackLoadout();
 
     /**
+     * placeholder.
      *
-     * @return
+     * @return placeholder.
      */
     BoardFactory getBoardFactory();
 }

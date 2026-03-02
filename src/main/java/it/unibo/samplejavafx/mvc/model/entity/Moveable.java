@@ -31,5 +31,10 @@ public interface Moveable {
      */
     void setHasMoved();
 
-    boolean getHasMoved();
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    boolean hasMoved();
 }

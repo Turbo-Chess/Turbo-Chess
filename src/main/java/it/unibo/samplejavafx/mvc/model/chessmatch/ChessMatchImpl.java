@@ -19,7 +19,7 @@ import java.util.List;
 @ToString
 public final class ChessMatchImpl implements ChessMatch {
     @Getter
-    private GameState gameState; //NOPMD
+    private GameState gameState;
     @Getter
     private PlayerColor currentPlayer;
     @Getter
@@ -60,8 +60,8 @@ public final class ChessMatchImpl implements ChessMatch {
         subscribers.forEach(sub -> sub.onPlayerUpdated(playerColor));
     }
 
-    private void notifyGameStateUpdated(final GameState gameState, final PlayerColor playerColor) {
-        subscribers.forEach(sub -> sub.onGameStateUpdated(gameState, playerColor));
+    private void notifyGameStateUpdated(final GameState state, final PlayerColor playerColor) {
+        subscribers.forEach(sub -> sub.onGameStateUpdated(state, playerColor));
     }
 
     @Override

@@ -32,6 +32,7 @@ public class MoveRulesImpl implements MoveRules {
      * @param direction placeholder.
      * @param restriction placeholder.
      * @param moveStrategy placeholder.
+     * @param hasMoved placeholder.
      */
     @JsonCreator
     public MoveRulesImpl(
@@ -52,7 +53,7 @@ public class MoveRulesImpl implements MoveRules {
     @Override
     public List<Point2D> getValidMoves(final Point2D start, final ChessBoard board, final PlayerColor playerColor) {
         // If getValidMoves is called the piece exists on the board
-        if (this.hasMoved && board.getEntity(start).get().asMoveable().get().getHasMoved()) {
+        if (this.hasMoved && board.getEntity(start).get().asMoveable().get().hasMoved()) {
             return List.of();
         }
         final List<Point2D> tempResult = moveStrategy.getStrategy().calculateMoves(

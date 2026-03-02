@@ -75,6 +75,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
      *
      * @return Placeholder.
      */
+    @Override
     public boolean hasMoved() {
         return this.hasMoved;
     }
@@ -87,14 +88,6 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     @JsonIgnore
     public int getWeight() {
         return super.getEntityDefinition().getWeight();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean getHasMoved() {
-        return this.hasMoved;
     }
 
     /**
