@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = SpawnEvent.class, name = "spawn"),
   @JsonSubTypes.Type(value = DespawnEvent.class, name = "despawn")
 })
+@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 public interface GameEvent {
     /**
      * @return the turn number when this event occurred.

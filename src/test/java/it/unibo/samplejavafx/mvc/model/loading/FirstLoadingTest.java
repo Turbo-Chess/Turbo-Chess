@@ -31,7 +31,8 @@ class FirstLoadingTest {
                 .moveRules(List.of(
                         new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.JUMPING, false),
                         new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING, false)
+                        new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(0, 2), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.STEPPING, true)
                 ))
                 .build();
         final PieceDefinition rook = new PieceDefinition.Builder()

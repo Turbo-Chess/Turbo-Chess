@@ -70,6 +70,7 @@ class ChessPieceMovementTest {
         final Piece blackEnemy2 = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
         final Piece blocker = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
 
+        whitePawn.setHasMoved();
         board.setEntity(new Point2D(4, 4), whitePawn);
         board.setEntity(new Point2D(3, 3), blackEnemy1);
         board.setEntity(new Point2D(5, 3), blackEnemy2);
@@ -343,5 +344,37 @@ class ChessPieceMovementTest {
         assertTrue(bishopMoves.contains(new Point2D(5, 5)), "Bishop diagonal movement");
         assertTrue(bishopMoves.contains(new Point2D(7, 7)), "Bishop diagonal movement");
         assertTrue(bishopMoves.contains(new Point2D(4, 4)), "Bishop can capture knight");
+    }
+
+    @Test
+    void testPawnDoubleStep() throws IOException {
+        final Piece whitePawn = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
+
+        board.setEntity(new Point2D(4, 6), whitePawn);
+        Set<Point2D> moves = new HashSet<>(whitePawn.getValidMoves(new Point2D(4, 6), board));
+
+        assertTrue(moves.contains(new Point2D(4, 5)), "Should be able to move 1 step");
+        assertTrue(moves.contains(new Point2D(4, 4)), "Should be able to move 2 steps");
+
+        final Piece blocker = loadPieceFromJson(PAWN_JSON, PlayerColor.BLACK);
+        board.setEntity(new Point2D(4, 5), blocker);
+        moves = new HashSet<>(whitePawn.getValidMoves(new Point2D(4, 6), board));
+        assertFalse(moves.contains(new Point2D(4, 5)), "Blocked 1st step");
+        assertFalse(moves.contains(new Point2D(4, 4)), "Blocked 2nd step because 1st is blocked");
+
+        board.removeEntity(new Point2D(4, 5));
+
+        board.setEntity(new Point2D(4, 4), blocker);
+        moves = new HashSet<>(whitePawn.getValidMoves(new Point2D(4, 6), board));
+        assertTrue(moves.contains(new Point2D(4, 5)), "1st step free");
+        assertFalse(moves.contains(new Point2D(4, 4)), "Blocked 2nd step");
+
+        board.removeEntity(new Point2D(4, 4));
+
+        // Simulate move by setting hasMoved = true
+        whitePawn.setHasMoved();
+        moves = new HashSet<>(whitePawn.getValidMoves(new Point2D(4, 6), board));
+        assertTrue(moves.contains(new Point2D(4, 5)), "Can still move 1 step");
+        assertFalse(moves.contains(new Point2D(4, 4)), "Cannot move 2 steps after having moved");
     }
 }
