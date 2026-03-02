@@ -27,9 +27,9 @@ class TurnHandlerTest {
 
     @BeforeEach
     void setUp() {
-        match = new ChessMatchImpl();
         handler = match.getTurnHandler();
         board = match.getBoard();
+        match = new ChessMatchImpl(board);
         idCount = 0;
     }
 
