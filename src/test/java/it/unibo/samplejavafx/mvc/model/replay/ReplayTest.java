@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
@@ -25,8 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ReplayTest {
     private static final String PIECE_ID = "test";
-    private static final String PIECE_NAME = "test-piece";
-    private static final String IMAGE_PATH = "classpath:/assets/images/white_pawn.png";
+    private static final String PIECE_NAME = "Pawn";
+    private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath().replace("file:", "");
     private static final Piece TEST_PIECE = new Piece.Builder()
         .setHasMoved(false)
         .entityDefinition(new PieceDefinition.Builder()
@@ -39,7 +40,8 @@ class ReplayTest {
                 new MoveRulesImpl(
                     new Point2D(0, 1),
                     MoveRulesImpl.MoveType.MOVE_AND_EAT,
-                    MoveRulesImpl.MoveStrategy.JUMPING
+                    MoveRulesImpl.MoveStrategy.JUMPING,
+                    false
                 )
             ))
             .build())
@@ -148,7 +150,7 @@ class ReplayTest {
         
         assertTrue(controller.next());
         assertEquals(1, events.size());
-        assertEquals("ADDED: (0, 0) test-piece", events.get(0));
+        assertEquals("ADDED: (0, 0) Pawn", events.get(0));
         events.clear();
 
         // Step 1: Execute MoveEvent
@@ -159,16 +161,16 @@ class ReplayTest {
         // setEntity(to, entity) -> ADDED
         
         assertEquals(2, events.size());
-        assertEquals("REMOVED: (0, 0) test-piece", events.get(0));
-        assertEquals("ADDED: (0, 1) test-piece", events.get(1));
-        
+        assertEquals("REMOVED: (0, 0) Pawn", events.get(0));
+        assertEquals("ADDED: (0, 1) Pawn", events.get(1));
+
         events.clear();
 
         // Step 2: Revert MoveEvent
         assertTrue(controller.prev());
         
         assertEquals(2, events.size());
-        assertEquals("REMOVED: (0, 1) test-piece", events.get(0));
-        assertEquals("ADDED: (0, 0) test-piece", events.get(1));
+        assertEquals("REMOVED: (0, 1) Pawn", events.get(0));
+        assertEquals("ADDED: (0, 0) Pawn", events.get(1));
     }
 }

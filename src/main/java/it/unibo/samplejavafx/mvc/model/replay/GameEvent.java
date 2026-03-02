@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = SpawnEvent.class, name = "spawn"),
   @JsonSubTypes.Type(value = DespawnEvent.class, name = "despawn")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public interface GameEvent {
     /**
      * @return the turn number when this event occurred.

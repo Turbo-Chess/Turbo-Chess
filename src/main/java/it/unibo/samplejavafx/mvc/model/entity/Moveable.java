@@ -30,4 +30,11 @@ public interface Moveable {
      * Placeholder.
      */
     void setHasMoved();
+
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    boolean hasMoved();
 }

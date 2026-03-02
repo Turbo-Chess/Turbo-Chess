@@ -5,10 +5,13 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImp
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -28,6 +31,9 @@ public final class GameControllerImpl implements GameController {
     private static final List<String> PATHS = List.of(
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
             GameProperties.EXTERNAL_MOD_FOLDER.getPath());
+
+    // Will the taken from the selected loadout
+    private static final String LOADOUT_ID = "standard-chess-loadout";
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
@@ -37,6 +43,13 @@ public final class GameControllerImpl implements GameController {
     private ChessMatch match;
     @Setter
     private ChessboardViewController chessboardViewController;
+    @Getter
+    private final Loadout whiteLoadout = loadoutManager.load(LOADOUT_ID).get();
+    @Getter
+    // Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
+    private final Loadout blackLoadout = loadoutManager.load(LOADOUT_ID).get().mirrored();
+    @Getter
+    private final BoardFactory boardFactory = new BoardFactoryImpl(loaderController);
 
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();

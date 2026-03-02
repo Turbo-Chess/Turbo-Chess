@@ -9,6 +9,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
  * placeholder.
@@ -47,8 +48,25 @@ public class BoardFactoryImpl implements BoardFactory {
                         .get(entry.packId()).get(entry.pieceId()))
                 .gameId(gameId)
                 .playerColor(color)
+                .setHasMoved(false)
                 .build()
         );
         gameId++;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createNewPiece(final Point2D pos, final ChessBoard board, final PieceDefinition pieceDefinition) {
+        final var newPiece = new Piece.Builder()
+                .entityDefinition(pieceDefinition)
+                .gameId(gameId)
+                .setHasMoved(false)
+                .build();
+
+        board.setEntity(pos, newPiece);
+
+        this.gameId++;
     }
 }

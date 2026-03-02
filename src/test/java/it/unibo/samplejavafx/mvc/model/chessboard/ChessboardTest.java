@@ -24,7 +24,7 @@ class ChessboardTest {
                 .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
-                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING)))
+                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false)))
                 .build();
         return new Piece.Builder()
                 .setHasMoved(false)
