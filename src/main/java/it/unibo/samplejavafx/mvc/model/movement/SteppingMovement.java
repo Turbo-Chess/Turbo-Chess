@@ -12,16 +12,21 @@ public class SteppingMovement implements MovementStrategy {
         final Point2D xDir = new Point2D(Integer.signum(direction.x()), 0);
         final Point2D yDir = new Point2D(0, Integer.signum(direction.y()));
         Point2D newPoint = new Point2D(start.x(), start.y());
+        final int totalSteps = Math.abs(direction.x()) + Math.abs(direction.y());
+        int currentStep = 0;
+
         for (int i = 0; i < Math.abs(direction.x()); i++) {
             newPoint = newPoint.sum(xDir);
-            if (board.getEntity(newPoint).isPresent()) {
+            currentStep++;
+            if (currentStep < totalSteps && board.getEntity(newPoint).isPresent()) {
                 return List.of();
             }
         }
 
         for (int i = 0; i < Math.abs(direction.y()); i++) {
             newPoint = newPoint.sum(yDir);
-            if (!board.getEntity(newPoint).isEmpty()) {
+            currentStep++;
+            if (currentStep < totalSteps && board.getEntity(newPoint).isPresent()) {
                 return List.of();
             }
         }
