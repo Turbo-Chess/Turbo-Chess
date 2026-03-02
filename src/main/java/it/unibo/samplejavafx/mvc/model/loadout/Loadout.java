@@ -48,7 +48,7 @@ public class Loadout {
         this.name = name;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.entries = entries;
+        this.entries = List.copyOf(entries);
     }
 
     /**
@@ -102,6 +102,10 @@ public class Loadout {
                 .map(e -> new LoadoutEntry(e.position().flipY(boardHeight), e.packId(), e.pieceId()))
                 .toList();
         return create(this.name + " (Mirrored)", mirroredEntries);
+    }
+
+    public List<LoadoutEntry> getEntries() {
+        return List.copyOf(this.entries);
     }
 
     /**
