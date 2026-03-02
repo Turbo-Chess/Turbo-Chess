@@ -29,5 +29,13 @@
     "restriction" : "EAT_ONLY",
     "moveStrategy" : "JUMPING",
     "hasMoved" : false
+  },  {
+    "direction" : {
+      "x" : 0,
+      "y" : 2
+    },
+    "restriction" : "MOVE_ONLY",
+    "moveStrategy" : "STEPPING",
+    "hasMoved" : true
   } ]
 }
