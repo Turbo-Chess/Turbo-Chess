@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -18,7 +19,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @JsonDeserialize(builder = AbstractEntityDefinition.AbstractBuilder.class)
-@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,

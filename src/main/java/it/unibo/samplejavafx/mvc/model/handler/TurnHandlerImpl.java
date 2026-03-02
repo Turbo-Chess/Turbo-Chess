@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -39,6 +40,9 @@ public class TurnHandlerImpl implements TurnHandler {
      *
      * @param match placeholder.
      */
+    // The TurnHandler needs to manage the state of the match, so passing a mutable reference to it
+    // is appropriate in this case.
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public TurnHandlerImpl(final ChessMatch match) {
         this.match = match;
         this.turn = match.getTurnNumber();

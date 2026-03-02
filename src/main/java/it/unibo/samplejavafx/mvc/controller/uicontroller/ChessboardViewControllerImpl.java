@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
@@ -74,6 +75,8 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * @param gameController placeholder.
      * @param coordinator placeholder.
      */
+    // This is intended to be a shared controller to make the MVC working.
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinatorImpl coordinator) {
         this.gameController = gameController;
         this.coordinator = coordinator;
