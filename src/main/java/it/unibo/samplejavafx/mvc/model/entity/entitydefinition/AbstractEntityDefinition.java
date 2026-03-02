@@ -18,7 +18,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @JsonDeserialize(builder = AbstractEntityDefinition.AbstractBuilder.class)
-@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -28,7 +27,6 @@ import lombok.ToString;
         @JsonSubTypes.Type(value = PieceDefinition.class, name = "PIECE"),
         @JsonSubTypes.Type(value = PowerUpDefinition.class, name = "POWERUP")
 })
-// The class is abstract because it mustn't be instantiated on its own, even if it hasn't abstract methods.
 public abstract class AbstractEntityDefinition {
     private final String name;
     private final String id;

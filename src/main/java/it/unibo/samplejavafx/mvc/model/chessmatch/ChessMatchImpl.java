@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.chessmatch;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
@@ -27,6 +28,8 @@ public final class ChessMatchImpl implements ChessMatch {
     @Getter
     private final TurnHandler turnHandler;
     @Getter
+    // The board needs to be modified by other methods during the game.
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     private final ChessBoard board;
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 

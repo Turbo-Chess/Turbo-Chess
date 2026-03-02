@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
@@ -37,17 +38,27 @@ public final class GameControllerImpl implements GameController {
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
     @Getter
+    // Loadout Manager is used as a "service" class to manage and load loadouts, so it's intended to be
+    // passed as a mutable dependency
+    @SuppressFBWarnings("EI_EXPOSE_REP")
+
     private final LoadoutManager loadoutManager = new LoadoutManager();
     @Setter
+    // The match is intended to be accessed from the game controller to give data to classes
+    // that modifies it to play the game correctly.
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     private ChessMatch match;
     @Setter
     private ChessboardViewController chessboardViewController;
     @Getter
     private final Loadout whiteLoadout = loadoutManager.load(LOADOUT_ID).get();
     @Getter
-    // Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
+    // TODO: Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
     private final Loadout blackLoadout = loadoutManager.load(LOADOUT_ID).get().mirrored();
     @Getter
+    // The board factory is created here as is part of the current game, but it needs to be
+    // accessed also from outside to create new pieces in other classes.
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     private final BoardFactory boardFactory = new BoardFactoryImpl(loaderController);
 
     private Point2D lastPointClicked;
@@ -130,6 +141,7 @@ public final class GameControllerImpl implements GameController {
         }
     }
 
+    // TODO: remove that method to use the static inside advanced rules
     @Override
     public Point2D getKingPos() {
         if (this.match == null) {
