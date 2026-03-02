@@ -144,7 +144,7 @@ class CreateBasePiecesTest {
         assertEquals("pawn", pawn.getId());
         assertEquals("Pawn", pawn.getName());
         assertEquals(1, pawn.getWeight());
-        assertEquals(3, pawn.getMoveRules().size());
+        assertEquals(4, pawn.getMoveRules().size());
     }
 
     @Test

@@ -2,8 +2,10 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
@@ -88,4 +90,24 @@ public interface GameController {
      * @return placeholder.
      */
     Point2D getKingPos();
+
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    Loadout getWhiteLoadout();
+
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    Loadout getBlackLoadout();
+
+    /**
+     *
+     * @return
+     */
+    BoardFactory getBoardFactory();
 }

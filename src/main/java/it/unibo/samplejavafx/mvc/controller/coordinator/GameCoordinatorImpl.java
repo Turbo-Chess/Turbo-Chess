@@ -128,14 +128,11 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         final Parent root = loader.load();
         final ChessboardViewControllerImpl viewController = loader.getController();
         // TODO: remove reference of the match in the view controller
-        final String loadoutId = "standard-chess-loadout";
-        final Loadout whiteLoadout = gameController.getLoadoutManager().load(loadoutId).get();
-        final Loadout blackLoadout = gameController.getLoadoutManager().load(loadoutId).get().mirrored();
-        final BoardFactory boardFactory = new BoardFactoryImpl(gameController.getLoaderController());
+
         final ChessMatch match = new ChessMatchImpl(
-                boardFactory.createPopulatedChessboard(
-                        whiteLoadout,
-                        blackLoadout,
+                gameController.getBoardFactory().createPopulatedChessboard(
+                        gameController.getWhiteLoadout(),
+                        gameController.getBlackLoadout(),
                         viewController
                 ));
         this.gameController.setMatch(match);
