@@ -130,7 +130,8 @@ public class MoveRulesImpl implements MoveRules {
     @Getter
     public enum MoveStrategy {
         JUMPING(new JumpingMovement()),
-        SLIDING(new SlidingMovement());
+        SLIDING(new SlidingMovement()),
+        STEPPING(new SteppingMovement());
 
         private final MovementStrategy strategy;
 

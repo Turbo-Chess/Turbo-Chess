@@ -47,6 +47,7 @@ public class BoardFactoryImpl implements BoardFactory {
                         .get(entry.packId()).get(entry.pieceId()))
                 .gameId(gameId)
                 .playerColor(color)
+                .setHasMoved(false)
                 .build()
         );
         gameId++;
