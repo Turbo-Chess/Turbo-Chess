@@ -79,7 +79,7 @@ public final class AdvancedRules {
      * @param interposingPieces empty map that will contain the result of getInterposingPieces().
      * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
      */
-    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, GameState state,
+    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
                                     final Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
@@ -114,18 +114,21 @@ public final class AdvancedRules {
      * 
      * @param cb chessboard of the current game.
      * @param currentColor color of the player.
+     * @param state the current state of the game
      * @return {@code true} if the current player has no legal moves left, {@code false} otherwise.
      */
-    public static boolean draw(final ChessBoard cb, final PlayerColor currentColor, GameState state) {
+    public static boolean draw(final ChessBoard cb, final PlayerColor currentColor, final GameState state) {
         final Set<Optional<Entity>> set = getPiecesOfColor(cb, currentColor);
         final List<Point2D> container = new LinkedList<>();
 
         for (final Optional<Entity> piece : set) {
             if (piece.get().asMoveable().isPresent()) {
                 if (piece.get().getType() == PieceType.KING) {
-                    container.addAll(AdvancedRules.kingPossibleMoves(piece.get().asMoveable().get().getValidMoves(cb.getPosByEntity(piece.get()), cb), cb, currentColor));
+                    container.addAll(kingPossibleMoves(piece.get().asMoveable().get()
+                            .getValidMoves(cb.getPosByEntity(piece.get()), cb), cb, currentColor));
                 } else {
-                    container.addAll(new HashSet<>(piece.get().asMoveable().get().getValidMoves(cb.getPosByEntity(piece.get()), cb)));
+                    container.addAll(new HashSet<>(piece.get().asMoveable().get()
+                            .getValidMoves(cb.getPosByEntity(piece.get()), cb)));
                 }
             }
         }
@@ -261,8 +264,9 @@ public final class AdvancedRules {
 
         for (final Optional<Entity> ent : set) {
             //if(cb.getEntity(piece).get() instanceof Moveable moveable) {
-            if (ent.get().asMoveable().isPresent() 
-                && new HashSet<>(ent.get().asMoveable().get().getValidMoves(board.getPosByEntity(ent.get()), board)).contains(target)) {
+            if (ent.get().asMoveable().isPresent()
+                    && new HashSet<>(ent.get().asMoveable().get()
+                    .getValidMoves(board.getPosByEntity(ent.get()), board)).contains(target)) {
                 // if the piece is a moveable we can use its movement methods
                 return Optional.of((Piece) ent.get());
             }

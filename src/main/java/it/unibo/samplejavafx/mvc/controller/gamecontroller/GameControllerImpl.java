@@ -40,7 +40,7 @@ public final class GameControllerImpl implements GameController {
     @Getter
     // Loadout Manager is used as a "service" class to manage and load loadouts, so it's intended to be
     // passed as a mutable dependency
-    @SuppressFBWarnings("EI_EXPOSE_REP" )
+    @SuppressFBWarnings("EI_EXPOSE_REP")
 
     private final LoadoutManager loadoutManager = new LoadoutManager();
     @Setter

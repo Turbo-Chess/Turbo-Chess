@@ -104,6 +104,11 @@ public class Loadout {
         return create(this.name + " (Mirrored)", mirroredEntries);
     }
 
+    /**
+     * Placeholder.
+     *
+     * @return Placeholder.
+     */
     public List<LoadoutEntry> getEntries() {
         return List.copyOf(this.entries);
     }

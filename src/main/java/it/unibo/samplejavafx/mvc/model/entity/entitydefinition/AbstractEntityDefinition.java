@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -28,7 +27,6 @@ import lombok.ToString;
         @JsonSubTypes.Type(value = PieceDefinition.class, name = "PIECE"),
         @JsonSubTypes.Type(value = PowerUpDefinition.class, name = "POWERUP")
 })
-// The class is abstract because it mustn't be instantiated on its own, even if it hasn't abstract methods.
 public abstract class AbstractEntityDefinition {
     private final String name;
     private final String id;

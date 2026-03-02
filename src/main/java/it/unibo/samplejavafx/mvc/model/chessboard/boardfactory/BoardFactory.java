@@ -32,4 +32,3 @@ public interface BoardFactory {
      */
     void createNewPiece(Point2D pos, ChessBoard board, PieceDefinition pieceDefinition);
 }
-
