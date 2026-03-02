@@ -26,4 +26,9 @@ public interface TurnHandler {
      * @return placeholder.
      */
     List<Point2D> thinking(Point2D pos);
+
+    /**
+     * Sets the game state to checkmate.
+     */
+    void surrender();
 }

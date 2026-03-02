@@ -53,16 +53,23 @@ public interface ChessMatch {
 
     /**
      * placeholder.
+     *
+     * @param turn placeholder.
      */
-    void updateTurn(final int turn);
+    void updateTurn(int turn);
 
     /**
      * placeholder.
+     *
+     * @param currentColor placeholder.
      */
-    void updatePlayerColor(final PlayerColor currentColor);
+    void updatePlayerColor(PlayerColor currentColor);
 
     /**
      * placeholder.
+     *
+     * @param state placeholder.
+     * @param playerColor placeholder.
      */
-    void updateGameState(final GameState state);
+    void updateGameState(GameState state, PlayerColor playerColor);
 }

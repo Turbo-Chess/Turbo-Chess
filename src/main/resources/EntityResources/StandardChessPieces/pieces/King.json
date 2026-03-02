@@ -2,7 +2,7 @@
   "type": "PIECE",
   "name" : "King",
   "id" : "king",
-  "imagePath" : "classpath:/assets/images/white_king.png",
+  "imagePath" : "classpath:/assets/images/",
   "pieceType" : "KING",
   "weight" : 100,
   "moveRules" : [ {

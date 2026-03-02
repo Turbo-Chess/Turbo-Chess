@@ -281,8 +281,19 @@ public class TurnHandlerImpl implements TurnHandler {
     /**
      * placeholder.
      */
+    @Override
+    public void surrender() {
+        this.state = GameState.CHECKMATE;
+        match.updateGameState(this.state, AdvancedRules.swapColor(this.currentColor));
+        match.updatePlayerColor(this.currentColor);
+        match.updateTurn(this.turn);
+    }
+
+    /**
+     * placeholder.
+     */
     public void updateStats() {
-        match.updateGameState(state);
+        match.updateGameState(state, currentColor);
         match.updatePlayerColor(currentColor);
         match.updateTurn(turn);
     }

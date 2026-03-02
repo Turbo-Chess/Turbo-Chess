@@ -2,7 +2,7 @@
   "type": "PIECE",
   "name" : "Pawn",
   "id" : "pawn",
-  "imagePath" : "classpath:/assets/images/white_pawn.png",
+  "imagePath" : "classpath:/assets/images/",
   "pieceType" : "PAWN",
   "weight" : 1,
   "moveRules" : [ {

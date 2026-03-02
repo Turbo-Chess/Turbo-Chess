@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.rules;
 
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
@@ -27,6 +28,7 @@ class TurnHandlerTest {
 
     @BeforeEach
     void setUp() {
+        match = new ChessMatchImpl(new ChessBoardImpl());
         handler = match.getTurnHandler();
         board = match.getBoard();
         match = new ChessMatchImpl(board);

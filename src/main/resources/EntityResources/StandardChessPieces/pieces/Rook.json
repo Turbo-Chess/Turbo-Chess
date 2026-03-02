@@ -2,7 +2,7 @@
   "type": "PIECE",
   "name" : "Rook",
   "id" : "rook",
-  "imagePath" : "classpath:/assets/images/white_rook.png",
+  "imagePath" : "classpath:/assets/images/",
   "pieceType" : "TOWER",
   "weight" : 5,
   "moveRules" : [ {

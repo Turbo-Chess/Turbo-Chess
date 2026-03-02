@@ -12,12 +12,13 @@ public interface BoardFactory {
     /**
      * placeholder.
      *
-     * @param whiteLoadout placeholder.
-     * @param blackLoadout placeholder.
-     * @param boardObserver placeholder.
+     * @param whiteLoadout  placeholder.
+     * @param blackLoadout  plcaholder.
+     * @param boardObserver plcaholder.
      * @return placeholder.
      */
     ChessBoard createPopulatedChessboard(Loadout whiteLoadout,
                                          Loadout blackLoadout,
                                          BoardObserver boardObserver);
 }
+

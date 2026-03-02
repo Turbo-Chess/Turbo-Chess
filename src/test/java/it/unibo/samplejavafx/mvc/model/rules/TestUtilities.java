@@ -11,7 +11,7 @@ import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 
-public class TestUtilities {
+public final class TestUtilities {
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
 

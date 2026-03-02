@@ -21,4 +21,20 @@ public interface ChessboardViewController {
      * @param cellsToHide placeholder.
      */
     void hideMovementCells(Set<Point2D> cellsToHide);
+
+    /**
+     * placeholder.
+     *
+     * @param start placeholder.
+     * @param end placeholder.
+     */
+    void highlightMovement(Point2D start, Point2D end);
+
+    /**
+     * placeholder.
+     *
+     * @param start placeholder.
+     * @param end placeholder.
+     */
+    void highlightEat(Point2D start, Point2D end);
 }

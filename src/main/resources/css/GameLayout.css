@@ -49,9 +49,45 @@
     -fx-background-color: #444a54;
 }
 
-#chessboardGridPane .button:valid_movement {
+#chessboardGridPane .button:check-king {
+    -fx-background-color: rgba(255, 140, 0, 0.5); /* Orange highlight for check */
+    -fx-border-color: orange;
+    -fx-border-width: 2;
+}
+
+#chessboardGridPane .button:checkmate-king {
+    -fx-background-color: rgba(220, 20, 60, 0.7); /* Crimson for checkmate */
+    -fx-border-color: crimson;
+    -fx-border-width: 2;
+}
+
+#chessboardGridPane .button:move-cell {
+    -fx-background-color: rgba(30, 144, 255, 0.4); /* Dodger blue for moved cell */
+    -fx-border-color: #1e90ff;
+    -fx-border-width: 2;
+}
+
+#chessboardGridPane .button:eat-cell {
+    -fx-background-color: rgba(186, 85, 211, 0.5); /* Medium orchid for capture */
+    -fx-border-color: #ba55d3;
+    -fx-border-width: 2;
+}
+
+#chessboardGridPane .button:start-cell {
+    -fx-background-color: rgba(30, 144, 255, 0.4); /* Dodger blue for start cell (same as move) */
+    -fx-border-color: #1e90ff;
+    -fx-border-width: 2;
+}
+
+#chessboardGridPane .button:valid-movement {
     -fx-background-color: rgba(255, 255, 0, 0.5); /* Semi-transparent yellow highlight */
     -fx-border-color: gold;
+    -fx-border-width: 2;
+}
+
+#chessboardGridPane .button:valid-capture {
+    -fx-background-color: rgba(255, 69, 0, 0.6); /* Red-Orange for valid capture */
+    -fx-border-color: orangered;
     -fx-border-width: 2;
 }
 

@@ -13,7 +13,7 @@ import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 /**
  * placeholder.
  */
-public final class BoardFactoryImpl implements BoardFactory {
+public class BoardFactoryImpl implements BoardFactory {
     private final LoaderController loaderController;
     private int gameId;
 

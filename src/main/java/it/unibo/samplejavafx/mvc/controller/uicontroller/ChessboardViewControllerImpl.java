@@ -2,7 +2,7 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
@@ -10,9 +10,15 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -20,8 +26,15 @@ import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.CHECK_KING;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.HASEAT;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.HASMOVED;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.START;
+import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_CAPTURE_CELL;
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
 
 /**
@@ -30,7 +43,6 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final double IMAGE_SCALE = 0.8;
-
     @FXML
     private GridPane chessboardGridPane;
 
@@ -51,8 +63,10 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
-    private final GameCoordinator coordinator;
+    private final GameCoordinatorImpl coordinator;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
+    private Point2D lastStart;
+    private Point2D lastEnd;
 
     /**
      * placeholder.
@@ -60,7 +74,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * @param gameController placeholder.
      * @param coordinator placeholder.
      */
-    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
+    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinatorImpl coordinator) {
         this.gameController = gameController;
         this.coordinator = coordinator;
     }
@@ -72,7 +86,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     public void initialize() {
         initChessboardPane();
         menuButton.setText("Surrender");
-        menuButton.setOnAction(e -> coordinator.initMainMenu());
+        menuButton.setOnAction(e -> gameController.surrender());
     }
 
     /**
@@ -83,7 +97,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         final int size = 8;
 
         // Bind GridPane size to the minimum of StackPane width/height to keep it square
-        final javafx.beans.binding.NumberBinding squareSize = javafx.beans.binding.Bindings.min(
+        final NumberBinding squareSize = Bindings.min(
             gameMainPane.widthProperty(), gameMainPane.heightProperty()
         );
         chessboardGridPane.prefWidthProperty().bind(squareSize);
@@ -129,10 +143,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @Override
     public void onEntityAdded(final Point2D pos, final Entity entity) {
-        LOGGER.debug("Added Entity: " + entity.getClass() + " at pos: " + pos);
         final Button btn = cells.get(pos);
         btn.setText("");
-        btn.setGraphic(createResponsiveImageView("file:" + entity.getImagePath(), btn));
+        btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(entity), btn));
     }
 
     @Override
@@ -145,15 +158,58 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @Override
      public void showMovementCells(final Set<Point2D> cellsToShow) {
         for (final var move : cellsToShow) {
-            cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
+            final Button btn = cells.get(move);
+            if (btn.getGraphic() != null) {
+                btn.pseudoClassStateChanged(VALID_CAPTURE_CELL, true);
+            } else {
+                btn.pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
+            }
         }
     }
 
    @Override
     public void hideMovementCells(final Set<Point2D> cellsToHide) {
         for (final var move : cellsToHide) {
-            cells.get(move).pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+            final Button btn = cells.get(move);
+            btn.pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+            btn.pseudoClassStateChanged(VALID_CAPTURE_CELL, false);
         }
+    }
+
+    @Override
+    public void highlightMovement(final Point2D start, final Point2D end) {
+        clearLastHighlight();
+        cells.get(start).pseudoClassStateChanged(START, true);
+        cells.get(end).pseudoClassStateChanged(HASMOVED, true);
+        this.lastStart = start;
+        this.lastEnd = end;
+    }
+
+    @Override
+    public void highlightEat(final Point2D start, final Point2D end) {
+        clearLastHighlight();
+        cells.get(start).pseudoClassStateChanged(START, true);
+        cells.get(end).pseudoClassStateChanged(HASEAT, true);
+        this.lastStart = start;
+        this.lastEnd = end;
+    }
+
+    private void clearLastHighlight() {
+        if (lastStart != null && lastEnd != null) {
+            cells.get(lastStart).pseudoClassStateChanged(START, false);
+            cells.get(lastEnd).pseudoClassStateChanged(HASMOVED, false);
+            cells.get(lastEnd).pseudoClassStateChanged(HASEAT, false);
+        }
+    }
+
+    @Override
+    public void onEntityMoved(final Point2D from, final Point2D to) {
+        highlightMovement(from, to);
+    }
+
+    @Override
+    public void onEntityEaten(final Point2D from, final Point2D to) {
+        highlightEat(from, to);
     }
 
     @Override
@@ -167,7 +223,49 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     }
 
     @Override
-    public void onGameStateUpdated(final GameState gameState) {
-        // TODO: set label
+    public void onGameStateUpdated(final GameState gameState, final PlayerColor playerColor) {
+        switch (gameState) {
+            case CHECK, DOUBLE_CHECK -> {
+                cells.get(gameController.getKingPos()).pseudoClassStateChanged(CHECK_KING, true);
+            }
+
+            case NORMAL -> {
+                final var check = cells.inverse().keySet().stream()
+                        .filter(b -> b.getPseudoClassStates().contains(CHECK_KING))
+                        .findFirst();
+                check.ifPresent(button -> button.pseudoClassStateChanged(CHECK_KING, false));
+
+            }
+
+            case CHECKMATE -> this.showEndingDialog("Checkmate!", " has won!", Optional.of(playerColor));
+
+            case DRAW -> this.showEndingDialog("It's a draw!", "Neither player won", Optional.empty());
+
+            /*case PROMOTION -> {
+                // Finestra promozione
+            }*/
+        }
+    }
+
+    private void showEndingDialog(final String statusText, final String messageText, final Optional<PlayerColor> playerColor) {
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameOver.fxml"));
+        loader.setControllerFactory(c -> new GameOverController(coordinator));
+        DialogPane root = new DialogPane();
+        try {
+            root = loader.load();
+        } catch (final IOException e) {
+            LOGGER.error("Failed to load GameOver dialog", e);
+        }
+
+        final GameOverController gameOverController = loader.getController();
+        if (playerColor.isPresent()) {
+            gameOverController.setTextLabel(statusText, playerColor.get() + messageText);
+        } else {
+            gameOverController.setTextLabel(statusText, messageText);
+        }
+        final Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(root);
+        dialog.setTitle("Game Results");
+        dialog.showAndWait();
     }
 }

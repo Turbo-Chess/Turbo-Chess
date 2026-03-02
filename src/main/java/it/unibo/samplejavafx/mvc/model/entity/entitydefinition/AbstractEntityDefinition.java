@@ -63,7 +63,6 @@ public abstract class AbstractEntityDefinition {
 
         this.name = builder.name;
         this.id = builder.id;
-        // TODO: consider getCorrectPath for compatibility with custom pieces
         this.imagePath = String.valueOf(LoadingUtils.getCorrectPath(builder.imagePath));
         this.pieceType = builder.pieceType;
     }
