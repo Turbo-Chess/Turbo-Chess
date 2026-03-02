@@ -5,6 +5,7 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControlle
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -74,10 +75,12 @@ public interface GameController {
     /**
      * placeholder.
      *
-     * @param entity placeholder.
+     * @param imagePath placeholder.
+     * @param playerColor placeholder.
+     * @param id placeholder.
      * @return placeholder.
      */
-    String calculateImageColorPath(Entity entity);
+    String calculateImageColorPath(String imagePath, PlayerColor playerColor, String id);
 
     /**
      * Sets the game state to checkmate.

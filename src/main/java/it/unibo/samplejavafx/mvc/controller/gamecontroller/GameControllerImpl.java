@@ -8,7 +8,6 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControlle
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
-import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
@@ -116,15 +115,12 @@ public final class GameControllerImpl implements GameController {
     }
 
     /**
-     * placeholder.
-     *
-     * @param entity placeholder.
-     * @return placeholder.
+     * {@inheritDoc}
      */
     @Override
-    public String calculateImageColorPath(final Entity entity) {
-        final String color = entity.getPlayerColor() == PlayerColor.WHITE ? "white" : "black";
-        return "file:" + entity.getImagePath() + "/" + color + "_" + entity.getId() + ".png";
+    public String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
+        final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
+        return "file:" + imagePath + "/" + color + "_" + id + ".png";
     }
 
     @Override

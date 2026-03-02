@@ -145,7 +145,8 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     public void onEntityAdded(final Point2D pos, final Entity entity) {
         final Button btn = cells.get(pos);
         btn.setText("");
-        btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(entity), btn));
+        btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(
+                entity.getImagePath(), entity.getPlayerColor(), entity.getId()), btn));
     }
 
     @Override
