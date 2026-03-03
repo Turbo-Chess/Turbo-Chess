@@ -9,6 +9,8 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
+import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +21,13 @@ import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
+import java.util.UUID;
 
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
 
@@ -29,6 +37,10 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final double IMAGE_SCALE = 0.8;
+    // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
+    private final GameController gameController;
+    private final GameCoordinator coordinator;
+    private final BiMap<Point2D, Button> cells = HashBiMap.create();
 
     @FXML
     private GridPane chessboardGridPane;
@@ -48,10 +60,8 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @FXML
     private Button menuButton;
 
-    // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
-    private final GameController gameController;
-    private final GameCoordinator coordinator;
-    private final BiMap<Point2D, Button> cells = HashBiMap.create();
+    @FXML
+    private Button saveButton;
 
     /**
      * placeholder.
@@ -72,6 +82,35 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         initChessboardPane();
         menuButton.setText("Surrender");
         menuButton.setOnAction(e -> coordinator.initMainMenu());
+        saveButton.setText("Save Game");
+        saveButton.setOnAction(e -> {
+            Path fileToSave = coordinator.getCurrentSaveFile();
+
+            if (fileToSave == null) {
+                final Path saveDir = Paths.get(GameProperties.SAVES_FOLDER.getPath());
+                try {
+                    FileSystemUtils.ensureDirectoryExists(saveDir);
+                    final String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+                    final String uuid = UUID.randomUUID().toString().substring(0, 8);
+                    final String filename = "save_" + timestamp + "_" + uuid + ".json";
+                    fileToSave = saveDir.resolve(filename);
+                } catch (final IOException ex) {
+                    LOGGER.error("Failed to create save directory", ex);
+                    return;
+                }
+            }
+
+            try {
+                if (coordinator.saveGame(fileToSave)) {
+                    LOGGER.info("Game saved to: " + fileToSave.toAbsolutePath());
+                    coordinator.initMainMenu();
+                } else {
+                    LOGGER.error("Failed to save game to: " + fileToSave.toAbsolutePath() + " (unknown reason)");
+                }
+            } catch (final IOException ex) {
+                LOGGER.error("Failed to save game", ex);
+            }
+        });
     }
 
     /**
@@ -139,6 +178,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         final Button btn = cells.get(pos);
         btn.setText("");
         btn.setGraphic(null);
+    }
+
+    @Override
+    public void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
+        onEntityRemoved(from, entity);
+        onEntityAdded(to, entity);
     }
 
     @Override
