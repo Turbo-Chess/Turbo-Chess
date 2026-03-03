@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 class CrossPlatformLoadingTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CrossPlatformLoadingTest.class);
@@ -15,7 +16,7 @@ class CrossPlatformLoadingTest {
     private static final Path TCPATH = Paths.get(BASEPATH, "/Library/Application Support/TurboChess/Mods");
     @Test
     void testHome() throws IOException {
-        final String os = System.getProperty("os.name").toLowerCase(java.util.Locale.ROOT);
+        final String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (os.contains("mac")) {
             LOGGER.info(System.getProperty("user.home"));
             Files.createDirectories(TCPATH);

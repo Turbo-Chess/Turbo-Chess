@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.NoSuchElementException;
 
 /**
@@ -35,7 +36,7 @@ public final class GameCoordinator {
     private ChessMatch match;
     private GameController gameController;
 
-    private java.nio.file.Path currentSaveFile;
+    private Path currentSaveFile;
 
     /**
      * Constructor.
@@ -154,7 +155,7 @@ public final class GameCoordinator {
      * @return true if successful, false otherwise.
      * @throws IOException if an I/O error occurs.
      */
-    public boolean saveGame(final java.nio.file.Path path) throws IOException {
+    public boolean saveGame(final Path path) throws IOException {
         this.currentSaveFile = path;
         return replayManager.saveGame(match.getGameHistory(), path);
     }
@@ -164,7 +165,7 @@ public final class GameCoordinator {
      *
      * @return the current save file path, or null if this is a new game.
      */
-    public java.nio.file.Path getCurrentSaveFile() {
+    public Path getCurrentSaveFile() {
         return this.currentSaveFile;
     }
 
@@ -173,7 +174,7 @@ public final class GameCoordinator {
      *
      * @param path the path to load the game from.
      */
-    public void loadGame(final java.nio.file.Path path) {
+    public void loadGame(final Path path) {
         this.currentSaveFile = path;
         final var history = replayManager.loadGame(path);
         if (history != null) {

@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -29,7 +31,7 @@ public class EntityLoaderImpl implements EntityLoader {
            return paths.filter(Files::isRegularFile)
                    .filter(file -> file.toString().endsWith(".json"))
                    .map(file -> this.parseEntityFile(file, classToLoad))
-                   .filter(java.util.Objects::nonNull)
+                   .filter(Objects::nonNull)
                    .toList();
         } catch (final IOException e) {
             LOGGER.error("Cannot get files inside: {}", filesPath, e);
