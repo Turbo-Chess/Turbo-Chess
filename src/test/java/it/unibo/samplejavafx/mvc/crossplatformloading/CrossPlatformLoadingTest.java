@@ -12,11 +12,14 @@ import java.nio.file.Paths;
 class CrossPlatformLoadingTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CrossPlatformLoadingTest.class);
     private static final String BASEPATH = System.getProperty("user.home");
-    private static final Path TCPATH = Paths.get(BASEPATH, "/.TurboChess/Mods");
+    private static final Path TCPATH = Paths.get(BASEPATH, "/Library/Application Support/TurboChess/Mods");
     @Test
     void testHome() throws IOException {
-        LOGGER.info(System.getProperty("user.home"));
-        Files.createDirectories(TCPATH);
-        LOGGER.info(Paths.get(BASEPATH, "/.TurboChess/Mods").toString());
+        final String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("mac")) {
+            LOGGER.info(System.getProperty("user.home"));
+            Files.createDirectories(TCPATH);
+            LOGGER.info(Paths.get(BASEPATH, "/Library/Application Support/TurboChess/Mods").toString());
+        }
     }
 }

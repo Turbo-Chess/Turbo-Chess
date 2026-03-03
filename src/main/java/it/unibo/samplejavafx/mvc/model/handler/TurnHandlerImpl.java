@@ -15,15 +15,14 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.rules.CastleCondition;
 import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
-
 /**
  * Placeholder.
  */
-public class TurnHandlerImpl implements TurnHandler {
+public final class TurnHandlerImpl implements TurnHandler {
     private int turn;
     private final ChessBoard board;
     private GameState state;
-    private CastleCondition castlingOptions; //NOPMD will be implemented
+    private CastleCondition castlingOptions; // will be implemented
     private PlayerColor currentColor;
     private Optional<Piece> currentPiece = Optional.empty();
     private List<Point2D> pieceMoves;
@@ -103,6 +102,16 @@ public class TurnHandlerImpl implements TurnHandler {
         this.currentColor = AdvancedRules.swapColor(currentColor);
         unsetCurrentPiece();
         return true;
+    }
+
+    @Override
+    public void setTurn(final int turn) {
+        this.turn = turn;
+    }
+
+    @Override
+    public void setPlayerColor(final PlayerColor color) {
+        this.currentColor = color;
     }
 
     /**
