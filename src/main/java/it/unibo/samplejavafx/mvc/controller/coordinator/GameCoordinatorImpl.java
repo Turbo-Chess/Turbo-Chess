@@ -136,7 +136,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             stage.setScene(scene);
             stage.show();
         } catch (final IOException e) {
-            System.out.println("Maionese");
+            LOGGER.error("Failed to load Promotion GUI", e);
         }
     }
 
@@ -186,7 +186,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
            }
        } catch (final IOException e) {
-           System.out.println("Maionese");
+           LOGGER.error("Failed to load Game GUI", e);
        }
 
     }

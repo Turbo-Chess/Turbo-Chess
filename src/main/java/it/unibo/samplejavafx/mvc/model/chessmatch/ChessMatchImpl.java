@@ -91,6 +91,7 @@ public final class ChessMatchImpl implements ChessMatch {
      * 
      * @return the {@link Point2D} position.
      */
+    @Override
     public Point2D getPromotionPos() {
         return turnHandler.getCurrentPiecePos();
     }

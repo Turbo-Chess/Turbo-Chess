@@ -132,8 +132,10 @@ public class TurnHandlerImpl implements TurnHandler {
         switch (currentColor) {
             case WHITE:
                 promotion(BOUNDARIES.x());
+                break;
             case BLACK:
                 promotion(BOUNDARIES.y());
+                break;
         }
 
         this.turn += 1;
@@ -296,6 +298,7 @@ public class TurnHandlerImpl implements TurnHandler {
      * 
      * @return placeholder.
      */
+    @Override
     public Point2D getCurrentPiecePos() {
         return board.getPosByEntity(promotionHolder.get());
     }

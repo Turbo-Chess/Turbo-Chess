@@ -90,11 +90,9 @@ public final class PromotionController {
         final Set<LoadoutEntry> set = new HashSet<>();
         final Set<String> ids = new HashSet<>();
         for (final var entry : load.getEntries()) {
-            if (!entry.pieceId().equals("pawn") && !entry.pieceId().equals("king")) {
-                if (!ids.contains(entry.pieceId())) {
-                    ids.add(entry.pieceId());
-                    set.add(entry);
-                }
+            if (!"pawn".equals(entry.pieceId()) && !"king".equals(entry.pieceId()) && !ids.contains(entry.pieceId())) {
+                ids.add(entry.pieceId());
+                set.add(entry);
             }
         }
         return set;

@@ -51,7 +51,7 @@ class GameControllerCacheTest {
 
         final ChessBoard board = new ChessBoardImpl();
         final ChessMatch match = new ChessMatchImpl(board);
-        final GameController controller = new GameControllerImpl();
+        final GameController controller = new GameControllerImpl(null);
         controller.setMatch(match);
 
         final Point2D knightPos = new Point2D(4, 4);

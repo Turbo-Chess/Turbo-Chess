@@ -27,6 +27,7 @@ import lombok.ToString;
         @JsonSubTypes.Type(value = PieceDefinition.class, name = "PIECE"),
         @JsonSubTypes.Type(value = PowerUpDefinition.class, name = "POWERUP")
 })
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractEntityDefinition {
     private final String name;
     private final String id;
