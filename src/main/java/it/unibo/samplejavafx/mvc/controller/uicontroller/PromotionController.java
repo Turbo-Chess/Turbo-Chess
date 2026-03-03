@@ -7,14 +7,30 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 
 public class PromotionController {
+    @FXML
+    private GridPane maionese;
     private final Loadout white;
     private final Loadout black;
+    private final GameController controller;
+    private LoadoutEntry output;
+    private int x, y = 0;
 
     public PromotionController(final GameController controller) {
+        this.controller = controller;
         this.white = controller.getWhiteLoadout();
         this.black = controller.getBlackLoadout();
+    }
+
+    public void init(final PlayerColor curreColor) {
+        populateScrollPanel(curreColor);
     }
 
     public void populateScrollPanel(final PlayerColor currentColor) {
@@ -27,8 +43,20 @@ public class PromotionController {
                 set = getPromotionPieces(black);
                 break;
         }
+
         for (LoadoutEntry entry : set) {
+            final String imagePath = controller.getLoaderController().getEntityCache()
+                                               .get(entry.packId()).get(entry.pieceId()).getImagePath();
+            final String imageColorPath = controller.calculateImageColorPath(imagePath, currentColor, entry.pieceId());
+            final Button btn = new Button("");
+            final ImageView imageView = new ImageView(new Image(imageColorPath));
             
+            btn.setGraphic(imageView);
+            btn.setOnAction(event -> {
+                    output = entry;
+                });
+            maionese.add(btn, x, y);
+            increment();
         }
     }
 
@@ -40,5 +68,20 @@ public class PromotionController {
             }
         }
         return set;
+    }
+
+    private void isFinished() {
+        controller.promote(output);
+    }
+
+    private void increment() {
+        x += 1;
+        y += 1;
+        if (x == 3) {
+            x = 0;
+        }
+        if (y == 3) {
+            y = 0;
+        }
     }
 }

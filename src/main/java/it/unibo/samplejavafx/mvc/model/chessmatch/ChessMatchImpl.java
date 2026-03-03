@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerImpl;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -83,6 +84,10 @@ public final class ChessMatchImpl implements ChessMatch {
     public void updateGameState(final GameState state, final PlayerColor playerColor) {
         this.gameState = state;
         this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
+    }
+
+    public Point2D getPromotionPos() {
+        return turnHandler.getCurrentPiecePos();
     }
     // TODO: aggiungere per il timer
 

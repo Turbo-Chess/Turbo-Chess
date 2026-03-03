@@ -31,4 +31,11 @@ public interface TurnHandler {
      * Sets the game state to checkmate.
      */
     void surrender();
+
+    /**
+     * placeholder.
+     * 
+     * @return placeholder.
+     */
+    Point2D getCurrentPiecePos();
 }

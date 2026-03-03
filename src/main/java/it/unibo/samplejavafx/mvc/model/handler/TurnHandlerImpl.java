@@ -135,6 +135,7 @@ public class TurnHandlerImpl implements TurnHandler {
         updateStats();
 
         if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor), state)) {
+            updateStats();
             return false;
         }
         this.castlingOptions = AdvancedRules.castle(board, currentColor);
@@ -281,6 +282,15 @@ public class TurnHandlerImpl implements TurnHandler {
     private void unsetCurrentPiece() {
         this.currentPiece = Optional.empty();
         this.pieceMoves = Collections.emptyList();
+    }
+
+    /**
+     * placeholder.
+     *  
+     * @return placeholder.
+     */
+    public Point2D getCurrentPiecePos() {
+        return board.getPosByEntity(currentPiece.get());
     }
 
     /**

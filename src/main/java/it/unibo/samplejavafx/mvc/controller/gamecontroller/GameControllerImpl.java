@@ -11,7 +11,9 @@ import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -139,6 +141,14 @@ public final class GameControllerImpl implements GameController {
         if (this.match != null) {
             match.getTurnHandler().surrender();
         }
+    }
+
+    @Override
+    public void promote(final LoadoutEntry pieceEntry) {
+        final Point2D pos = match.getPromotionPos();
+        match.getBoard().getBoard().remove(pos);
+        boardFactory.createNewPiece(pos, match.getBoard(), (PieceDefinition)loaderController
+                                    .getEntityCache().get(pieceEntry.packId()).get(pieceEntry.pieceId()));
     }
 
     // TODO: remove that method to use the static inside advanced rules
