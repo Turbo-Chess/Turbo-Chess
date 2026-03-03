@@ -154,6 +154,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initGame() {
+        this.gameRoot = null;
         loadGameUI();
         createNewMatch();
         showGame();
