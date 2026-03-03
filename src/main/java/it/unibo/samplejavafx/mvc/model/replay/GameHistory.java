@@ -1,5 +1,9 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
+import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +13,12 @@ import java.util.List;
  */
 public class GameHistory {
     private final List<GameEvent> events = new LinkedList<>();
+    @Getter
+    @Setter
+    private Loadout whiteLoadout;
+    @Getter
+    @Setter
+    private Loadout blackLoadout;
 
     /**
      * Adds an event to the history.

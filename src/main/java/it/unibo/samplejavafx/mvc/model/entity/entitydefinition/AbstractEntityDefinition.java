@@ -27,6 +27,7 @@ import lombok.ToString;
         @JsonSubTypes.Type(value = PieceDefinition.class, name = "PIECE"),
         @JsonSubTypes.Type(value = PowerUpDefinition.class, name = "POWERUP")
 })
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractEntityDefinition {
     private final String name;
     private final String id;
@@ -51,8 +52,11 @@ public abstract class AbstractEntityDefinition {
         if (builder.imagePath == null || builder.imagePath.isEmpty()) {
             throw new IllegalArgumentException("Missing required filed: imagePath");
         } else if (!builder.imagePath.startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath())
-                && !builder.imagePath.startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())) {
-            throw new IllegalArgumentException("Path does not start with the correct base path");
+                && !builder.imagePath.startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())
+                && !builder.imagePath.startsWith("file:")
+                && !builder.imagePath.startsWith("classpath:")
+                && !builder.imagePath.contains("/assets/images/")) {
+            throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.imagePath);
         }
 
         if (builder.pieceType == null) {

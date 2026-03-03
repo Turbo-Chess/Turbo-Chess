@@ -33,6 +33,15 @@ public interface BoardObserver {
     }
 
     /**
+     * Called when an entity is moved on the board.
+     *
+     * @param from the starting position.
+     * @param to the ending position.
+     * @param entity the entity moved.
+     */
+    void onEntityMoved(Point2D from, Point2D to, Entity entity);
+
+    /**
      * Called when an entity captures another entity (eat).
      *
      * @param from the starting position of the capturing entity.

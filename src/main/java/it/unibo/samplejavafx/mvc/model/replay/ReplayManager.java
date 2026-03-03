@@ -32,15 +32,17 @@ public class ReplayManager {
      *
      * @param history the history to save.
      * @param path the destination file path.
-     * @return true if successful, false otherwise.
+     * @return true if successful.
+     * @throws IOException if an I/O error occurs.
      */
-    public boolean saveGame(final GameHistory history, final Path path) {
+    public boolean saveGame(final GameHistory history, final Path path) throws IOException {
+        final Path parent = path.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
         try (OutputStream os = Files.newOutputStream(path)) {
             mapper.writeValue(os, history);
             return true;
-        } catch (final IOException e) {
-            LOGGER.error("Error saving game history to file: {}", path, e);
-            return false;
         }
     }
 

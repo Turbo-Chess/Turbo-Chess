@@ -2,10 +2,13 @@ package it.unibo.samplejavafx.mvc.model.chessmatch;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerImpl;
+import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
+import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -26,12 +29,23 @@ public final class ChessMatchImpl implements ChessMatch {
     @Getter
     private int turnNumber;
     @Getter
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     private final TurnHandler turnHandler;
     @Getter
     // The board needs to be modified by other methods during the game.
     @SuppressFBWarnings("EI_EXPOSE_REP")
     private final ChessBoard board;
+    @Getter
+    @SuppressFBWarnings("EI_EXPOSE_REP")
+    private final GameHistory gameHistory;
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
+
+    /**
+     * placeholder.
+     */
+    public ChessMatchImpl() {
+        this(new ChessBoardImpl());
+    }
 
     /**
      * placeholder.
@@ -39,12 +53,33 @@ public final class ChessMatchImpl implements ChessMatch {
      * @param board placeholder.
      */
     public ChessMatchImpl(final ChessBoard board) {
-        gameState = GameState.NORMAL;
+        this.gameState = GameState.NORMAL;
         this.board = board;
         this.turnNumber = 1;
         this.currentPlayer = PlayerColor.WHITE;
-        // TODO: chech turn number passed to turn handler
+
+        this.gameHistory = new GameHistory();
         this.turnHandler = new TurnHandlerImpl(this);
+
+        final var historyRecorder = new GameHistoryRecorder(
+            this::getTurnNumber,
+            this.gameHistory
+        );
+        this.board.addObserver(historyRecorder);
+    }
+
+    @Override
+    public void setTurnNumber(final int turnNumber) {
+        this.turnNumber = turnNumber;
+        this.turnHandler.setTurn(turnNumber);
+        this.notifyTurnUpdated(this.turnNumber);
+    }
+
+    @Override
+    public void setPlayerColor(final PlayerColor playerColor) {
+        this.currentPlayer = playerColor;
+        this.turnHandler.setPlayerColor(playerColor);
+        this.notifyPlayerColorUpdated(this.currentPlayer);
     }
 
     /**
@@ -84,6 +119,4 @@ public final class ChessMatchImpl implements ChessMatch {
         this.gameState = state;
         this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
     }
-    // TODO: aggiungere per il timer
-
 }

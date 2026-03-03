@@ -58,7 +58,13 @@ public class Loadout {
      * @return placeholder.
      */
     public Loadout withName(final String newName) {
-        return new Loadout(this.id, newName, this.createdAt, Instant.now().toEpochMilli(), this.entries);
+        return new Loadout(
+            this.id,
+            newName,
+            this.createdAt,
+            Instant.now().toEpochMilli(),
+            this.entries
+        );
     }
 
     /**
@@ -68,7 +74,13 @@ public class Loadout {
      * @return placeholder.
      */
     public Loadout withEntries(final List<LoadoutEntry> newEntries) {
-        return new Loadout(this.id, this.name, this.createdAt, Instant.now().toEpochMilli(), newEntries);
+        return new Loadout(
+            this.id,
+            this.name,
+            this.createdAt,
+            Instant.now().toEpochMilli(),
+            newEntries
+        );
     }
 
     /**
@@ -78,8 +90,13 @@ public class Loadout {
      * @return placeholder.
      */
     public Loadout duplicate(final String newName) {
-        return new Loadout(UUID.randomUUID().toString(), newName, Instant.now().toEpochMilli(),
-                Instant.now().toEpochMilli(), this.entries);
+        return new Loadout(
+            UUID.randomUUID().toString(),
+            newName,
+            Instant.now().toEpochMilli(),
+            Instant.now().toEpochMilli(),
+            this.entries
+        );
     }
 
     private static int calculateWeight(final List<LoadoutEntry> entries, final Map<String, PieceDefinition> definitions) {
@@ -122,8 +139,11 @@ public class Loadout {
      * @return true if the loadout is valid
      */
     @JsonIgnore
-    public boolean isValid(final Map<String, PieceDefinition> definitions, final int expectedWeight,
-                           final Loadout standardLoadout) {
+    public boolean isValid(
+        final Map<String, PieceDefinition> definitions,
+        final int expectedWeight,
+        final Loadout standardLoadout
+    ) {
         final ValidationContext context = new ValidationContext(this.entries, definitions, expectedWeight, standardLoadout);
 
         return Stream.<Predicate<ValidationContext>>of(
@@ -158,8 +178,13 @@ public class Loadout {
      * @return placeholder.
      */
     public static Loadout create(final String name, final List<LoadoutEntry> entries) {
-        return new Loadout(UUID.randomUUID().toString(), name, Instant.now().toEpochMilli(),
-                Instant.now().toEpochMilli(), entries);
+        return new Loadout(
+            UUID.randomUUID().toString(),
+            name,
+            Instant.now().toEpochMilli(),
+            Instant.now().toEpochMilli(),
+            entries
+        );
     }
 
     /**
@@ -265,8 +290,12 @@ public class Loadout {
         private final int expectedWeight;
         private final Loadout standardLoadout;
 
-        ValidationContext(final List<LoadoutEntry> entries, final Map<String, PieceDefinition> definitions,
-                          final int expectedWeight, final Loadout standardLoadout) {
+        ValidationContext(
+            final List<LoadoutEntry> entries,
+            final Map<String, PieceDefinition> definitions,
+            final int expectedWeight,
+            final Loadout standardLoadout
+        ) {
             this.entries = entries;
             this.definitions = definitions;
             this.expectedWeight = expectedWeight;

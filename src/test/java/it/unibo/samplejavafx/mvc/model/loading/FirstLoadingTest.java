@@ -55,7 +55,8 @@ class FirstLoadingTest {
                 .flatMap(entry -> entry.entrySet().stream())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        Map.Entry::getValue
+                        Map.Entry::getValue,
+                        (existing, replacement) -> existing
                 ));
 
         assertEquals(pawn, pieces.get("pawn"));

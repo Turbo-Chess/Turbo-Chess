@@ -138,6 +138,11 @@ class ReplayTest {
             public void onEntityRemoved(final Point2D pos, final Entity entity) {
                 events.add("REMOVED: " + pos + " " + entity.getName());
             }
+
+            @Override
+            public void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
+                events.add("MOVED: " + from + " -> " + to + " " + entity.getName());
+            }
         });
 
         final GameHistory history = new GameHistory();

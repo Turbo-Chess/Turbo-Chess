@@ -4,6 +4,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
+import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 
 /**
  * placeholder.
@@ -72,4 +73,25 @@ public interface ChessMatch {
      * @param playerColor placeholder.
      */
     void updateGameState(GameState state, PlayerColor playerColor);
+
+    /**
+     * Sets the current turn number.
+     *
+     * @param turnNumber the turn number to set.
+     */
+    void setTurnNumber(int turnNumber);
+
+    /**
+     * Sets the current player color.
+     *
+     * @param playerColor the player color to set.
+     */
+    void setPlayerColor(PlayerColor playerColor);
+
+    /**
+     * Gets the game history.
+     *
+     * @return the game history.
+     */
+    GameHistory getGameHistory();
 }

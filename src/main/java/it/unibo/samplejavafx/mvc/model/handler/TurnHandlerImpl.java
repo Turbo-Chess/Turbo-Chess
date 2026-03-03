@@ -21,7 +21,7 @@ import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
 /**
  * Placeholder.
  */
-public class TurnHandlerImpl implements TurnHandler {
+public final class TurnHandlerImpl implements TurnHandler {
     private static final Point2D CASTLE_POS = new Point2D(2, 6);
     private static final Point2D ROOK_CASTLE_POS = new Point2D(3, 5);
     private static final Point2D ROOK_START_POS = new Point2D(0, 7);
@@ -132,6 +132,16 @@ public class TurnHandlerImpl implements TurnHandler {
         this.castlingOptions = AdvancedRules.castle(board, currentColor);
         unsetCurrentPiece();
         return true;
+    }
+
+    @Override
+    public void setTurn(final int turn) {
+        this.turn = turn;
+    }
+
+    @Override
+    public void setPlayerColor(final PlayerColor color) {
+        this.currentColor = color;
     }
 
     /**

@@ -1,6 +1,6 @@
 package it.unibo.samplejavafx;
 
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -22,7 +22,7 @@ public final class App extends Application {
         // Don't let the window be resized less than 500
         stage.setMinHeight(WINDOW_HEIGHT);
         stage.setMinWidth(WINDOW_WIDTH);
-        final GameCoordinatorImpl coordinator = new GameCoordinatorImpl(stage);
+        final GameCoordinator coordinator = new GameCoordinator(stage);
 
         // Load game resources
         coordinator.loadPieces();
@@ -40,4 +40,3 @@ public final class App extends Application {
         launch(args);
     }
 }
-

@@ -31,6 +31,15 @@ public final class MainMenuController {
     }
 
     /**
+     * Opens the load game menu.
+     *
+     * @param e the action event.
+     */
+    public void loadGame(final ActionEvent e) {
+        this.coordinator.initLoadGame();
+    }
+
+    /**
      * Opens the loadout menu.
      *
      * @param e the action event

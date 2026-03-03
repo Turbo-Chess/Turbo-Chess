@@ -3,7 +3,7 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
@@ -11,6 +11,8 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
+import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
@@ -28,8 +30,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.CHECK_KING;
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.HASEAT;
@@ -44,6 +51,7 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final double IMAGE_SCALE = 0.8;
+
     @FXML
     private GridPane chessboardGridPane;
 
@@ -62,9 +70,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @FXML
     private Button menuButton;
 
+    @FXML
+    private Button saveButton;
+
     // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
-    private final GameCoordinatorImpl coordinator;
+    private final GameCoordinator coordinator;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
     private Point2D lastStart;
     private Point2D lastEnd;
@@ -77,7 +88,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      */
     // This is intended to be a shared controller to make the MVC working.
     @SuppressFBWarnings("EI_EXPOSE_REP2")
-    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinatorImpl coordinator) {
+    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
         this.gameController = gameController;
         this.coordinator = coordinator;
     }
@@ -90,6 +101,36 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         initChessboardPane();
         menuButton.setText("Surrender");
         menuButton.setOnAction(e -> gameController.surrender());
+
+        saveButton.setText("Save Game");
+        saveButton.setOnAction(e -> {
+            Path fileToSave = coordinator.getCurrentSaveFile();
+
+            if (fileToSave == null) {
+                final Path saveDir = Paths.get(GameProperties.SAVES_FOLDER.getPath());
+                try {
+                    FileSystemUtils.ensureDirectoryExists(saveDir);
+                    final String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+                    final String uuid = UUID.randomUUID().toString().substring(0, 8);
+                    final String filename = "save_" + timestamp + "_" + uuid + ".json";
+                    fileToSave = saveDir.resolve(filename);
+                } catch (final IOException ex) {
+                    LOGGER.error("Failed to create save directory", ex);
+                    return;
+                }
+            }
+
+            try {
+                if (coordinator.saveGame(fileToSave)) {
+                    LOGGER.info("Game saved to: " + fileToSave.toAbsolutePath());
+                    coordinator.initMainMenu();
+                } else {
+                    LOGGER.error("Failed to save game to: " + fileToSave.toAbsolutePath() + " (unknown reason)");
+                }
+            } catch (final IOException ex) {
+                LOGGER.error("Failed to save game", ex);
+            }
+        });
     }
 
     /**
@@ -160,6 +201,17 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     }
 
     @Override
+    public void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
+        onEntityRemoved(from, entity);
+        onEntityAdded(to, entity);
+    }
+
+    @Override
+    public void onEntityMoved(final Point2D from, final Point2D to) {
+        highlightMovement(from, to);
+    }
+
+    @Override
      public void showMovementCells(final Set<Point2D> cellsToShow) {
         for (final var move : cellsToShow) {
             final Button btn = cells.get(move);
@@ -204,11 +256,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
             cells.get(lastEnd).pseudoClassStateChanged(HASMOVED, false);
             cells.get(lastEnd).pseudoClassStateChanged(HASEAT, false);
         }
-    }
-
-    @Override
-    public void onEntityMoved(final Point2D from, final Point2D to) {
-        highlightMovement(from, to);
     }
 
     @Override
