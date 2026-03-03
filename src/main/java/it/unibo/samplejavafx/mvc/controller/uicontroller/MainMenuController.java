@@ -1,8 +1,12 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 
 import javafx.event.ActionEvent;
+import javafx.stage.FileChooser;
+import javafx.scene.Node;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -28,6 +32,15 @@ public final class MainMenuController {
      */
     public void startNewGame(final ActionEvent e) throws IOException {
         this.coordinator.initGame();
+    }
+
+    /**
+     * Opens the load game menu.
+     *
+     * @param e the action event.
+     */
+    public void loadGame(final ActionEvent e) {
+        this.coordinator.initLoadGame();
     }
 
     /**
