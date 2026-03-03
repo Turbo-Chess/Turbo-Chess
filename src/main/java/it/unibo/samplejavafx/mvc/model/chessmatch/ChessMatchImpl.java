@@ -86,6 +86,11 @@ public final class ChessMatchImpl implements ChessMatch {
         this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
     }
 
+    /**
+     * Method that gets the position of the promoting pawn.
+     * 
+     * @return the {@link Point2D} position.
+     */
     public Point2D getPromotionPos() {
         return turnHandler.getCurrentPiecePos();
     }

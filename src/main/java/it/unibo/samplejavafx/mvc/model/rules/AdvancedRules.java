@@ -79,7 +79,7 @@ public final class AdvancedRules {
      * @param interposingPieces empty map that will contain the result of getInterposingPieces().
      * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
      */
-    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, GameState state,
+    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
                                     final Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
@@ -115,7 +115,7 @@ public final class AdvancedRules {
      * @param state the current state of the game
      * @return {@code true} if the current player has no legal moves left, {@code false} otherwise.
      */
-    public static boolean draw(final ChessBoard cb, final PlayerColor currentColor, GameState state) {
+    public static boolean draw(final ChessBoard cb, final PlayerColor currentColor, final GameState state) {
         final Set<Optional<Entity>> set = getPiecesOfColor(cb, currentColor);
         final List<Point2D> container = new LinkedList<>();
 
@@ -131,14 +131,12 @@ public final class AdvancedRules {
             }
         }
         if (container.isEmpty()) {
-            state = GameState.DRAW;
             return true;
         }
         final List<Entity> holder = cb.getBoard().inverse().keySet().stream()
                 .filter(e -> e.getType() != PieceType.POWERUP)
                 .toList();
         if (holder.size() == 2) {
-            state = GameState.DRAW;
             return true;
         }
         if (holder.size() == 3) {
@@ -146,7 +144,6 @@ public final class AdvancedRules {
                 .filter(e -> e.getType() != PieceType.KING)
                 .toList();
             if (list.size() == 1 && list.getFirst().getType() == PieceType.INFERIOR) {
-                state = GameState.DRAW;
                 return true;
             }
         }

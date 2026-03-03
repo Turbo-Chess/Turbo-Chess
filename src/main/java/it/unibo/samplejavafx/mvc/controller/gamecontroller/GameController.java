@@ -97,7 +97,7 @@ public interface GameController {
     /**
      * placeholder.
      *
-     * @param pieceId placeholder.
+     * @param pieceEntry placeholder.
      */
     void promote(LoadoutEntry pieceEntry);
 

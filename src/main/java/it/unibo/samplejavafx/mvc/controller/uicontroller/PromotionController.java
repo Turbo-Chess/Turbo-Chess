@@ -7,33 +7,54 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
-import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-public class PromotionController {
+/**
+ * Controller that handles the GUI for promotion.
+ */
+public final class PromotionController {
+    private static final int DEFAULT_VALUE = 0;
     @FXML
     private GridPane promotionPane;
     private final Loadout white;
     private final Loadout black;
     private final GameController controller;
-    private int x, y = 0;
+    private int x;
+    private int y;
 
+    /**
+     * Constructor for the Promotion GUI.
+     * 
+     * @param controller the {@link GameController} connected to this GUI.
+     */
     public PromotionController(final GameController controller) {
         this.controller = controller;
         this.white = controller.getWhiteLoadout();
         this.black = controller.getBlackLoadout();
+        this.x = DEFAULT_VALUE;
+        this.y = DEFAULT_VALUE;
     }
 
+    /**
+     * Method that initializes the GUI.
+     * 
+     * @param currentColor color of the player's promotion.
+     */
     public void init(final PlayerColor currentColor) {
-        populateScrollPanel(currentColor);
+        populateGridPane(currentColor);
     }
 
-    public void populateScrollPanel(final PlayerColor currentColor) {
-        Set<LoadoutEntry> set = new HashSet<>();
+    /**
+     * Method that populates the GridPane with buttons.
+     * 
+     * @param currentColor color of the player's promotion.
+     */
+    public void populateGridPane(final PlayerColor currentColor) {
+        final Set<LoadoutEntry> set = new HashSet<>();
         switch (currentColor) {
             case WHITE:
                 set.addAll(getPromotionPieces(white));
@@ -43,13 +64,13 @@ public class PromotionController {
                 break;
         }
 
-        for (LoadoutEntry entry : set) {
+        for (final LoadoutEntry entry : set) {
             final String imagePath = controller.getLoaderController().getEntityCache()
                                                .get(entry.packId()).get(entry.pieceId()).getImagePath();
             final String imageColorPath = controller.calculateImageColorPath(imagePath, currentColor, entry.pieceId());
             final Button btn = new Button("");
             final ImageView imageView = new ImageView(new Image(imageColorPath));
-            
+
             btn.setGraphic(imageView);
             btn.setOnAction(event -> {
                     isFinished(entry);
@@ -59,10 +80,16 @@ public class PromotionController {
         }
     }
 
-    private Set<LoadoutEntry> getPromotionPieces(final Loadout list) {
+    /**
+     * Private method that filters all possible pieces for promotion, ignoring pawns and king.
+     * 
+     * @param load the {@link Loadout} of the current player.
+     * @return a set containing {@link LoadoutEntry} of all possible pieces.
+     */
+    private Set<LoadoutEntry> getPromotionPieces(final Loadout load) {
         final Set<LoadoutEntry> set = new HashSet<>();
         final Set<String> ids = new HashSet<>();
-        for (var entry : list.getEntries()) {
+        for (final var entry : load.getEntries()) {
             if (!entry.pieceId().equals("pawn") && !entry.pieceId().equals("king")) {
                 if (!ids.contains(entry.pieceId())) {
                     ids.add(entry.pieceId());
@@ -73,11 +100,19 @@ public class PromotionController {
         return set;
     }
 
+    /**
+     * Private method thay is called whenever a piece is chosen, therefore closing the GUI and returning to the match.
+     * 
+     * @param entry the {@link LoadoutEntry} of the chosen piece.
+     */
     private void isFinished(final LoadoutEntry entry) {
         controller.promote(entry);
         controller.showGame();
     }
 
+    /**
+     * Private method to handle buttons' placement in the grid.
+     */
     private void increment() {
         x += 1;
         if (x == 3) {

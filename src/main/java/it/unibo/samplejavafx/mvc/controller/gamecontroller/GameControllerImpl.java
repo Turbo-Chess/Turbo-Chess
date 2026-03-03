@@ -20,7 +20,6 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
@@ -46,7 +45,8 @@ public final class GameControllerImpl implements GameController {
     @SuppressFBWarnings("EI_EXPOSE_REP")
 
     private final LoadoutManager loadoutManager = new LoadoutManager();
-    @Setter @Getter
+    @Setter
+    @Getter
     // The match is intended to be accessed from the game controller to give data to classes
     // that modifies it to play the game correctly.
     @SuppressFBWarnings("EI_EXPOSE_REP2")
@@ -69,6 +69,11 @@ public final class GameControllerImpl implements GameController {
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
 
+    /**
+     * placeholder.
+     * 
+     * @param gameCoordinator placeholder.
+     */
     public GameControllerImpl(final GameCoordinator gameCoordinator) {
         this.gameCoordinator = gameCoordinator;
     }
@@ -155,7 +160,7 @@ public final class GameControllerImpl implements GameController {
         final Point2D pos = match.getPromotionPos();
         match.getBoard().removeEntity(pos);
         boardFactory.createNewPiece(pos, match.getBoard(), 
-                (PieceDefinition)loaderController.getEntityCache().get(pieceEntry.packId()).get(pieceEntry.pieceId()),
+                (PieceDefinition) loaderController.getEntityCache().get(pieceEntry.packId()).get(pieceEntry.pieceId()),
                 AdvancedRules.swapColor(match.getCurrentPlayer()));
     }
 

@@ -293,7 +293,7 @@ public class TurnHandlerImpl implements TurnHandler {
 
     /**
      * placeholder.
-     *  
+     * 
      * @return placeholder.
      */
     public Point2D getCurrentPiecePos() {

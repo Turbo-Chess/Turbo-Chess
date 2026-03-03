@@ -23,13 +23,16 @@ public interface BoardFactory {
                                          Loadout blackLoadout,
                                          BoardObserver boardObserver);
 
-
     /**
      * placeholder.
      *
      * @param pos placeholder.
      * @param board placeholder.
      * @param pieceDefinition placeholder.
+     * @param color placeholder.
      */
-    void createNewPiece(Point2D pos, ChessBoard board, PieceDefinition pieceDefinition, PlayerColor color);
+    void createNewPiece(Point2D pos, 
+                        ChessBoard board, 
+                        PieceDefinition pieceDefinition, 
+                        PlayerColor color);
 }

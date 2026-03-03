@@ -5,7 +5,6 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
 import javafx.fxml.FXMLLoader;
@@ -182,7 +181,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
            final var cssLocation = getClass().getResource("/css/GameLayout.css");
             this.gameScene = new Scene(gameRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
-
 
            if (cssLocation != null) {
                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
