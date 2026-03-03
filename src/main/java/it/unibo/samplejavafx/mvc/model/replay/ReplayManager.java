@@ -36,7 +36,6 @@ public class ReplayManager {
      * @throws IOException if an I/O error occurs.
      */
     public boolean saveGame(final GameHistory history, final Path path) throws IOException {
-        // Ensure parent directories exist
         final Path parent = path.getParent();
         if (parent != null) {
             Files.createDirectories(parent);
