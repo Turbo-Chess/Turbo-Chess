@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImp
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
@@ -15,6 +16,8 @@ import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
+import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
+import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +30,7 @@ import java.util.Set;
  * placeholder.
  */
 @NoArgsConstructor(force = true)
+@SuppressFBWarnings("UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR")
 public final class GameControllerImpl implements GameController {
     private static final List<String> PATHS = List.of(
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
@@ -43,7 +47,6 @@ public final class GameControllerImpl implements GameController {
     @SuppressFBWarnings("EI_EXPOSE_REP")
 
     private final LoadoutManager loadoutManager = new LoadoutManager();
-    @Setter
     // The match is intended to be accessed from the game controller to give data to classes
     // that modifies it to play the game correctly.
     @SuppressFBWarnings("EI_EXPOSE_REP2")
@@ -63,6 +66,7 @@ public final class GameControllerImpl implements GameController {
 
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
+    private GameHistoryRecorder historyRecorder;
 
     /**
      * {@inheritDoc}
@@ -152,5 +156,29 @@ public final class GameControllerImpl implements GameController {
                 // Get the king of the opposite player
                 .filter(e -> e.getPlayerColor() != this.match.getCurrentPlayer())
                 .findFirst().get()); // Impossible to not have a king of the specified color
+    }
+
+    @Override
+    public void setMatch(final ChessMatch match) {
+        this.match = match;
+        this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber);
+        // Record initial state
+        this.match.getBoard().getBoard().forEach((pos, entity) -> {
+             this.historyRecorder.onEntityAdded(pos, entity);
+        });
+        this.match.getBoard().addObserver(this.historyRecorder);
+    }
+
+    @Override
+    public GameHistory getGameHistory() {
+        return this.historyRecorder != null ? this.historyRecorder.getHistory() : new GameHistory();
+    }
+
+    @Override
+    public ChessBoard getLiveBoard() {
+        if (this.match == null) {
+            throw new IllegalStateException("Match not initialized");
+        }
+        return this.match.getBoard();
     }
 }
