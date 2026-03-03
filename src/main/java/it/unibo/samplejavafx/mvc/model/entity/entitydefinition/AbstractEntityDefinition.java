@@ -66,6 +66,13 @@ public abstract class AbstractEntityDefinition {
     }
 
     /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    public abstract String getDescription();
+
+    /**
      * Placeholder.
      *
      * @param <X> Placeholder.

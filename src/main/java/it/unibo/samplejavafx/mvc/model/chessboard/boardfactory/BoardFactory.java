@@ -22,7 +22,6 @@ public interface BoardFactory {
                                          Loadout blackLoadout,
                                          BoardObserver boardObserver);
 
-
     /**
      * placeholder.
      *

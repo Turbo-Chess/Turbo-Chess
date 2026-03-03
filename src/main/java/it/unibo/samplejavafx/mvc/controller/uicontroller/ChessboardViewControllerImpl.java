@@ -14,7 +14,7 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import it.unibo.samplejavafx.mvc.model.replay.ChessFormatUtils;
+
 import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.SpawnEvent;
@@ -129,7 +129,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         menuButton.setText("Surrender");
         menuButton.setOnAction(e -> gameController.surrender());
 
-        // Replay initialization
         this.replayBoard = new ChessBoardImpl();
         this.replayController = new ReplayControllerImpl(this.replayBoard);
 
@@ -217,7 +216,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                 .filter(e -> e instanceof MoveEvent)
                 .map(e -> {
                     final MoveEvent me = (MoveEvent) e;
-                    return me.getTurn() + ". " + me.entityName() + " " + ChessFormatUtils.formatMoveDetailed(me);
+                    return me.getEventDescription();
                 })
                 .collect(Collectors.toList())
         ));
@@ -230,7 +229,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     public void initChessboardPane() {
         final int size = 8;
 
-        // Bind GridPane size to the minimum of StackPane width/height to keep it square
         final NumberBinding squareSize = Bindings.min(
             gameMainPane.widthProperty(), gameMainPane.heightProperty()
         );
@@ -450,8 +448,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         dialog.setTitle("Game Results");
         dialog.showAndWait();
     }
-
-    // Needed for refreshBoardView to work
+    
     private void setCellGraphic(final Point2D pos, final Entity entity) {
          final Button btn = cells.get(pos);
          if (btn != null) {
