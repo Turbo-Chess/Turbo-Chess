@@ -123,6 +123,12 @@ public class ChessBoardImpl implements ChessBoard {
         }
     }
 
+    private void notifyEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
+        for (final BoardObserver observer : observers) {
+            observer.onEntityMoved(from, to, entity);
+        }
+    }
+
     /**
      * Returns if the cell is free or not.
      * If the cell is free, there will be no entry associated with that key.
@@ -164,10 +170,10 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public void move(final Point2D start, final Point2D end) {
-        // The move function is called only on cells that are occupied (check is in the turn handler)
         final Entity temp = this.getEntity(start).get();
-        this.removeEntity(start);
-        this.setEntity(end, temp);
+        this.cells.remove(start);
+        this.cells.put(end, temp);
+        notifyEntityMoved(start, end, temp);
     }
 
     /**
@@ -178,10 +184,10 @@ public class ChessBoardImpl implements ChessBoard {
      */
     @Override
     public void eat(final Point2D start, final Point2D end) {
-        // The move function is called only on cells that are occupied (check is in the turn handler)
         final Entity temp = this.getEntity(start).get();
         this.removeEntity(end);
-        this.removeEntity(start);
-        this.setEntity(end, temp);
+        this.cells.remove(start);
+        this.cells.put(end, temp);
+        notifyEntityMoved(start, end, temp);
     }
 }

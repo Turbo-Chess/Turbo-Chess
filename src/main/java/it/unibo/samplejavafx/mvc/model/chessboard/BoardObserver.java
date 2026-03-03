@@ -22,4 +22,13 @@ public interface BoardObserver {
      * @param entity the entity removed.
      */
     void onEntityRemoved(Point2D pos, Entity entity);
+
+    /**
+     * Called when an entity is moved on the board.
+     *
+     * @param from the starting position.
+     * @param to the ending position.
+     * @param entity the entity moved.
+     */
+    void onEntityMoved(Point2D from, Point2D to, Entity entity);
 }
