@@ -1,4 +1,4 @@
-Apackage it.unibo.samplejavafx.mvc.controller.gamecontroller;
+package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
