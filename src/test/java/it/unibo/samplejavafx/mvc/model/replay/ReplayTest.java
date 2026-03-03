@@ -57,10 +57,11 @@ class ReplayTest {
         // Add move event
         history.addEvent(
             new MoveEvent(
-                1, 
+                1,
                 PIECE_NAME,
                 new Point2D(0, 0),
-                new Point2D(0, 1)
+                new Point2D(0, 1),
+                null
             )
         );
 
@@ -143,7 +144,7 @@ class ReplayTest {
         final GameHistory history = new GameHistory();
     
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0)));
-        history.addEvent(new MoveEvent(1, PIECE_NAME, new Point2D(0, 0), new Point2D(0, 1)));
+        history.addEvent(new MoveEvent(1, PIECE_NAME, new Point2D(0, 0), new Point2D(0, 1), null));
         
         controller.loadHistory(history);
         assertTrue(events.isEmpty());
@@ -153,12 +154,8 @@ class ReplayTest {
         assertEquals("ADDED: (0, 0) Pawn", events.get(0));
         events.clear();
 
-        // Step 1: Execute MoveEvent
+
         assertTrue(controller.next());
-        
-        // ReplayController logic: 
-        // removeEntity(from) -> REMOVED
-        // setEntity(to, entity) -> ADDED
         
         assertEquals(2, events.size());
         assertEquals("REMOVED: (0, 0) Pawn", events.get(0));
