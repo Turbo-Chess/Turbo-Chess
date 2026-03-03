@@ -2,6 +2,8 @@ package it.unibo.samplejavafx.mvc.model.loadout;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
+import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +21,8 @@ import java.util.stream.Stream;
 /**
  * Loadout manager.
  */
-public class LoadoutManager {
+public final class LoadoutManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadoutManager.class);
-    private static final String DEFAULT_APP_DIR = ".turbochess";
-    private static final String LOADOUTS_DIR = "loadouts";
     private static final String JSON_EXTENSION = ".json";
 
     private final Path loadoutDir;
@@ -32,16 +32,21 @@ public class LoadoutManager {
      * Creates a new LoadoutManager.
      */
     public LoadoutManager() {
-        this.loadoutDir = Paths.get(System.getProperty("user.home"), DEFAULT_APP_DIR, LOADOUTS_DIR);
+        this.loadoutDir = Paths.get(GameProperties.LOADOUTS_FOLDER.getPath());
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         createDirIfNotExists();
         ensureStandardLoadoutExists();
     }
 
     private void ensureStandardLoadoutExists() {
-        try {
-            final String standardId = "standard-chess-loadout";
+        final String standardId = "standard-chess-loadout";
+        final Path file = loadoutDir.resolve(standardId + JSON_EXTENSION);
 
+        if (Files.exists(file)) {
+            return;
+        }
+
+        try {
             final Loadout generated = StandardLoadoutFactory.createStandard();
 
             final Loadout standard = new Loadout(
@@ -59,12 +64,11 @@ public class LoadoutManager {
     }
 
     private void createDirIfNotExists() {
-        if (!Files.exists(loadoutDir)) {
-            try {
-                Files.createDirectories(loadoutDir);
-            } catch (final IOException e) {
-                LOGGER.error("Could not create loadout directory: {}", loadoutDir, e);
-            }
+        try {
+            FileSystemUtils.ensureDirectoryExists(loadoutDir);
+        } catch (final IOException e) {
+            // Already logged by FileSystemUtils, but we might want to suppress app crash
+            LOGGER.error("Could not ensure loadout directory exists: {}", loadoutDir);
         }
     }
 
@@ -81,7 +85,6 @@ public class LoadoutManager {
             LOGGER.info("Saved loadout: {}", loadout.getName());
         } catch (final IOException e) {
             LOGGER.error("Failed to save loadout: {}", loadout.getId(), e);
-            throw new IllegalStateException("Failed to save loadout", e);
         }
     }
 
