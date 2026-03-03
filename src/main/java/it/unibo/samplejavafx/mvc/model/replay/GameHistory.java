@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,23 @@ public class GameHistory {
      */
     public void addEvent(final GameEvent event) {
         events.add(event);
+    }
+
+    /**
+     * Removes the last event from the history if it exists.
+     */
+    public void removeLastEvent() {
+        if (!events.isEmpty()) {
+            events.remove(events.size() - 1);
+        }
+    }
+
+    /**
+     * @return the last event in the history or null if empty.
+     */
+    @JsonIgnore
+    public GameEvent getLastEvent() {
+        return events.isEmpty() ? null : events.get(events.size() - 1);
     }
 
     /**
