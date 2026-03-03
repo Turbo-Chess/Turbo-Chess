@@ -29,8 +29,8 @@ public class PromotionController {
         this.black = controller.getBlackLoadout();
     }
 
-    public void init(final PlayerColor curreColor) {
-        populateScrollPanel(curreColor);
+    public void init(final PlayerColor currentColor) {
+        populateScrollPanel(currentColor);
     }
 
     public void populateScrollPanel(final PlayerColor currentColor) {
