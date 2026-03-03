@@ -48,4 +48,12 @@ public interface ReplayController {
      * @return the total number of events in the history.
      */
     int getTotalEvents();
+
+    /**
+     * Sets the minimum index for replay navigation.
+     * Prevents going back before this index.
+     *
+     * @param minIndex the minimum index (must be >= 0).
+     */
+    void setMinIndex(int minIndex);
 }

@@ -18,7 +18,7 @@ class GameEventDescriptionTest {
         final String entityName = "Pawn";
         final Point2D from = new Point2D(0, 6);
         final Point2D to = new Point2D(0, 5);
-        final MoveEvent event = new MoveEvent(1, entityName, from, to);
+        final MoveEvent event = new MoveEvent(1, entityName, from, to, null);
 
         final String description = event.getEventDescription();
         assertTrue(description.startsWith("Move | Pawn | (0, 6)->(0, 5)"));

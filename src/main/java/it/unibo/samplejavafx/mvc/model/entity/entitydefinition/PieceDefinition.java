@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.entity.entitydefinition;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRules;
@@ -46,8 +47,19 @@ public class PieceDefinition extends AbstractEntityDefinition {
 
     /**
      * Placeholder.
+     *
+     * @return Placeholder.
+     */
+    @Override
+    public String getDescription() {
+        return "Piece: " + getName() + " (Weight: " + weight + ")";
+    }
+
+    /**
+     * Placeholder.
      */
     @JsonPOJOBuilder(withPrefix = "")
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Builder extends AbstractEntityDefinition.AbstractBuilder<PieceDefinition.Builder> {
         private int weight;
         @JsonDeserialize(contentAs = MoveRulesImpl.class)

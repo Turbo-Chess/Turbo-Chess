@@ -2,12 +2,14 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 
 import java.util.List;
 
@@ -113,4 +115,14 @@ public interface GameController {
      * @return placeholder.
      */
     BoardFactory getBoardFactory();
+
+    /**
+     * @return the game history.
+     */
+    GameHistory getGameHistory();
+
+    /**
+     * @return the live chessboard.
+     */
+    ChessBoard getLiveBoard();
 }
