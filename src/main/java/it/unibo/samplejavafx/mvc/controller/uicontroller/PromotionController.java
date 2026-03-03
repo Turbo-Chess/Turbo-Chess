@@ -20,7 +20,6 @@ public class PromotionController {
     private final Loadout white;
     private final Loadout black;
     private final GameController controller;
-    private LoadoutEntry output;
     private int x, y = 0;
 
     public PromotionController(final GameController controller) {
@@ -53,7 +52,7 @@ public class PromotionController {
             
             btn.setGraphic(imageView);
             btn.setOnAction(event -> {
-                    output = entry;
+                    isFinished(entry);
                 });
             maionese.add(btn, x, y);
             increment();
@@ -70,8 +69,8 @@ public class PromotionController {
         return set;
     }
 
-    private void isFinished() {
-        controller.promote(output);
+    private void isFinished(final LoadoutEntry entry) {
+        controller.promote(entry);
     }
 
     private void increment() {
