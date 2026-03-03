@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -30,5 +31,5 @@ public interface BoardFactory {
      * @param board placeholder.
      * @param pieceDefinition placeholder.
      */
-    void createNewPiece(Point2D pos, ChessBoard board, PieceDefinition pieceDefinition);
+    void createNewPiece(Point2D pos, ChessBoard board, PieceDefinition pieceDefinition, PlayerColor color);
 }

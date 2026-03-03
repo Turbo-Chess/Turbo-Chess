@@ -75,6 +75,7 @@ public class PromotionController {
 
     private void isFinished(final LoadoutEntry entry) {
         controller.promote(entry);
+        controller.showGame();
     }
 
     private void increment() {

@@ -128,12 +128,13 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             loader.setControllerFactory(c -> new PromotionController(this.gameController));
             final Parent root = loader.load();
             final PromotionController prom = loader.getController();
-            prom.init(PlayerColor.WHITE);
-            this.gameScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            prom.init(gameController.getMatch().getCurrentPlayer());
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
             /*if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
             }*/
+            stage.setScene(scene);
             stage.show();
         } catch (final IOException e) {
             System.out.println("Maionese");

@@ -32,6 +32,13 @@ public interface GameController {
 
     /**
      * placeholder.
+     * 
+     * @return placeholder.
+     */
+    ChessMatch getMatch();
+
+    /**
+     * placeholder.
      *
      * @return placeholder.
      */
