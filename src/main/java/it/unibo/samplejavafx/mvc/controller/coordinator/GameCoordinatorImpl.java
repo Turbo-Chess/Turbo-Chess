@@ -5,7 +5,9 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -114,6 +116,30 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
+     * placeholder.
+     */
+    @Override
+    public void initPromotion() {
+        try {
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
+            loader.setControllerFactory(c -> new PromotionController(this.gameController));
+            final Parent root = loader.load();
+            final PromotionController prom = loader.getController();
+            prom.init(PlayerColor.WHITE);
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+            stage.setTitle("TurboChess - Game");
+            stage.setScene(scene);
+            /*if (cssLocation != null) {
+                scene.getStylesheets().add(cssLocation.toExternalForm());
+            }*/
+            stage.show();
+        } catch (final IOException e) {
+            System.out.println("Maionese");
+        }
+    }
+
+    /**
      * Quits the application.
      */
     @Override
@@ -123,7 +149,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * placeholder.
-     *
      */
     @Override
     public void initGame() throws IOException {

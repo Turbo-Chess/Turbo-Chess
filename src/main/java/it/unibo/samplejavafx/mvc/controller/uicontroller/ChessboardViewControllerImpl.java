@@ -15,6 +15,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
@@ -245,9 +247,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
             case DRAW -> this.showEndingDialog("It's a draw!", "Neither player won", Optional.empty());
 
-            /*case PROMOTION -> {
-                // Finestra promozione
-            }*/
+            case PROMOTION -> {
+                coordinator.initPromotion();
+            }
         }
     }
 

@@ -34,6 +34,7 @@ public class TurnHandlerImpl implements TurnHandler {
     private int turn;
     private Optional<Piece> currentPiece = Optional.empty();
     private List<Point2D> pieceMoves;
+    private Optional<Piece> promotionHolder = Optional.empty();
 
     /**
      * placeholder.
@@ -180,6 +181,7 @@ public class TurnHandlerImpl implements TurnHandler {
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
             final var newPiece = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(newPiece);
+            this.promotionHolder = Optional.of(newPiece);
             this.pieceMoves = newPiece.getValidMoves(pos, board);
             return this.pieceMoves;
         }
@@ -290,7 +292,7 @@ public class TurnHandlerImpl implements TurnHandler {
      * @return placeholder.
      */
     public Point2D getCurrentPiecePos() {
-        return board.getPosByEntity(currentPiece.get());
+        return board.getPosByEntity(promotionHolder.get());
     }
 
     /**

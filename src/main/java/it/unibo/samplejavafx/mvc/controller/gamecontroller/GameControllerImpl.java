@@ -146,7 +146,7 @@ public final class GameControllerImpl implements GameController {
     @Override
     public void promote(final LoadoutEntry pieceEntry) {
         final Point2D pos = match.getPromotionPos();
-        match.getBoard().getBoard().remove(pos);
+        match.getBoard().removeEntity(pos);
         boardFactory.createNewPiece(pos, match.getBoard(), (PieceDefinition)loaderController
                                     .getEntityCache().get(pieceEntry.packId()).get(pieceEntry.pieceId()));
     }

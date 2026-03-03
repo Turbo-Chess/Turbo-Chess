@@ -23,6 +23,11 @@ public interface GameCoordinator {
     void initLoadout();
 
     /**
+     * placeholder.
+     */
+    void initPromotion();
+
+    /**
      * Quits the application.
      */
     void quit();
