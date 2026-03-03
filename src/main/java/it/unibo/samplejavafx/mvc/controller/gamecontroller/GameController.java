@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx.mvc.controller.gamecontroller;
+Apackage it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
@@ -89,7 +89,7 @@ public interface GameController {
 
     /**
      * placeholder.
-     * 
+     *
      * @param pieceId placeholder.
      */
     void promote(LoadoutEntry pieceEntry);
@@ -121,4 +121,9 @@ public interface GameController {
      * @return placeholder.
      */
     BoardFactory getBoardFactory();
+
+    /**
+     * placeholder.
+     */
+    void showGame();
 }

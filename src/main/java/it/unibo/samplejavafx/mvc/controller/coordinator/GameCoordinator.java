@@ -1,7 +1,5 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
-import java.io.IOException;
-
 /**
  * Interface for the Game Coordinator.
  */
@@ -34,8 +32,11 @@ public interface GameCoordinator {
 
     /**
      * Initializes the game.
-     *
-     * @throws IOException if the FXML file cannot be loaded.
      */
-    void initGame() throws IOException;
+    void initGame();
+
+    /**
+     * placeholder.
+     */
+    void showGame();
 }

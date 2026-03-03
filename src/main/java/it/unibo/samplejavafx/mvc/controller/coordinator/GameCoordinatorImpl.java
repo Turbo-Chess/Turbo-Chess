@@ -28,7 +28,10 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinatorImpl.class);
 
     private final Stage stage;
-    private final GameController gameController = new GameControllerImpl();
+    private Parent gameRoot;
+    private Scene gameScene;
+    private ChessboardViewControllerImpl chessboardViewController;
+    private final GameController gameController = new GameControllerImpl(this);
 
     /**
      * placeholder.
@@ -126,10 +129,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             final Parent root = loader.load();
             final PromotionController prom = loader.getController();
             prom.init(PlayerColor.WHITE);
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            this.gameScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-            stage.setTitle("TurboChess - Game");
-            stage.setScene(scene);
             /*if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
             }*/
@@ -147,36 +148,59 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         stage.close();
     }
 
+
     /**
      * placeholder.
      */
     @Override
-    public void initGame() throws IOException {
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
-        loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
-        final Parent root = loader.load();
-        final ChessboardViewControllerImpl viewController = loader.getController();
-        // TODO: remove reference of the match in the view controller
+    public void initGame() {
+        loadGameUI();
+        createNewMatch();
+        showGame();
+    }
 
+    @Override
+    public void showGame() {
+        stage.setTitle("TurboChess - Game");
+        stage.setScene(this.gameScene);
+        stage.show();
+    }
+
+    private void loadGameUI() {
+        if (gameRoot != null) {
+            return;
+        }
+
+       try {
+           final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
+           loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
+
+           this.gameRoot = loader.load();
+           this.chessboardViewController = loader.getController();
+
+           final var cssLocation = getClass().getResource("/css/GameLayout.css");
+            this.gameScene = new Scene(gameRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+
+           if (cssLocation != null) {
+               this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
+           }
+       } catch (final IOException e) {
+           System.out.println("Maionese");
+       }
+
+    }
+
+    private void createNewMatch() {
         final ChessMatch match = new ChessMatchImpl(
                 gameController.getBoardFactory().createPopulatedChessboard(
                         gameController.getWhiteLoadout(),
                         gameController.getBlackLoadout(),
-                        viewController
+                        this.chessboardViewController
                 ));
         this.gameController.setMatch(match);
-        match.addObserver(viewController);
-        gameController.setChessboardViewController(viewController);
+        match.addObserver(this.chessboardViewController);
+        gameController.setChessboardViewController(this.chessboardViewController);
         gameController.getLoaderController().load();
-
-        final var cssLocation = getClass().getResource("/css/GameLayout.css");
-        final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        stage.setTitle("TurboChess - Game");
-        stage.setScene(scene);
-        if (cssLocation != null) {
-            scene.getStylesheets().add(cssLocation.toExternalForm());
-        }
-        stage.show();
     }
 }

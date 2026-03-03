@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
@@ -28,7 +29,6 @@ import java.util.Set;
 /**
  * placeholder.
  */
-@NoArgsConstructor(force = true)
 public final class GameControllerImpl implements GameController {
     private static final List<String> PATHS = List.of(
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
@@ -63,8 +63,14 @@ public final class GameControllerImpl implements GameController {
     @SuppressFBWarnings("EI_EXPOSE_REP")
     private final BoardFactory boardFactory = new BoardFactoryImpl(loaderController);
 
+    private final GameCoordinator gameCoordinator;
+
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
+
+    public GameControllerImpl(final GameCoordinator gameCoordinator) {
+        this.gameCoordinator = gameCoordinator;
+    }
 
     /**
      * {@inheritDoc}
@@ -149,6 +155,11 @@ public final class GameControllerImpl implements GameController {
         match.getBoard().removeEntity(pos);
         boardFactory.createNewPiece(pos, match.getBoard(), (PieceDefinition)loaderController
                                     .getEntityCache().get(pieceEntry.packId()).get(pieceEntry.pieceId()));
+    }
+
+    @Override
+    public void showGame() {
+        this.gameCoordinator.showGame();
     }
 
     // TODO: remove that method to use the static inside advanced rules
