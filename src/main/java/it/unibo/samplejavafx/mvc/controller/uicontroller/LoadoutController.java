@@ -1,20 +1,20 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import javafx.event.ActionEvent;
 
 /**
  * Controller for the Loadout scene.
  */
 public final class LoadoutController {
-    private final GameCoordinator coordinator;
+    private final GameCoordinatorImpl coordinator;
 
     /**
      * Constructor.
      *
      * @param coordinator the game coordinator
      */
-    public LoadoutController(final GameCoordinator coordinator) {
+    public LoadoutController(final GameCoordinatorImpl coordinator) {
         this.coordinator = coordinator;
     }
 
