@@ -225,9 +225,8 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         refreshBoardView(gameController.getLiveBoard());
     }
 
-    // We will implement this after updating GameController interface
-    private void refreshBoardView(final ChessBoard board) {
-        // Clear all buttons
+    @Override
+    public void refreshBoardView(final ChessBoard board) {
         cells.values().forEach(btn -> {
             btn.setGraphic(null);
             btn.setText("");

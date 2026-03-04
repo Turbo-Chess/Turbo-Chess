@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.Set;
@@ -8,6 +9,13 @@ import java.util.Set;
  * placeholder.
  */
 public interface ChessboardViewController {
+    /**
+     * placeholder.
+     *
+     * @param board placeholder.
+     */
+    void refreshBoardView(ChessBoard board);
+
     /**
      * placeholder.
      *

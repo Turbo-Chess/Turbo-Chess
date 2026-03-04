@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -33,11 +32,9 @@ public class BoardFactoryImpl implements BoardFactory {
     @Override
     public ChessBoard createPopulatedChessboard(
         final Loadout whiteLoadout,
-        final Loadout blackLoadout,
-        final BoardObserver boardObserver
+        final Loadout blackLoadout
     ) {
         final ChessBoard board = new ChessBoardImpl();
-        board.addObserver(boardObserver);
 
         whiteLoadout.getEntries().forEach(wEntry -> addPieceToBoard(board, wEntry, PlayerColor.WHITE));
         blackLoadout.getEntries().forEach(bEntry -> addPieceToBoard(board, bEntry, PlayerColor.BLACK));

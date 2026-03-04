@@ -219,15 +219,13 @@ public final class GameCoordinator {
 
         if (history == null) {
             try {
-                // TODO: remove reference of the match in the view controller
                 final String loadoutId = "standard-chess-loadout";
                 final Loadout whiteLoadout = gameController.getLoadoutManager().load(loadoutId).get();
                 final Loadout blackLoadout = gameController.getLoadoutManager().load(loadoutId).get().mirrored();
                 final ChessMatch newMatch = new ChessMatchImpl(
                         new BoardFactoryImpl(gameController.getLoaderController()).createPopulatedChessboard(
                                 whiteLoadout,
-                                blackLoadout,
-                                viewController
+                                blackLoadout
                         ));
                 newMatch.getGameHistory().setWhiteLoadout(whiteLoadout);
                 newMatch.getGameHistory().setBlackLoadout(blackLoadout);
@@ -241,8 +239,7 @@ public final class GameCoordinator {
                 final ChessMatch newMatch = new ChessMatchImpl(
                         new BoardFactoryImpl(gameController.getLoaderController()).createPopulatedChessboard(
                                 history.getWhiteLoadout(),
-                                history.getBlackLoadout(),
-                                viewController
+                                history.getBlackLoadout()
                         ));
                 newMatch.getGameHistory().setWhiteLoadout(history.getWhiteLoadout());
                 newMatch.getGameHistory().setBlackLoadout(history.getBlackLoadout());
@@ -257,8 +254,7 @@ public final class GameCoordinator {
                     final ChessMatch newMatch = new ChessMatchImpl(
                             new BoardFactoryImpl(gameController.getLoaderController()).createPopulatedChessboard(
                                     whiteLoadout,
-                                    blackLoadout,
-                                    viewController
+                                    blackLoadout
                             ));
                     this.match = newMatch;
                     this.gameController.setMatch(newMatch);
@@ -271,6 +267,9 @@ public final class GameCoordinator {
 
         match.addObserver(viewController);
         gameController.setChessboardViewController(viewController);
+
+        match.getBoard().addObserver(viewController);
+        viewController.refreshBoardView(match.getBoard());
 
         final var cssLocation = getClass().getResource("/css/GameLayout.css");
         final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
