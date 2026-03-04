@@ -135,11 +135,7 @@ public class ChessBoardImpl implements ChessBoard {
         }
     }
 
-    private void notifyEntityEaten(final Point2D from, final Point2D to) {
-        for (final BoardObserver observer : observers) {
-            observer.onEntityEaten(from, to);
-        }
-    }
+
 
     /**
      * Returns if the cell is free or not.
@@ -208,6 +204,6 @@ public class ChessBoardImpl implements ChessBoard {
         this.cells.remove(start);
         this.cells.put(end, temp);
         notifyEntityMoved(start, end, temp);
-        notifyEntityEaten(start, end);
+        notifyEntityMoved(start, end);
     }
 }

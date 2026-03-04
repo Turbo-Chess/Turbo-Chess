@@ -34,6 +34,11 @@ public record MoveEvent(
     @Override
     public String getEventDescription() {
         return String.format("Move | %s %s | %s->%s | Capture: %s", 
-            entityColor != null ? entityColor : "", entityName, from, to, capturedEntity != null ? capturedEntity.getName() : "None");
+            entityColor,
+            entityName, 
+            from,
+            to,
+            capturedEntity != null ? capturedEntity.getName() : "None"
+        );
     }
 }

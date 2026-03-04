@@ -18,9 +18,11 @@ public interface BoardFactory {
      * @param boardObserver plcaholder.
      * @return placeholder.
      */
-    ChessBoard createPopulatedChessboard(Loadout whiteLoadout,
-                                         Loadout blackLoadout,
-                                         BoardObserver boardObserver);
+    ChessBoard createPopulatedChessboard(
+        Loadout whiteLoadout,
+        Loadout blackLoadout,
+        BoardObserver boardObserver
+    );
 
     /**
      * placeholder.

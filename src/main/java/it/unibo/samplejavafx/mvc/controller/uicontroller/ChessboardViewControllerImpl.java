@@ -8,6 +8,7 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
@@ -225,7 +226,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     }
 
     // We will implement this after updating GameController interface
-    private void refreshBoardView(final it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard board) {
+    private void refreshBoardView(final ChessBoard board) {
         // Clear all buttons
         cells.values().forEach(btn -> {
             btn.setGraphic(null);
@@ -427,14 +428,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
             cells.get(lastEnd).pseudoClassStateChanged(HASMOVED, false);
             cells.get(lastEnd).pseudoClassStateChanged(HASEAT, false);
         }
-    }
-
-    @Override
-    public void onEntityEaten(final Point2D from, final Point2D to) {
-        if (isReplayMode) {
-            return;
-        }
-        highlightEat(from, to);
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,22 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class GameHistoryRecorderTest {
 
     private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath().replace("file:", "");
-
-    private Entity createTestPiece(String name, PlayerColor color) {
-        return new Piece.Builder()
-            .setHasMoved(false)
-            .entityDefinition(new PieceDefinition.Builder()
-                .name(name)
-                .id(name.toLowerCase())
-                .imagePath(IMAGE_PATH)
-                .weight(1)
-                .pieceType(PieceType.PAWN)
-                .moveRules(Collections.emptyList())
-                .build())
-            .gameId(0)
-            .playerColor(color)
-            .build();
-    }
 
     private static final Piece TEST_PIECE = new Piece.Builder()
         .setHasMoved(false)
@@ -56,6 +41,22 @@ class GameHistoryRecorderTest {
         .gameId(0)
         .playerColor(PlayerColor.WHITE)
         .build();
+    
+    private Entity createTestPiece(final String name, final PlayerColor color) {
+        return new Piece.Builder()
+            .setHasMoved(false)
+            .entityDefinition(new PieceDefinition.Builder()
+                .name(name)
+                .id(name.toLowerCase(Locale.ROOT))
+                .imagePath(IMAGE_PATH)
+                .weight(1)
+                .pieceType(PieceType.PAWN)
+                .moveRules(Collections.emptyList())
+                .build())
+            .gameId(0)
+            .playerColor(color)
+            .build();
+    }
 
     @Test
     void testMoveRecording() {

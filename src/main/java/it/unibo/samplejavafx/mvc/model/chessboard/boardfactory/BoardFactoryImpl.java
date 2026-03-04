@@ -31,9 +31,11 @@ public class BoardFactoryImpl implements BoardFactory {
      * {@inheritDoc}
      */
     @Override
-    public ChessBoard createPopulatedChessboard(final Loadout whiteLoadout,
-                                                final Loadout blackLoadout,
-                                                final BoardObserver boardObserver) {
+    public ChessBoard createPopulatedChessboard(
+        final Loadout whiteLoadout,
+        final Loadout blackLoadout,
+        final BoardObserver boardObserver
+    ) {
         final ChessBoard board = new ChessBoardImpl();
         board.addObserver(boardObserver);
 
@@ -44,8 +46,11 @@ public class BoardFactoryImpl implements BoardFactory {
 
     private void addPieceToBoard(final ChessBoard board, final LoadoutEntry entry, final PlayerColor color) {
         board.setEntity(entry.position(), new Piece.Builder()
-                .entityDefinition((PieceDefinition) loaderController.getEntityCache()
-                        .get(entry.packId()).get(entry.pieceId()))
+                .entityDefinition(
+                    (PieceDefinition) loaderController.getEntityCache()
+                        .get(entry.packId())
+                        .get(entry.pieceId())
+                )
                 .gameId(gameId)
                 .playerColor(color)
                 .setHasMoved(false)

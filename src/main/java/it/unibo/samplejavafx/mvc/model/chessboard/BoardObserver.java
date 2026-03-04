@@ -41,12 +41,4 @@ public interface BoardObserver {
      */
     void onEntityMoved(Point2D from, Point2D to, Entity entity);
 
-    /**
-     * Called when an entity captures another entity (eat).
-     *
-     * @param from the starting position of the capturing entity.
-     * @param to the position where the capture occurs.
-     */
-    default void onEntityEaten(final Point2D from, final Point2D to) {
-    }
 }

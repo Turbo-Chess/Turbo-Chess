@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.controller.coordinator;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
@@ -11,6 +12,10 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -63,7 +68,7 @@ public final class GameCoordinator {
     public void initMainMenu() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
-            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController(this));
+            loader.setControllerFactory(c -> new MainMenuController(this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -84,7 +89,7 @@ public final class GameCoordinator {
     public void initSettings() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Settings.fxml"));
-            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController(this));
+            loader.setControllerFactory(c -> new SettingsController(this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -105,7 +110,7 @@ public final class GameCoordinator {
     public void initLoadout() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Loadout.fxml"));
-            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutController(this));
+            loader.setControllerFactory(c -> new LoadoutController(this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -126,7 +131,7 @@ public final class GameCoordinator {
     public void initLoadGame() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadGameView.fxml"));
-            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController(this));
+            loader.setControllerFactory(c -> new LoadGameController(this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -279,7 +284,7 @@ public final class GameCoordinator {
     }
 
     private void restoreGame(final GameHistory history) {
-        final var replayController = new it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl(match.getBoard());
+        final var replayController = new ReplayControllerImpl(match.getBoard());
         replayController.loadHistory(history);
         replayController.jumpToEnd();
 
