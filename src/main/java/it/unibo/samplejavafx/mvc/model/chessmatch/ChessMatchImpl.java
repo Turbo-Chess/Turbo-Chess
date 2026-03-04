@@ -9,6 +9,7 @@ import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerImpl;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -116,4 +117,10 @@ public final class ChessMatchImpl implements ChessMatch {
         this.gameState = state;
         this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
     }
+
+    public Point2D getPromotionPos() {
+        return turnHandler.getCurrentPiecePos();
+    }
+    // TODO: aggiungere per il timer
+
 }

@@ -7,8 +7,6 @@ import javafx.scene.control.Label;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * placeholder.
  */
@@ -45,12 +43,8 @@ public final class GameOverController {
     @FXML
     public void initialize() {
         this.restartButton.setOnAction(e -> {
-            try {
-                this.restartButton.getScene().getWindow().hide();
-                this.gameCoordinator.initGame();
-            } catch (final IOException ex) {
-                LOGGER.error("Failed to restart game", ex);
-            }
+            this.restartButton.getScene().getWindow().hide();
+            this.gameCoordinator.initGame();
         });
 
         this.mainMenuButton.setOnAction(e -> {

@@ -24,6 +24,8 @@ import javafx.beans.binding.NumberBinding;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -468,6 +470,10 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
             case CHECKMATE -> this.showEndingDialog("Checkmate!", " has won!", Optional.of(playerColor));
 
             case DRAW -> this.showEndingDialog("It's a draw!", "Neither player won", Optional.empty());
+
+            case PROMOTION -> {
+                coordinator.initPromotion();
+            }
         }
     }
 

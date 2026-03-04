@@ -5,6 +5,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
  * placeholder.
@@ -94,4 +95,11 @@ public interface ChessMatch {
      * @return the game history.
      */
     GameHistory getGameHistory();
+
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    Point2D getPromotionPos();
 }

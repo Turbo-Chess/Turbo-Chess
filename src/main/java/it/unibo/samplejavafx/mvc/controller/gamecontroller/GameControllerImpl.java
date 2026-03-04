@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
@@ -12,7 +13,9 @@ import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -29,8 +32,6 @@ import java.util.Set;
 /**
  * placeholder.
  */
-@NoArgsConstructor(force = true)
-@SuppressFBWarnings("UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR")
 public final class GameControllerImpl implements GameController {
     private static final List<String> PATHS = List.of(
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
@@ -64,6 +65,8 @@ public final class GameControllerImpl implements GameController {
     @SuppressFBWarnings("EI_EXPOSE_REP")
     private final BoardFactory boardFactory = new BoardFactoryImpl(loaderController);
 
+    private final GameCoordinator gameCoordinator;
+
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
     private GameHistoryRecorder historyRecorder;
@@ -75,6 +78,10 @@ public final class GameControllerImpl implements GameController {
      */
     public GameControllerImpl(final ChessMatch match) {
         this.match = match;
+    }
+
+    public GameControllerImpl(final GameCoordinator gameCoordinator) {
+        this.gameCoordinator = gameCoordinator;
     }
 
     /**
@@ -152,6 +159,19 @@ public final class GameControllerImpl implements GameController {
         if (this.match != null) {
             match.getTurnHandler().surrender();
         }
+    }
+
+    @Override
+    public void promote(final LoadoutEntry pieceEntry) {
+        final Point2D pos = match.getPromotionPos();
+        match.getBoard().removeEntity(pos);
+        boardFactory.createNewPiece(pos, match.getBoard(), (PieceDefinition)loaderController
+                                    .getEntityCache().get(pieceEntry.packId()).get(pieceEntry.pieceId()));
+    }
+
+    @Override
+    public void showGame() {
+        this.gameCoordinator.showGame();
     }
 
     // TODO: remove that method to use the static inside advanced rules

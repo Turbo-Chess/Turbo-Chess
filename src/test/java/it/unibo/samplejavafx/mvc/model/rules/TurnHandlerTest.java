@@ -31,6 +31,7 @@ class TurnHandlerTest {
         match = new ChessMatchImpl(new ChessBoardImpl());
         handler = match.getTurnHandler();
         board = match.getBoard();
+        match = new ChessMatchImpl(board);
         idCount = 0;
     }
 

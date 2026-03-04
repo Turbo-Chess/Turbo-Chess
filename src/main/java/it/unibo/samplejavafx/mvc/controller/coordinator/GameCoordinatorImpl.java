@@ -171,23 +171,23 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             return;
         }
 
-        try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
-            loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
+       try {
+           final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
+           loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
 
-            this.gameRoot = loader.load();
-            this.chessboardViewController = loader.getController();
+           this.gameRoot = loader.load();
+           this.chessboardViewController = loader.getController();
 
-            final var cssLocation = getClass().getResource("/css/GameLayout.css");
+           final var cssLocation = getClass().getResource("/css/GameLayout.css");
             this.gameScene = new Scene(gameRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 
-            if (cssLocation != null) {
-                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
-            }
-        } catch (final IOException e) {
-            System.out.println("Maionese");
-        }
+           if (cssLocation != null) {
+               this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
+           }
+       } catch (final IOException e) {
+           System.out.println("Maionese");
+       }
 
     }
 
@@ -196,7 +196,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 gameController.getBoardFactory().createPopulatedChessboard(
                         gameController.getWhiteLoadout(),
                         gameController.getBlackLoadout(),
-                        this.chessboardViewController
                 ));
         this.gameController.setMatch(match);
         match.addObserver(this.chessboardViewController);

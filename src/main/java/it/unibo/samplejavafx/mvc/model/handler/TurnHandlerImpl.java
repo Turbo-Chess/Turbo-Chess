@@ -24,7 +24,7 @@ import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
 public final class TurnHandlerImpl implements TurnHandler {
     private static final Point2D CASTLE_POS = new Point2D(2, 6);
     private static final Point2D ROOK_CASTLE_POS = new Point2D(3, 5);
-    private static final Point2D ROOK_START_POS = new Point2D(0, 7);
+    private static final Point2D BOUNDARIES = new Point2D(0, 7);
     private final ChessMatch match;
     private final ChessBoard board;
     private final Map<Piece, List<Point2D>> interposingPieces;
@@ -34,6 +34,7 @@ public final class TurnHandlerImpl implements TurnHandler {
     private int turn;
     private Optional<Piece> currentPiece = Optional.empty();
     private List<Point2D> pieceMoves;
+    private Optional<Piece> promotionHolder = Optional.empty();
 
     /**
      * placeholder.
@@ -91,13 +92,13 @@ public final class TurnHandlerImpl implements TurnHandler {
                     if (target.equals(new Point2D(CASTLE_POS.x(), board.getPosByEntity(currentPiece.get()).y()))
                             && pieceMoves.contains(target)) {
                         board.move(board.getPosByEntity(currentPiece.get()), target);
-                        board.move(new Point2D(ROOK_START_POS.x(), target.y()), new Point2D(ROOK_CASTLE_POS.x(), target.y()));
+                        board.move(new Point2D(BOUNDARIES.x(), target.y()), new Point2D(ROOK_CASTLE_POS.x(), target.y()));
                         break;
                     }
                     if (target.equals(new Point2D(CASTLE_POS.y(), board.getPosByEntity(currentPiece.get()).y()))
                             && pieceMoves.contains(target)) {
                         board.move(board.getPosByEntity(currentPiece.get()), target);
-                        board.move(new Point2D(ROOK_START_POS.y(), target.y()), new Point2D(ROOK_CASTLE_POS.y(), target.y()));
+                        board.move(new Point2D(BOUNDARIES.y(), target.y()), new Point2D(ROOK_CASTLE_POS.y(), target.y()));
                         break;
                     }
                 }
@@ -109,6 +110,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             default:
                 // the move wasn't safe, so we cancel the move and go back
         }
+
         this.interposingPieces.clear();
         this.state = AdvancedRules.check(board, AdvancedRules.swapColor(currentColor));
 
@@ -122,11 +124,19 @@ public final class TurnHandlerImpl implements TurnHandler {
             return false;
         }
 
+        switch (currentColor) {
+            case WHITE:
+                promotion(BOUNDARIES.x());
+            case BLACK:
+                promotion(BOUNDARIES.y());
+        }
+
         this.turn += 1;
         this.currentColor = AdvancedRules.swapColor(currentColor);
         updateStats();
 
         if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor), state)) {
+            updateStats();
             return false;
         }
         this.castlingOptions = AdvancedRules.castle(board, currentColor);
@@ -181,6 +191,7 @@ public final class TurnHandlerImpl implements TurnHandler {
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
             final var newPiece = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(newPiece);
+            this.promotionHolder = Optional.of(newPiece);
             this.pieceMoves = newPiece.getValidMoves(pos, board);
             return this.pieceMoves;
         }
@@ -260,10 +271,38 @@ public final class TurnHandlerImpl implements TurnHandler {
 
     /**
      * placeholder.
+     * 
+     * @param height placeholder.
+     * @return placeholder.
+     */
+    private boolean promotion(final int height) {
+        final List<Point2D> pawn = board.getBoard().keySet().stream()
+                .filter(pos -> pos.y() == height)
+                .filter(pos -> board.getEntity(pos).get().getType() == PieceType.PAWN)
+                .toList();
+        if (!pawn.isEmpty()) {
+            currentPiece = Optional.of((Piece) board.getEntity(pawn.getFirst()).get());
+            state = GameState.PROMOTION;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * placeholder.
      */
     private void unsetCurrentPiece() {
         this.currentPiece = Optional.empty();
         this.pieceMoves = Collections.emptyList();
+    }
+
+    /**
+     * placeholder.
+     *  
+     * @return placeholder.
+     */
+    public Point2D getCurrentPiecePos() {
+        return board.getPosByEntity(promotionHolder.get());
     }
 
     /**
