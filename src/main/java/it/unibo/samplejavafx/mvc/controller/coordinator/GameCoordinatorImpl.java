@@ -195,7 +195,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         final ChessMatch match = new ChessMatchImpl(
                 gameController.getBoardFactory().createPopulatedChessboard(
                         gameController.getWhiteLoadout(),
-                        gameController.getBlackLoadout(),
+                        gameController.getBlackLoadout()
                 ));
         this.gameController.setMatch(match);
         match.addObserver(this.chessboardViewController);
