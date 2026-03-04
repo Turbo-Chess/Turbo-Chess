@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
@@ -11,6 +12,7 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
  *
  * @param turn the turn number.
  * @param entityName the name of the entity being moved.
+ * @param entityColor the color of the entity being moved.
  * @param from source position.
  * @param to destination position.
  * @param capturedEntity the entity being captured, if any.
@@ -18,6 +20,7 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 public record MoveEvent(
     @JsonProperty("turn") int turn, 
     @JsonProperty("entityName") String entityName, 
+    @JsonProperty("entityColor") PlayerColor entityColor,
     @JsonProperty("from") Point2D from, 
     @JsonProperty("to") Point2D to,
     @JsonProperty("capturedEntity") Entity capturedEntity
@@ -30,7 +33,7 @@ public record MoveEvent(
 
     @Override
     public String getEventDescription() {
-        return String.format("Move | %s | %s->%s | Capture: %s", 
-            entityName, from, to, capturedEntity != null ? capturedEntity.getName() : "None");
+        return String.format("Move | %s %s | %s->%s | Capture: %s", 
+            entityColor != null ? entityColor : "", entityName, from, to, capturedEntity != null ? capturedEntity.getName() : "None");
     }
 }

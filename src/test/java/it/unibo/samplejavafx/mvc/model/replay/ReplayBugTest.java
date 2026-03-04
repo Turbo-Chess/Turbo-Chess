@@ -8,6 +8,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class ReplayBugTest {
         final GameHistory history = new GameHistory();
 
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0)));
-        history.addEvent(new MoveEvent(1, PAWN_NAME, new Point2D(0, 0), new Point2D(0, 1), null));
+        history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null));
 
         // --- SESSION 1 ---
         controller.loadHistory(history);
@@ -82,8 +83,8 @@ class ReplayBugTest {
         final GameHistory history = new GameHistory();
         
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0)));
-        history.addEvent(new MoveEvent(1, PAWN_NAME, new Point2D(0, 0), new Point2D(0, 1), null));
-        history.addEvent(new MoveEvent(2, PAWN_NAME, new Point2D(0, 1), new Point2D(0, 2), null));
+        history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null));
+        history.addEvent(new MoveEvent(2, PAWN_NAME, PlayerColor.BLACK, new Point2D(0, 1), new Point2D(0, 2), null));
         
         controller.loadHistory(history);
         controller.next();

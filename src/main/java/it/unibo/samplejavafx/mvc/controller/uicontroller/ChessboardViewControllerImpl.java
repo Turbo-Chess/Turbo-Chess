@@ -14,11 +14,9 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-
-import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.SpawnEvent;
-import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -47,6 +45,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.CHECK_KING;
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.HASEAT;
@@ -80,7 +80,31 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @FXML
     private Button menuButton;
 
-    // TODO: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private ToggleButton toggleReplayBtn;
+
+    @FXML
+    private ListView<String> historyListView;
+
+    @FXML
+    private HBox replayControlsBox;
+
+    @FXML
+    private Button btnStart;
+
+    @FXML
+    private Button btnPrev;
+
+    @FXML
+    private Button btnNext;
+
+    @FXML
+    private Button btnEnd;
+
+    // to-do: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
     private final GameCoordinator coordinator;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
@@ -113,6 +137,135 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         initChessboardPane();
         menuButton.setText("Surrender");
         menuButton.setOnAction(e -> gameController.surrender());
+
+        saveButton.setText("Save Game");
+        saveButton.setOnAction(e -> {
+            Path fileToSave = coordinator.getCurrentSaveFile();
+
+            if (fileToSave == null) {
+                final Path saveDir = Paths.get(GameProperties.SAVES_FOLDER.getPath());
+                try {
+                    FileSystemUtils.ensureDirectoryExists(saveDir);
+                    final String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+                    final String uuid = UUID.randomUUID().toString().substring(0, 8);
+                    final String filename = "save_" + timestamp + "_" + uuid + ".json";
+                    fileToSave = saveDir.resolve(filename);
+                } catch (final IOException ex) {
+                    LOGGER.error("Failed to create save directory", ex);
+                    return;
+                }
+            }
+
+            try {
+                if (coordinator.saveGame(fileToSave)) {
+                    LOGGER.info("Game saved to: " + fileToSave.toAbsolutePath());
+                    coordinator.initMainMenu();
+                } else {
+                    LOGGER.error("Failed to save game to: " + fileToSave.toAbsolutePath() + " (unknown reason)");
+                }
+            } catch (final IOException ex) {
+                LOGGER.error("Failed to save game", ex);
+            }
+        });
+
+        this.replayBoard = new ChessBoardImpl();
+        this.replayController = new ReplayControllerImpl(this.replayBoard);
+
+        toggleReplayBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            if (Boolean.TRUE.equals(newVal)) {
+                enableReplayMode();
+            } else {
+                disableReplayMode();
+            }
+        });
+
+        btnStart.setOnAction(e -> {
+            replayController.jumpToStart();
+            syncReplayView();
+        });
+        btnPrev.setOnAction(e -> {
+            replayController.prev();
+            syncReplayView();
+        });
+        btnNext.setOnAction(e -> {
+            replayController.next();
+            syncReplayView();
+        });
+        btnEnd.setOnAction(e -> {
+            replayController.jumpToEnd();
+            syncReplayView();
+        });
+    }
+
+    private void enableReplayMode() {
+        isReplayMode = true;
+        replayControlsBox.setDisable(false);
+
+        final var history = gameController.getGameHistory();
+        replayController.loadHistory(history);
+
+        final int initialSpawnCount = (int) history.getEvents().stream()
+            .takeWhile(event -> event instanceof SpawnEvent)
+            .count();
+        replayController.setMinIndex(initialSpawnCount);
+
+        replayController.jumpToEnd();
+
+        refreshBoardView(replayBoard);
+
+        updateHistoryList();
+    }
+
+    private void disableReplayMode() {
+        isReplayMode = false;
+        replayControlsBox.setDisable(true);
+
+        // Restore Live Board View
+        refreshBoardView(gameController.getLiveBoard());
+    }
+
+    // We will implement this after updating GameController interface
+    private void refreshBoardView(final it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard board) {
+        // Clear all buttons
+        cells.values().forEach(btn -> {
+            btn.setGraphic(null);
+            btn.setText("");
+            btn.pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+            btn.pseudoClassStateChanged(VALID_CAPTURE_CELL, false);
+            btn.pseudoClassStateChanged(START, false);
+            btn.pseudoClassStateChanged(HASMOVED, false);
+            btn.pseudoClassStateChanged(HASEAT, false);
+            btn.pseudoClassStateChanged(CHECK_KING, false);
+        });
+
+        // Fill from board
+        board.getBoard().forEach(this::setCellGraphic);
+    }
+
+    private void setCellGraphic(final Point2D pos, final Entity entity) {
+         final Button btn = cells.get(pos);
+         if (btn != null) {
+            btn.setText("");
+            btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(
+                entity.getImagePath(), entity.getPlayerColor(), entity.getId()), btn));
+        }
+    }
+
+    private void syncReplayView() {
+        refreshBoardView(replayBoard);
+    }
+
+    private void updateHistoryList() {
+        final var history = gameController.getGameHistory();
+        historyListView.setItems(FXCollections.observableArrayList(
+            history.getEvents().stream()
+                .filter(e -> e instanceof MoveEvent)
+                .map(e -> {
+                    final MoveEvent me = (MoveEvent) e;
+                    return me.getEventDescription();
+                })
+                .collect(Collectors.toList())
+        ));
     }
 
     /**
@@ -207,6 +360,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @Override
     public void onEntityMoved(final Point2D from, final Point2D to) {
+        if (isReplayMode) {
+            return;
+        }
         highlightMovement(from, to);
     }
 
@@ -271,11 +427,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
             cells.get(lastEnd).pseudoClassStateChanged(HASMOVED, false);
             cells.get(lastEnd).pseudoClassStateChanged(HASEAT, false);
         }
-    }
-
-    @Override
-    public void onEntityMoved(final Point2D from, final Point2D to) {
-        highlightMovement(from, to);
     }
 
     @Override
@@ -348,14 +499,5 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         dialog.setDialogPane(root);
         dialog.setTitle("Game Results");
         dialog.showAndWait();
-    }
-    
-    private void setCellGraphic(final Point2D pos, final Entity entity) {
-         final Button btn = cells.get(pos);
-         if (btn != null) {
-            btn.setText("");
-            btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(
-                entity.getImagePath(), entity.getPlayerColor(), entity.getId()), btn));
-        }
     }
 }

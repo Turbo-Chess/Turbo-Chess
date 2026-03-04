@@ -5,6 +5,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -40,7 +41,7 @@ class ReplayManagerTest {
 
 
         history.addEvent(new SpawnEvent(1, pawn, new Point2D(0, 1)));
-        history.addEvent(new MoveEvent(2, "Pawn", new Point2D(0, 1), new Point2D(0, 2)));
+        history.addEvent(new MoveEvent(2, "Pawn", PlayerColor.WHITE, new Point2D(0, 1), new Point2D(0, 2), null));
 
         history.setWhiteLoadout(it.unibo.samplejavafx.mvc.model.loadout.Loadout.create("White", List.of()));
         history.setBlackLoadout(it.unibo.samplejavafx.mvc.model.loadout.Loadout.create("Black", List.of()));

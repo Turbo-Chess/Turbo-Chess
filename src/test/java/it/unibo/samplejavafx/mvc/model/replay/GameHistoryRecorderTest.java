@@ -10,6 +10,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,6 +19,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class GameHistoryRecorderTest {
 
     private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath().replace("file:", "");
+
+    private Entity createTestPiece(String name, PlayerColor color) {
+        return new Piece.Builder()
+            .setHasMoved(false)
+            .entityDefinition(new PieceDefinition.Builder()
+                .name(name)
+                .id(name.toLowerCase())
+                .imagePath(IMAGE_PATH)
+                .weight(1)
+                .pieceType(PieceType.PAWN)
+                .moveRules(Collections.emptyList())
+                .build())
+            .gameId(0)
+            .playerColor(color)
+            .build();
+    }
+
     private static final Piece TEST_PIECE = new Piece.Builder()
         .setHasMoved(false)
         .entityDefinition(new PieceDefinition.Builder()
@@ -51,7 +69,7 @@ class GameHistoryRecorderTest {
         // 2. Add to 'to'
         recorder.onEntityAdded(to, TEST_PIECE);
         // 3. Move notification
-        recorder.onEntityMoved(from, to);
+        recorder.onEntityMoved(from, to, TEST_PIECE);
 
         final List<GameEvent> events = recorder.getHistory().getEvents();
         assertEquals(1, events.size());
@@ -65,12 +83,13 @@ class GameHistoryRecorderTest {
         final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1);
         final Point2D from = new Point2D(0, 0);
         final Point2D to = new Point2D(1, 1);
-        final Entity captured = TEST_PIECE;
+        final Entity entity = createTestPiece("Pawn", PlayerColor.WHITE);
+        final Entity captured = createTestPiece("CapturedPawn", PlayerColor.BLACK);
 
         recorder.onEntityRemoved(to, captured);
-        recorder.onEntityRemoved(from, TEST_PIECE);
-        recorder.onEntityAdded(to, TEST_PIECE);
-        recorder.onEntityEaten(from, to);
+        recorder.onEntityRemoved(from, entity);
+        recorder.onEntityAdded(to, entity);
+        recorder.onEntityMoved(from, to, entity);
 
         final List<GameEvent> events = recorder.getHistory().getEvents();
         assertEquals(1, events.size());

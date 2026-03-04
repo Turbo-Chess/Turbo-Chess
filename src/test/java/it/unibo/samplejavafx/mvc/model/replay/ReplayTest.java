@@ -5,6 +5,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
@@ -59,6 +60,7 @@ class ReplayTest {
             new MoveEvent(
                 1,
                 PIECE_NAME,
+                PlayerColor.WHITE,
                 new Point2D(0, 0),
                 new Point2D(0, 1),
                 null
@@ -149,7 +151,7 @@ class ReplayTest {
         final GameHistory history = new GameHistory();
     
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0)));
-        history.addEvent(new MoveEvent(1, PIECE_NAME, new Point2D(0, 0), new Point2D(0, 1), null));
+        history.addEvent(new MoveEvent(1, PIECE_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null));
         
         controller.loadHistory(history);
         assertTrue(events.isEmpty());

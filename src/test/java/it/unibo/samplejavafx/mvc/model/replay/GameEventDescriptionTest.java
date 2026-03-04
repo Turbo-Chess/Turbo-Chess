@@ -18,10 +18,28 @@ class GameEventDescriptionTest {
         final String entityName = "Pawn";
         final Point2D from = new Point2D(0, 6);
         final Point2D to = new Point2D(0, 5);
-        final MoveEvent event = new MoveEvent(1, entityName, from, to, null);
+        final Piece captured = new Piece.Builder()
+            .setHasMoved(false)
+            .entityDefinition(new PieceDefinition.Builder()
+                .name("EnemyPawn")
+                .id("ep")
+                .imagePath("path")
+                .weight(1)
+                .pieceType(PieceType.PAWN)
+                .moveRules(Collections.emptyList())
+                .build())
+            .gameId(1)
+            .playerColor(PlayerColor.BLACK)
+            .build();
 
+        final MoveEvent event = new MoveEvent(1, entityName, PlayerColor.WHITE, from, to, captured);
         final String description = event.getEventDescription();
-        assertTrue(description.startsWith("Move | Pawn | (0, 6)->(0, 5)"));
+
+        assertTrue(description.contains("Move"));
+        assertTrue(description.contains("Pawn"));
+        assertTrue(description.contains("WHITE"));
+        assertTrue(description.contains("(0, 6)->(0, 5)"));
+        assertTrue(description.contains("Capture: EnemyPawn"));
     }
 
     @Test

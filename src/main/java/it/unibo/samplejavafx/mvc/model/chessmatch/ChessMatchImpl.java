@@ -58,13 +58,10 @@ public final class ChessMatchImpl implements ChessMatch {
         this.turnNumber = 1;
         this.currentPlayer = PlayerColor.WHITE;
 
-        this.gameHistory = new GameHistory();
+        final var historyRecorder = new GameHistoryRecorder(this::getTurnNumber);
+        this.gameHistory = historyRecorder.getHistory();
         this.turnHandler = new TurnHandlerImpl(this);
 
-        final var historyRecorder = new GameHistoryRecorder(
-            this::getTurnNumber,
-            this.gameHistory
-        );
         this.board.addObserver(historyRecorder);
     }
 
