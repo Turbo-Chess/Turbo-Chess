@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 
+import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
@@ -18,7 +19,8 @@ public interface BoardFactory {
      */
     ChessBoard createPopulatedChessboard(
         Loadout whiteLoadout,
-        Loadout blackLoadout
+        Loadout blackLoadout,
+        BoardObserver boardObserver
     );
 
     /**
