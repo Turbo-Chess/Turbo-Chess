@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 import java.util.function.Supplier;
+import java.util.List;
 
 /**
  * Records game events into a GameHistory.
@@ -34,6 +35,34 @@ public final class GameHistoryRecorder implements BoardObserver {
 
     @Override
     public void onEntityAdded(final Point2D pos, final Entity entity) {
+        if (history.getLastEvent() instanceof DespawnEvent despawn && despawn.position().equals(pos)) {
+            final List<GameEvent> events = history.getEvents();
+            if (events.size() >= 2) {
+                final GameEvent potentialMove = events.get(events.size() - 2);
+                if (potentialMove instanceof MoveEvent move 
+                        && move.to().equals(pos)
+                        && move.entityName().equals(despawn.entity().getName())
+                        && move.entityColor() == despawn.entity().getPlayerColor()) {
+                    
+                    history.removeLastEvent();
+                    history.removeLastEvent();
+                    final MoveEvent mergedMove = new MoveEvent(
+                        move.turn(),
+                        move.entityName(),
+                        move.entityColor(),
+                        move.from(),
+                        move.to(),
+                        move.capturedEntity(),
+                        entity,
+                        despawn.entity()
+                    );
+                    
+                    history.addEvent(mergedMove);
+                    return;
+                }
+            }
+        }
+        
         history.addEvent(new SpawnEvent(turnSupplier.get(), entity, pos));
     }
 

@@ -119,6 +119,12 @@ public final class ReplayControllerImpl implements ReplayController {
                 final Entity entity = entityOpt.get();
                 board.removeEntity(move.from());
                 board.setEntity(move.to(), entity);
+                
+                // Handle Promotion
+                if (move.promotedEntity() != null) {
+                    board.removeEntity(move.to()); // Remove the Pawn that just arrived
+                    board.setEntity(move.to(), move.promotedEntity()); // Place the Promoted Piece
+                }
             }
         } else if (event instanceof SpawnEvent spawn) {
             board.setEntity(spawn.position(), spawn.entity());
@@ -129,6 +135,11 @@ public final class ReplayControllerImpl implements ReplayController {
 
     private void revertEvent(final GameEvent event) {
         if (event instanceof MoveEvent move) {
+            if (move.promotedEntity() != null && move.originalEntity() != null) {
+                 board.removeEntity(move.to());
+                 board.setEntity(move.to(), move.originalEntity());
+            }
+
             final Optional<Entity> entityOpt = board.getEntity(move.to());
             if (entityOpt.isPresent()) {
                 board.removeEntity(move.to());

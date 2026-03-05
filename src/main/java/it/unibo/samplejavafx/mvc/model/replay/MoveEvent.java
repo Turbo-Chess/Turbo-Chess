@@ -16,6 +16,8 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
  * @param from source position.
  * @param to destination position.
  * @param capturedEntity the entity being captured, if any.
+ * @param promotedEntity the entity that the piece is promoted to, if any.
+ * @param originalEntity the entity that was moved, if any (used for promotion revert).
  */
 public record MoveEvent(
     @JsonProperty("turn") int turn, 
@@ -23,8 +25,14 @@ public record MoveEvent(
     @JsonProperty("entityColor") PlayerColor entityColor,
     @JsonProperty("from") Point2D from, 
     @JsonProperty("to") Point2D to,
-    @JsonProperty("capturedEntity") Entity capturedEntity
+    @JsonProperty("capturedEntity") Entity capturedEntity,
+    @JsonProperty("promotedEntity") Entity promotedEntity,
+    @JsonProperty("originalEntity") Entity originalEntity
 ) implements GameEvent {
+
+    public MoveEvent(int turn, String entityName, PlayerColor entityColor, Point2D from, Point2D to, Entity capturedEntity) {
+        this(turn, entityName, entityColor, from, to, capturedEntity, null, null);
+    }
 
     @Override
     public int getTurn() {
@@ -33,12 +41,13 @@ public record MoveEvent(
 
     @Override
     public String getEventDescription() {
-        return String.format("Move | %s %s | %s->%s | Capture: %s", 
+        return String.format("Move | %s %s | %s->%s | Capture: %s | Promotion: %s", 
             entityColor,
             entityName, 
             from,
             to,
-            capturedEntity != null ? capturedEntity.getName() : "None"
+            capturedEntity != null ? capturedEntity.getName() : "None",
+            promotedEntity != null ? promotedEntity.getName() : "None"
         );
     }
 }
