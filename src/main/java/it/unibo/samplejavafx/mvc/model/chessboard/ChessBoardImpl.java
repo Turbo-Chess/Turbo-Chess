@@ -182,8 +182,8 @@ public class ChessBoardImpl implements ChessBoard {
         if (temp.asMoveable().isPresent()) {
             temp.asMoveable().get().setHasMoved();
         }
-        this.cells.remove(start);
-        this.cells.put(end, temp);
+        this.removeEntity(start);
+        this.setEntity(end, temp);
         notifyEntityMoved(start, end, temp);
         notifyEntityMoved(start, end);
     }
@@ -201,8 +201,8 @@ public class ChessBoardImpl implements ChessBoard {
             temp.asMoveable().get().setHasMoved();
         }
         this.removeEntity(end);
-        this.cells.remove(start);
-        this.cells.put(end, temp);
+        this.removeEntity(start);
+        this.setEntity(end, temp);
         notifyEntityMoved(start, end, temp);
         notifyEntityMoved(start, end);
     }

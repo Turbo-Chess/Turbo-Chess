@@ -138,4 +138,6 @@ public interface GameController {
      * placeholder.
      */
     void showGame();
+
+    ChessMatch getMatch();
 }

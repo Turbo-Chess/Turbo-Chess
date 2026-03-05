@@ -1,6 +1,8 @@
 package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
+import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -32,9 +34,11 @@ public class BoardFactoryImpl implements BoardFactory {
     @Override
     public ChessBoard createPopulatedChessboard(
         final Loadout whiteLoadout,
-        final Loadout blackLoadout
+        final Loadout blackLoadout,
+        final BoardObserver viewController
     ) {
         final ChessBoard board = new ChessBoardImpl();
+        board.addObserver(viewController);
 
         whiteLoadout.getEntries().forEach(wEntry -> addPieceToBoard(board, wEntry, PlayerColor.WHITE));
         blackLoadout.getEntries().forEach(bEntry -> addPieceToBoard(board, bEntry, PlayerColor.BLACK));
@@ -60,11 +64,12 @@ public class BoardFactoryImpl implements BoardFactory {
      * {@inheritDoc}
      */
     @Override
-    public void createNewPiece(final Point2D pos, final ChessBoard board, final PieceDefinition pieceDefinition) {
+    public void createNewPiece(final Point2D pos, final ChessBoard board, final PieceDefinition pieceDefinition, final PlayerColor color) {
         final var newPiece = new Piece.Builder()
                 .entityDefinition(pieceDefinition)
                 .gameId(gameId)
                 .setHasMoved(false)
+                .playerColor(color)
                 .build();
 
         board.setEntity(pos, newPiece);

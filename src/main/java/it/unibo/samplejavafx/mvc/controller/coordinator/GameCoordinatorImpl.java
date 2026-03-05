@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,15 +129,16 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             loader.setControllerFactory(c -> new PromotionController(this.gameController));
             final Parent root = loader.load();
             final PromotionController prom = loader.getController();
-            prom.init(PlayerColor.WHITE);
-            this.gameScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            prom.init(gameController.getMatch().getCurrentPlayer());
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
             /*if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
             }*/
+            stage.setScene(scene);
             stage.show();
         } catch (final IOException e) {
-            System.out.println("Maionese");
+            LOGGER.error("Failed to load Promotion GUI", e);
         }
     }
 
@@ -148,6 +150,11 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         stage.close();
     }
 
+    @Override
+    public void resetGame() {
+        this.gameRoot = null;
+        initGame();
+    }
 
     /**
      * placeholder.
@@ -195,11 +202,35 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         final ChessMatch match = new ChessMatchImpl(
                 gameController.getBoardFactory().createPopulatedChessboard(
                         gameController.getWhiteLoadout(),
-                        gameController.getBlackLoadout()
+                        gameController.getBlackLoadout(),
+                        this.chessboardViewController
                 ));
         this.gameController.setMatch(match);
         match.addObserver(this.chessboardViewController);
         gameController.setChessboardViewController(this.chessboardViewController);
         gameController.getLoaderController().load();
+    }
+
+    public void initLoadGame() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'initLoadGame'");
+    }
+
+    @Override
+    public void loadGame(Path path) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'loadGame'");
+    }
+
+    @Override
+    public boolean saveGame(Path fileToSave) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'saveGame'");
+    }
+
+    @Override
+    public Path getCurrentSaveFile() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCurrentSaveFile'");
     }
 }
