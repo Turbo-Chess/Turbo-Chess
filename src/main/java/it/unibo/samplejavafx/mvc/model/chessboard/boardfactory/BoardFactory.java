@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -13,15 +14,14 @@ public interface BoardFactory {
     /**
      * placeholder.
      *
-     * @param whiteLoadout placeholder.
-     * @param blackLoadout placeholder.
+     * @param whiteLoadout  placeholder.
+     * @param blackLoadout  plcaholder.
+     * @param boardObserver plcaholder.
      * @return placeholder.
      */
-    ChessBoard createPopulatedChessboard(
-        Loadout whiteLoadout,
-        Loadout blackLoadout,
-        BoardObserver boardObserver
-    );
+    ChessBoard createPopulatedChessboard(Loadout whiteLoadout,
+                                         Loadout blackLoadout,
+                                         BoardObserver boardObserver);
 
     /**
      * placeholder.
@@ -29,6 +29,10 @@ public interface BoardFactory {
      * @param pos placeholder.
      * @param board placeholder.
      * @param pieceDefinition placeholder.
+     * @param color placeholder.
      */
-    void createNewPiece(Point2D pos, ChessBoard board, PieceDefinition pieceDefinition);
+    void createNewPiece(Point2D pos,
+                        ChessBoard board,
+                        PieceDefinition pieceDefinition,
+                        PlayerColor color);
 }

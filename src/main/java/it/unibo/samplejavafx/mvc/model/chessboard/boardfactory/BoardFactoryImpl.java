@@ -64,11 +64,12 @@ public class BoardFactoryImpl implements BoardFactory {
      * {@inheritDoc}
      */
     @Override
-    public void createNewPiece(final Point2D pos, final ChessBoard board, final PieceDefinition pieceDefinition) {
+    public void createNewPiece(final Point2D pos, final ChessBoard board, final PieceDefinition pieceDefinition, final PlayerColor color) {
         final var newPiece = new Piece.Builder()
                 .entityDefinition(pieceDefinition)
                 .gameId(gameId)
                 .setHasMoved(false)
+                .playerColor(color)
                 .build();
 
         board.setEntity(pos, newPiece);

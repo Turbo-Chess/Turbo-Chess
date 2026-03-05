@@ -62,16 +62,18 @@ public final class TurnHandlerImpl implements TurnHandler {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
-        if (state == GameState.NORMAL) {
-            return doIfNormal(pos);
-        }
-        if (state == GameState.CHECK) {
-            return doIfCheck(pos);
-        }
-        if (state == GameState.DOUBLE_CHECK) {
-            return doIfDoubleCheck(pos);
-        }
-        return Collections.emptyList(); // unreachable for design
+        return switch (state) {
+            case NORMAL -> doIfNormal(pos);
+            case CHECK -> doIfCheck(pos);
+            case DOUBLE_CHECK -> doIfDoubleCheck(pos);
+            case PROMOTION -> {
+                if (AdvancedRules.check(board, currentColor) == GameState.CHECK) {
+                    yield doIfCheck(pos);
+                }
+                yield doIfNormal(pos);
+            }
+            default -> Collections.emptyList();
+        };
     }
 
     /**
