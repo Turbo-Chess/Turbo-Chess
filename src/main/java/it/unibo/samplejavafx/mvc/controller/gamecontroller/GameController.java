@@ -31,6 +31,19 @@ public interface GameController {
      * @param match placeholder.
      */
     void setMatch(ChessMatch match);
+    /**
+     * Setter for white loadout.
+     * 
+     * @param loadout the white loadout.
+     */
+    void setWhiteLoadout(Loadout loadout);
+
+    /**
+     * Setter for black loadout.
+     * 
+     * @param loadout the black loadout.
+     */
+    void setBlackLoadout(Loadout loadout);
 
     /**
      * placeholder.

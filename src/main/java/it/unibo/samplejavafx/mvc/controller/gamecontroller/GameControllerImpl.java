@@ -57,10 +57,12 @@ public final class GameControllerImpl implements GameController {
     @Setter
     private ChessboardViewController chessboardViewController;
     @Getter
-    private final Loadout whiteLoadout = loadoutManager.load(LOADOUT_ID).get();
+    @Setter
+    private Loadout whiteLoadout = loadoutManager.load(LOADOUT_ID).get();
     @Getter
+    @Setter
     // TODO: Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
-    private final Loadout blackLoadout = loadoutManager.load(LOADOUT_ID).get().mirrored();
+    private Loadout blackLoadout = loadoutManager.load(LOADOUT_ID).get().mirrored();
     @Getter
     // The board factory is created here as is part of the current game, but it needs to be
     // accessed also from outside to create new pieces in other classes.

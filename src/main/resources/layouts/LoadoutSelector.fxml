@@ -23,7 +23,7 @@
       <Label text="Loadout Selector" BorderPane.alignment="CENTER" />
    </top>
    <center>
-      <ListView prefHeight="283.0" prefWidth="298.0" BorderPane.alignment="CENTER" />
+      <ListView id="loadoutView" prefHeight="283.0" prefWidth="298.0" BorderPane.alignment="CENTER" />
    </center>
    <right>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
