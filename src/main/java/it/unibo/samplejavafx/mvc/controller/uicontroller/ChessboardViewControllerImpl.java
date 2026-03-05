@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
@@ -109,7 +110,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     // to-do: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
-    private final GameCoordinatorImpl coordinator;
+    private final GameCoordinator coordinator;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
     private Point2D lastStart;
     private Point2D lastEnd;
@@ -117,7 +118,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     // Replay related fields
     private boolean isReplayMode;
     private ReplayController replayController;
-    private ChessBoardImpl replayBoard;
+    private ChessBoard replayBoard;
 
     /**
      * placeholder.
@@ -127,7 +128,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      */
     // This is intended to be a shared controller to make the MVC working.
     @SuppressFBWarnings("EI_EXPOSE_REP2")
-    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinatorImpl coordinator) {
+    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
         this.gameController = gameController;
         this.coordinator = coordinator;
     }
@@ -158,16 +159,11 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                     return;
                 }
             }
-
-            try {
-                if (coordinator.saveGame(fileToSave)) {
-                    LOGGER.info("Game saved to: " + fileToSave.toAbsolutePath());
-                    coordinator.initMainMenu();
-                } else {
-                    LOGGER.error("Failed to save game to: " + fileToSave.toAbsolutePath() + " (unknown reason)");
-                }
-            } catch (final IOException ex) {
-                LOGGER.error("Failed to save game", ex);
+            if (coordinator.saveGame(fileToSave)) {
+                LOGGER.info("Game saved to: " + fileToSave.toAbsolutePath());
+                coordinator.initMainMenu();
+            } else {
+                LOGGER.error("Failed to save game to: " + fileToSave.toAbsolutePath() + " (unknown reason)");
             }
         });
 

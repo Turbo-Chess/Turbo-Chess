@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,15 +27,15 @@ public final class GameOverController {
     @FXML
     private Button mainMenuButton;
 
-    private final GameCoordinatorImpl gameCoordinator;
+    private final GameCoordinator gameCoordinator;
 
     /**
      * placeholder.
      *
-     * @param gameCoordinator the game coordinator.
+     * @param coordinator the game coordinator.
      */
-    public GameOverController(final GameCoordinatorImpl gameCoordinator) {
-        this.gameCoordinator = gameCoordinator;
+    public GameOverController(final GameCoordinator coordinator) {
+        this.gameCoordinator = coordinator;
     }
 
     /**

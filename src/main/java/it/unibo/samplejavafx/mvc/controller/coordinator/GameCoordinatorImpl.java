@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -201,5 +202,28 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         match.addObserver(this.chessboardViewController);
         gameController.setChessboardViewController(this.chessboardViewController);
         gameController.getLoaderController().load();
+    }
+
+    public void initLoadGame() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'initLoadGame'");
+    }
+
+    @Override
+    public void loadGame(Path path) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'loadGame'");
+    }
+
+    @Override
+    public boolean saveGame(Path fileToSave) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'saveGame'");
+    }
+
+    @Override
+    public Path getCurrentSaveFile() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCurrentSaveFile'");
     }
 }

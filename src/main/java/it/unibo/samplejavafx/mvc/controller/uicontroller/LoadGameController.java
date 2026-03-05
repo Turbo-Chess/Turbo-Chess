@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import java.util.Comparator;
  */
 public final class LoadGameController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadGameController.class);
-    private final GameCoordinatorImpl coordinator;
+    private final GameCoordinator coordinator;
 
     @FXML
     private VBox savesContainer;
@@ -29,7 +30,7 @@ public final class LoadGameController {
      *
      * @param coordinator the game coordinator.
      */
-    public LoadGameController(final GameCoordinatorImpl coordinator) {
+    public LoadGameController(final GameCoordinator coordinator) {
         this.coordinator = coordinator;
     }
 

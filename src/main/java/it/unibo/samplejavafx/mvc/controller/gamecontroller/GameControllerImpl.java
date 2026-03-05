@@ -78,6 +78,7 @@ public final class GameControllerImpl implements GameController {
      */
     public GameControllerImpl(final ChessMatch match) {
         this.match = match;
+        this.gameCoordinator = null;
     }
 
     public GameControllerImpl(final GameCoordinator gameCoordinator) {
