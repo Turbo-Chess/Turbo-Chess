@@ -32,6 +32,8 @@ public interface GameCoordinator {
      */
     void quit();
 
+    void resetGame();
+
     /**
      * Initializes the game.
      */

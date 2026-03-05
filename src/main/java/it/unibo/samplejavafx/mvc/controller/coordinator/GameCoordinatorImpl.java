@@ -149,6 +149,11 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         stage.close();
     }
 
+    @Override
+    public void resetGame() {
+        this.gameRoot = null;
+        initGame();
+    }
 
     /**
      * placeholder.

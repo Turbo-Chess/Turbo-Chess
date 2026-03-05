@@ -45,7 +45,8 @@ public final class GameOverController {
     public void initialize() {
         this.restartButton.setOnAction(e -> {
             this.restartButton.getScene().getWindow().hide();
-            this.gameCoordinator.initGame();
+
+            this.gameCoordinator.resetGame();
         });
 
         this.mainMenuButton.setOnAction(e -> {
