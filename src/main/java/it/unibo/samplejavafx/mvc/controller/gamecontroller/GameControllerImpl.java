@@ -74,12 +74,8 @@ public final class GameControllerImpl implements GameController {
     /**
      * placeholder.
      *
-     * @param match placeholder.
+     * @param gameCoordinator placeholder.
      */
-    public GameControllerImpl(final ChessMatch match) {
-        this.match = match;
-    }
-
     public GameControllerImpl(final GameCoordinator gameCoordinator) {
         this.gameCoordinator = gameCoordinator;
     }
