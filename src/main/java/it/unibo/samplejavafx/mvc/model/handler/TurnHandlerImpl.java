@@ -127,8 +127,10 @@ public final class TurnHandlerImpl implements TurnHandler {
         switch (currentColor) {
             case WHITE:
                 promotion(BOUNDARIES.x());
+                break;
             case BLACK:
                 promotion(BOUNDARIES.y());
+                break;
         }
 
         this.turn += 1;
