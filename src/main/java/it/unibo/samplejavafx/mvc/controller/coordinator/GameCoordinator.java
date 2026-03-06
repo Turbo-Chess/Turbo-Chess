@@ -18,9 +18,14 @@ public interface GameCoordinator {
     void initSettings();
 
     /**
-     * Initializes the loadout.
+     * Initializes the loadout selector.
      */
     void initLoadout();
+
+    /**
+     * Initializes the loadout editor.
+     */
+    void initLoadoutEditor();
 
     /**
      * placeholder.

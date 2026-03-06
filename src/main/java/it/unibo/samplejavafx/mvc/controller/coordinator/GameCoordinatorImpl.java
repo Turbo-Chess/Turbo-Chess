@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
 import javafx.fxml.FXMLLoader;
@@ -112,11 +113,33 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
             }*/
-            stage.setTitle("TurboChess - Loadout");
+            stage.setTitle("TurboChess - Loadout Selector");
             stage.setScene(scene);
             stage.show();
         } catch (final IOException e) {
-            LOGGER.error("Failed to load Loadout", e);
+            LOGGER.error("Failed to load Loadout Selector", e);
+        }
+    }
+
+    /**
+     * Initializes the loadout scene.
+     */
+    @Override
+    public void initLoadoutEditor() {
+        try {
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
+            loader.setControllerFactory(c -> new LoadoutEditor());
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
+            if (cssLocation != null) {
+                scene.getStylesheets().add(cssLocation.toExternalForm());
+            }*/
+            stage.setTitle("TurboChess - Loadout Editor");
+            stage.setScene(scene);
+            stage.show();
+        } catch (final IOException e) {
+            LOGGER.error("Failed to load Loadout Editor", e);
         }
     }
 
@@ -194,7 +217,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
            }
        } catch (final IOException e) {
-           System.out.println("Maionese");
+           LOGGER.error("failed to load GameUI");
        }
 
     }

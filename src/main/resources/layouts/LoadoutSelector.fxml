@@ -10,10 +10,10 @@
 
 <BorderPane fx:id="BorderPain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector">
    <bottom>
-      <HBox alignment="CENTER" prefHeight="77.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="77.0" prefWidth="600.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToMenu" text="Back" />
-            <Button mnemonicParsing="false" text="Loadout Editor" />
+            <Button fx:id="loadoutEditorButton" mnemonicParsing="false" onAction="#toLoadoutEditor" text="Loadout Editor" />
          </children>
       </HBox>
    </bottom>
@@ -27,7 +27,7 @@
       <ListView fx:id="loadoutView" prefHeight="283.0" prefWidth="298.0" BorderPane.alignment="CENTER" />
    </center>
    <right>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="loadButton" mnemonicParsing="false" text="Load" />
             <Button fx:id="useButton" mnemonicParsing="false" text="Use" />

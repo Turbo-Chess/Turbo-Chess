@@ -100,4 +100,13 @@ public class LoadoutSelector implements Initializable{
     public void backToMenu(final ActionEvent e) {
         this.coordinator.initMainMenu();
     }
+
+    /**
+     * Handles the "Back" button action.
+     *
+     * @param e the action event
+     */
+    public void toLoadoutEditor(final ActionEvent e) {
+        this.coordinator.initLoadoutEditor();
+    }
 }
