@@ -12,25 +12,26 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="77.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToMenu" text="Back" />
             <Button mnemonicParsing="false" text="Loadout Editor" />
          </children>
       </HBox>
    </bottom>
    <left>
-      <ListView id="loadoutListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <ListView fx:id="loadoutListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <top>
       <Label text="Loadout Selector" BorderPane.alignment="CENTER" />
    </top>
    <center>
-      <ListView id="loadoutView" prefHeight="283.0" prefWidth="298.0" BorderPane.alignment="CENTER" />
+      <ListView fx:id="loadoutView" prefHeight="283.0" prefWidth="298.0" BorderPane.alignment="CENTER" />
    </center>
    <right>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="loadButton" mnemonicParsing="false" text="Load" />
-            <Button id="useButton" mnemonicParsing="false" text="Use" />
-            <CheckBox id="forWhite" mnemonicParsing="false" text="For White" textAlignment="CENTER" />
+            <Button fx:id="loadButton" mnemonicParsing="false" text="Load" />
+            <Button fx:id="useButton" mnemonicParsing="false" text="Use" />
+            <CheckBox fx:id="forBlack" mnemonicParsing="false" text="For Black" textAlignment="CENTER" />
          </children>
       </VBox>
    </right>

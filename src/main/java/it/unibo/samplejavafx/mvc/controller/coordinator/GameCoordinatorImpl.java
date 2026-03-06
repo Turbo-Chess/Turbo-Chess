@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -103,14 +104,14 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public void initLoadout() {
         try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Loadout.fxml"));
-            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutController(this));
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutSelector.fxml"));
+            loader.setControllerFactory(c -> new LoadoutSelector(this.gameController, this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
+            /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
             if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
-            }
+            }*/
             stage.setTitle("TurboChess - Loadout");
             stage.setScene(scene);
             stage.show();
