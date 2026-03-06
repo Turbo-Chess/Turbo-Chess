@@ -24,6 +24,7 @@ public class ReplayManager {
      */
     public ReplayManager() {
         this.mapper = new ObjectMapper();
+        this.mapper.findAndRegisterModules();
         this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
