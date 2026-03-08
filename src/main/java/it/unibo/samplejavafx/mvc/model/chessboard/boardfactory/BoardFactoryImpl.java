@@ -13,16 +13,20 @@ import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
- * placeholder.
+ * A concrete implementation of the {@link BoardFactory} interface.
+ * <p>
+ * This class uses a {@link LoaderController} to fetch the necessary entity definitions from disk or cache.
+ * It manages the creation of unique game IDs for each instantiated piece to ensure proper tracking during the match.
+ * </p>
  */
 public class BoardFactoryImpl implements BoardFactory {
     private final LoaderController loaderController;
     private int gameId;
 
     /**
-     * placeholder.
+     * Constructs a new {@code BoardFactoryImpl}.
      *
-     * @param loaderController placeholder.
+     * @param loaderController The {@link LoaderController} responsible for providing access to loaded entity definitions.
      */
     public BoardFactoryImpl(final LoaderController loaderController) {
         this.loaderController = loaderController;
@@ -30,6 +34,9 @@ public class BoardFactoryImpl implements BoardFactory {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Iterates through the entries in the provided loadouts and places corresponding pieces onto a new board instance.
+     * </p>
      */
     @Override
     public ChessBoard createPopulatedChessboard(
@@ -54,7 +61,7 @@ public class BoardFactoryImpl implements BoardFactory {
                 )
                 .gameId(gameId)
                 .playerColor(color)
-                .setHasMoved(false)
+                .hasMoved(false)
                 .build()
         );
         gameId++;
@@ -62,13 +69,18 @@ public class BoardFactoryImpl implements BoardFactory {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Utilizes the internal game ID counter to instantiate a new piece with the given definition
+     * and places it at the specified coordinate on the board.
+     * In that way, newly added pieces will have a different ID from the ones already instantiated.
+     * </p>
      */
     @Override
     public void createNewPiece(final Point2D pos, final ChessBoard board, final PieceDefinition pieceDefinition, final PlayerColor color) {
         final var newPiece = new Piece.Builder()
                 .entityDefinition(pieceDefinition)
                 .gameId(gameId)
-                .setHasMoved(false)
+                .hasMoved(false)
                 .playerColor(color)
                 .build();
 

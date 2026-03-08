@@ -11,8 +11,8 @@ import java.util.List;
 @FunctionalInterface
 public interface MoveRules {
     /**
-     * The method that calculates all available cells a piece can move to.
-     * It will be then filtered by {@link MoveRules}.
+     * The method that calculates all available cells a piece can move to by filtering the cells calculated
+     * by {@link MovementStrategy}.
      *
      * @param start         actual point of the piece.
      * @param board         the {@link ChessBoard} of the match.
