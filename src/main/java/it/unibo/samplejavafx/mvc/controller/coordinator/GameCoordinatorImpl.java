@@ -128,7 +128,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public void initLoadoutEditor() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
-            loader.setControllerFactory(c -> new LoadoutEditor());
+            loader.setControllerFactory(c -> new LoadoutEditor(gameController, this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);

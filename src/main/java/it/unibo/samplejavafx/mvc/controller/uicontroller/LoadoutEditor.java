@@ -1,5 +1,112 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
-public class LoadoutEditor {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
+import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
+import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+
+public class LoadoutEditor implements Initializable {
+    @FXML
+    private Button saveButton;
+    @FXML
+    private GridPane gridPain;
+    @FXML
+    private ListView<String> pieceView;
+    @FXML
+    private TextField textLabel;
+    private static final int SIZE = 16;
+    private static final int ROW = 2;
+    private static final int COLUMN = 8;
+    private final GameController controller;
+    private final GameCoordinator coordinator;
+    private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
+    private final Map<Point2D, LoadoutEntry> entries = new HashMap<>();
+    private String selectedPiece;
+    private int x = 0;
+    private int y = 0;
+
+    public LoadoutEditor(final GameController controller, final GameCoordinator coordinator) {
+        this.controller = controller;
+        this.coordinator = coordinator;
+        this.entityCache.putAll(controller.getLoaderController().getEntityCache());
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        final ObservableList<String> pieceNames = FXCollections.observableArrayList(entityCache.values().stream()
+                .map(m -> m.keySet())
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet()));
+        pieceView.setItems(pieceNames);
+        pieceView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                selectedPiece = pieceView.getSelectionModel().getSelectedItem();
+            }
+        });
+
+        saveButton.setOnAction(event -> {
+            if (entries.size() == SIZE && !textLabel.getText().isBlank()) {
+               controller.getLoadoutManager().save(Loadout.create(textLabel.getText(), new ArrayList<>(entries.values())));
+            }
+        });
+
+        populateGridPane();
+    }
+
+    private void placeOnClick(final int posX, final int posY, final Button btn) {
+        if (selectedPiece != null) {
+            entries.put(new Point2D(posX, posY), new LoadoutEntry(new Point2D(posX, posY), ofPack(selectedPiece), selectedPiece));
+            btn.setText(selectedPiece);
+        }
+    }
+
+    private String ofPack(final String id) {
+        for (String packId : entityCache.keySet()) {
+            if (entityCache.get(packId).containsKey(id)) {
+                return packId;
+            }
+        }
+        return null;
+    }
+
+    private void populateGridPane() {
+        while (y != ROW) {
+            final Button btn = new Button("");
+            btn.setOnAction(event -> {
+                placeOnClick(x, y, btn);
+            });
+            gridPain.add(btn, x, y);
+            x++;
+            if (x == COLUMN) {
+                x = 0;
+                y++;
+            }
+        }
+    }
+
+    public void toLoadoutSelector(final ActionEvent e) {
+        this.coordinator.initLoadout();
+    }
 }
