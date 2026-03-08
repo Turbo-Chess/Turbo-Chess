@@ -44,7 +44,7 @@ public final class ChessMatchImpl implements ChessMatch {
     @Getter
     // The board needs to be modified by other methods during the game.
     @SuppressFBWarnings("EI_EXPOSE_REP")
-    private final ChessBoard board;
+    private final ChessBoard board = new ChessBoardImpl();
     @Getter
     @SuppressFBWarnings("EI_EXPOSE_REP")
     private final GameHistory gameHistory;
@@ -57,9 +57,9 @@ public final class ChessMatchImpl implements ChessMatch {
      * </p>
      */
     // TODO: check removal of this never user constructor
-    public ChessMatchImpl() {
-        this(new ChessBoardImpl());
-    }
+//    public ChessMatchImpl() {
+//        this(new ChessBoardImpl());
+//    }
 
     /**
      * Constructs a new chess match using a provided board instance.
@@ -68,12 +68,9 @@ public final class ChessMatchImpl implements ChessMatch {
      * is pre-configured. It initializes the turn handler, history recorder, and sets the starting
      * player to WHITE.
      * </p>
-     *
-     * @param board The {@link ChessBoard} instance to be used for this match.
      */
-    public ChessMatchImpl(final ChessBoard board) {
+    public ChessMatchImpl() {
         this.gameState = GameState.NORMAL;
-        this.board = board;
         this.turnNumber = 1;
         this.currentPlayer = PlayerColor.WHITE;
 

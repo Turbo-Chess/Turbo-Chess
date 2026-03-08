@@ -39,17 +39,13 @@ public class BoardFactoryImpl implements BoardFactory {
      * </p>
      */
     @Override
-    public ChessBoard createPopulatedChessboard(
+    public void populateChessboard(
         final Loadout whiteLoadout,
         final Loadout blackLoadout,
-        final BoardObserver viewController
+        final ChessBoard board
     ) {
-        final ChessBoard board = new ChessBoardImpl();
-        board.addObserver(viewController);
-
         whiteLoadout.getEntries().forEach(wEntry -> addPieceToBoard(board, wEntry, PlayerColor.WHITE));
         blackLoadout.getEntries().forEach(bEntry -> addPieceToBoard(board, bEntry, PlayerColor.BLACK));
-        return board;
     }
 
     private void addPieceToBoard(final ChessBoard board, final LoadoutEntry entry, final PlayerColor color) {

@@ -24,12 +24,8 @@ public interface BoardFactory {
      *
      * @param whiteLoadout  The {@link Loadout} configuration for the White player.
      * @param blackLoadout  The {@link Loadout} configuration for the Black player.
-     * @param boardObserver The {@link BoardObserver} to attach to the new board (e.g., for updating the UI).
-     * @return A fully initialized and populated {@link ChessBoard}.
      */
-    ChessBoard createPopulatedChessboard(Loadout whiteLoadout,
-                                         Loadout blackLoadout,
-                                         BoardObserver boardObserver);
+    void populateChessboard(Loadout whiteLoadout, Loadout blackLoadout, ChessBoard board);
 
     /**
      * Creates and places a new piece on an existing board at the specified position.
