@@ -20,7 +20,6 @@ import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
-import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,10 +56,12 @@ public final class GameControllerImpl implements GameController {
     @Setter
     private ChessboardViewController chessboardViewController;
     @Getter
-    private final Loadout whiteLoadout = loadoutManager.load(LOADOUT_ID).get();
+    @Setter
+    private Loadout whiteLoadout = loadoutManager.load(LOADOUT_ID).get();
     @Getter
+    @Setter
     // TODO: Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
-    private final Loadout blackLoadout = loadoutManager.load(LOADOUT_ID).get().mirrored();
+    private Loadout blackLoadout = loadoutManager.load(LOADOUT_ID).get().mirrored();
     @Getter
     // The board factory is created here as is part of the current game, but it needs to be
     // accessed also from outside to create new pieces in other classes.
@@ -71,7 +72,6 @@ public final class GameControllerImpl implements GameController {
 
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
-    private GameHistoryRecorder historyRecorder;
 
     /**
      * placeholder.
@@ -189,17 +189,14 @@ public final class GameControllerImpl implements GameController {
     @Override
     public void setMatch(final ChessMatch match) {
         this.match = match;
-        this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber);
-        // Record initial state
-        this.match.getBoard().getBoard().forEach((pos, entity) -> {
-             this.historyRecorder.onEntityAdded(pos, entity);
-        });
-        this.match.getBoard().addObserver(this.historyRecorder);
     }
 
     @Override
     public GameHistory getGameHistory() {
-        return this.historyRecorder != null ? this.historyRecorder.getHistory() : new GameHistory();
+        if (this.match == null) {
+            return new GameHistory();
+        }
+        return this.match.getGameHistory();
     }
 
     @Override

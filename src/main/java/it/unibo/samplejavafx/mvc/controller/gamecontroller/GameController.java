@@ -104,6 +104,20 @@ public interface GameController {
     Point2D getKingPos();
 
     /**
+     * Sets the white player's loadout.
+     *
+     * @param loadout the loadout to set.
+     */
+    void setWhiteLoadout(Loadout loadout);
+
+    /**
+     * Sets the black player's loadout.
+     *
+     * @param loadout the loadout to set.
+     */
+    void setBlackLoadout(Loadout loadout);
+
+    /**
      * placeholder.
      *
      * @return placeholder.
