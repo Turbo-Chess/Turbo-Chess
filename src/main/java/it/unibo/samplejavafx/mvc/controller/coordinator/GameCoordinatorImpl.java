@@ -7,7 +7,17 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
+import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
+import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
+import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
+import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
+import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
+import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,6 +43,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private Scene gameScene;
     private ChessboardViewControllerImpl chessboardViewController;
     private final GameController gameController = new GameControllerImpl(this);
+    private final ReplayManager replayManager = new ReplayManager();
+    private Path currentSaveFile;
 
     /**
      * placeholder.
@@ -60,7 +72,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public void initMainMenu() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
-            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController(this));
+            loader.setControllerFactory(c -> new MainMenuController(this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -82,7 +94,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public void initSettings() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Settings.fxml"));
-            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController(this));
+            loader.setControllerFactory(c -> new SettingsController(this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -104,7 +116,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public void initLoadout() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Loadout.fxml"));
-            loader.setControllerFactory(c -> new it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutController(this));
+            loader.setControllerFactory(c -> new LoadoutController(this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -193,7 +205,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
            }
        } catch (final IOException e) {
-           System.out.println("Maionese");
+           LOGGER.error("Failed to load Game Layout", e);
        }
 
     }
@@ -208,29 +220,99 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         this.gameController.setMatch(match);
         match.addObserver(this.chessboardViewController);
         gameController.setChessboardViewController(this.chessboardViewController);
+        
+        this.chessboardViewController.refreshBoardView(match.getBoard());
+
         gameController.getLoaderController().load();
     }
 
     public void initLoadGame() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initLoadGame'");
+        try {
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadGame.fxml"));
+            loader.setControllerFactory(c -> new LoadGameController(this));
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
+            if (cssLocation != null) {
+                scene.getStylesheets().add(cssLocation.toExternalForm());
+            }
+            stage.setTitle("TurboChess - Load Game");
+            stage.setScene(scene);
+            stage.show();
+        } catch (final IOException e) {
+            LOGGER.error("Failed to load Load Game", e);
+        }
     }
 
     @Override
-    public void loadGame(Path path) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'loadGame'");
+    public void loadGame(final Path path) {
+        final GameHistory history = replayManager.loadGame(path);
+        if (history != null) {
+            this.currentSaveFile = path;
+
+            if (history.getWhiteLoadout() != null) {
+                gameController.setWhiteLoadout(history.getWhiteLoadout());
+            }
+            if (history.getBlackLoadout() != null) {
+                gameController.setBlackLoadout(history.getBlackLoadout());
+            }
+
+            initGame();
+
+            final ChessMatch match = gameController.getMatch();
+            
+            final ReplayController replayController = new ReplayControllerImpl(match.getBoard());
+            replayController.loadHistory(history);
+            replayController.jumpToEnd();
+            
+            match.getGameHistory().setEvents(history.getEvents());
+
+            final GameEvent lastEvent = history.getLastEvent();
+            if (lastEvent != null) {
+                int turn = lastEvent.getTurn();
+                PlayerColor player = PlayerColor.WHITE;
+                
+                if (lastEvent instanceof MoveEvent move) {
+                     player = move.entityColor() == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
+                     if (move.entityColor() == PlayerColor.BLACK) {
+                         turn++;
+                     }
+                } else {
+                    // TODO: Handle spawn/despawn events
+                }
+                
+                match.setTurnNumber(turn);
+                match.setPlayerColor(player);
+            }
+        }
     }
 
     @Override
-    public boolean saveGame(Path fileToSave) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'saveGame'");
+    public boolean saveGame(final Path fileToSave) {
+        final GameHistory history = gameController.getGameHistory();
+        history.setWhiteLoadout(gameController.getWhiteLoadout());
+        history.setBlackLoadout(gameController.getBlackLoadout());
+        
+        LOGGER.info("Saving game history with {} events", history.getEvents().size());
+        
+        try {
+            if (replayManager.saveGame(history, fileToSave)) {
+                this.currentSaveFile = fileToSave;
+                return true;
+            }
+        } catch (final IOException e) {
+            LOGGER.error("Failed to save game", e);
+        }
+        return false;
     }
 
     @Override
     public Path getCurrentSaveFile() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCurrentSaveFile'");
+        return this.currentSaveFile;
+    }
+
+    @Override
+    public GameController getGameController() {
+        return this.gameController;
     }
 }

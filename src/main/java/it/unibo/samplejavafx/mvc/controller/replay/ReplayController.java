@@ -16,15 +16,6 @@ public interface ReplayController {
     void loadHistory(GameHistory history);
 
     /**
-     * Loads a game history into the controller.
-     * Resets the playback to the beginning.
-     *
-     * @param history the game history to load.
-     * @param clearBoard whether to clear the board before loading.
-     */
-    void loadHistory(GameHistory history, boolean clearBoard);
-
-    /**
      * Advances the replay by one step.
      *
      * @return true if advanced, false if at the end.

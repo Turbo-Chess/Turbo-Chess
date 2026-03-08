@@ -43,16 +43,9 @@ public final class ReplayControllerImpl implements ReplayController {
      */
     @Override
     public void loadHistory(final GameHistory newHistory) {
-        loadHistory(newHistory, true);
-    }
-
-    @Override
-    public void loadHistory(final GameHistory newHistory, final boolean clearBoard) {
-        if (clearBoard) {
-            // Clear the board first
-            for (final Point2D pos : List.copyOf(board.getBoard().keySet())) {
-                 board.removeEntity(pos);
-            }
+        // Clear the board first
+        for (final Point2D pos : List.copyOf(board.getBoard().keySet())) {
+             board.removeEntity(pos);
         }
 
         this.history = new GameHistory();
