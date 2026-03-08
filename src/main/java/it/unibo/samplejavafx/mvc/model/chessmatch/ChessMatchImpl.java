@@ -9,6 +9,7 @@ import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerImpl;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
+import it.unibo.samplejavafx.mvc.model.replay.SpawnEvent;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -62,6 +63,10 @@ public final class ChessMatchImpl implements ChessMatch {
         final var historyRecorder = new GameHistoryRecorder(this::getTurnNumber);
         this.gameHistory = historyRecorder.getHistory();
         this.turnHandler = new TurnHandlerImpl(this);
+
+        this.board.getBoard().forEach((pos, entity) -> {
+            this.gameHistory.addEvent(new SpawnEvent(this.turnNumber, entity, pos));
+        });
 
         this.board.addObserver(historyRecorder);
     }
