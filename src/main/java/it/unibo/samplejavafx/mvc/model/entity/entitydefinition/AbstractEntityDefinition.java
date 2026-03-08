@@ -12,7 +12,17 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * Placeholder.
+ * Defines the fundamental properties and structure for all entity types in the game.
+ * <p>
+ * This abstract class serves as a blueprint for entity definitions, encapsulating shared attributes
+ * such as the entity's unique identifier, display name, visual asset path, and its categorical type
+ * (as defined by {@link PieceType}).
+ * This allows to not duplicate this data across all instances of the same entity in the game.
+ * </p>
+ * <p>
+ * It utilizes the Builder pattern for object construction and includes JSON annotations
+ * provided by the Jackson library to support polymorphic deserialization of different entity definition types.
+ * </p>
  */
 @Getter
 @EqualsAndHashCode
@@ -34,10 +44,13 @@ public abstract class AbstractEntityDefinition {
     private final PieceType pieceType;
 
     /**
-     * Placeholder.
+     * Constructs a new {@code AbstractEntityDefinition} from the provided builder.
+     * This constructor performs validation on the required fields to ensure the definition is complete and valid
+     * throwing an exception to ensure that all data is correctly loaded
      *
-     * @param builder Placeholder.
-     * @param <T> Placeholder.
+     * @param builder The builder instance containing the initialization parameters.
+     * @param <T>     The specific type of the builder subclass.
+     * @throws IllegalArgumentException if any required field (name, id, imagePath, pieceType) is missing or invalid.
      */
     protected <T extends AbstractBuilder<T>> AbstractEntityDefinition(final AbstractBuilder<T> builder) {
         if (builder.name == null || builder.name.isEmpty()) {
@@ -59,7 +72,7 @@ public abstract class AbstractEntityDefinition {
         }
 
         if (builder.pieceType == null) {
-            throw new IllegalArgumentException("Missing required field: name");
+            throw new IllegalArgumentException("Missing required field: PieceType");
         }
 
         this.name = builder.name;
@@ -69,16 +82,12 @@ public abstract class AbstractEntityDefinition {
     }
 
     /**
-     * placeholder.
+     * A generic abstract builder for constructing {@link AbstractEntityDefinition} instances.
+     * <p>
+     * This class uses recursive generics to allow method chaining in subclasses and to maintain type safety.
+     * </p>
      *
-     * @return placeholder.
-     */
-    public abstract String getDescription();
-
-    /**
-     * Placeholder.
-     *
-     * @param <X> Placeholder.
+     * @param <X> The recursive type of the builder subclass.
      */
     @JsonPOJOBuilder(withPrefix = "")
     public abstract static class AbstractBuilder<X extends AbstractBuilder<X>> {
@@ -88,10 +97,10 @@ public abstract class AbstractEntityDefinition {
         private PieceType pieceType;
 
         /**
-         * Placeholder.
+         * Sets the display name of the entity definition.
          *
-         * @param newName Placeholder.
-         * @return Placeholder.
+         * @param newName The name to assign.
+         * @return this builder concrete instance for method chaining.
          */
         public X name(final String newName) {
            this.name = newName;
@@ -99,10 +108,10 @@ public abstract class AbstractEntityDefinition {
         }
 
         /**
-         * Placeholder.
+         * Sets the unique identifier for the entity definition.
          *
-         * @param newId Placeholder.
-         * @return Placeholder.
+         * @param newId The unique string ID.
+         * @return this builder concrete instance for method chaining.
          */
         public X id(final String newId) {
             this.id = newId;
@@ -110,26 +119,22 @@ public abstract class AbstractEntityDefinition {
         }
 
         /**
-         * Placeholder.
+         * Sets the path to the image asset representing the entity.
+         * The path must be valid and verifiable against the game's asset loading mechanism.
          *
-         * @param newImagePath Placeholder.
-         * @return Placeholder.
+         * @param newImagePath The string path to the image resource.
+         * @return this builder concrete instance for method chaining.
          */
         public X imagePath(final String newImagePath) {
-            if (!newImagePath.startsWith("classpath:")) {
-                this.imagePath = "file:" + newImagePath;
-            } else {
-                this.imagePath = newImagePath;
-            }
-
+            this.imagePath = newImagePath;
             return self();
         }
 
         /**
-         * Placeholder.
+         * Sets the categorical type of the entity (e.g., KING, PAWN, POWERUP).
          *
-         * @param newPieceType Placeholder.
-         * @return Placeholder.
+         * @param newPieceType The {@link PieceType} value.
+         * @return this builder concrete instance for method chaining.
          */
         public X pieceType(final PieceType newPieceType) {
             this.pieceType = newPieceType;
@@ -137,16 +142,23 @@ public abstract class AbstractEntityDefinition {
         }
 
         /**
-         * Placeholder.
+         * Returns the builder instance itself.
+         * <p>
+         * Designed to be implemented by subclasses to return {@code this}, ensuring the correct return type
+         * for fluent method chaining (otherwise the abstract type would be returned and method chaining will break).
+         * </p>
          *
-         * @return Placeholder.
+         * @return the builder instance of type {@code X}.
          */
         protected abstract X self();
 
         /**
-         * Placeholder.
+         * Builds the final {@link AbstractEntityDefinition} instance.
+         * <p>
+         * Subclasses must implement this to return their specific concrete type.
+         * </p>
          *
-         * @return Placeholder.
+         * @return a new instance of an {@link AbstractEntityDefinition} concrete subclass.
          */
         public abstract AbstractEntityDefinition build();
     }

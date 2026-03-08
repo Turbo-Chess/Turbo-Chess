@@ -23,7 +23,6 @@ import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
@@ -31,7 +30,18 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * placeholder.
+ * A concrete implementation of the {@link GameController} interface.
+ * <p>
+ * This class serves as the central hub for game logic execution, maintaining references to all critical
+ * game subsystems (match, coordinator, factories). It processes user input from the view layer,
+ * updates the model state, and reflects changes back to the UI.
+ * </p>
+ * <p>
+ * Key responsibilities include:
+ * - Managing player loadouts and piece definitions.
+ * - Coordinating move validation and execution through the {@link ChessMatch}.
+ * - Handling special game events like promotion and surrender.
+ * </p>
  */
 public final class GameControllerImpl implements GameController {
     private static final List<String> PATHS = List.of(
@@ -39,7 +49,7 @@ public final class GameControllerImpl implements GameController {
             GameProperties.EXTERNAL_MOD_FOLDER.getPath());
 
     // Will the taken from the selected loadout
-    private static final String LOADOUT_ID = "standard-chess-loadout";
+    private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
@@ -57,10 +67,9 @@ public final class GameControllerImpl implements GameController {
     @Setter
     private ChessboardViewController chessboardViewController;
     @Getter
-    private final Loadout whiteLoadout = loadoutManager.load(LOADOUT_ID).get();
+    private final Loadout whiteLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get();
     @Getter
-    // TODO: Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
-    private final Loadout blackLoadout = loadoutManager.load(LOADOUT_ID).get().mirrored();
+    private final Loadout blackLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get().mirrored();
     @Getter
     // The board factory is created here as is part of the current game, but it needs to be
     // accessed also from outside to create new pieces in other classes.
@@ -74,9 +83,9 @@ public final class GameControllerImpl implements GameController {
     private GameHistoryRecorder historyRecorder;
 
     /**
-     * placeholder.
+     * Constructs a new {@code GameControllerImpl}.
      *
-     * @param gameCoordinator placeholder.
+     * @param gameCoordinator The {@link GameCoordinator} that manages the overall application lifecycle.
      */
     public GameControllerImpl(final GameCoordinator gameCoordinator) {
         this.gameCoordinator = gameCoordinator;
@@ -84,6 +93,9 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Delegates to the internal {@link MoveCache} to retrieve pre-calculated moves.
+     * </p>
      */
     @Override
     public List<Point2D> getAvailableCells(final int pieceGameId) {
@@ -92,6 +104,9 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Delegates to the internal {@link MoveCache} to store valid moves.
+     * </p>
      */
     @Override
     public void cacheAvailableCells(final int pieceGameId, final List<Point2D> moves) {
@@ -100,6 +115,9 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Clears the move cache. Should be called whenever the board state changes significantly.
+     * </p>
      */
     @Override
     public void clearCache() {
@@ -108,11 +126,15 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Processes a click event on the board.
+     * It interacts with the {@link it.unibo.samplejavafx.mvc.model.handler.TurnHandler} to determine valid actions
+     * (move selection or piece movement) and updates the {@link ChessboardViewController} to show/hide move highlights.
+     * </p>
      */
     @Override
     public void handleClick(final Point2D pointClicked) {
         // TODO: implement using the cache
-        // TODO: think of using sets instead of lists
 
         if (this.match == null) {
             throw new IllegalStateException("Board should be initialized before using it");
@@ -145,6 +167,9 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Helper method to construct asset paths for different colored variants of a piece.
+     * </p>
      */
     @Override
     public String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
@@ -152,6 +177,12 @@ public final class GameControllerImpl implements GameController {
         return "file:" + imagePath + "/" + color + "_" + id + ".png";
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Delegates the surrender action to the match's turn handler.
+     * </p>
+     */
     @Override
     public void surrender() {
         if (this.match != null) {
@@ -159,6 +190,13 @@ public final class GameControllerImpl implements GameController {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Handles the pawn promotion process.
+     * Identifies the promotion position, removes the pawn, and uses the {@link BoardFactory} to place the new piece.
+     * </p>
+     */
     @Override
     public void promote(final LoadoutEntry pieceEntry) {
         final Point2D pos = match.getPromotionPos();
@@ -168,12 +206,25 @@ public final class GameControllerImpl implements GameController {
                 AdvancedRules.swapColor(match.getCurrentPlayer()));
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Delegates to the coordinator to switch the scene to the main game view.
+     * </p>
+     */
     @Override
     public void showGame() {
         this.gameCoordinator.showGame();
     }
 
-    // TODO: remove that method to use the static inside advanced rules
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Scans the board to find the King of the opponent of the current player.
+     * </p>
+     * @deprecated This method is deprecated and should be replaced by internal state tracking in {@link AdvancedRules}.
+     */
+    @Deprecated
     @Override
     public Point2D getKingPos() {
         if (this.match == null) {

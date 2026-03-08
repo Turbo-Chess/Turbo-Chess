@@ -18,7 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * placeholder.
+ * The {@code ChessMatchImpl} class is the concrete implementation of the {@link ChessMatch} interface.
+ * <p>
+ * It server as the primary source ot truth of the game, storing data such as the current turn, the current player
+ * the current game state and a reference to all the components used to manage the advancement of the game.
+ * </p>
+ * <p>
+ * This class is designed to be observable, allowing UI components or other systems to react to changes
+ * in the game flow (e.g., turn updates, game over scenarios).
+ * </p>
  */
 @EqualsAndHashCode
 @ToString
@@ -42,16 +50,25 @@ public final class ChessMatchImpl implements ChessMatch {
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 
     /**
-     * placeholder.
+     * Constructs a new standard chess match.
+     * <p>
+     * Initializes a new empty {@link ChessBoardImpl} by default.
+     * </p>
      */
+    // TODO: check removal of this never user constructor
     public ChessMatchImpl() {
         this(new ChessBoardImpl());
     }
 
     /**
-     * placeholder.
+     * Constructs a new chess match using a provided board instance.
+     * <p>
+     * This constructor is suitable for loading saved games or custom scenarios where the board
+     * is pre-configured. It initializes the turn handler, history recorder, and sets the starting
+     * player to WHITE.
+     * </p>
      *
-     * @param board placeholder.
+     * @param board The {@link ChessBoard} instance to be used for this match.
      */
     public ChessMatchImpl(final ChessBoard board) {
         this.gameState = GameState.NORMAL;
@@ -66,6 +83,11 @@ public final class ChessMatchImpl implements ChessMatch {
         this.board.addObserver(historyRecorder);
     }
 
+    /**
+     * placeholder.
+     *
+     * @param turnNumber placeholder.
+     */
     @Override
     public void setTurnNumber(final int turnNumber) {
         this.turnNumber = turnNumber;
@@ -73,6 +95,11 @@ public final class ChessMatchImpl implements ChessMatch {
         this.notifyTurnUpdated(this.turnNumber);
     }
 
+    /**
+     * placeholder.
+     *
+     * @param playerColor placeholder.
+     */
     @Override
     public void setPlayerColor(final PlayerColor playerColor) {
         this.currentPlayer = playerColor;
@@ -100,24 +127,47 @@ public final class ChessMatchImpl implements ChessMatch {
         subscribers.forEach(sub -> sub.onGameStateUpdated(state, playerColor));
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Updates the internal turn counter and broadcasts the change.
+     * </p>
+     */
     @Override
     public void updateTurn(final int turn) {
        this.turnNumber = turn;
        this.notifyTurnUpdated(this.turnNumber);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Updates the active player reference and broadcasts the change.
+     * </p>
+     */
     @Override
     public void updatePlayerColor(final PlayerColor currentColor) {
         this.currentPlayer = currentColor;
         this.notifyPlayerColorUpdated(this.currentPlayer);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Updates the match status (e.g., transition to CHECKMATE) and notifies observers.
+     * </p>
+     */
     @Override
     public void updateGameState(final GameState state, final PlayerColor playerColor) {
         this.gameState = state;
         this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
     }
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     public Point2D getPromotionPos() {
         return turnHandler.getCurrentPiecePos();
     }
