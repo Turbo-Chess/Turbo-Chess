@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
@@ -23,6 +24,7 @@ public final class PromotionController {
     private final Loadout white;
     private final Loadout black;
     private final GameController controller;
+    private final LoaderController loaderController;
     private int x;
     private int y;
 
@@ -31,8 +33,9 @@ public final class PromotionController {
      *
      * @param controller the {@link GameController} connected to this GUI.
      */
-    public PromotionController(final GameController controller) {
+    public PromotionController(final GameController controller, final LoaderController loaderController) {
         this.controller = controller;
+        this.loaderController = loaderController;
         this.white = controller.getWhiteLoadout();
         this.black = controller.getBlackLoadout();
         this.x = DEFAULT_VALUE;
@@ -65,7 +68,7 @@ public final class PromotionController {
         }
 
         for (final LoadoutEntry entry : set) {
-            final String imagePath = controller.getLoaderController().getEntityCache()
+            final String imagePath = loaderController.getEntityCache()
                     .get(entry.packId()).get(entry.pieceId()).getImagePath();
             final String imageColorPath = controller.calculateImageColorPath(imagePath, currentColor, entry.pieceId());
             final Button btn = new Button("");

@@ -26,12 +26,6 @@ import java.util.List;
  * </p>
  */
 public interface GameController {
-    /**
-     * Retrieves the controller responsible for loading entity resources.
-     *
-     * @return the {@link LoaderController} instance.
-     */
-    LoaderController getLoaderController();
 
     /**
      * Initializes the controller with a specific chess match instance.
@@ -40,13 +34,6 @@ public interface GameController {
      * @param match The {@link ChessMatch} to be managed.
      */
     void setMatch(ChessMatch match);
-
-    /**
-     * Retrieves the manager responsible for player loadout configurations.
-     *
-     * @return the {@link LoadoutManager}.
-     */
-    LoadoutManager getLoadoutManager();
 
     // TODO: move this into the cache controller
     /**
@@ -148,13 +135,6 @@ public interface GameController {
     Loadout getBlackLoadout();
 
     /**
-     * Retrieves the factory used to create board instances and pieces.
-     *
-     * @return the {@link BoardFactory}.
-     */
-    BoardFactory getBoardFactory();
-
-    /**
      * @return the game history.
      */
     GameHistory getGameHistory();
@@ -175,4 +155,6 @@ public interface GameController {
      * @return the {@link ChessMatch} object.
      */
     ChessMatch getMatch();
+
+    void setupCoordinator();
 }

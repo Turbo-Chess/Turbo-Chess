@@ -50,14 +50,11 @@ public final class GameControllerImpl implements GameController {
 
     // Will the taken from the selected loadout
     private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
-    @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
-    @Getter
     // Loadout Manager is used as a "service" class to manage and load loadouts, so it's intended to be
     // passed as a mutable dependency
     @SuppressFBWarnings("EI_EXPOSE_REP")
-
     private final LoadoutManager loadoutManager = new LoadoutManager();
     // The match is intended to be accessed from the game controller to give data to classes
     // that modifies it to play the game correctly.
@@ -71,13 +68,11 @@ public final class GameControllerImpl implements GameController {
     private Loadout whiteLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get();
     @Getter
     @Setter
-    // TODO: Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
     private Loadout blackLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get().mirrored();
-    @Getter
     // The board factory is created here as is part of the current game, but it needs to be
     // accessed also from outside to create new pieces in other classes.
     @SuppressFBWarnings("EI_EXPOSE_REP")
-    private final BoardFactory boardFactory = new BoardFactoryImpl(loaderController);
+    private BoardFactory boardFactory = new BoardFactoryImpl(loaderController);
 
     private final GameCoordinator gameCoordinator;
 
@@ -265,5 +260,11 @@ public final class GameControllerImpl implements GameController {
             throw new IllegalStateException("Match not initialized");
         }
         return this.match.getBoard();
+    }
+
+    public void setupCoordinator() {
+        this.boardFactory = new BoardFactoryImpl(this.loaderController);
+        this.gameCoordinator.setBoardFactory(this.boardFactory);
+        this.gameCoordinator.setLoaderController(this.loaderController);
     }
 }

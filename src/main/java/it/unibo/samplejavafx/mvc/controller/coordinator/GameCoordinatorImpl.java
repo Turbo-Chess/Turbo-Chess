@@ -3,6 +3,8 @@ package it.unibo.samplejavafx.mvc.controller.coordinator;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
@@ -26,6 +28,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +55,10 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private Scene gameScene;
     private ChessboardViewControllerImpl chessboardViewController;
     private final GameController gameController = new GameControllerImpl(this);
+    @Setter
+    private BoardFactory boardFactory;
+    @Setter
+    private LoaderController loaderController;
     private final ReplayManager replayManager = new ReplayManager();
     private Path currentSaveFile;
 
@@ -65,6 +72,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @SuppressFBWarnings("EI_EXPOSE_REP2")
     public GameCoordinatorImpl(final Stage stage) {
         this.stage = stage;
+        gameController.setupCoordinator();
     }
 
     /**
@@ -74,7 +82,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      * </p>
      */
     public void loadPieces() {
-        gameController.getLoaderController().load();
+        this.loaderController.load();
     }
 
     /**
@@ -164,7 +172,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
             // TODO: pass the loader controller to constructor
-            loader.setControllerFactory(c -> new PromotionController(this.gameController));
+            loader.setControllerFactory(c -> new PromotionController(this.gameController, this.loaderController));
             final Parent root = loader.load();
             final PromotionController prom = loader.getController();
             prom.init(gameController.getMatch().getCurrentPlayer());
@@ -252,10 +260,11 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     private void createNewMatch() {
+        gameController.setupCoordinator();
         final ChessMatch match = new ChessMatchImpl();
         match.addObserver(this.chessboardViewController);
         match.getBoard().addObserver(this.chessboardViewController);
-        gameController.getBoardFactory().populateChessboard(
+        boardFactory.populateChessboard(
                 gameController.getWhiteLoadout(),
                 gameController.getBlackLoadout(),
                 match.getBoard());
@@ -265,7 +274,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         
         this.chessboardViewController.refreshBoardView(match.getBoard());
 
-        gameController.getLoaderController().load();
+        // TODO: is this needed?
+       loaderController.load();
     }
 
     public void initLoadGame() {
@@ -306,7 +316,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             final ReplayController replayController = new ReplayControllerImpl(match.getBoard());
             replayController.loadHistory(history);
             replayController.jumpToEnd();
-            
+
+            // TODO: remove the getMatch method
             match.getGameHistory().setEvents(history.getEvents());
 
             final GameEvent lastEvent = history.getLastEvent();
