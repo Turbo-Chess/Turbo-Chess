@@ -51,17 +51,6 @@ public final class ChessMatchImpl implements ChessMatch {
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 
     /**
-     * Constructs a new standard chess match.
-     * <p>
-     * Initializes a new empty {@link ChessBoardImpl} by default.
-     * </p>
-     */
-    // TODO: check removal of this never user constructor
-//    public ChessMatchImpl() {
-//        this(new ChessBoardImpl());
-//    }
-
-    /**
      * Constructs a new chess match using a provided board instance.
      * <p>
      * This constructor is suitable for loading saved games or custom scenarios where the board

@@ -252,7 +252,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     private void createNewMatch() {
-        // TODO: refactor this to now pass the view controller to the model
         final ChessMatch match = new ChessMatchImpl();
         match.addObserver(this.chessboardViewController);
         match.getBoard().addObserver(this.chessboardViewController);

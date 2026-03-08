@@ -20,11 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class GameHistoryRecorderTest {
 
     private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath().replace("file:", "");
+    private static final String PIECE_NAME = "Pawn";
 
     private static final Piece TEST_PIECE = new Piece.Builder()
-        .setHasMoved(false)
+        .hasMoved(false)
         .entityDefinition(new PieceDefinition.Builder()
-            .name("Pawn")
+            .name(PIECE_NAME)
             .id("test")
             .imagePath(IMAGE_PATH)
             .weight(1)
@@ -44,7 +45,7 @@ class GameHistoryRecorderTest {
     
     private Entity createTestPiece(final String name, final PlayerColor color) {
         return new Piece.Builder()
-            .setHasMoved(false)
+            .hasMoved(false)
             .entityDefinition(new PieceDefinition.Builder()
                 .name(name)
                 .id(name.toLowerCase(Locale.ROOT))

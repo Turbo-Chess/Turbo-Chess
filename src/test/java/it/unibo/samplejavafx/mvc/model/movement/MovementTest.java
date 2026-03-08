@@ -46,7 +46,7 @@ class MovementTest {
         final int currentGameId = counter;
         counter++;
         return new Piece.Builder()
-            .setHasMoved(false)
+            .hasMoved(false)
             .entityDefinition(def)
             .gameId(currentGameId)
             .playerColor(color)
