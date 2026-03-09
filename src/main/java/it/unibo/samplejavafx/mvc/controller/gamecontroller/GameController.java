@@ -3,12 +3,10 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
-import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 
@@ -17,6 +15,7 @@ import java.util.List;
 /**
  * The {@code GameController} interface orchestrates the flow of the chess game, mediating between
  * the data model (match, board, loadouts) and the user interface.
+ *
  * <p>
  * It provides methods for:
  * - Managing game entities and resources via the {@link LoaderController}.
@@ -69,7 +68,7 @@ public interface GameController {
     /**
      * Executes the promotion of a pawn to a new piece type.
      *
-     * @param pieceEntry The {@link LoadoutEntry} describing the new piece to be placed.
+     * @param pieceEntry the {@link LoadoutEntry} of the piece to promote.
      */
     void promote(LoadoutEntry pieceEntry);
 
@@ -81,20 +80,6 @@ public interface GameController {
      * @return the {@link Point2D} coordinate of the King.
      */
     Point2D getKingPos();
-
-    /**
-     * Sets the white player's loadout.
-     *
-     * @param loadout the loadout to set.
-     */
-    void setWhiteLoadout(Loadout loadout);
-
-    /**
-     * Sets the black player's loadout.
-     *
-     * @param loadout the loadout to set.
-     */
-    void setBlackLoadout(Loadout loadout);
 
     /**
      * Retrieves the loadout configuration for the White player.

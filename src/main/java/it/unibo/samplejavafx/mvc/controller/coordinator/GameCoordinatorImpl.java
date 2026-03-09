@@ -9,8 +9,9 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
@@ -34,11 +35,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A concrete implementation of the {@link GameCoordinator} interface.
+ *
  * <p>
  * This class uses JavaFX's {@link FXMLLoader} to dynamically load FXML layouts and instantiate their respective
  * controllers. It holds a reference to the main application {@link Stage} and manages scene transitions,
  * as well as the game creation with all its other components.
  * </p>
+ *
  * <p>
  * It acts as the central router for the application, ensuring that the correct view is displayed and
  * properly initialized with necessary dependencies.
@@ -77,16 +80,19 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Delegates resource loading to the {@link GameController}'s loader.
      * </p>
      */
+    @Override
     public void loadPieces() {
         this.loaderController.load();
     }
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Initializes the Main Menu view, loading the "MainMenu.fxml" layout and applying the corresponding stylesheet.
      * </p>
@@ -112,6 +118,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Initializes the Settings view, loading the "Settings.fxml" layout.
      * </p>
@@ -137,6 +144,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Initializes the Loadout configuration view.
      * </p>
@@ -144,24 +152,47 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public void initLoadout() {
         try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Loadout.fxml"));
-            loader.setControllerFactory(c -> new LoadoutController(this));
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutSelector.fxml"));
+            loader.setControllerFactory(c -> new LoadoutSelector(this.gameController, this));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
+            /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
             if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
-            }
-            stage.setTitle("TurboChess - Loadout");
+            }*/
+            stage.setTitle("TurboChess - Loadout Selector");
             stage.setScene(scene);
             stage.show();
         } catch (final IOException e) {
-            LOGGER.error("Failed to load Loadout", e);
+            LOGGER.error("Failed to load Loadout Selector", e);
+        }
+    }
+
+    /**
+     * Initializes the loadout editor scene.
+     */
+    @Override
+    public void initLoadoutEditor() {
+        try {
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
+            loader.setControllerFactory(c -> new LoadoutEditor(gameController, this));
+            final Parent root = loader.load();
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
+            if (cssLocation != null) {
+                scene.getStylesheets().add(cssLocation.toExternalForm());
+            }*/
+            stage.setTitle("TurboChess - Loadout Editor");
+            stage.setScene(scene);
+            stage.show();
+        } catch (final IOException e) {
+            LOGGER.error("Failed to load Loadout Editor", e);
         }
     }
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Loads the "Promotion.fxml" layout and initializes its controller with the current player's context.
      * This prepares the UI for a pawn promotion event.
@@ -197,6 +228,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Invalidates the current game root and re-initializes the game, effectively resetting the match.
      * </p>
@@ -209,6 +241,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Creates a new chess game recreating all the components needed for it.
      * </p>
@@ -222,6 +255,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Sets the scene of the primary stage to the game scene and shows it, without creating a new match.
      * </p>
@@ -249,7 +283,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
            final var cssLocation = getClass().getResource("/css/GameLayout.css");
             this.gameScene = new Scene(gameRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-
            if (cssLocation != null) {
                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
            }
@@ -271,13 +304,16 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         this.gameController.setMatch(match);
         match.addObserver(this.chessboardViewController);
         gameController.setChessboardViewController(this.chessboardViewController);
-        
+
         this.chessboardViewController.refreshBoardView(match.getBoard());
 
         // TODO: check the bug in the loading
        loaderController.load();
     }
 
+    /**
+     * placeholder.
+     */
     public void initLoadGame() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadGame.fxml"));
@@ -296,6 +332,11 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         }
     }
 
+    /**
+     * placeholder.
+     *
+     * @param path placeholder.
+     */
     @Override
     public void loadGame(final Path path) {
         final GameHistory history = replayManager.loadGame(path);
@@ -312,19 +353,18 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             initGame();
 
             final ChessMatch match = gameController.getMatch();
-            
+
             final ReplayController replayController = new ReplayControllerImpl(match.getBoard());
             replayController.loadHistory(history);
             replayController.jumpToEnd();
 
-            // TODO: remove the getMatch method
             match.getGameHistory().setEvents(history.getEvents());
 
             final GameEvent lastEvent = history.getLastEvent();
             if (lastEvent != null) {
                 int turn = lastEvent.getTurn();
                 PlayerColor player = PlayerColor.WHITE;
-                
+
                 if (lastEvent instanceof MoveEvent move) {
                      player = move.entityColor() == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
                      if (move.entityColor() == PlayerColor.BLACK) {
@@ -333,21 +373,27 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 } else {
                     // TODO: Handle spawn/despawn events ONLY for power ups
                 }
-                
+
                 match.setTurnNumber(turn);
                 match.setPlayerColor(player);
             }
         }
     }
 
+    /**
+     * placeholder.
+     *
+     * @param fileToSave placeholder.
+     * @return placeholder.
+     */
     @Override
     public boolean saveGame(final Path fileToSave) {
         final GameHistory history = gameController.getGameHistory();
         history.setWhiteLoadout(gameController.getWhiteLoadout());
         history.setBlackLoadout(gameController.getBlackLoadout());
-        
+
         LOGGER.info("Saving game history with {} events", history.getEvents().size());
-        
+
         try {
             if (replayManager.saveGame(history, fileToSave)) {
                 this.currentSaveFile = fileToSave;
@@ -359,6 +405,11 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         return false;
     }
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
     @Override
     public Path getCurrentSaveFile() {
         return this.currentSaveFile;

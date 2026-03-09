@@ -7,6 +7,7 @@ import java.util.Map;
 /**
  * The {@code LoaderController} interface manages the loading and caching of game resources,
  * specifically entity definitions such as pieces and power-ups.
+ *
  * <p>
  * It acts as a central repository for these definitions, allowing other components (like factories)
  * to retrieve entity blueprints by their pack and ID without needing to access the filesystem directly.
@@ -15,6 +16,7 @@ import java.util.Map;
 public interface LoaderController {
     /**
      * Initiates the resource loading process.
+     *
      * <p>
      * Scans configured directories for resource packs, parses entity definition files,
      * and populates the internal cache. This method is typically called during application startup.
@@ -24,6 +26,7 @@ public interface LoaderController {
 
     /**
      * Retrieves the cache of loaded entity definitions.
+     *
      * <p>
      * The structure is a nested Map where the outer key is the resource pack name (e.g., "standard-chess")
      * and the inner key is the specific entity ID (e.g., "pawn") that is associated with the entity definition.

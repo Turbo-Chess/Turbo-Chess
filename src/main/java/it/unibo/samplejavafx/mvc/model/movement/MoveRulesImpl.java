@@ -15,6 +15,7 @@ import java.util.Optional;
 
 /**
  * Implementation of {@link MoveRules} that defines how a piece moves.
+ *
  * <p>
  * A {@code MoveRulesImpl} encapsulates:
  * - A direction vector.

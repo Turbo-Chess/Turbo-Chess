@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Defines a caching mechanism for storing and retrieving valid movement paths for chess pieces.
+ *
  * <p>
  * This interface is designed to optimize performance by storing calculated moves for pieces,
  * preventing the need to recalculate them multiple times within the same turn or context
@@ -31,6 +32,7 @@ public interface MoveCache {
 
     /**
      * Clears all cached move data.
+     *
      * <p>
      * This method should be called whenever the board state changes (e.g., after a move is executed),
      * as previous calculations become invalid.

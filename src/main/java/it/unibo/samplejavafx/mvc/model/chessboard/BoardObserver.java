@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 /**
  * The {@code BoardObserver} interface defines a mechanism for objects to listen and react to changes
  * occurring on the {@link ChessBoard}.
+ *
  * <p>
  * Implementing classes can receive notifications when entities are added, removed, or moved on the board,
  * allowing for decoupling between the board's data and dependent systems such as the UI or game logic.

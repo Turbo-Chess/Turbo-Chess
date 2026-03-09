@@ -14,11 +14,13 @@ import java.util.List;
 
 /**
  * Represents the definition for a game piece, extending the general {@link AbstractEntityDefinition}.
+ *
  * <p>
  * This class encapsulates the specific rules and attributes that define a piece's behavior on the board.
  * Key properties include its weight (strategic value) and a collection of {@link MoveRules} that dictate
  * legal movement patterns.
  * </p>
+ *
  * <p>
  * Instances of this class are immutable and intended to be defined once (e.g., loaded from JSON configuration)
  * and shared across multiple piece instances.
@@ -35,6 +37,7 @@ public class PieceDefinition extends AbstractEntityDefinition {
 
     /**
      * Constructs a new {@code PieceDefinition} using the provided builder.
+     *
      * <p>
      * This constructor validates that the piece has a positive weight and at least one defined move rule.
      * </p>
@@ -60,6 +63,7 @@ public class PieceDefinition extends AbstractEntityDefinition {
 
     /**
      * A concrete builder for creating {@link PieceDefinition} instances.
+     *
      * <p>
      * Facilitates the construction of complex piece definitions with validated parameters.
      * </p>
@@ -104,6 +108,7 @@ public class PieceDefinition extends AbstractEntityDefinition {
 
         /**
          * {@inheritDoc}
+         *
          * <p>
          * Creates a new immutable {@link PieceDefinition} instance based on the current builder state.
          * </p>

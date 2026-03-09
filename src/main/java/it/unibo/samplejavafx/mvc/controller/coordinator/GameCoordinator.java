@@ -9,6 +9,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 /**
  * The {@code GameCoordinator} interface acts as the high-level application controller, managing the
  * navigation between different screens (scenes) and the overall lifecycle of the game application.
+ *
  * <p>
  * It provides methods to initialize and switch between the Main Menu, Settings, Loadout configuration,
  * and the active Game view. It also handles application-wide actions like quitting or resetting the game.
@@ -33,6 +34,11 @@ public interface GameCoordinator {
      * Allows players to select and customize their pieces selection before a match.
      */
     void initLoadout();
+
+    /**
+     * Initializes the loadout editor.
+     */
+    void initLoadoutEditor();
 
     /**
      * Initializes and displays the Pawn Promotion dialog.
@@ -63,12 +69,31 @@ public interface GameCoordinator {
      */
     void showGame();
 
+    /**
+     * Loads the pieces for the game.
+     */
     void loadPieces();
 
+    /**
+     * Loads the last saved game. 
+     * 
+     * @param path the path of the save file.
+     */
     void loadGame(Path path);
 
+    /**
+     * Saves the current game.
+     * 
+     * @param fileToSave the file path where to save the game.
+     * @return {@code true} if the save is successful, {@code false} otherwise.
+     */
     boolean saveGame(Path fileToSave);
 
+    /**
+     * Getter for the save file.
+     * 
+     * @return the {@link Path} of the save file. 
+     */
     Path getCurrentSaveFile();
 
     void setBoardFactory(BoardFactory boardFactory);

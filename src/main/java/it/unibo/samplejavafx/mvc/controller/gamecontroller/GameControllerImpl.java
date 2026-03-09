@@ -31,11 +31,13 @@ import java.util.Set;
 
 /**
  * A concrete implementation of the {@link GameController} interface.
+ *
  * <p>
  * This class serves as the central hub for game logic execution, maintaining references to all critical
  * game subsystems (match, coordinator, factories). It processes user input from the view layer,
  * updates the model state, and reflects changes back to the UI.
  * </p>
+ *
  * <p>
  * Key responsibilities include:
  * - Managing player loadouts and piece definitions.
@@ -50,11 +52,14 @@ public final class GameControllerImpl implements GameController {
 
     // Will the taken from the selected loadout
     private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
+    @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
     private final MoveCache moveCache = new MoveCacheImpl();
+    @Getter
     // Loadout Manager is used as a "service" class to manage and load loadouts, so it's intended to be
     // passed as a mutable dependency
     @SuppressFBWarnings("EI_EXPOSE_REP")
+
     private final LoadoutManager loadoutManager = new LoadoutManager();
     // The match is intended to be accessed from the game controller to give data to classes
     // that modifies it to play the game correctly.
@@ -91,6 +96,7 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Processes a click event on the board.
      * It interacts with the {@link it.unibo.samplejavafx.mvc.model.handler.TurnHandler} to determine valid actions
@@ -132,6 +138,7 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Helper method to construct asset paths for different colored variants of a piece.
      * </p>
@@ -144,6 +151,7 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Delegates the surrender action to the match's turn handler.
      * </p>
@@ -157,6 +165,7 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Handles the pawn promotion process.
      * Identifies the promotion position, removes the pawn, and uses the {@link BoardFactory} to place the new piece.
@@ -173,6 +182,7 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Delegates to the coordinator to switch the scene to the main game view.
      * </p>
@@ -184,9 +194,11 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Scans the board to find the King of the opponent of the current player.
      * </p>
+     *
      * @deprecated This method is deprecated and should be replaced by internal state tracking in {@link AdvancedRules}.
      */
     @Deprecated

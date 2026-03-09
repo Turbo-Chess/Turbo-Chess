@@ -9,6 +9,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
  * The {@code BoardFactory} interface defines a factory for creating and populating {@link ChessBoard} instances.
+ *
  * <p>
  * It provides methods to generate a fully populated board based on player loadouts, as well as utility methods
  * for creating individual game pieces dynamically during a match (e.g., for pawn promotion).
@@ -17,6 +18,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 public interface BoardFactory {
     /**
      * Creates a new {@link ChessBoard} populated with pieces according to the specified loadouts for both players.
+     *
      * <p>
      * This method initializes the board state, places pieces in their starting positions, and attaches
      * the provided observer to monitor subsequent board events.
@@ -29,6 +31,7 @@ public interface BoardFactory {
 
     /**
      * Creates and places a new piece on an existing board at the specified position.
+     *
      * <p>
      * This method is typically used for game mechanics that introduce new pieces during play,
      * such as pawn promotion.

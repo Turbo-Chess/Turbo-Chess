@@ -12,6 +12,7 @@ import lombok.ToString;
  * Unlike standard pieces, PowerUps are special entities that, when interacted with or activated,
  * apply specific effects to the game state. These effects can influence either the active player,
  * the opponent, or the board itself.
+ *
  * <p>
  * Each PowerUp has a defined duration, indicating how long its effect persists.
  * </p>
@@ -36,6 +37,7 @@ public class PowerUp extends AbstractEntity<PowerUpDefinition> {
 
     /**
      * Triggers and applies the specific effect associated with this PowerUp on the game board.
+     *
      * <p>
      * Note: The implementation of specific effects is pending (Currently a placeholder).
      * Future implementations should utilize the duration and definition properties to alter game state.
@@ -75,6 +77,7 @@ public class PowerUp extends AbstractEntity<PowerUpDefinition> {
 
         /**
          * {@inheritDoc}
+         *
          * <p>
          * Creates a new immutable {@link PowerUp} object based on the current builder state.
          * </p>
