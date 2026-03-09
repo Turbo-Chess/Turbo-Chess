@@ -71,11 +71,6 @@ public interface GameCoordinator {
 
     Path getCurrentSaveFile();
 
-    /**
-     * @return the game controller.
-     */
-    GameController getGameController();
-
     void setBoardFactory(BoardFactory boardFactory);
 
     void setLoaderController(LoaderController loaderController);

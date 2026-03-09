@@ -274,7 +274,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         
         this.chessboardViewController.refreshBoardView(match.getBoard());
 
-        // TODO: is this needed?
+        // TODO: check the bug in the loading
        loaderController.load();
     }
 
@@ -331,7 +331,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                          turn++;
                      }
                 } else {
-                    // TODO: Handle spawn/despawn events
+                    // TODO: Handle spawn/despawn events ONLY for power ups
                 }
                 
                 match.setTurnNumber(turn);
@@ -362,11 +362,5 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public Path getCurrentSaveFile() {
         return this.currentSaveFile;
-    }
-
-    // TODO: maybe remove
-    @Override
-    public GameController getGameController() {
-        return this.gameController;
     }
 }

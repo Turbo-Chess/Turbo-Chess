@@ -31,14 +31,6 @@ public interface Moveable {
     List<Point2D> getValidMoves(Point2D start, ChessBoard board);
 
     /**
-     * Retrieves the list of cells currently cached as available moves.
-     * This method is typically used for UI highlighting or quick access to previously calculated moves.
-     *
-     * @return a {@link List} of available {@link Point2D} coordinates.
-     */
-    List<Point2D> getAvailableCells();
-
-    /**
      * Updates the internal state of the entity to indicate that it has performed a move.
      * This state change is often relevant for rules concerning initial moves (e.g., pawn double step, castling).
      */

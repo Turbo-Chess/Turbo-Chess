@@ -30,8 +30,6 @@ import java.util.Optional;
 @JsonDeserialize(builder = Piece.Builder.class)
 public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     private boolean hasMoved;
-    @Deprecated
-    private final List<Point2D> availableCells = new ArrayList<>();
 
      /**
       * Constructs a new {@code Piece} instance using the provided builder configuration.
@@ -43,7 +41,6 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
         this.hasMoved = builder.hasMoved;
     }
 
-
     /**
      * {@inheritDoc}
      * <p>
@@ -53,30 +50,12 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
      */
     @Override
     public final List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
-        this.availableCells.clear();
         final List<Point2D> res = new ArrayList<>();
         for (final var movement : super.getEntityDefinition().getMoveRules()) {
             res.addAll(movement.getValidMoves(start, board, super.getPlayerColor()));
-            // This is maintained for now for compatibility, well be removed as well as "availableCells"
-            availableCells.addAll(res);
         }
         return Collections.unmodifiableList(res);
     }
-
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Returns a cached list of available cells from the last validation.
-     * Note: This method accesses a deprecated field and may be subject to removal in future versions.
-     * </p>
-     */
-    @Override
-    @JsonIgnore
-    public final List<Point2D> getAvailableCells() {
-        return Collections.unmodifiableList(this.availableCells);
-    }
-
 
     /**
      * {@inheritDoc}

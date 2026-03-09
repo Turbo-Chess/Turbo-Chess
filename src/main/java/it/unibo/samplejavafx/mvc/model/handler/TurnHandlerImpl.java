@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -17,6 +18,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.rules.CastleCondition;
 import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
+import lombok.Setter;
 
 /**
  * Placeholder.
@@ -27,6 +29,8 @@ public final class TurnHandlerImpl implements TurnHandler {
     private static final Point2D BOUNDARIES = new Point2D(0, 7);
     private final ChessMatch match;
     private final ChessBoard board;
+    @Setter
+    private MoveCache moveCache;
     private final Map<Piece, List<Point2D>> interposingPieces;
     private GameState state;
     private CastleCondition castlingOptions;
@@ -62,6 +66,13 @@ public final class TurnHandlerImpl implements TurnHandler {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
+        if (board.getEntity(pos).isPresent() && board.getEntity(pos).get().asMoveable().isPresent()) {
+            final List<Point2D> cachedMoves = moveCache.getAvailableCells(board.getEntity(pos).get().getGameId());
+            if (!cachedMoves.isEmpty()) {
+                return cachedMoves;
+            }
+        }
+
         return switch (state) {
             case NORMAL -> doIfNormal(pos);
             case CHECK -> doIfCheck(pos);
@@ -145,6 +156,7 @@ public final class TurnHandlerImpl implements TurnHandler {
         }
         this.castlingOptions = AdvancedRules.castle(board, currentColor);
         unsetCurrentPiece();
+        moveCache.clearCache();
         return true;
     }
 
@@ -190,6 +202,7 @@ public final class TurnHandlerImpl implements TurnHandler {
                 case NO_CASTLE:
                     break;
             }
+            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), this.pieceMoves);
             return this.pieceMoves;
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
@@ -197,6 +210,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             this.currentPiece = Optional.of(newPiece);
             this.promotionHolder = Optional.of(newPiece);
             this.pieceMoves = newPiece.getValidMoves(pos, board);
+            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), this.pieceMoves);
             return this.pieceMoves;
         }
         if (!board.isFree(pos)
@@ -226,6 +240,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
             this.pieceMoves = AdvancedRules.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), this.pieceMoves);
             return this.pieceMoves;
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
@@ -233,6 +248,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             final var piece = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(piece);
             this.pieceMoves = interposingPieces.get(piece);
+            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), this.pieceMoves);
             return this.pieceMoves;
         }
         if (!board.isFree(pos)
@@ -262,6 +278,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
             this.pieceMoves = AdvancedRules.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), this.pieceMoves);
             return this.pieceMoves;
         }
         if (!board.isFree(pos)

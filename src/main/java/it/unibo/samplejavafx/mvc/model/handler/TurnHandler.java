@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.handler;
 
+import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -53,4 +54,6 @@ public interface TurnHandler {
      * @return placeholder.
      */
     Point2D getCurrentPiecePos();
+
+    void setMoveCache(final MoveCache moveCache);
 }

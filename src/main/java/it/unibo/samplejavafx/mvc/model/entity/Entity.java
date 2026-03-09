@@ -66,6 +66,8 @@ public interface Entity {
      */
     PlayerColor getPlayerColor();
 
+    int getGameId();
+
     /**
      * Attempts to cast this entity to a {@link Moveable} object.
      * In this way is possible to safely check if the entity possesses movement capabilities.

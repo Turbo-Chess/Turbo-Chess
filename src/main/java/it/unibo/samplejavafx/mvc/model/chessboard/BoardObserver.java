@@ -28,8 +28,6 @@ public interface BoardObserver {
      */
     void onEntityRemoved(Point2D pos, Entity entity);
 
-    // TODO: this two methods maybe can be merged into one
-
     /**
      * placeholder.
      *
@@ -46,6 +44,7 @@ public interface BoardObserver {
      * @param to placeholder.
      * @param entity placeholder.
      */
-    void onEntityMoved(Point2D from, Point2D to, Entity entity);
+    default void onEntityMoved(Point2D from, Point2D to, Entity entity) {
+    }
 
 }

@@ -211,6 +211,7 @@ public final class GameControllerImpl implements GameController {
              this.historyRecorder.onEntityAdded(pos, entity);
         });
         this.match.getBoard().addObserver(this.historyRecorder);
+        this.match.getTurnHandler().setMoveCache(this.moveCache);
     }
 
     @Override
