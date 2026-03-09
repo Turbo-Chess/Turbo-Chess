@@ -30,6 +30,11 @@ public interface GameCoordinator {
     void initPromotion();
 
     /**
+     * Initializes the load game menu.
+     */
+    void initLoadGame();
+
+    /**
      * Quits the application.
      */
     void quit();

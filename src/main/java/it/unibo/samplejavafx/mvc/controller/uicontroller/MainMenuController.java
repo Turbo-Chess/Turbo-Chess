@@ -1,6 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 
 import javafx.event.ActionEvent;
 import java.io.IOException;
@@ -9,14 +9,14 @@ import java.io.IOException;
  * placeholder.
  */
 public final class MainMenuController {
-    private final GameCoordinatorImpl coordinator;
+    private final GameCoordinator coordinator;
 
     /**
      * placeholder.
      *
      * @param coordinator placeholder.
      */
-    public MainMenuController(final GameCoordinatorImpl coordinator) {
+    public MainMenuController(final GameCoordinator coordinator) {
         this.coordinator = coordinator;
     }
 
