@@ -43,7 +43,7 @@ public final class GameHistoryRecorder implements BoardObserver {
                         && move.to().equals(pos)
                         && move.entityName().equals(despawn.entity().getName())
                         && move.entityColor() == despawn.entity().getPlayerColor()) {
-                    
+
                     history.removeLastEvent();
                     history.removeLastEvent();
                     final MoveEvent mergedMove = new MoveEvent(
@@ -56,13 +56,11 @@ public final class GameHistoryRecorder implements BoardObserver {
                         entity,
                         despawn.entity()
                     );
-                    
                     history.addEvent(mergedMove);
                     return;
                 }
             }
         }
-        
         history.addEvent(new SpawnEvent(turnSupplier.get(), entity, pos));
     }
 

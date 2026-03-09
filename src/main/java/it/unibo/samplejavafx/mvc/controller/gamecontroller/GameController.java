@@ -41,6 +41,21 @@ public interface GameController {
      */
     void setMatch(ChessMatch match);
 
+
+    /**
+     * Setter for white loadout.
+     * 
+     * @param loadout the white loadout.
+     */
+    void setWhiteLoadout(Loadout loadout);
+
+    /**
+     * Setter for black loadout.
+     * 
+     * @param loadout the black loadout.
+     */
+    void setBlackLoadout(Loadout loadout);
+
     /**
      * Retrieves the manager responsible for player loadout configurations.
      *
@@ -106,7 +121,7 @@ public interface GameController {
     /**
      * Executes the promotion of a pawn to a new piece type.
      *
-     * @param pieceEntry The {@link LoadoutEntry} describing the new piece to be placed.
+     * @param pieceEntry the {@link LoadoutEntry} of the piece to promote.
      */
     void promote(LoadoutEntry pieceEntry);
 
@@ -118,20 +133,6 @@ public interface GameController {
      * @return the {@link Point2D} coordinate of the King.
      */
     Point2D getKingPos();
-
-    /**
-     * Sets the white player's loadout.
-     *
-     * @param loadout the loadout to set.
-     */
-    void setWhiteLoadout(Loadout loadout);
-
-    /**
-     * Sets the black player's loadout.
-     *
-     * @param loadout the loadout to set.
-     */
-    void setBlackLoadout(Loadout loadout);
 
     /**
      * Retrieves the loadout configuration for the White player.

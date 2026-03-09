@@ -33,6 +33,11 @@ public interface GameCoordinator {
     void initLoadout();
 
     /**
+     * Initializes the loadout editor.
+     */
+    void initLoadoutEditor();
+
+    /**
      * Initializes and displays the Pawn Promotion dialog.
      */
     void initPromotion();
@@ -61,12 +66,31 @@ public interface GameCoordinator {
      */
     void showGame();
 
+    /**
+     * Loads the pieces for the game.
+     */
     void loadPieces();
 
+    /**
+     * Loads the last saved game. 
+     * 
+     * @param path the path of the save file.
+     */
     void loadGame(Path path);
 
+    /**
+     * Saves the current game.
+     * 
+     * @param fileToSave the file path where to save the game.
+     * @return {@code true} if the save is successful, {@code false} otherwise.
+     */
     boolean saveGame(Path fileToSave);
 
+    /**
+     * Getter for the save file.
+     * 
+     * @return the {@link Path} of the save file. 
+     */
     Path getCurrentSaveFile();
 
     /**

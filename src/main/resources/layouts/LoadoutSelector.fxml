@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="BorderPain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector">
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="77.0" prefWidth="600.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToMenu" text="Back" />
+            <Button fx:id="loadoutEditorButton" mnemonicParsing="false" onAction="#backToLoadoutEditor" text="Loadout Editor" />
+         </children>
+      </HBox>
+   </bottom>
+   <left>
+      <ListView fx:id="loadoutListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <Label text="Loadout Selector" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <ListView fx:id="loadoutView" prefHeight="283.0" prefWidth="298.0" BorderPane.alignment="CENTER" />
+   </center>
+   <right>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="loadButton" mnemonicParsing="false" text="Load" />
+            <Button fx:id="useButton" mnemonicParsing="false" text="Use" />
+            <CheckBox fx:id="forBlack" mnemonicParsing="false" text="For Black" textAlignment="CENTER" />
+         </children>
+      </VBox>
+   </right>
+</BorderPane>
