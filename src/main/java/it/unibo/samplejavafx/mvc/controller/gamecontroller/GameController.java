@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 
@@ -89,6 +90,20 @@ public interface GameController {
     Loadout getWhiteLoadout();
 
     /**
+     * Sets the white player's loadout.
+     *
+     * @param loadout the loadout to set.
+     */
+    void setWhiteLoadout(Loadout loadout);
+
+    /**
+     * Sets the black player's loadout.
+     *
+     * @param loadout the loadout to set.
+     */
+    void setBlackLoadout(Loadout loadout);
+
+    /**
      * Retrieves the loadout configuration for the Black player.
      *
      * @return the Black player's {@link Loadout}.
@@ -118,4 +133,8 @@ public interface GameController {
     ChessMatch getMatch();
 
     void setupCoordinator();
+
+    LoaderController getLoaderController();
+
+    LoadoutManager getLoadoutManager();
 }

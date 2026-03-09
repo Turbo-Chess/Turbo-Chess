@@ -120,4 +120,6 @@ public final class LoadoutSelector implements Initializable {
     public void backToLoadoutEditor(final ActionEvent e) {
         this.coordinator.initLoadoutEditor();
     }
+
+    // TODO: remove the getter and pass the loadout manager FOR LUCA
 }
