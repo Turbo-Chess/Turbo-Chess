@@ -31,6 +31,7 @@ public interface GameController {
      * @param match placeholder.
      */
     void setMatch(ChessMatch match);
+
     /**
      * Setter for white loadout.
      * 
@@ -103,9 +104,9 @@ public interface GameController {
     void surrender();
 
     /**
-     * placeholder.
+     * Handles the game state of Promotion.
      *
-     * @param pieceId placeholder.
+     * @param pieceEntry the {@link LoadoutEntry} of the piece to promote.
      */
     void promote(LoadoutEntry pieceEntry);
 
@@ -152,5 +153,10 @@ public interface GameController {
      */
     void showGame();
 
+    /**
+     * Getter for the current ChessMatch.
+     * 
+     * @return the active {@link ChessMatch}.
+     */
     ChessMatch getMatch();
 }

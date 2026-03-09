@@ -40,7 +40,7 @@
          <children>
             <TextField fx:id="textLabel" />
             <Button fx:id="saveButton" mnemonicParsing="false" text="Save Loadout" />
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#toLoadoutSelector" text="Back" />
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToLoadoutSelector" text="Back" />
          </children>
       </VBox>
    </right>

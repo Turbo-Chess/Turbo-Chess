@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

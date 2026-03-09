@@ -30,7 +30,18 @@ public record MoveEvent(
     @JsonProperty("originalEntity") Entity originalEntity
 ) implements GameEvent {
 
-    public MoveEvent(int turn, String entityName, PlayerColor entityColor, Point2D from, Point2D to, Entity capturedEntity) {
+    /**
+     * Constructor for the record.
+     * 
+     * @param turn placeholder.
+     * @param entityName placeholder.
+     * @param entityColor placeholder.
+     * @param from placeholder.
+     * @param to placeholder.
+     * @param capturedEntity placeholder.
+     */
+    public MoveEvent(final int turn, final String entityName, final PlayerColor entityColor,
+                     final Point2D from, final Point2D to, final Entity capturedEntity) {
         this(turn, entityName, entityColor, from, to, capturedEntity, null, null);
     }
 

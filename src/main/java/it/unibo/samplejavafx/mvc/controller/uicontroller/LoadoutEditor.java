@@ -26,7 +26,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-public class LoadoutEditor implements Initializable {
+/**
+ * Controller for the LoadoutEditor UI.
+ */
+public final class LoadoutEditor implements Initializable {
+    private static final int SIZE = 16;
+    private static final int ROW = 2;
+    private static final int COLUMN = 8;
     @FXML
     private Button saveButton;
     @FXML
@@ -35,33 +41,39 @@ public class LoadoutEditor implements Initializable {
     private ListView<String> pieceView;
     @FXML
     private TextField textLabel;
-    private static final int SIZE = 16;
-    private static final int ROW = 2;
-    private static final int COLUMN = 8;
     private final GameController controller;
     private final GameCoordinator coordinator;
     private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private final Map<Point2D, LoadoutEntry> entries = new HashMap<>();
     private String selectedPiece;
-    private int x = 0;
-    private int y = 0;
+    private int x;
+    private int y;
 
+    /**
+     * Constructor for the LoadoutEditor.
+     * 
+     * @param controller the {@link GameController} needed for this class to operate.
+     * @param coordinator the {@link GameCoordinator} needed for this class to operate.
+     */
     public LoadoutEditor(final GameController controller, final GameCoordinator coordinator) {
         this.controller = controller;
         this.coordinator = coordinator;
         this.entityCache.putAll(controller.getLoaderController().getEntityCache());
+        this.x = 0;
+        this.y = 0;
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(final URL location, final ResourceBundle resources) {
         final ObservableList<String> pieceNames = FXCollections.observableArrayList(entityCache.values().stream()
-                .map(m -> m.keySet())
+                .map(Map::keySet)
                 .flatMap(Set::stream)
                 .collect(Collectors.toSet()));
         pieceView.setItems(pieceNames);
-        pieceView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        pieceView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(final ObservableValue<? extends String> observable,
+                                final String oldValue, final String newValue) {
                 selectedPiece = pieceView.getSelectionModel().getSelectedItem();
             }
         });
@@ -83,7 +95,7 @@ public class LoadoutEditor implements Initializable {
     }
 
     private String ofPack(final String id) {
-        for (String packId : entityCache.keySet()) {
+        for (final String packId : entityCache.keySet()) {
             if (entityCache.get(packId).containsKey(id)) {
                 return packId;
             }
@@ -106,7 +118,12 @@ public class LoadoutEditor implements Initializable {
         }
     }
 
-    public void toLoadoutSelector(final ActionEvent e) {
+    /**
+     * Handles the "Loadout Selector" button action.
+     * 
+     * @param e the {@link ActionEvent} linked to the button.
+     */
+    public void backToLoadoutSelector(final ActionEvent e) {
         this.coordinator.initLoadout();
     }
 }

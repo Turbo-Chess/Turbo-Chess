@@ -5,7 +5,6 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
@@ -51,6 +50,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * placeholder.
      */
+    @Override
     public void loadPieces() {
         gameController.getLoaderController().load();
     }
@@ -100,7 +100,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * Initializes the loadout scene.
+     * Initializes the loadout selector scene.
      */
     @Override
     public void initLoadout() {
@@ -122,7 +122,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * Initializes the loadout scene.
+     * Initializes the loadout editor scene.
      */
     @Override
     public void initLoadoutEditor() {
@@ -144,7 +144,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
+     * Initializes the promotion scene.
      */
     @Override
     public void initPromotion() {
@@ -174,15 +174,15 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         stage.close();
     }
 
+    /**
+     * Resets the game.
+     */
     @Override
     public void resetGame() {
         this.gameRoot = null;
         initGame();
     }
 
-    /**
-     * placeholder.
-     */
     @Override
     public void initGame() {
         loadGameUI();
@@ -212,7 +212,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
            final var cssLocation = getClass().getResource("/css/GameLayout.css");
             this.gameScene = new Scene(gameRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-
            if (cssLocation != null) {
                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
            }
@@ -235,23 +234,42 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         gameController.getLoaderController().load();
     }
 
+    /**
+     * placeholder.
+     */
     public void initLoadGame() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'initLoadGame'");
     }
 
+    /**
+     * placeholder.
+     * 
+     * @param path placeholder.
+     */
     @Override
-    public void loadGame(Path path) {
+    public void loadGame(final Path path) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'loadGame'");
     }
 
+    /**
+     * placeholder.
+     * 
+     * @param fileToSave placeholder.
+     * @return placeholder.
+     */
     @Override
-    public boolean saveGame(Path fileToSave) {
+    public boolean saveGame(final Path fileToSave) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'saveGame'");
     }
 
+    /**
+     * placeholder.
+     * 
+     * @return placeholder.
+     */
     @Override
     public Path getCurrentSaveFile() {
         // TODO Auto-generated method stub

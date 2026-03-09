@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model.handler;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,32 +56,42 @@ public final class TurnHandlerImpl implements TurnHandler {
     }
 
     /**
-     * placeholder.
+     * Handles all the actions of the players during his turn.
      * 
-     * @param pos placeholder.
-     * @return placeholder.
+     * @param pos the {@link Point2D} of the clicked cell.
+     * @return a list of {@link Point2D} of all possible moves for the View side.
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
         return switch (state) {
-            case NORMAL -> doIfNormal(pos);
-            case CHECK -> doIfCheck(pos);
-            case DOUBLE_CHECK -> doIfDoubleCheck(pos);
+            case NORMAL -> {
+                yield doIfNormal(pos);
+            }
+            case CHECK -> {
+                yield doIfCheck(pos);
+            }
+            case DOUBLE_CHECK -> {
+                yield doIfDoubleCheck(pos);
+            }
             case PROMOTION -> {
                 if (AdvancedRules.check(board, currentColor) == GameState.CHECK) {
                     yield doIfCheck(pos);
                 }
                 yield doIfNormal(pos);
             }
-            default -> Collections.emptyList();
+            default -> {
+                yield new LinkedList<>();
+            }
         };
     }
 
     /**
-     *  placeholder.
+     * Executes the turn, finalizing the chosen move and rechecking all rules.
      *
-     * @param moveAction placeholder.
-     * @param target placeholder.
+     * @param moveAction the {@link MoveType} of the chosen move.
+     * @param target the {@link Point2D} position of the chosen move.
+     * @return   {@code true} if the turn has ended successfully, 
+     *           {@code false} if the game ends with {@code CHECKMATE} or {@code DRAW}.
      */
     @Override
     public boolean executeTurn(final MoveType moveAction, final Point2D target) {
@@ -139,7 +150,7 @@ public final class TurnHandlerImpl implements TurnHandler {
         this.currentColor = AdvancedRules.swapColor(currentColor);
         updateStats();
 
-        if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor), state)) {
+        if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor))) {
             updateStats();
             return false;
         }
@@ -159,10 +170,12 @@ public final class TurnHandlerImpl implements TurnHandler {
     }
 
     /**
-     * placeholder.
+     * Strategy for handling thinking during a {@code NORMAL}.
      * 
-     * @param pos placeholder.
-     * @return placeholder.
+     * @param pos the {@link Point2D} of the chosen cell.
+     * @return  a list of {@link Point2D} containing all the possible moves for a piece,
+     *          returns a single {@link Point2D} of the chosen movement if the piece moves,
+     *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
      */
     private List<Point2D> doIfNormal(final Point2D pos) {
         if (board.isFree(pos) && currentPiece.isEmpty()) {
@@ -209,10 +222,12 @@ public final class TurnHandlerImpl implements TurnHandler {
     }
 
     /**
-     * placeholder.
+     * Strategy for handling thinking during a {@code CHECK}.
      * 
-     * @param pos placeholder.
-     * @return placeholder.
+     * @param pos the {@link Point2D} of the chosen cell.
+     * @return  a list of {@link Point2D} containing all the possible moves for a piece,
+     *          returns a single {@link Point2D} of the chosen movement if the piece moves,
+     *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
      */
     private List<Point2D> doIfCheck(final Point2D pos) {
         if (board.isFree(pos) && currentPiece.isEmpty()) {
@@ -245,10 +260,12 @@ public final class TurnHandlerImpl implements TurnHandler {
     }
 
     /**
-     * placeholder.
+     * Strategy for handling thinking during a {@code DOUBLE_CHECK}.
      * 
-     * @param pos placeholder.
-     * @return placeholder.
+     * @param pos the {@link Point2D} of the chosen cell.
+     * @return  a list of {@link Point2D} containing all the possible moves for a piece,
+     *          returns a single {@link Point2D} of the chosen movement if the piece moves,
+     *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
      */
     private List<Point2D> doIfDoubleCheck(final Point2D pos) {
         if (board.isFree(pos) && currentPiece.isEmpty()) {
@@ -274,10 +291,10 @@ public final class TurnHandlerImpl implements TurnHandler {
     }
 
     /**
-     * placeholder.
+     * Handles the {@code PROMOTION} GameState.
      * 
-     * @param height placeholder.
-     * @return placeholder.
+     * @param height the y coordinate of the promotion (determines if the {@link PlayerColor} is either white or black).
+     * @return {@code true} if a promotion is taking place, {@code false} otherwise.
      */
     private boolean promotion(final int height) {
         final List<Point2D> pawn = board.getBoard().keySet().stream()
@@ -293,7 +310,7 @@ public final class TurnHandlerImpl implements TurnHandler {
     }
 
     /**
-     * placeholder.
+     * Unsets the current piece and all related fields.
      */
     private void unsetCurrentPiece() {
         this.currentPiece = Optional.empty();
@@ -301,16 +318,17 @@ public final class TurnHandlerImpl implements TurnHandler {
     }
 
     /**
-     * placeholder.
-     *  
-     * @return placeholder.
+     * Getter for the current piece position used for promotion.
+     * 
+     * @return the {@link Point2D} position.
      */
+    @Override
     public Point2D getCurrentPiecePos() {
         return board.getPosByEntity(promotionHolder.get());
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      */
     @Override
     public void surrender() {
@@ -321,7 +339,7 @@ public final class TurnHandlerImpl implements TurnHandler {
     }
 
     /**
-     * placeholder.
+     * Updates the match stats with the real current statistics.
      */
     public void updateStats() {
         match.updateGameState(state, currentColor);

@@ -13,7 +13,7 @@
       <HBox alignment="CENTER" prefHeight="77.0" prefWidth="600.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToMenu" text="Back" />
-            <Button fx:id="loadoutEditorButton" mnemonicParsing="false" onAction="#toLoadoutEditor" text="Loadout Editor" />
+            <Button fx:id="loadoutEditorButton" mnemonicParsing="false" onAction="#backToLoadoutEditor" text="Loadout Editor" />
          </children>
       </HBox>
    </bottom>

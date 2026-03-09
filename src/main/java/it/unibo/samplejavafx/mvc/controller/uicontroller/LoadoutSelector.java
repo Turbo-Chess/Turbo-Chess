@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
+import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,7 +25,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
-public class LoadoutSelector implements Initializable{
+/**
+ * Controller for the LoadoutSelector UI.
+ */
+public final class LoadoutSelector implements Initializable {
     @FXML
     private ListView<String> loadoutListView;
     @FXML
@@ -37,24 +41,31 @@ public class LoadoutSelector implements Initializable{
     private CheckBox forBlack;
     private final GameController controller;
     private final GameCoordinator coordinator;
-    private Map<String, String> loadoutIds = new HashMap<>();
-    private List<LoadoutEntry> entries = new LinkedList<>();
+    private final Map<String, String> loadoutIds = new HashMap<>();
+    private final List<LoadoutEntry> entries = new LinkedList<>();
     private String selectedLoadoutName;
 
+    /**
+     * Constructor for the LoadoutSelector UI.
+     * 
+     * @param controller the {@link GameController} needed for this class to operate.
+     * @param coordinator the {@link GameCoordinator} needed for this class to operate.
+     */
     public LoadoutSelector(final GameController controller, final GameCoordinator coordinator) {
         this.controller = controller;
         this.coordinator = coordinator;
         this.loadoutIds.putAll(controller.getLoadoutManager().getAll().stream()
-                               .collect(Collectors.toMap(lo -> lo.getName(), lo -> lo.getId())));
+                               .collect(Collectors.toMap(Loadout::getName, Loadout::getId)));
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(final URL location, final ResourceBundle resources) {
         final ObservableList<String> names = FXCollections.observableArrayList(loadoutIds.keySet());
         loadoutListView.setItems(names);
-        loadoutListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        loadoutListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            public void changed(final ObservableValue<? extends String> observable, 
+                                final String oldValue, final String newValue) {
                 selectedLoadoutName = loadoutListView.getSelectionModel().getSelectedItem();
             }
         });
@@ -95,18 +106,18 @@ public class LoadoutSelector implements Initializable{
     /**
      * Handles the "Back" button action.
      *
-     * @param e the action event
+     * @param e the {@link ActionEvent} linked to the button.
      */
     public void backToMenu(final ActionEvent e) {
         this.coordinator.initMainMenu();
     }
 
     /**
-     * Handles the "Back" button action.
+     * Handles the "Loadout Editor" button action.
      *
-     * @param e the action event
+     * @param e the {@link ActionEvent} linked to the button.
      */
-    public void toLoadoutEditor(final ActionEvent e) {
+    public void backToLoadoutEditor(final ActionEvent e) {
         this.coordinator.initLoadoutEditor();
     }
 }

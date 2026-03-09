@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
@@ -64,7 +63,8 @@ public class BoardFactoryImpl implements BoardFactory {
      * {@inheritDoc}
      */
     @Override
-    public void createNewPiece(final Point2D pos, final ChessBoard board, final PieceDefinition pieceDefinition, final PlayerColor color) {
+    public void createNewPiece(final Point2D pos, final ChessBoard board, 
+                               final PieceDefinition pieceDefinition, final PlayerColor color) {
         final var newPiece = new Piece.Builder()
                 .entityDefinition(pieceDefinition)
                 .gameId(gameId)
