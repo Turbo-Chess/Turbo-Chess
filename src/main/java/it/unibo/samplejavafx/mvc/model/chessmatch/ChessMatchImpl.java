@@ -20,10 +20,12 @@ import java.util.List;
 
 /**
  * The {@code ChessMatchImpl} class is the concrete implementation of the {@link ChessMatch} interface.
+ *
  * <p>
  * It server as the primary source ot truth of the game, storing data such as the current turn, the current player
  * the current game state and a reference to all the components used to manage the advancement of the game.
  * </p>
+ *
  * <p>
  * This class is designed to be observable, allowing UI components or other systems to react to changes
  * in the game flow (e.g., turn updates, game over scenarios).
@@ -52,6 +54,7 @@ public final class ChessMatchImpl implements ChessMatch {
 
     /**
      * Constructs a new standard chess match.
+     *
      * <p>
      * Initializes a new empty {@link ChessBoardImpl} by default.
      * </p>
@@ -63,6 +66,7 @@ public final class ChessMatchImpl implements ChessMatch {
 
     /**
      * Constructs a new chess match using a provided board instance.
+     *
      * <p>
      * This constructor is suitable for loading saved games or custom scenarios where the board
      * is pre-configured. It initializes the turn handler, history recorder, and sets the starting
@@ -134,6 +138,7 @@ public final class ChessMatchImpl implements ChessMatch {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Updates the internal turn counter and broadcasts the change.
      * </p>
@@ -146,6 +151,7 @@ public final class ChessMatchImpl implements ChessMatch {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Updates the active player reference and broadcasts the change.
      * </p>
@@ -158,6 +164,7 @@ public final class ChessMatchImpl implements ChessMatch {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Updates the match status (e.g., transition to CHECKMATE) and notifies observers.
      * </p>
@@ -170,7 +177,7 @@ public final class ChessMatchImpl implements ChessMatch {
 
     /**
      * Getter for the position of the promoting pawn.
-     * 
+     *
      * @return a {@link Point2D} position of the pawn.
      */
     @Override

@@ -32,11 +32,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A concrete implementation of the {@link GameCoordinator} interface.
+ *
  * <p>
  * This class uses JavaFX's {@link FXMLLoader} to dynamically load FXML layouts and instantiate their respective
  * controllers. It holds a reference to the main application {@link Stage} and manages scene transitions,
  * as well as the game creation with all its other components.
  * </p>
+ *
  * <p>
  * It acts as the central router for the application, ensuring that the correct view is displayed and
  * properly initialized with necessary dependencies.
@@ -70,6 +72,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Delegates resource loading to the {@link GameController}'s loader.
      * </p>
@@ -81,6 +84,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Initializes the Main Menu view, loading the "MainMenu.fxml" layout and applying the corresponding stylesheet.
      * </p>
@@ -106,6 +110,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Initializes the Settings view, loading the "Settings.fxml" layout.
      * </p>
@@ -131,6 +136,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Initializes the Loadout configuration view.
      * </p>
@@ -178,6 +184,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Loads the "Promotion.fxml" layout and initializes its controller with the current player's context.
      * This prepares the UI for a pawn promotion event.
@@ -214,6 +221,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Invalidates the current game root and re-initializes the game, effectively resetting the match.
      * </p>
@@ -226,6 +234,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Creates a new chess game recreating all the components needed for it.
      * </p>
@@ -239,6 +248,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Sets the scene of the primary stage to the game scene and shows it, without creating a new match.
      * </p>

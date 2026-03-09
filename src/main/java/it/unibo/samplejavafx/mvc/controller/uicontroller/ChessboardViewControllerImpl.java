@@ -59,11 +59,13 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
 /**
  * A concrete implementation of the {@link ChessboardViewController} interface responsible for managing the
  * JavaFX view of the chessboard.
+ *
  * <p>
  * This class coordinates user interaction with the board (clicks), updates the visual state based on model changes,
  * and handles UI-related game logic such as highlighting moves, displaying turn information, and managing
  * replay controls.
  * </p>
+ *
  * <p>
  * It acts as an observer for both the {@link ChessMatchObserver} and {@link BoardObserver}, ensuring
  * real-time synchronization between the game state and the UI.
@@ -141,6 +143,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     /**
      * Initializes the controller after its root element has been completely processed.
+     *
      * <p>
      * Sets up event handlers for UI components, initializes the board grid, and configures
      * the replay mode controls.
@@ -281,6 +284,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     /**
      * Initializes the chessboard grid pane with buttons and binds their size to the window.
+     *
      * <p>
      * This method creates a 8x8 grid of buttons, setting up their event handlers for user interaction
      * and styling. It also initializes the turn and player labels.

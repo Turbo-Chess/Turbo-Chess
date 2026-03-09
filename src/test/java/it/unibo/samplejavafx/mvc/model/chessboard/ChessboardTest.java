@@ -27,7 +27,7 @@ class ChessboardTest {
                 .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false)))
                 .build();
         return new Piece.Builder()
-                .setHasMoved(false)
+                .hasMoved(false)
                 .entityDefinition(def)
                 .gameId(gameId)
                 .playerColor(color)

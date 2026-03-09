@@ -13,6 +13,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
  * A concrete implementation of the {@link BoardFactory} interface.
+ *
  * <p>
  * This class uses a {@link LoaderController} to fetch the necessary entity definitions from disk or cache.
  * It manages the creation of unique game IDs for each instantiated piece to ensure proper tracking during the match.
@@ -33,6 +34,7 @@ public class BoardFactoryImpl implements BoardFactory {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Iterates through the entries in the provided loadouts and places corresponding pieces onto a new board instance.
      * </p>
@@ -68,6 +70,7 @@ public class BoardFactoryImpl implements BoardFactory {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Utilizes the internal game ID counter to instantiate a new piece with the given definition
      * and places it at the specified coordinate on the board.

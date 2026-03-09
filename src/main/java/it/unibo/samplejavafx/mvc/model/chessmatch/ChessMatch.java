@@ -8,7 +8,8 @@ import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
-l * The {@code ChessMatch} interface represents the core session of a chess game.
+ * The {@code ChessMatch} interface represents the core session of a chess game.
+ *
  * <p>
  * It acts as the central source of truth for the game state, maintaining the flow of turns, player progression,
  * and the overall status of the match (e.g., normal, checkmate, draw).

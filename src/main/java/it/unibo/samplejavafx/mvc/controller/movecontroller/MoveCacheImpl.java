@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * A concrete implementation of {@link MoveCache} using a {@link HashMap}.
+ *
  * <p>
  * This implementation stores valid moves mapped by the piece's unique identifier.
  * It provides constant-time access to cached moves.

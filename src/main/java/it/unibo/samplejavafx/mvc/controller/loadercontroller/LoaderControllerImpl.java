@@ -20,11 +20,13 @@ import java.util.stream.Stream;
 
 /**
  * A concrete implementation of the {@link LoaderController} interface.
+ *
  * <p>
  * This class handles the filesystem operations required to traverse resource directories,
  * utilizing {@link EntityLoader} to parse individual files. It maintains an in-memory cache
  * of all successfully loaded definitions for efficient runtime access.
  * </p>
+ *
  * <p>
  * It is robust against missing directories or malformed files, logging errors rather than crashing the application.
  * </p>
@@ -47,6 +49,7 @@ public class LoaderControllerImpl implements LoaderController {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Iterates over all configured root paths. It attempts to access each path as a directory
      * and load all subordinate resource packs into the cache.
@@ -107,6 +110,7 @@ public class LoaderControllerImpl implements LoaderController {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Returns an unmodifiable view of the internal cache to prevent external modification.
      * </p>

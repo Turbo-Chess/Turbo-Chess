@@ -9,6 +9,7 @@ import com.google.common.collect.BiMap;
 
 /**
  * The {@code ChessBoard} interface represents the fundamental game space where the chess match occurs.
+ *
  * <p>
  * It defines the contract for board interactions, including placing, retrieving, and moving entities (pieces),
  * as well as checking board boundaries and state. The board acts as the central data structure maintaining
@@ -27,6 +28,7 @@ public interface ChessBoard {
 
     /**
      * Places or updates an entity at a specific position on the board.
+     *
      * <p>
      * If the position is already occupied, the existing entity is typically replaced or removed
      * depending on game rules.
@@ -39,6 +41,7 @@ public interface ChessBoard {
 
     /**
      * Removes any entity present at the specified position.
+     *
      * <p>
      * If the position is already empty, this operation has no effect.
      * </p>
@@ -57,6 +60,7 @@ public interface ChessBoard {
 
     /**
      * Finds the current position of a specific entity on the board.
+     *
      * <p>
      * This reverse-lookup is useful for determining where a known piece is currently located.
      * </p>
@@ -76,6 +80,7 @@ public interface ChessBoard {
 
     /**
      * Retrieves a complete mapping of all occupied positions and their corresponding entities.
+     *
      * <p>
      * The returned {@link BiMap} allows for bidirectional lookup between positions and entities.
      * </p>
@@ -100,6 +105,7 @@ public interface ChessBoard {
 
     /**
      * Executes a move of an entity from one position to another.
+     *
      * <p>
      * This method handles the logical update of the board state corresponding to a piece's movement.
      * </p>

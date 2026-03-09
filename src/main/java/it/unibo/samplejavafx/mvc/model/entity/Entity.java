@@ -10,6 +10,7 @@ import java.util.Optional;
  * This abstraction serves as the root for various game elements such as pieces, power-ups, or obstacles.
  * Implementing classes must define core characteristics including identification, visual representation,
  * and ownership information.
+ *
  * <p>
  * This interface works in conjunction with the JSON serialization mechanism to allow polymorphic
  * handling of board entities.

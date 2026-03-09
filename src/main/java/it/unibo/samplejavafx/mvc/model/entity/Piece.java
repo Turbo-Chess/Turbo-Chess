@@ -20,6 +20,7 @@ import java.util.Optional;
  * This class encapsulates the state and behavior of pieces such as Pawns, Kings, or custom pieces.
  * It implements the {@link Moveable} interface to provide movement logic based on the piece's definition
  * and the current state of the board.
+ *
  * <p>
  * This class is designed to be immutable with respect to its definition, but maintains state for
  * gameplay mechanics like movement history.
@@ -46,6 +47,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Calculates valid moves by delegating to the movement rules defined in the {@link PieceDefinition}.
      * It considers the piece's current position, board state, and player color.
@@ -114,6 +116,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Marks the piece as having moved. This action is irreversible for the duration of the match
      * and affects the availability of certain moves.
@@ -137,11 +140,11 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
          * Sets the initial movement state of the piece.
          * Useful when loading a game from a save state where a piece might have already moved.
          *
-         * @param hasMoved {@code true} if the piece has already moved, {@code false} otherwise.
+         * @param newHasMoved {@code true} if the piece has already moved, {@code false} otherwise.
          * @return this builder instance.
          */
-        public Builder hasMoved(final boolean hasMoved) {
-            this.hasMoved = hasMoved;
+        public Builder hasMoved(final boolean newHasMoved) {
+            this.hasMoved = newHasMoved;
             return this;
         }
 
@@ -155,6 +158,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
 
         /**
          * {@inheritDoc}
+         *
          * <p>
          * Creates a new immutable {@link Piece} object based on the current builder state.
          * </p>

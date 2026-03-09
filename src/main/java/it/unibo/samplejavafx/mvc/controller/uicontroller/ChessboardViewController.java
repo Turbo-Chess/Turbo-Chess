@@ -8,6 +8,7 @@ import java.util.Set;
 /**
  * The {@code ChessboardViewController} interface defines the contact for the UI controller responsible for
  * managing the visual representation of the chess board.
+ *
  * <p>
  * It provides methods to update the board's appearance based on game state changes, such as moving pieces,
  * highlighting valid moves, and visualizing captures.

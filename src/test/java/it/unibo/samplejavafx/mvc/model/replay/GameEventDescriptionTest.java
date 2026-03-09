@@ -19,7 +19,7 @@ class GameEventDescriptionTest {
         final Point2D from = new Point2D(0, 6);
         final Point2D to = new Point2D(0, 5);
         final Piece captured = new Piece.Builder()
-            .setHasMoved(false)
+            .hasMoved(false)
             .entityDefinition(new PieceDefinition.Builder()
                 .name("EnemyPawn")
                 .id("ep")
@@ -45,7 +45,7 @@ class GameEventDescriptionTest {
     @Test
     void testSpawnEventDescription() {
         final Piece piece = new Piece.Builder()
-            .setHasMoved(false)
+            .hasMoved(false)
             .entityDefinition(new PieceDefinition.Builder()
                 .name("King")
                 .id("k1")
@@ -68,7 +68,7 @@ class GameEventDescriptionTest {
     @Test
     void testDespawnEventDescription() {
         final Piece piece = new Piece.Builder()
-            .setHasMoved(false)
+            .hasMoved(false)
             .entityDefinition(new PieceDefinition.Builder()
                 .name("Queen")
                 .id("q1")

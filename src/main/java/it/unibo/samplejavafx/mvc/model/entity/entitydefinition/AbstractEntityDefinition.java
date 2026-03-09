@@ -13,12 +13,14 @@ import lombok.ToString;
 
 /**
  * Defines the fundamental properties and structure for all entity types in the game.
+ *
  * <p>
  * This abstract class serves as a blueprint for entity definitions, encapsulating shared attributes
  * such as the entity's unique identifier, display name, visual asset path, and its categorical type
  * (as defined by {@link PieceType}).
  * This allows to not duplicate this data across all instances of the same entity in the game.
  * </p>
+ *
  * <p>
  * It utilizes the Builder pattern for object construction and includes JSON annotations
  * provided by the Jackson library to support polymorphic deserialization of different entity definition types.
@@ -83,6 +85,7 @@ public abstract class AbstractEntityDefinition {
 
     /**
      * A generic abstract builder for constructing {@link AbstractEntityDefinition} instances.
+     *
      * <p>
      * This class uses recursive generics to allow method chaining in subclasses and to maintain type safety.
      * </p>
@@ -143,6 +146,7 @@ public abstract class AbstractEntityDefinition {
 
         /**
          * Returns the builder instance itself.
+         *
          * <p>
          * Designed to be implemented by subclasses to return {@code this}, ensuring the correct return type
          * for fluent method chaining (otherwise the abstract type would be returned and method chaining will break).
@@ -154,6 +158,7 @@ public abstract class AbstractEntityDefinition {
 
         /**
          * Builds the final {@link AbstractEntityDefinition} instance.
+         *
          * <p>
          * Subclasses must implement this to return their specific concrete type.
          * </p>

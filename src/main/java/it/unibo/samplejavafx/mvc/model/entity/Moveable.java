@@ -8,6 +8,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 /**
  * The {@code Moveable} interface defines the behavior for game entities that are capable of changing their position
  * on the game board. It provides methods to calculate valid destinations and track movement history.
+ *
  * <p>
  * Implementing classes are expected to adhere to the game's movement rules, ensuring that all returned moves are valid
  * within the context of the current board state.
@@ -18,6 +19,7 @@ public interface Moveable {
     /**
      * Calculates and returns the set of all possible coordinates to which the piece can legally move
      * from a given starting position.
+     *
      * <p>
      * This calculation takes into account the geometry of the board, the presence of other pieces,
      * and the specific movement patterns defined for the entity.

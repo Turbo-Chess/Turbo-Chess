@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * The {@code GameController} interface orchestrates the flow of the chess game, mediating between
  * the data model (match, board, loadouts) and the user interface.
+ *
  * <p>
  * It provides methods for:
  * - Managing game entities and resources via the {@link LoaderController}.
@@ -40,7 +41,6 @@ public interface GameController {
      * @param match The {@link ChessMatch} to be managed.
      */
     void setMatch(ChessMatch match);
-
 
     /**
      * Setter for white loadout.

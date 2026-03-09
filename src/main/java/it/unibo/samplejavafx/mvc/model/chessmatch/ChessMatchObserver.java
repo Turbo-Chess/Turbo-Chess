@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.model.handler.GameState;
 /**
  * The {@code ChessMatchObserver} interface defines a contract for objects that wish to monitor
  * the progression and state changes of a chess match.
+ *
  * <p>
  * This observer pattern implementation to react to core game events
  * like turn completion, player switching, and game-over conditions.
@@ -21,6 +22,7 @@ public interface ChessMatchObserver {
 
     /**
      * Called when the active player changes.
+     *
      * <p>
      * This event signals that control has passed from one player to the other, indicating whose turn it is to move.
      * </p>
@@ -31,6 +33,7 @@ public interface ChessMatchObserver {
 
     /**
      * Called when the overall game state changes.
+     *
      * <p>
      * This method is critical for detecting victory conditions (Checkmate), draws (Stalemate), or special states (Check).
      * </p>

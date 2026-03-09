@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 /**
  * The {@code GameCoordinator} interface acts as the high-level application controller, managing the
  * navigation between different screens (scenes) and the overall lifecycle of the game application.
+ *
  * <p>
  * It provides methods to initialize and switch between the Main Menu, Settings, Loadout configuration,
  * and the active Game view. It also handles application-wide actions like quitting or resetting the game.

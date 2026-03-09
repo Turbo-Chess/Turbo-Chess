@@ -7,6 +7,7 @@ import lombok.Getter;
 
 /**
  * Represents the definition for a game power-up, separate from standard pieces.
+ *
  * <p>
  * This class defines the attributes of a power-up, specifically its duration in game turns.
  * Power-up definitions are typically instantiated from configuration files and used to generate
@@ -20,6 +21,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
 
     /**
      * Constructs a new {@code PowerUpDefinition} using the provided builder.
+     *
      * <p>
      * Ensures that the duration is a positive or zero number to have a durability.
      * Zero means that the effect will terminate in that turn, while a positive number means that
@@ -41,6 +43,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
 
     /**
      * A concrete builder for creating {@link PowerUpDefinition} instances.
+     *
      * <p>
      * Allows for setting the duration before building the immutable definition object.
      * </p>
@@ -71,6 +74,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
 
         /**
          * {@inheritDoc}
+         *
          * <p>
          * Creates a new immutable {@link PowerUpDefinition} instance.
          * </p>

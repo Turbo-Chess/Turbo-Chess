@@ -12,6 +12,7 @@ import lombok.ToString;
 /**
  * An abstract implementation of the {@link Entity} interface, providing core functionality
  * for all game entities including pieces and power-ups.
+ *
  * <p>
  * This class handles the association between an entity and its definition ({@link AbstractEntityDefinition}),
  * as well as managing common properties shared by all entities.
@@ -56,6 +57,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Implementation delegates to the underlying {@link AbstractEntityDefinition}.
      * </p>
@@ -69,6 +71,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Implementation delegates to the underlying {@link AbstractEntityDefinition}.
      * </p>
@@ -82,6 +85,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Implementation delegates to the underlying {@link AbstractEntityDefinition}.
      * </p>
@@ -95,6 +99,7 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Implementation delegates to the underlying {@link AbstractEntityDefinition}.
      * </p>

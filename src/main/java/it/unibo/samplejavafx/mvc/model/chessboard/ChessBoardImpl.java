@@ -13,6 +13,7 @@ import java.util.Optional;
 
 /**
  * A concrete implementation of the {@link ChessBoard} interface.
+ *
  * <p>
  * This class uses a bidirectional map ({@link BiMap}) to efficiently manage the spatial relationships
  * between positions and entities. It handles the core logic for entity placement, removal, and movement,
@@ -32,6 +33,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * Constructs a new empty chessboard.
+     *
      * <p>
      * Initializes the internal data structure for tracking entity positions.
      * </p>
@@ -42,6 +44,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * Constructs a new chessboard initialized with a predefined set of entities.
+     *
      * <p>
      * This constructor is useful for loading saved games or setting up specific board configurations.
      * </p>
@@ -54,6 +57,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Uses the underlying map to retrieve the entity.
      * </p>
@@ -65,6 +69,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Leverages the bidirectional nature of the map to perform a reverse lookup.
      * </p>
@@ -76,6 +81,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Updates the board state. If the position is already occupied, the existing entity is removed first to ensure
      * data consistency, and the appropriate notifications are sent to observers.
@@ -92,6 +98,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Removes the entity at the specified position and notifies observers of the removal.
      * </p>
@@ -148,6 +155,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Returns {@code true} if the internal map does not contain the specified position key.
      * </p>
@@ -159,6 +167,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Validates that the coordinates are within the standard 8x8 chessboard range (0-7).
      * </p>
@@ -170,6 +179,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Returns an immutable copy of the current board state to prevent external modification
      * of the internal data structure.
@@ -182,6 +192,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Moves an entity from the start position to the end position.
      * Updates the entity's moved state if it is {@link it.unibo.samplejavafx.mvc.model.entity.Moveable}.
@@ -202,6 +213,7 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
+     *
      * <p>
      * Executes a capture maneuver. Explicitly removes the entity at the destination before moving
      * the acting piece. Updates movement state and triggers move notifications.
