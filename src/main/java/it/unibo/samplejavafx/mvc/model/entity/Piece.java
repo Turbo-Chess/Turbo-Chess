@@ -66,10 +66,12 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
 
     /**
      * {@inheritDoc}
+     * 
      * <p>
      * Returns a cached list of available cells from the last validation.
      * Note: This method accesses a deprecated field and may be subject to removal in future versions.
      * </p>
+     * 
      */
     @Override
     @JsonIgnore

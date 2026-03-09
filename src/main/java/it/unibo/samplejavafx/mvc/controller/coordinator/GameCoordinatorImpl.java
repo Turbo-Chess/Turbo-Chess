@@ -10,7 +10,6 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControlle
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
@@ -286,7 +285,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         this.gameController.setMatch(match);
         match.addObserver(this.chessboardViewController);
         gameController.setChessboardViewController(this.chessboardViewController);
-        
+
         this.chessboardViewController.refreshBoardView(match.getBoard());
 
         gameController.getLoaderController().load();
@@ -334,18 +333,18 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             initGame();
 
             final ChessMatch match = gameController.getMatch();
-            
+
             final ReplayController replayController = new ReplayControllerImpl(match.getBoard());
             replayController.loadHistory(history);
             replayController.jumpToEnd();
-            
+
             match.getGameHistory().setEvents(history.getEvents());
 
             final GameEvent lastEvent = history.getLastEvent();
             if (lastEvent != null) {
                 int turn = lastEvent.getTurn();
                 PlayerColor player = PlayerColor.WHITE;
-                
+
                 if (lastEvent instanceof MoveEvent move) {
                      player = move.entityColor() == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
                      if (move.entityColor() == PlayerColor.BLACK) {
@@ -354,7 +353,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 } else {
                     // TODO: Handle spawn/despawn events
                 }
-                
+
                 match.setTurnNumber(turn);
                 match.setPlayerColor(player);
             }
@@ -372,9 +371,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         final GameHistory history = gameController.getGameHistory();
         history.setWhiteLoadout(gameController.getWhiteLoadout());
         history.setBlackLoadout(gameController.getBlackLoadout());
-        
+
         LOGGER.info("Saving game history with {} events", history.getEvents().size());
-        
+
         try {
             if (replayManager.saveGame(history, fileToSave)) {
                 this.currentSaveFile = fileToSave;
