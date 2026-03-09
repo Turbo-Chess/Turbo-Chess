@@ -92,39 +92,6 @@ public final class GameControllerImpl implements GameController {
     /**
      * {@inheritDoc}
      * <p>
-     * Delegates to the internal {@link MoveCache} to retrieve pre-calculated moves.
-     * </p>
-     */
-    @Override
-    public List<Point2D> getAvailableCells(final int pieceGameId) {
-        return moveCache.getAvailableCells(pieceGameId);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Delegates to the internal {@link MoveCache} to store valid moves.
-     * </p>
-     */
-    @Override
-    public void cacheAvailableCells(final int pieceGameId, final List<Point2D> moves) {
-        moveCache.cacheAvailableCells(pieceGameId, moves);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Clears the move cache. Should be called whenever the board state changes significantly.
-     * </p>
-     */
-    @Override
-    public void clearCache() {
-        moveCache.clearCache();
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
      * Processes a click event on the board.
      * It interacts with the {@link it.unibo.samplejavafx.mvc.model.handler.TurnHandler} to determine valid actions
      * (move selection or piece movement) and updates the {@link ChessboardViewController} to show/hide move highlights.

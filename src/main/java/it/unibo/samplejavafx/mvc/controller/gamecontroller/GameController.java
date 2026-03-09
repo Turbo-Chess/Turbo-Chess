@@ -35,30 +35,6 @@ public interface GameController {
      */
     void setMatch(ChessMatch match);
 
-    // TODO: move this into the cache controller
-    /**
-     * Retrieves the cached list of valid moves for a specific piece.
-     * This avoids recalculating moves repeatedly for the same board state.
-     *
-     * @param pieceGameId The unique game ID of the piece.
-     * @return a {@link List} of {@link Point2D} representing valid destination cells.
-     */
-    List<Point2D> getAvailableCells(int pieceGameId);
-
-    /**
-     * Caches the calculated valid moves for a specific piece.
-     *
-     * @param pieceGameId The unique game ID of the piece.
-     * @param moves       The list of valid moves to cache.
-     */
-    void cacheAvailableCells(int pieceGameId, List<Point2D> moves);
-
-    /**
-     * Clears the current move cache.
-     * This is typically called after a move is made, invalidating previous validity calculations.
-     */
-    void clearCache();
-
     /**
      * Handles the user's interaction with a specific point on the board.
      * This method interprets clicks as either selecting a piece or attempting to move to a destination.

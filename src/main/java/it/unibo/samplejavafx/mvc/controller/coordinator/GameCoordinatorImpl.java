@@ -171,7 +171,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public void initPromotion() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
-            // TODO: pass the loader controller to constructor
             loader.setControllerFactory(c -> new PromotionController(this.gameController, this.loaderController));
             final Parent root = loader.load();
             final PromotionController prom = loader.getController();
@@ -239,6 +238,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             return;
         }
 
+        // TODO: Add crash on exceptions
        try {
            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
            loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
@@ -364,6 +364,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         return this.currentSaveFile;
     }
 
+    // TODO: maybe remove
     @Override
     public GameController getGameController() {
         return this.gameController;

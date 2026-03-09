@@ -1,10 +1,10 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
+import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
-import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
-import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
@@ -50,9 +50,7 @@ class GameControllerCacheTest {
                 .build();
 
         final ChessBoard board = new ChessBoardImpl();
-        final ChessMatch match = new ChessMatchImpl();
-        final GameController controller = new GameControllerImpl(null);
-        controller.setMatch(match);
+        final MoveCache cache = new MoveCacheImpl();
 
         final Point2D knightPos = new Point2D(4, 4);
         board.setEntity(knightPos, knight);
@@ -62,9 +60,9 @@ class GameControllerCacheTest {
         assertNotNull(calculatedMoves, "Calculated moves should not be null");
         assertFalse(calculatedMoves.isEmpty(), "Knight should have valid moves from position (4, 4)");
 
-        controller.cacheAvailableCells(knight.getGameId(), calculatedMoves);
+        cache.cacheAvailableCells(knight.getGameId(), calculatedMoves);
 
-        final List<Point2D> cachedMoves = controller.getAvailableCells(knight.getGameId());
+        final List<Point2D> cachedMoves = cache.getAvailableCells(knight.getGameId());
 
         assertNotNull(cachedMoves, "Cached moves should not be null");
         assertEquals(calculatedMoves.size(), cachedMoves.size(),
@@ -74,9 +72,9 @@ class GameControllerCacheTest {
 
         assertFalse(cachedMoves.isEmpty(), "Cache should contain moves after storing");
 
-        controller.clearCache();
+        cache.clearCache();
 
-        final List<Point2D> movesAfterClear = controller.getAvailableCells(knight.getGameId());
+        final List<Point2D> movesAfterClear = cache.getAvailableCells(knight.getGameId());
         assertNotNull(movesAfterClear, "Should return non-null list after clear");
         assertTrue(movesAfterClear.isEmpty(), "Cache should be empty after clear");
     }
