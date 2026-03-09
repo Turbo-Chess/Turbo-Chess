@@ -57,7 +57,17 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_C
 import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
 
 /**
- * placeholder.
+ * A concrete implementation of the {@link ChessboardViewController} interface responsible for managing the
+ * JavaFX view of the chessboard.
+ * <p>
+ * This class coordinates user interaction with the board (clicks), updates the visual state based on model changes,
+ * and handles UI-related game logic such as highlighting moves, displaying turn information, and managing
+ * replay controls.
+ * </p>
+ * <p>
+ * It acts as an observer for both the {@link ChessMatchObserver} and {@link BoardObserver}, ensuring
+ * real-time synchronization between the game state and the UI.
+ * </p>
  */
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
@@ -105,7 +115,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @FXML
     private Button btnEnd;
 
-    // to-do: modificare le label già presenti per essere statiche ed aggiungere quelle da bindare con i valori
     private final GameController gameController;
     private final GameCoordinator coordinator;
     private final BiMap<Point2D, Button> cells = HashBiMap.create();
@@ -118,10 +127,10 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private ChessBoard replayBoard;
 
     /**
-     * placeholder.
+     * Constructs a new {@code ChessboardViewControllerImpl}.
      *
-     * @param gameController placeholder.
-     * @param coordinator placeholder.
+     * @param gameController The central {@link GameController} mediating game logic.
+     * @param coordinator    The {@link GameCoordinator} managing high-level application flow.
      */
     // This is intended to be a shared controller to make the MVC working.
     @SuppressFBWarnings("EI_EXPOSE_REP2")
@@ -131,7 +140,11 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     }
 
     /**
-     * placeholder.
+     * Initializes the controller after its root element has been completely processed.
+     * <p>
+     * Sets up event handlers for UI components, initializes the board grid, and configures
+     * the replay mode controls.
+     * </p>
      */
     @FXML
     public void initialize() {
@@ -220,6 +233,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         refreshBoardView(gameController.getLiveBoard());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void refreshBoardView(final ChessBoard board) {
         cells.values().forEach(btn -> {
@@ -264,7 +280,11 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     }
 
     /**
-     * placeholder.
+     * Initializes the chessboard grid pane with buttons and binds their size to the window.
+     * <p>
+     * This method creates a 8x8 grid of buttons, setting up their event handlers for user interaction
+     * and styling. It also initializes the turn and player labels.
+     * </p>
      */
     @FXML
     public void initChessboardPane() {
@@ -318,6 +338,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         return imageView;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEntityAdded(final Point2D pos, final Entity entity) {
         if (isReplayMode && !isReplayBoardEvent()) {
@@ -336,6 +359,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEntityRemoved(final Point2D pos, final Entity entity) {
         if (isReplayMode) {
@@ -347,12 +373,18 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         btn.setGraphic(null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
         onEntityRemoved(from, entity);
         onEntityAdded(to, entity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEntityMoved(final Point2D from, final Point2D to) {
         if (isReplayMode) {
@@ -361,6 +393,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         highlightMovement(from, to);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMovementCells(final Set<Point2D> cellsToShow) {
         if (isReplayMode) {
@@ -377,6 +412,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void hideMovementCells(final Set<Point2D> cellsToHide) {
         if (isReplayMode) {
@@ -390,6 +428,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void highlightMovement(final Point2D start, final Point2D end) {
         if (isReplayMode) {
@@ -403,6 +444,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         this.lastEnd = end;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void highlightEat(final Point2D start, final Point2D end) {
         if (isReplayMode) {
@@ -424,6 +468,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onTurnUpdated(final int turnNumber) {
         if (isReplayMode) {
@@ -433,6 +480,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         updateHistoryList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onPlayerUpdated(final PlayerColor playerColor) {
         if (isReplayMode) {
@@ -441,6 +491,9 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         playerColorValueLabel.setText(String.valueOf(playerColor));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onGameStateUpdated(final GameState gameState, final PlayerColor playerColor) {
         if (isReplayMode) {

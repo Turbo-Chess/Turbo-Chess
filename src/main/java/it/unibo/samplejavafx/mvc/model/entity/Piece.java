@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
@@ -15,7 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Placeholder.
+ * Represents a specific game piece on the board, extending the generic {@link AbstractEntity}.
+ * This class encapsulates the state and behavior of pieces such as Pawns, Kings, or custom pieces.
+ * It implements the {@link Moveable} interface to provide movement logic based on the piece's definition
+ * and the current state of the board.
+ * <p>
+ * This class is designed to be immutable with respect to its definition, but maintains state for
+ * gameplay mechanics like movement history.
+ * </p>
  */
 @Getter
 @ToString
@@ -26,9 +34,9 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     private final List<Point2D> availableCells = new ArrayList<>();
 
      /**
-      * Placeholder.
+      * Constructs a new {@code Piece} instance using the provided builder configuration.
       *
-      * @param builder Placeholder.
+      * @param builder The {@link Builder} containing initialization parameters for the piece.
       */
      protected Piece(final Builder builder) {
         super(builder);
@@ -38,6 +46,10 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Calculates valid moves by delegating to the movement rules defined in the {@link PieceDefinition}.
+     * It considers the piece's current position, board state, and player color.
+     * </p>
      */
     @Override
     public final List<Point2D> getValidMoves(final Point2D start, final ChessBoard board) {
@@ -54,6 +66,10 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Returns a cached list of available cells from the last validation.
+     * Note: This method accesses a deprecated field and may be subject to removal in future versions.
+     * </p>
      */
     @Override
     @JsonIgnore
@@ -64,6 +80,8 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
 
     /**
      * {@inheritDoc}
+     *
+     * @return an {@link Optional} containing this piece instance, confirming it is a moveable entity.
      */
     @Override
     public final Optional<Moveable> asMoveable() {
@@ -71,9 +89,10 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     }
 
     /**
-     * Placeholder.
+     * Checks if the piece has moved at least once during the game.
+     * This state is crucial for special moves like Castling or Pawn initial double-step.
      *
-     * @return Placeholder.
+     * @return {@code true} if the piece has moved, {@code false} otherwise.
      */
     @Override
     public boolean hasMoved() {
@@ -81,9 +100,10 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     }
 
     /**
-     * Placeholder.
+     * Retrieves the weight value of the piece.
+     * This value is used for {@code Loadout} validation
      *
-     * @return Placeholder.
+     * @return an integer representing the relative positive value or weight of this piece.
      */
     @JsonIgnore
     public int getWeight() {
@@ -92,6 +112,10 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
 
     /**
      * {@inheritDoc}
+     * <p>
+     * Marks the piece as having moved. This action is irreversible for the duration of the match
+     * and affects the availability of certain moves.
+     * </p>
      */
     @Override
     public void setHasMoved() {
@@ -99,34 +123,39 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     }
 
     /**
-     * Placeholder.
+     * A builder class for creating instances of {@link Piece}.
+     * Follows the standard builder pattern to allow flexible object construction.
      */
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder extends AbstractEntity.AbstractBuilder<PieceDefinition, Builder> {
+        @JsonProperty("hasMoved")
         private boolean hasMoved;
 
         /**
-         * Placeholder.
+         * Sets the initial movement state of the piece.
+         * Useful when loading a game from a save state where a piece might have already moved.
          *
-         * @param newHasMoved Placeholder.
-         * @return Placeholder.
+         * @param hasMoved {@code true} if the piece has already moved, {@code false} otherwise.
+         * @return this builder instance.
          */
-        public Builder setHasMoved(final boolean newHasMoved) {
-            this.hasMoved = newHasMoved;
+        public Builder hasMoved(final boolean hasMoved) {
+            this.hasMoved = hasMoved;
             return this;
         }
-
 
         /**
          * {@inheritDoc}
          */
         @Override
-        protected Builder self() {
+        public Builder self() {
             return this;
         }
 
         /**
          * {@inheritDoc}
+         * <p>
+         * Creates a new immutable {@link Piece} object based on the current builder state.
+         * </p>
          */
         @Override
         public Piece build() {

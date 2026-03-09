@@ -8,91 +8,97 @@ import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
- * placeholder.
+l * The {@code ChessMatch} interface represents the core session of a chess game.
+ * <p>
+ * It acts as the central source of truth for the game state, maintaining the flow of turns, player progression,
+ * and the overall status of the match (e.g., normal, checkmate, draw).
+ * It aggregates key components such as the {@link ChessBoard}, {@link TurnHandler}, and {@link GameHistory}.
+ * </p>
  */
 public interface ChessMatch {
     /**
-     * placeholder.
+     * Retrieves the current state of the game (e.g., NORMAL, CHECK, CHECKMATE).
      *
-     * @return placeholder.
+     * @return the current {@link GameState}.
      */
     GameState getGameState();
 
     /**
-     * placeholder.
+     * Identifies the player whose turn it currently is.
      *
-     * @return placeholder.
+     * @return the {@link PlayerColor} of the active player.
      */
     PlayerColor getCurrentPlayer();
 
     /**
-     * placeholder.
+     * Retrieves the current turn number of the match.
+     * The turn number typically increments after each player have completed a move.
      *
-     * @return placeholder.
+     * @return an integer representing the turn number.
      */
     int getTurnNumber();
 
     /**
-     * placeholder.
+     * Accesses the game board associated with this match.
      *
-     * @return placeholder.
+     * @return the {@link ChessBoard} instance where the game is being played.
      */
     ChessBoard getBoard();
 
     /**
-     * placeholder.
+     * Accesses the handler responsible for managing turn logic and rule enforcement.
      *
-     * @return placeholder.
+     * @return the {@link TurnHandler} for this match.
      */
     TurnHandler getTurnHandler();
 
     /**
-     * placeholder.
+     * Registers an observer to receive outcomes and state updates from the match.
      *
-     * @param observer placeholder.
+     * @param observer The {@link ChessMatchObserver} to subscribe.
      */
     void addObserver(ChessMatchObserver observer);
 
     /**
-     * placeholder.
+     * Updates the turn counter to a specific value and notifies observers.
      *
-     * @param turn placeholder.
+     * @param turn The new turn number to set.
      */
     void updateTurn(int turn);
 
     /**
-     * placeholder.
+     * Updates the active player color and notifies observers of the change.
      *
-     * @param currentColor placeholder.
+     * @param currentColor The {@link PlayerColor} of the player who is now active.
      */
     void updatePlayerColor(PlayerColor currentColor);
 
     /**
-     * placeholder.
+     * Updates the overall game state (e.g., declaring checkmate) and notifies observers.
      *
-     * @param state placeholder.
-     * @param playerColor placeholder.
+     * @param state       The new {@link GameState}.
+     * @param playerColor The {@link PlayerColor} relevant to the state change (e.g., the winner).
      */
     void updateGameState(GameState state, PlayerColor playerColor);
 
     /**
-     * Sets the current turn number.
+     * placeholder.
      *
-     * @param turnNumber the turn number to set.
+     * @param turnNumber placeholder.
      */
     void setTurnNumber(int turnNumber);
 
     /**
-     * Sets the current player color.
+     * placeholder.
      *
-     * @param playerColor the player color to set.
+     * @param playerColor placeholder.
      */
     void setPlayerColor(PlayerColor playerColor);
 
     /**
-     * Gets the game history.
+     * placeholder.
      *
-     * @return the game history.
+     * @return placeholder.
      */
     GameHistory getGameHistory();
 
