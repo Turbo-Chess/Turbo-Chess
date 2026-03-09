@@ -53,8 +53,13 @@ public interface Entity {
     PlayerColor getPlayerColor();
 
     /**
-     * placeholder.
+     * Gets the weight of the entity for scoring.
      *
+     * @return the weight.
+     */
+    int getWeight();
+
+    /**
      * @return placeholder.
      */
     default Optional<Moveable> asMoveable() {

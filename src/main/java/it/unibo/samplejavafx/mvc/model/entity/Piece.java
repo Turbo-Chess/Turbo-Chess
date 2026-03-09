@@ -81,16 +81,6 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     }
 
     /**
-     * Placeholder.
-     *
-     * @return Placeholder.
-     */
-    @JsonIgnore
-    public int getWeight() {
-        return super.getEntityDefinition().getWeight();
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

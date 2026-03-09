@@ -20,7 +20,6 @@ import java.util.List;
 @ToString
 @JsonDeserialize(builder = PieceDefinition.Builder.class)
 public class PieceDefinition extends AbstractEntityDefinition {
-    private final int weight;
     @JsonDeserialize(contentAs = MoveRulesImpl.class)
     private final List<MoveRules> moveRules;
 
@@ -33,7 +32,7 @@ public class PieceDefinition extends AbstractEntityDefinition {
    protected PieceDefinition(final Builder builder) {
         super(builder);
 
-        if (builder.weight <= 0) {
+        if (builder.getWeight() <= 0) {
            throw new IllegalArgumentException("Weight must be a positive non-0 number");
         }
 
@@ -41,46 +40,36 @@ public class PieceDefinition extends AbstractEntityDefinition {
             throw new IllegalArgumentException("A piece must have at least one move rule");
         }
 
-        this.weight = builder.weight;
         this.moveRules = List.copyOf(builder.moveRules);
     }
 
     /**
-     * Placeholder.
-     *
-     * @return Placeholder.
+     * {@inheritDoc}
      */
     @Override
     public String getDescription() {
-        return "Piece: " + getName() + " (Weight: " + weight + ")";
+        return String.format("A piece of type %s with value %d", 
+            getPieceType(), 
+            getWeight());
     }
 
     /**
-     * Placeholder.
+     * A concrete builder for creating {@link PieceDefinition} instances.
+     * <p>
+     * Facilitates the construction of complex piece definitions with validated parameters.
+     * </p>
      */
     @JsonPOJOBuilder(withPrefix = "")
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Builder extends AbstractEntityDefinition.AbstractBuilder<PieceDefinition.Builder> {
-        private int weight;
         @JsonDeserialize(contentAs = MoveRulesImpl.class)
         private List<MoveRules> moveRules;
 
         /**
          * Placeholder.
          *
-         * @param newWeight Placeholder.
-         * @return Placeholder.
-         */
-        public Builder weight(final int newWeight) {
-            this.weight = newWeight;
-            return this;
-        }
-
-        /**
-         * Placeholder.
-         *
-         * @param newMoveRules Placeholder.
-         * @return Placeholder.
+         * @param newMoveRules A list of {@link MoveRules} to assign.
+         * @return this builder instance for method chaining.
          */
         public Builder moveRules(final List<MoveRules> newMoveRules) {
             this.moveRules = List.copyOf(newMoveRules);

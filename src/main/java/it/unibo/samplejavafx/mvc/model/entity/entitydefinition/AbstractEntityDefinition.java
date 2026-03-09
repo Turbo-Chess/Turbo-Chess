@@ -32,6 +32,7 @@ public abstract class AbstractEntityDefinition {
     private final String id;
     private final String imagePath;
     private final PieceType pieceType;
+    private final int weight;
 
     /**
      * Placeholder.
@@ -40,32 +41,33 @@ public abstract class AbstractEntityDefinition {
      * @param <T> Placeholder.
      */
     protected <T extends AbstractBuilder<T>> AbstractEntityDefinition(final AbstractBuilder<T> builder) {
-        if (builder.name == null || builder.name.isEmpty()) {
+        if (builder.getName() == null || builder.getName().isEmpty()) {
             throw new IllegalArgumentException("Missing required field: name");
         }
 
-        if (builder.id == null || builder.id.isEmpty()) {
+        if (builder.getId() == null || builder.getId().isEmpty()) {
             throw new IllegalArgumentException("Missing required field: id");
         }
 
-        if (builder.imagePath == null || builder.imagePath.isEmpty()) {
+        if (builder.getImagePath() == null || builder.getImagePath().isEmpty()) {
             throw new IllegalArgumentException("Missing required filed: imagePath");
-        } else if (!builder.imagePath.startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath())
-                && !builder.imagePath.startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())
-                && !builder.imagePath.startsWith("file:")
-                && !builder.imagePath.startsWith("classpath:")
-                && !builder.imagePath.contains("/assets/images/")) {
-            throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.imagePath);
+        } else if (!builder.getImagePath().startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath())
+                && !builder.getImagePath().startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())
+                && !builder.getImagePath().startsWith("file:")
+                && !builder.getImagePath().startsWith("classpath:")
+                && !builder.getImagePath().contains("/assets/images/")) {
+            throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.getImagePath());
         }
 
-        if (builder.pieceType == null) {
+        if (builder.getPieceType() == null) {
             throw new IllegalArgumentException("Missing required field: name");
         }
 
-        this.name = builder.name;
-        this.id = builder.id;
-        this.imagePath = String.valueOf(LoadingUtils.getCorrectPath(builder.imagePath));
-        this.pieceType = builder.pieceType;
+        this.name = builder.getName();
+        this.id = builder.getId();
+        this.imagePath = String.valueOf(LoadingUtils.getCorrectPath(builder.getImagePath()));
+        this.pieceType = builder.getPieceType();
+        this.weight = builder.getWeight();
     }
 
     /**
@@ -81,11 +83,13 @@ public abstract class AbstractEntityDefinition {
      * @param <X> Placeholder.
      */
     @JsonPOJOBuilder(withPrefix = "")
+    @Getter
     public abstract static class AbstractBuilder<X extends AbstractBuilder<X>> {
         private String name;
         private String id;
         private String imagePath;
         private PieceType pieceType;
+        private int weight;
 
         /**
          * Placeholder.
@@ -133,6 +137,17 @@ public abstract class AbstractEntityDefinition {
          */
         public X pieceType(final PieceType newPieceType) {
             this.pieceType = newPieceType;
+            return self();
+        }
+
+        /**
+         * Placeholder.
+         *
+         * @param newWeight Placeholder.
+         * @return Placeholder.
+         */
+        public X weight(final int newWeight) {
+            this.weight = newWeight;
             return self();
         }
 
