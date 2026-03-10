@@ -10,10 +10,9 @@ import java.util.Locale;
  * placeholder.
  */
 public enum GameProperties {
-    USER_HOME_FOLDER(System.getProperty("user.home")),
     ROOT_RESOURCE_FOLDER(getAppDataFolder()),
-    EXTERNAL_MOD_FOLDER("file:" + Paths.get(ROOT_RESOURCE_FOLDER.getPath(), "Mods").toString()),
-    EXTERNAL_ASSETS_FOLDER("file:" + Paths.get(ROOT_RESOURCE_FOLDER.getPath(), "Assets").toString()),
+    EXTERNAL_MOD_FOLDER("file:" + Paths.get(ROOT_RESOURCE_FOLDER.getPath(), "Mods")),
+    EXTERNAL_ASSETS_FOLDER("file:" + Paths.get(ROOT_RESOURCE_FOLDER.getPath(), "Assets")),
     SAVES_FOLDER(Paths.get(ROOT_RESOURCE_FOLDER.getPath(), "saves").toString()),
     LOADOUTS_FOLDER(Paths.get(ROOT_RESOURCE_FOLDER.getPath(), "loadouts").toString()),
     INTERNAL_ASSETS_FOLDER("classpath:/assets"),
