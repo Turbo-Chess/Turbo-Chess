@@ -212,7 +212,7 @@ public final class GameControllerImpl implements GameController {
         this.match.getBoard().addObserver(this.historyRecorder);
     }
 
-    // TODO: See if is removable
+    // TODO: See if is removable for LUCA
     @Override
     public GameHistory getGameHistory() {
         if (this.match == null) {

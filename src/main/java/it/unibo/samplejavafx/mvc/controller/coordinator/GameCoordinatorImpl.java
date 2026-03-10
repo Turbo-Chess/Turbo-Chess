@@ -20,9 +20,11 @@ import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -287,10 +289,10 @@ public final class GameCoordinatorImpl implements GameCoordinator {
            if (cssLocation != null) {
                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
            }
-       } catch (final IOException e) {
-           LOGGER.error("Failed to load Game Layout", e);
+       } catch (final Exception e) {
+            LOGGER.error("Failed to load Game Layout", e);
+           System.out.println("MaioneseCoordinator1");
        }
-
     }
 
     private void createNewMatch() {
@@ -329,6 +331,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             stage.show();
         } catch (final IOException e) {
             LOGGER.error("Failed to load Load Game", e);
+            System.out.println("MaioneseCoordinator2");
         }
     }
 

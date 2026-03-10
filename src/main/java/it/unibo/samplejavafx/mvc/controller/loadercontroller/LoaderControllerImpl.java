@@ -100,6 +100,7 @@ public class LoaderControllerImpl implements LoaderController {
             loadIntoCache(loadedEntities, resPackDir.toString());
         } catch (final IllegalArgumentException | IllegalStateException e) {
             LOGGER.error("Failed to load resource pack: {}", resPackDir, e);
+            throw new RuntimeException("Fatal error in json configuration", e);
         }
     }
 
