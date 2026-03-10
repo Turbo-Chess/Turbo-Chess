@@ -83,17 +83,6 @@ public class PieceDefinition extends AbstractEntityDefinition {
         private List<MoveRules> moveRules;
 
         /**
-         * Sets the strategic weight or value of the piece.
-         *
-         * @param newWeight A positive integer representing the piece's value.
-         * @return this builder instance for method chaining.
-         */
-        public Builder weight(final int newWeight) {
-            this.weight = newWeight;
-            return this;
-        }
-
-        /**
          * Sets the list of movement rules for the piece.
          * These rules collectively define how the piece can move on the board.
          *

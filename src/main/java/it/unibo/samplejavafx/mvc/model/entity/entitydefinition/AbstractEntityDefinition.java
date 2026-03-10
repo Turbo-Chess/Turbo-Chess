@@ -86,6 +86,13 @@ public abstract class AbstractEntityDefinition {
     }
 
     /**
+     * Retrieves a text description of the entity.
+     *
+     * @return a String description.
+     */
+    public abstract String getDescription();
+
+    /**
      * A generic abstract builder for constructing {@link AbstractEntityDefinition} instances.
      *
      * <p>

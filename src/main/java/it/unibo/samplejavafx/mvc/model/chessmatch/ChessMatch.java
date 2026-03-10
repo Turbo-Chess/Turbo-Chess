@@ -55,6 +55,13 @@ public interface ChessMatch {
     TurnHandler getTurnHandler();
 
     /**
+     * Accesses the score manager for this match.
+     *
+     * @return the {@link ScoreManager} instance tracking the game score.
+     */
+    ScoreManager getScoreManager();
+
+    /**
      * Registers an observer to receive outcomes and state updates from the match.
      *
      * @param observer The {@link ChessMatchObserver} to subscribe.

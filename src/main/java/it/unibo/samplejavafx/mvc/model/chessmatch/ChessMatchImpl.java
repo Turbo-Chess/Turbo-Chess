@@ -53,6 +53,8 @@ public final class ChessMatchImpl implements ChessMatch {
     @Getter
     @SuppressFBWarnings("EI_EXPOSE_REP")
     private final GameHistory gameHistory;
+    @Getter
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     private final ScoreManager scoreManager;
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 
