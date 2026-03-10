@@ -19,6 +19,9 @@ import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
+/**
+ * Utility class for methods involving checks and condition for pieces on the board.
+ */
 public final class RulesUtils {
     /**
      * Utility method that checks if a certain piece hasn't moved at all.
@@ -64,12 +67,12 @@ public final class RulesUtils {
     }
 
     /**
-     * placeholder.
+     * Utility method to calculate all the possible moves for the king.
      * 
-     * @param kingCells placeholder.
-     * @param cb placeholder.
-     * @param currentColor placeholder.
-     * @return placeholder.
+     * @param kingCells cells the king could normally move to.
+     * @param cb chessboard of the current game.
+     * @param currentColor color of the current player
+     * @return a list of {@link Point2D} containing all safe king moves.
      */
     public static List<Point2D> kingPossibleMoves(final List<Point2D> kingCells,
             final ChessBoard cb, final PlayerColor currentColor) {
@@ -86,7 +89,7 @@ public final class RulesUtils {
      * Utility method to get all the pieces on the board of a specific color.
      * 
      * @param cb chessboard of the current game.
-     * @param currentColor color of the player.
+     * @param currentColor color of the current player.
      * @return an unmodifiable Set containing all pieces of a certain color, encapsulated in Optionals.
      */
     public static Set<Optional<Entity>> getPiecesOfColor(final ChessBoard cb, final PlayerColor currentColor) {
