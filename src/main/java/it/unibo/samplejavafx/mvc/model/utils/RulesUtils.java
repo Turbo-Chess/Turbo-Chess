@@ -45,8 +45,8 @@ public final class RulesUtils {
      * 
      * @param cb chessboard of the current game.
      * @param currentColor color of the enemy player.
-     * @param target the cell we want to check.
-     * @return an {@code Optional} containing the attacking piece if there is any, returns an empty Optional otherwise.
+     * @param target cell we want to check.
+     * @return an {@link Optional} containing the attacking piece if there is any, returns an empty {@link Optional} otherwise.
      */
     public static Optional<Piece> underAttack(final ChessBoard cb, final PlayerColor currentColor, final Point2D target) {
         final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
@@ -72,7 +72,7 @@ public final class RulesUtils {
      * @param kingCells cells the king could normally move to.
      * @param cb chessboard of the current game.
      * @param currentColor color of the current player
-     * @return a list of {@link Point2D} containing all safe king moves.
+     * @return an unmodifiable List of {@link Point2D} containing all safe king moves.
      */
     public static List<Point2D> kingPossibleMoves(final List<Point2D> kingCells,
             final ChessBoard cb, final PlayerColor currentColor) {
@@ -82,7 +82,7 @@ public final class RulesUtils {
                 possibleMoves.add(cell);
             }
         }
-        return possibleMoves;
+        return Collections.unmodifiableList(possibleMoves);
     }
 
     /**
@@ -113,7 +113,7 @@ public final class RulesUtils {
      * 
      * @param cb chessboard of the current game.
      * @param color color of the current player.
-     * @return an {@code Optional} containing the king of the given color, an empty otherwise.
+     * @return an {@link Optional} containing the king of the given color, an empty otherwise.
      */
     public static Optional<Piece> getKing(final ChessBoard cb, final PlayerColor color) {
         return cb.getBoard().values().stream()
@@ -127,7 +127,7 @@ public final class RulesUtils {
      * Utility method to swap the player color.
      * 
      * @param currentColor color of the current player.
-     * @return the other PlayerColor.
+     * @return the other {@link PlayerColor}.
      */
     public static PlayerColor swapColor(final PlayerColor currentColor) {
         return (currentColor == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
