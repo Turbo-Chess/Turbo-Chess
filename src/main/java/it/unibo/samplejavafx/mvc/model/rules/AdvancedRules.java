@@ -161,7 +161,7 @@ public final class AdvancedRules {
                         && RulesUtils.hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y())) 
                         && RulesUtils.hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))
                         && castleLeft(cb, kingPos, currentColor)
-                        && castleRight(cb, kingPos, currentColor)) { // AGGIUNGERE CONDIZIONI SU CELLE LIBERE
+                        && castleRight(cb, kingPos, currentColor)) {
                     return CastleCondition.CASTLE_BOTH;
                 } 
                 if (cb.getEntity(new Point2D(TOWERS_X.x(), kingPos.y())).isPresent()
@@ -181,12 +181,12 @@ public final class AdvancedRules {
     }
 
     /**
-     * placeholder.
+     * Utility method that checks if castling is possible on the left.
      * 
-     * @param cb placeholder.
-     * @param kingPos placeholder.
-     * @param currentColor placeholder.
-     * @return placeholder.
+     * @param cb chessboard of the current game
+     * @param kingPos position of the king.
+     * @param currentColor color of the current player.
+     * @return {@code true} if the castle is possible, {@code false} otherwise.
      */
     private static boolean castleLeft(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
         return cb.isFree(new Point2D(kingPos.x() - 1, kingPos.y()))
@@ -197,12 +197,12 @@ public final class AdvancedRules {
     }
 
     /**
-     * placeholder.
+     * Utility method that checks if castling is possible on the right.
      * 
-     * @param cb placeholder.
-     * @param kingPos placeholder.
-     * @param currentColor placeholder.
-     * @return placeholder.
+     * @param cb chessboard of the current game
+     * @param kingPos position of the king.
+     * @param currentColor color of the current player.
+     * @return {@code true} if the castle is possible, {@code false} otherwise.
      */
     private static boolean castleRight(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
         return cb.isFree(new Point2D(kingPos.x() + 1, kingPos.y()))
