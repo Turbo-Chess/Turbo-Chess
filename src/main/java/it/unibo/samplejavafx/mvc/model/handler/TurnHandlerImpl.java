@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
@@ -156,16 +157,6 @@ public final class TurnHandlerImpl implements TurnHandler {
         return true;
     }
 
-    @Override
-    public void setTurn(final int turn) {
-        this.turn = turn;
-    }
-
-    @Override
-    public void setPlayerColor(final PlayerColor color) {
-        this.currentColor = color;
-    }
-
     /**
      * Strategy for handling thinking during a {@code NORMAL}.
      * 
@@ -200,14 +191,14 @@ public final class TurnHandlerImpl implements TurnHandler {
                 case NO_CASTLE:
                     break;
             }
-            return this.pieceMoves;
+            return ensureMoveSafety(this.pieceMoves);
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
             final var newPiece = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(newPiece);
             this.promotionHolder = Optional.of(newPiece);
             this.pieceMoves = newPiece.getValidMoves(pos, board);
-            return this.pieceMoves;
+            return ensureMoveSafety(this.pieceMoves);
         }
         if (!board.isFree(pos)
             && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
@@ -238,14 +229,14 @@ public final class TurnHandlerImpl implements TurnHandler {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
             this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
-            return this.pieceMoves;
+            return ensureMoveSafety(this.pieceMoves);
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
             && interposingPieces.keySet().contains(board.getEntity(pos).get())) {
             final var piece = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(piece);
             this.pieceMoves = interposingPieces.get(piece);
-            return this.pieceMoves;
+            return ensureMoveSafety(this.pieceMoves);
         }
         if (!board.isFree(pos)
             && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
@@ -276,7 +267,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
             this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
-            return this.pieceMoves;
+            return ensureMoveSafety(this.pieceMoves);
         }
         if (!board.isFree(pos)
             && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
@@ -285,6 +276,23 @@ public final class TurnHandlerImpl implements TurnHandler {
         }
         unsetCurrentPiece();
         return this.pieceMoves;
+    }
+
+    private List<Point2D> ensureMoveSafety(final List<Point2D> list) {
+        return list.stream()
+                   .filter(pos -> CheckCalculator.isMoveSafe(board, currentPiece.get(),
+                           board.getPosByEntity(currentPiece.get()), pos, currentColor))
+                   .collect(Collectors.toList());
+    }
+
+    @Override
+    public void setTurn(final int turn) {
+        this.turn = turn;
+    }
+
+    @Override
+    public void setPlayerColor(final PlayerColor color) {
+        this.currentColor = color;
     }
 
     /**
