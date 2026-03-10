@@ -70,6 +70,8 @@ public final class TurnHandlerImpl implements TurnHandler {
         if (board.getEntity(pos).isPresent() && board.getEntity(pos).get().asMoveable().isPresent()) {
             final List<Point2D> cachedMoves = moveCache.getAvailableCells(board.getEntity(pos).get().getGameId());
             if (!cachedMoves.isEmpty()) {
+                this.currentPiece = Optional.of((Piece) board.getEntity(pos).get().asMoveable().get());
+                pieceMoves = cachedMoves;
                 return cachedMoves;
             }
         }
