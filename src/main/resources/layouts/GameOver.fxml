@@ -9,6 +9,7 @@
         <VBox alignment="CENTER" spacing="20">
             <Label fx:id="statusLabel" style="-fx-font-size: 24px;"/>
             <Label fx:id="messageLabel" style="-fx-font-size: 24px;"/>
+            <Label fx:id="scoreLabel" style="-fx-font-size: 18px;"/>
             <HBox alignment="CENTER" spacing="10">
                 <Button fx:id="restartButton" text="Restart"/>
                 <Button fx:id="mainMenuButton" text="Main Menu"/>
