@@ -15,6 +15,7 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import javafx.application.Platform;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.SpawnEvent;
@@ -73,6 +74,7 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  */
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
+    private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;
 
     @FXML
@@ -89,6 +91,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     @FXML
     private Label timeValueLabel;
+
+    @FXML
+    private Label whiteScoreLabel;
+
+    @FXML
+    private Label blackScoreLabel;
 
     @FXML
     private Button menuButton;
@@ -194,19 +202,39 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         btnStart.setOnAction(e -> {
             replayController.jumpToStart();
             syncReplayView();
+            updateReplayScore(0, 0); // At start, score is always 0
         });
         btnPrev.setOnAction(e -> {
-            replayController.prev();
-            syncReplayView();
+            replayController.prev().ifPresent(event -> {
+                syncReplayView();
+                // When going back, we want the score of the event *before* the one we just reverted.
+                // Or if we are at the beginning (index 0), score is 0.
+                // Wait, if we revert the event at index i, we are now at state after event i-1.
+                final int idx = replayController.getCurrentIndex();
+                if (idx == 0) {
+                    updateReplayScore(0, 0);
+                } else {
+                    final var prevEvent = gameController.getGameHistory().getEvents().get(idx - 1);
+                    updateReplayScore(prevEvent.getWhiteScore(), prevEvent.getBlackScore());
+                }
+            });
         });
         btnNext.setOnAction(e -> {
-            replayController.next();
-            syncReplayView();
+            replayController.next().ifPresent(event -> {
+                syncReplayView();
+                updateReplayScore(event.getWhiteScore(), event.getBlackScore());
+            });
         });
         btnEnd.setOnAction(e -> {
             replayController.jumpToEnd();
             syncReplayView();
+            final var events = gameController.getGameHistory().getEvents();
+            if (!events.isEmpty()) {
+                final var lastEvent = events.get(events.size() - 1);
+                updateReplayScore(lastEvent.getWhiteScore(), lastEvent.getBlackScore());
+            }
         });
+
     }
 
     private void enableReplayMode() {
@@ -280,6 +308,17 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                 })
                 .collect(Collectors.toList())
         ));
+    }
+
+    private void updateReplayScore(final int whiteScore, final int blackScore) {
+        final int diff = whiteScore - blackScore;
+        if (diff >= 0) {
+            whiteScoreLabel.setText(PLUS_SIGN + diff);
+            blackScoreLabel.setText(String.valueOf(-diff));
+        } else {
+            whiteScoreLabel.setText(String.valueOf(diff));
+            blackScoreLabel.setText(PLUS_SIGN + Math.abs(diff));
+        }
     }
 
     /**
@@ -527,6 +566,24 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         }
     }
 
+    @Override
+    public void onScoreChanged(final PlayerColor player, final int newScore) {
+        Platform.runLater(() -> {
+            final var match = gameController.getMatch();
+            final int whiteTotal = match.getScore(PlayerColor.WHITE);
+            final int blackTotal = match.getScore(PlayerColor.BLACK);
+            final int diff = whiteTotal - blackTotal;
+
+            if (diff >= 0) {
+                    whiteScoreLabel.setText(PLUS_SIGN + diff);
+                    blackScoreLabel.setText(String.valueOf(-diff));
+                } else {
+                    whiteScoreLabel.setText(String.valueOf(diff));
+                    blackScoreLabel.setText(PLUS_SIGN + Math.abs(diff));
+                }
+        });
+    }
+
     private void showEndingDialog(final String statusText, final String messageText, final Optional<PlayerColor> playerColor) {
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameOver.fxml"));
         loader.setControllerFactory(c -> new GameOverController(coordinator));
@@ -538,10 +595,14 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         }
 
         final GameOverController gameOverController = loader.getController();
+        final var match = gameController.getMatch();
+        final String scoreText = String.format("White: %d - Black: %d", 
+            match.getScore(PlayerColor.WHITE), match.getScore(PlayerColor.BLACK));
+
         if (playerColor.isPresent()) {
-            gameOverController.setTextLabel(statusText, playerColor.get() + messageText);
+            gameOverController.setTextLabel(statusText, playerColor.get() + messageText, scoreText);
         } else {
-            gameOverController.setTextLabel(statusText, messageText);
+            gameOverController.setTextLabel(statusText, messageText, scoreText);
         }
         final Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(root);

@@ -8,6 +8,7 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
+import it.unibo.samplejavafx.mvc.model.score.ScoreManagerImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -60,7 +61,7 @@ class GameHistoryRecorderTest {
 
     @Test
     void testMoveRecording() {
-        final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1);
+        final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1, () -> new ScoreManagerImpl());
         final Point2D from = new Point2D(0, 0);
         final Point2D to = new Point2D(0, 1);
 
@@ -81,7 +82,7 @@ class GameHistoryRecorderTest {
 
     @Test
     void testCaptureRecording() {
-        final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1);
+        final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1, () -> new ScoreManagerImpl());
         final Point2D from = new Point2D(0, 0);
         final Point2D to = new Point2D(1, 1);
         final Entity entity = createTestPiece("Pawn", PlayerColor.WHITE);

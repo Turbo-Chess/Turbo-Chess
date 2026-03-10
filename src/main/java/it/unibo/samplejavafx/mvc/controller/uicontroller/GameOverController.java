@@ -17,6 +17,9 @@ public final class GameOverController {
     private Label messageLabel;
 
     @FXML
+    private Label scoreLabel;
+
+    @FXML
     private Button restartButton;
 
     @FXML
@@ -55,9 +58,11 @@ public final class GameOverController {
      *
      * @param statusText  placeholder.
      * @param messageText placeholder.
+     * @param scoreText   placeholder.
      */
-    public void setTextLabel(final String statusText, final String messageText) {
+    public void setTextLabel(final String statusText, final String messageText, final String scoreText) {
         this.statusLabel.setText(statusText);
         this.messageLabel.setText(messageText);
+        this.scoreLabel.setText(scoreText);
     }
 }

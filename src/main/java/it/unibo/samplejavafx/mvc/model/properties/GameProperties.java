@@ -29,17 +29,40 @@ public enum GameProperties {
     private static String getAppDataFolder() {
         final String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         final String userHome = System.getProperty("user.home");
+        final String path;
         if (os.contains("win")) {
-            return System.getenv("APPDATA") + File.separator + "TurboChess";
+            path = System.getenv("APPDATA") + File.separator + "TurboChess";
         } else if (os.contains("mac")) {
-            return userHome + File.separator + "Library" + File.separator + "Application Support" + File.separator + "TurboChess";
+            path = userHome + File.separator + "Library" + File.separator + "Application Support" + File.separator + "TurboChess";
         } else {
             // Linux and others
             final String xdgConfigHome = System.getenv("XDG_CONFIG_HOME");
             if (xdgConfigHome != null && !xdgConfigHome.isEmpty()) {
-                return xdgConfigHome + File.separator + "turbochess";
+                path = xdgConfigHome + File.separator + "turbochess";
+            } else {
+                path = userHome + File.separator + ".config" + File.separator + "turbochess";
             }
-            return userHome + File.separator + ".config" + File.separator + "turbochess";
         }
+
+        // Fallback check: if the primary path is not writable or cannot be created, use a hidden folder in user home
+        final File folder = new File(path);
+        try {
+            // If folder exists, check if writable. If not, check if parent is writable to create it.
+            boolean canUse = false;
+            if (folder.exists()) {
+                canUse = folder.canWrite();
+            } else {
+                final File parent = folder.getParentFile();
+                canUse = parent != null && parent.exists() && parent.canWrite();
+            }
+
+            if (canUse) {
+                return path;
+            }
+        } catch (final SecurityException e) {
+            // Ignore and fallback
+        }
+
+        return userHome + File.separator + ".turbochess";
     }
 }

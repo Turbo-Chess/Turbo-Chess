@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.score.ScoreManager;
 
 /**
  * The {@code ChessMatch} interface represents the core session of a chess game.
@@ -52,6 +53,13 @@ public interface ChessMatch {
      * @return the {@link TurnHandler} for this match.
      */
     TurnHandler getTurnHandler();
+
+    /**
+     * Accesses the score manager for this match.
+     *
+     * @return the {@link ScoreManager} instance tracking the game score.
+     */
+    ScoreManager getScoreManager();
 
     /**
      * Registers an observer to receive outcomes and state updates from the match.
@@ -102,6 +110,14 @@ public interface ChessMatch {
      * @return placeholder.
      */
     GameHistory getGameHistory();
+
+    /**
+     * Gets the score of a player.
+     *
+     * @param player the player to get the score of.
+     * @return the score of the player.
+     */
+    int getScore(PlayerColor player);
 
     /**
      * placeholder.

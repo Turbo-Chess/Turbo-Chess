@@ -68,6 +68,13 @@ public interface Entity {
     PlayerColor getPlayerColor();
 
     /**
+     * Gets the weight of the entity for scoring.
+     *
+     * @return the weight.
+     */
+    int getWeight();
+
+    /**
      * Attempts to cast this entity to a {@link Moveable} object.
      * In this way is possible to safely check if the entity possesses movement capabilities.
      * In that case some specific properties are present.

@@ -55,42 +55,40 @@ public final class ReplayControllerImpl implements ReplayController {
     }
 
     @Override
-    public boolean next() {
+    public Optional<GameEvent> next() {
         if (currentIndex >= history.getEvents().size()) {
-            return false;
+            return Optional.empty();
         }
 
         final GameEvent event = history.getEvents().get(currentIndex);
         applyEvent(event);
         currentIndex++;
-        return true;
+        return Optional.of(event);
     }
 
     @Override
-    public boolean prev() {
+    public Optional<GameEvent> prev() {
         if (currentIndex <= minIndex) {
-            return false;
+            return Optional.empty();
         }
 
         currentIndex--;
         final GameEvent event = history.getEvents().get(currentIndex);
         revertEvent(event);
-        return true;
+        return Optional.of(event);
     }
 
     @Override
     public void jumpToStart() {
-        boolean success = prev();
-        while (success) {
-            success = prev();
+        while (prev().isPresent()) {
+            this.currentIndex += 0;
         }
     }
 
     @Override
     public void jumpToEnd() {
-        boolean success = next();
-        while (success) {
-            success = next();
+        while (next().isPresent()) {
+            this.currentIndex += 0;
         }
     }
 
