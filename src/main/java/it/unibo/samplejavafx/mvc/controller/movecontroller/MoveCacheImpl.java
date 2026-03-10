@@ -18,6 +18,10 @@ import java.util.Map;
 public final class MoveCacheImpl implements MoveCache {
     private final Map<Integer, List<Point2D>> movementCache = new HashMap<>();
 
+    public MoveCacheImpl() {
+        // Empty costructor, no paramere
+    }
+
     /**
      * {@inheritDoc}
      */

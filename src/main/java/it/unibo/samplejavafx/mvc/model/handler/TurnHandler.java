@@ -54,6 +54,4 @@ public interface TurnHandler {
      * @return placeholder.
      */
     Point2D getCurrentPiecePos();
-
-    void setMoveCache(final MoveCache moveCache);
 }

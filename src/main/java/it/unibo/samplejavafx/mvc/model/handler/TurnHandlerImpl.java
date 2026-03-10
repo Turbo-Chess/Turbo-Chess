@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
+import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -30,8 +31,7 @@ public final class TurnHandlerImpl implements TurnHandler {
     private static final Point2D BOUNDARIES = new Point2D(0, 7);
     private final ChessMatch match;
     private final ChessBoard board;
-    @Setter
-    private MoveCache moveCache;
+    private final MoveCache moveCache = new MoveCacheImpl();
     private final Map<Piece, List<Point2D>> interposingPieces;
     private GameState state;
     private CastleCondition castlingOptions;

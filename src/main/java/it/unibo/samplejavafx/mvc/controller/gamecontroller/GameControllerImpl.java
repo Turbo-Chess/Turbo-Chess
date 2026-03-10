@@ -55,7 +55,6 @@ public final class GameControllerImpl implements GameController {
     private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
     @Getter
     private final LoaderController loaderController = new LoaderControllerImpl(PATHS);
-    private final MoveCache moveCache = new MoveCacheImpl();
     @Getter
     // Loadout Manager is used as a "service" class to manage and load loadouts, so it's intended to be
     // passed as a mutable dependency
@@ -106,8 +105,6 @@ public final class GameControllerImpl implements GameController {
      */
     @Override
     public void handleClick(final Point2D pointClicked) {
-        // TODO: implement using the cache
-
         if (this.match == null) {
             throw new IllegalStateException("Board should be initialized before using it");
         }
@@ -224,7 +221,6 @@ public final class GameControllerImpl implements GameController {
              this.historyRecorder.onEntityAdded(pos, entity);
         });
         this.match.getBoard().addObserver(this.historyRecorder);
-        this.match.getTurnHandler().setMoveCache(this.moveCache);
     }
 
     @Override
