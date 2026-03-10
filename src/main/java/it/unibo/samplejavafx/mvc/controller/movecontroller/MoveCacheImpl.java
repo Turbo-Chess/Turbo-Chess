@@ -8,14 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A concrete implementation of {@link MoveCache} using a {@link HashMap}.
+ * A simple cache for move calculation results to avoid recomputing moves for the same piece and board state.
  *
  * <p>
- * This implementation stores valid moves mapped by the piece's unique identifier.
- * It provides constant-time access to cached moves.
+ * This handles caching of valid moves for a piece at a specific position on the board.
  * </p>
  */
-public final class MoveCacheImpl implements MoveCache {
+public class MoveCacheImpl implements MoveCache {
     private final Map<Integer, List<Point2D>> movementCache = new HashMap<>();
 
     public MoveCacheImpl() {

@@ -1,9 +1,8 @@
 package it.unibo.samplejavafx.mvc.model.handler;
 
-import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 
 import java.util.List;
 

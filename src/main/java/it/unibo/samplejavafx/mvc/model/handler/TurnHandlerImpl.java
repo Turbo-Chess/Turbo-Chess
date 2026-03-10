@@ -20,7 +20,6 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.rules.CastleCondition;
 import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
-import lombok.Setter;
 
 /**
  * Placeholder.

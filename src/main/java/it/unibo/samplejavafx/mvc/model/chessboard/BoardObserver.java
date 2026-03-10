@@ -45,7 +45,7 @@ public interface BoardObserver {
      * @param to placeholder.
      * @param entity placeholder.
      */
-    default void onEntityMoved(Point2D from, Point2D to, Entity entity) {
+    default void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
     }
 
 }

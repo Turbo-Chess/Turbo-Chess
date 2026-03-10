@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 
-import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
@@ -26,6 +25,7 @@ public interface BoardFactory {
      *
      * @param whiteLoadout  The {@link Loadout} configuration for the White player.
      * @param blackLoadout  The {@link Loadout} configuration for the Black player.
+     * @param board The {@link ChessBoard} instance to populate.
      */
     void populateChessboard(Loadout whiteLoadout, Loadout blackLoadout, ChessBoard board);
 

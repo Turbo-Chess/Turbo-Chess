@@ -32,6 +32,7 @@ public final class PromotionController {
      * Constructor for the Promotion GUI.
      *
      * @param controller the {@link GameController} connected to this GUI.
+     * @param loaderController the {@link LoaderController} to retrieve entity definitions.
      */
     public PromotionController(final GameController controller, final LoaderController loaderController) {
         this.controller = controller;

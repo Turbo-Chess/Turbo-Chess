@@ -2,10 +2,6 @@ package it.unibo.samplejavafx.mvc.controller.coordinator;
 
 import java.nio.file.Path;
 
-import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
-import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
-
 /**
  * The {@code GameCoordinator} interface acts as the high-level application controller, managing the
  * navigation between different screens (scenes) and the overall lifecycle of the game application.

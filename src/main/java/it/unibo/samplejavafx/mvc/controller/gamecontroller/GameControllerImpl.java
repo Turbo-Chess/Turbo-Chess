@@ -3,23 +3,16 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
-import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
-import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
-import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
-import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
@@ -27,7 +20,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -75,6 +67,7 @@ public final class GameControllerImpl implements GameController {
      * Constructs a new {@code GameControllerImpl}.
      *
      * @param gameCoordinator The {@link GameCoordinator} that manages the overall application lifecycle.
+     * @param controllerContext The context containing shared dependencies.
      */
     public GameControllerImpl(final GameCoordinator gameCoordinator, final ControllerContext controllerContext) {
         this.gameCoordinator = gameCoordinator;
@@ -162,8 +155,12 @@ public final class GameControllerImpl implements GameController {
     public void promote(final LoadoutEntry pieceEntry) {
         final Point2D pos = match.getPromotionPos();
         match.getBoard().removeEntity(pos);
+        final PieceDefinition promotedPiece = (PieceDefinition) controllerContext.loaderController()
+                .getEntityCache()
+                .get(pieceEntry.packId())
+                .get(pieceEntry.pieceId());
         controllerContext.boardFactory().createNewPiece(pos, match.getBoard(),
-                (PieceDefinition) controllerContext.loaderController().getEntityCache().get(pieceEntry.packId()).get(pieceEntry.pieceId()),
+                promotedPiece,
                 AdvancedRules.swapColor(match.getCurrentPlayer()));
     }
 

@@ -67,6 +67,12 @@ public interface Entity {
      */
     PlayerColor getPlayerColor();
 
+    /**
+     * Retrieves the identifier of the game instance to which this entity belongs.
+     * This allows distinguishing entities across multiple concurrent games.
+     *
+     * @return an {@link int} representing the game ID associated with this entity.
+     */
     int getGameId();
 
     /**

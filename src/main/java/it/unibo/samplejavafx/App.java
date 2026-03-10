@@ -18,15 +18,16 @@ public final class App extends Application {
      * placeholder.
      *
      * @param stage placeholder.
-     * @throws Exception placeholder.
      */
     @Override
-    public void start(final Stage stage) throws Exception {
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    // I'm catching all exception because I want this window to spawn an alert for different exceptions thrown
+    // from different part of the program.
+    public void start(final Stage stage) {
 
-            // Don't let the window be resized less than 500
-            stage.setMinHeight(WINDOW_HEIGHT);
-            stage.setMinWidth(WINDOW_WIDTH);
-            stage.show();
+        stage.setMinHeight(WINDOW_HEIGHT);
+        stage.setMinWidth(WINDOW_WIDTH);
+        stage.show();
 
         try {
             final GameCoordinator coordinator = new GameCoordinatorImpl(stage);
@@ -36,22 +37,21 @@ public final class App extends Application {
 
             // Start with Main Menu
             coordinator.initMainMenu();
-        } catch (final Throwable e) {
-            System.out.println("maionese");
+        } catch (final Exception e) { // CHECKSTYLE:OFF: IllegalCatch
             showFatalStartupError(e);
-        }
+        } // CHECKSTYLE:ON: IllegalCatch
 
     }
 
-    private void showFatalStartupError(final Throwable e) {
+    private void showFatalStartupError(final Exception e) {
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            final Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Configuration Error");
             alert.setHeaderText("Invalid JSON Configuration");
 
             // Unwrap the exception to find the root cause (Jackson wrap the ex into another one)
             Throwable rootCause = e;
-            while (rootCause.getCause() != null && rootCause.getCause() != rootCause) {
+            while (rootCause.getCause() != null && !rootCause.getCause().equals(rootCause)) {
                 rootCause = rootCause.getCause();
             }
 

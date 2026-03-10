@@ -7,7 +7,6 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
-import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 
@@ -108,7 +107,7 @@ public interface GameController {
      */
     Loadout getBlackLoadout();
 
-    // TODO: check removal
+    // TODO: check removal FOR LUCA (see if getting and setting game history can be moved into the game context)
     /**
      * @return the game history.
      */

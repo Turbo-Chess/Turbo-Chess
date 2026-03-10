@@ -18,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test class made to verify that the loading controller and caching system works correctly.
  */
 class FirstLoadingTest {
-    private static final String INTERNAL_ENTITIES_PATH = "classpath:/EntityResources";
-
     @Test
     void testFirstLoadingPiece() {
         final PieceDefinition pawn = new PieceDefinition.Builder()
@@ -49,7 +47,7 @@ class FirstLoadingTest {
                 ))
                 .build();
 
-        final var loaderController = new LoaderControllerImpl(List.of(INTERNAL_ENTITIES_PATH));
+        final var loaderController = new LoaderControllerImpl();
         loaderController.load();
         final Map<String, AbstractEntityDefinition> pieces = loaderController.getEntityCache().values().stream()
                 .flatMap(entry -> entry.entrySet().stream())

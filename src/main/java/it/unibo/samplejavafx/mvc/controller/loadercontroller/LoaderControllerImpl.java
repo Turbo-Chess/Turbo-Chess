@@ -44,8 +44,13 @@ public class LoaderControllerImpl implements LoaderController {
 
     /**
      * Constructs a new {@code LoaderControllerImpl}.
+     *
+     * <p>
+     * Default constructor
+     * </p>
      */
     public LoaderControllerImpl() {
+        // Default constructor
     }
 
     /**
@@ -100,7 +105,7 @@ public class LoaderControllerImpl implements LoaderController {
             loadIntoCache(loadedEntities, resPackDir.toString());
         } catch (final IllegalArgumentException | IllegalStateException e) {
             LOGGER.error("Failed to load resource pack: {}", resPackDir, e);
-            throw new RuntimeException("Fatal error in json configuration", e);
+            throw new IllegalStateException("Fatal error in json configuration", e);
         }
     }
 

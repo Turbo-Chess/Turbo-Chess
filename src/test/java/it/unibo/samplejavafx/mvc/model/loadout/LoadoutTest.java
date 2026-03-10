@@ -25,14 +25,14 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  */
 class LoadoutTest {
 
-    private static final String ENTITY_RES_PATH = "file:src/main/resources/EntityResources/";
+
     private static final String STANDARD_LOADOUT_PATH = "src/main/resources/Loadouts/Standard.json";
     private static Map<String, PieceDefinition> standardDefinitions;
     private static Loadout standardLoadout;
 
     @BeforeAll
     static void setUp() throws IOException {
-        final var loaderController = new LoaderControllerImpl(List.of(ENTITY_RES_PATH));
+        final var loaderController = new LoaderControllerImpl();
         loaderController.load();
 
         standardDefinitions = loaderController.getEntityCache().get("StandardChessPieces").entrySet().stream()

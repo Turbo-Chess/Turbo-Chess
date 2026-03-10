@@ -1,9 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
-import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;

@@ -52,8 +52,11 @@ public final class LoadoutSelector implements Initializable {
      * 
      * @param controller the {@link GameController} needed for this class to operate.
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
+     * @param loadoutManager the manager to retrieve loadouts.
      */
-    public LoadoutSelector(final GameController controller, final GameCoordinator coordinator, final LoadoutManager loadoutManager) {
+    public LoadoutSelector(final GameController controller,
+                           final GameCoordinator coordinator,
+                           final LoadoutManager loadoutManager) {
         this.controller = controller;
         this.coordinator = coordinator;
         this.loadoutManager = loadoutManager;

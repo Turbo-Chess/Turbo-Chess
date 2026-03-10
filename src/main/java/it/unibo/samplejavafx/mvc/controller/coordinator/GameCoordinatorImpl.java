@@ -20,11 +20,9 @@ import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -274,10 +272,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             return;
         }
 
-        // TODO: Add crash on exceptions
        try {
            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
-           // TODO: maybe refactor with game history
            loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
 
            this.gameRoot = loader.load();
@@ -289,9 +285,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
            if (cssLocation != null) {
                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
            }
-       } catch (final Exception e) {
+       } catch (final IOException e) {
             LOGGER.error("Failed to load Game Layout", e);
-           System.out.println("MaioneseCoordinator1");
        }
     }
 
@@ -331,7 +326,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
             stage.show();
         } catch (final IOException e) {
             LOGGER.error("Failed to load Load Game", e);
-            System.out.println("MaioneseCoordinator2");
         }
     }
 
@@ -373,9 +367,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                      if (move.entityColor() == PlayerColor.BLACK) {
                          turn++;
                      }
-                } else {
-                    // TODO: Handle spawn/despawn events ONLY for power ups
                 }
+                // TODO: Handle spawn/despawn events ONLY for power ups
 
                 match.setTurnNumber(turn);
                 match.setPlayerColor(player);
