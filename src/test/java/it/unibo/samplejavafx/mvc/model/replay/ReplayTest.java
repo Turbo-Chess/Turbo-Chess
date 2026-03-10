@@ -29,7 +29,7 @@ class ReplayTest {
     private static final String PIECE_NAME = "Pawn";
     private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath().replace("file:", "");
     private static final Piece TEST_PIECE = new Piece.Builder()
-        .setHasMoved(false)
+        .hasMoved(false)
         .entityDefinition(new PieceDefinition.Builder()
             .name(PIECE_NAME)
             .id(PIECE_ID)

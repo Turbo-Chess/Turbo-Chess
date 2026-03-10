@@ -6,8 +6,11 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import java.util.List;
 
 /**
- * placeholder.
+ * Represent the movement made by "steps" of a piece.
+ * A stepping movement is like the {@link JumpingMovement} but the entity can't jump over other entities,
+ * so if there is something in between that start and end pos the move is not possible.
  */
+
 public final class SteppingMovement implements MovementStrategy {
     @Override
     public List<Point2D> calculateMoves(final Point2D start, final Point2D direction, final ChessBoard board) {

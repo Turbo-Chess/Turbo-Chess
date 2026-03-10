@@ -23,7 +23,7 @@ class GameHistoryRecorderTest {
     private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath().replace("file:", "");
 
     private static final Piece TEST_PIECE = new Piece.Builder()
-        .setHasMoved(false)
+        .hasMoved(false)
         .entityDefinition(new PieceDefinition.Builder()
             .name("Pawn")
             .id("test")
@@ -45,7 +45,7 @@ class GameHistoryRecorderTest {
     
     private Entity createTestPiece(final String name, final PlayerColor color) {
         return new Piece.Builder()
-            .setHasMoved(false)
+            .hasMoved(false)
             .entityDefinition(new PieceDefinition.Builder()
                 .name(name)
                 .id(name.toLowerCase(Locale.ROOT))

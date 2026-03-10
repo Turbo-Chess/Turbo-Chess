@@ -12,7 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Chessboard implementation of {@link ChessBoard}.
+ * A concrete implementation of the {@link ChessBoard} interface.
+ *
+ * <p>
+ * This class uses a bidirectional map ({@link BiMap}) to efficiently manage the spatial relationships
+ * between positions and entities. It handles the core logic for entity placement, removal, and movement,
+ * and notifies registered observers of any state changes.
+ * </p>
  */
 public class ChessBoardImpl implements ChessBoard {
     private static final int CHESSBOARD_SIZE = 8;
@@ -21,31 +27,40 @@ public class ChessBoardImpl implements ChessBoard {
 
     private final BiMap<Point2D, Entity> cells;
     /**
-     * List of observers for board changes.
+     * The list of registered observers monitoring the board state.
      */
     private final List<BoardObserver> observers = new LinkedList<>();
 
     /**
-     * placeholder.
+     * Constructs a new empty chessboard.
+     *
+     * <p>
+     * Initializes the internal data structure for tracking entity positions.
+     * </p>
      */
     public ChessBoardImpl() {
         this.cells = HashBiMap.create();
     }
 
     /**
-     * Constructs a new chessboard with the given cells.
+     * Constructs a new chessboard initialized with a predefined set of entities.
      *
-     * @param cells the cells to initialize the board with.
+     * <p>
+     * This constructor is useful for loading saved games or setting up specific board configurations.
+     * </p>
+     *
+     * @param cells A {@link BiMap} containing the initial distribution of entities on the board.
      */
     public ChessBoardImpl(final BiMap<Point2D, Entity> cells) {
         this.cells = HashBiMap.create(cells);
     }
 
     /**
-     * Returns the entity on the board.
+     * {@inheritDoc}
      *
-     * @param pos position of the entity.
-     * @return the Optional containing the entity (or an optional empty if no entities are present).
+     * <p>
+     * Uses the underlying map to retrieve the entity.
+     * </p>
      */
     @Override
     public Optional<Entity> getEntity(final Point2D pos) {
@@ -53,10 +68,11 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      *
-     * @param entity placeholder.
-     * @return placeholder.
+     * <p>
+     * Leverages the bidirectional nature of the map to perform a reverse lookup.
+     * </p>
      */
     @Override
     public Point2D getPosByEntity(final Entity entity) {
@@ -64,10 +80,12 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * Set the entity associated with the specified position.
+     * {@inheritDoc}
      *
-     * @param pos position of the entity.
-     * @param newEntity the new entity to be associated with the position.
+     * <p>
+     * Updates the board state. If the position is already occupied, the existing entity is removed first to ensure
+     * data consistency, and the appropriate notifications are sent to observers.
+     * </p>
      */
     @Override
     public void setEntity(final Point2D pos, final Entity newEntity) {
@@ -79,9 +97,11 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      *
-     * @param pos placeholder.
+     * <p>
+     * Removes the entity at the specified position and notifies observers of the removal.
+     * </p>
      */
     @Override
     public void removeEntity(final Point2D pos) {
@@ -92,9 +112,7 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * Adds an observer to the board.
-     *
-     * @param observer the observer to add.
+     * {@inheritDoc}
      */
     @Override
     public void addObserver(final BoardObserver observer) {
@@ -102,9 +120,7 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * Removes an observer from the board.
-     *
-     * @param observer the observer to remove.
+     * {@inheritDoc}
      */
     @Override
     public void removeObserver(final BoardObserver observer) {
@@ -138,11 +154,11 @@ public class ChessBoardImpl implements ChessBoard {
 
 
     /**
-     * Returns if the cell is free or not.
-     * If the cell is free, there will be no entry associated with that key.
+     * {@inheritDoc}
      *
-     * @param pos the position to check.
-     * @return true if the entry does not exist (the cell is free), false otherwise.
+     * <p>
+     * Returns {@code true} if the internal map does not contain the specified position key.
+     * </p>
      */
     @Override
     public boolean isFree(final Point2D pos) {
@@ -150,10 +166,11 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     *  placeholder.
+     * {@inheritDoc}
      *
-     * @param pos placeholder.
-     * @return placeholder.
+     * <p>
+     * Validates that the coordinates are within the standard 8x8 chessboard range (0-7).
+     * </p>
      */
     @Override
     public boolean checkBounds(final Point2D pos) {
@@ -161,9 +178,12 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     *  placeholder.
+     * {@inheritDoc}
      *
-     * @return placeholder.
+     * <p>
+     * Returns an immutable copy of the current board state to prevent external modification
+     * of the internal data structure.
+     * </p>
      */
     @Override
     public BiMap<Point2D, Entity> getBoard() {
@@ -171,10 +191,13 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * placeholder.
-     * 
-     * @param start placeholder.
-     * @param end placeholder.
+     * {@inheritDoc}
+     *
+     * <p>
+     * Moves an entity from the start position to the end position.
+     * Updates the entity's moved state if it is {@link it.unibo.samplejavafx.mvc.model.entity.Moveable}.
+     * Triggers move notifications but does not handle capture logic suitable for situations where the target is empty.
+     * </p>
      */
     @Override
     public void move(final Point2D start, final Point2D end) {
@@ -189,10 +212,12 @@ public class ChessBoardImpl implements ChessBoard {
     }
 
     /**
-     * placeholder.
-     * 
-     * @param start placeholder.
-     * @param end placeholder.
+     * {@inheritDoc}
+     *
+     * <p>
+     * Executes a capture maneuver. Explicitly removes the entity at the destination before moving
+     * the acting piece. Updates movement state and triggers move notifications.
+     * </p>
      */
     @Override
     public void eat(final Point2D start, final Point2D end) {

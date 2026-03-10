@@ -117,7 +117,7 @@ public final class ReplayControllerImpl implements ReplayController {
                 final Entity entity = entityOpt.get();
                 board.removeEntity(move.from());
                 board.setEntity(move.to(), entity);
-                
+
                 // Handle Promotion
                 if (move.promotedEntity() != null) {
                     board.removeEntity(move.to()); // Remove the Pawn that just arrived

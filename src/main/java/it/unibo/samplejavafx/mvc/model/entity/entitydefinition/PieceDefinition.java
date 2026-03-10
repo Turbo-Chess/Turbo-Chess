@@ -13,7 +13,18 @@ import lombok.ToString;
 import java.util.List;
 
 /**
- * Placeholder.
+ * Represents the definition for a game piece, extending the general {@link AbstractEntityDefinition}.
+ *
+ * <p>
+ * This class encapsulates the specific rules and attributes that define a piece's behavior on the board.
+ * Key properties include its weight (strategic value) and a collection of {@link MoveRules} that dictate
+ * legal movement patterns.
+ * </p>
+ *
+ * <p>
+ * Instances of this class are immutable and intended to be defined once (e.g., loaded from JSON configuration)
+ * and shared across multiple piece instances.
+ * </p>
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)
@@ -24,9 +35,14 @@ public class PieceDefinition extends AbstractEntityDefinition {
     private final List<MoveRules> moveRules;
 
     /**
-     * Placeholder.
+     * Constructs a new {@code PieceDefinition} using the provided builder.
      *
-     * @param builder Placeholder.
+     * <p>
+     * This constructor validates that the piece has a positive weight and at least one defined move rule.
+     * </p>
+     *
+     * @param builder The builder containing the initialization parameters.
+     * @throws IllegalArgumentException if the weight is non-positive or no move rules are provided.
      */
     @JsonCreator
    protected PieceDefinition(final Builder builder) {
@@ -55,6 +71,7 @@ public class PieceDefinition extends AbstractEntityDefinition {
 
     /**
      * A concrete builder for creating {@link PieceDefinition} instances.
+     *
      * <p>
      * Facilitates the construction of complex piece definitions with validated parameters.
      * </p>
@@ -66,7 +83,19 @@ public class PieceDefinition extends AbstractEntityDefinition {
         private List<MoveRules> moveRules;
 
         /**
-         * Placeholder.
+         * Sets the strategic weight or value of the piece.
+         *
+         * @param newWeight A positive integer representing the piece's value.
+         * @return this builder instance for method chaining.
+         */
+        public Builder weight(final int newWeight) {
+            this.weight = newWeight;
+            return this;
+        }
+
+        /**
+         * Sets the list of movement rules for the piece.
+         * These rules collectively define how the piece can move on the board.
          *
          * @param newMoveRules A list of {@link MoveRules} to assign.
          * @return this builder instance for method chaining.
@@ -86,6 +115,10 @@ public class PieceDefinition extends AbstractEntityDefinition {
 
         /**
          * {@inheritDoc}
+         *
+         * <p>
+         * Creates a new immutable {@link PieceDefinition} instance based on the current builder state.
+         * </p>
          */
         @Override
         public PieceDefinition build() {

@@ -7,7 +7,8 @@ import java.util.List;
 
 /**
  * The movement strategy represents the way a piece can move.
- * It can be implemented in various ways, though the main will be {@link JumpingMovement} and {@link SlidingMovement}.
+ * It can be implemented in various ways, though the main will be {@link JumpingMovement}, {@link SlidingMovement}
+ * and {@link SteppingMovement}.
  */
 @FunctionalInterface
 public interface MovementStrategy {

@@ -6,7 +6,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
- * Placeholder.
+ * Represents the definition for a game power-up, separate from standard pieces.
+ *
+ * <p>
+ * This class defines the attributes of a power-up, specifically its duration in game turns.
+ * Power-up definitions are typically instantiated from configuration files and used to generate
+ * power-up entities on the board.
+ * </p>
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)
@@ -14,9 +20,16 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
     private final int duration;
 
     /**
-     * Placeholder.
+     * Constructs a new {@code PowerUpDefinition} using the provided builder.
      *
-     * @param builder Placeholder.
+     * <p>
+     * Ensures that the duration is a positive or zero number to have a durability.
+     * Zero means that the effect will terminate in that turn, while a positive number means that
+     * the effect will last for other turns.
+     * </p>
+     *
+     * @param builder The builder containing the initialization parameters.
+     * @throws IllegalArgumentException if the duration is negative.
      */
     public PowerUpDefinition(final Builder builder) {
         super(builder);
@@ -29,7 +42,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
     }
 
     /**
-     * Placeholder.
+     * A concrete builder for creating {@link PowerUpDefinition} instances.
      *
      * @return Placeholder.
      */
@@ -40,6 +53,9 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
 
     /**
      * Placeholder.
+     * <p>
+     * Allows for setting the duration before building the immutable definition object.
+     * </p>
      */
     @JsonPOJOBuilder(withPrefix = "")
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -48,10 +64,10 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
         private int duration;
 
         /**
-         * Placeholder.
+         * Sets the duration (in turns) for the power-up effect.
          *
-         * @param newDuration Placeholder.
-         * @return Placeholder.
+         * @param newDuration A non-negative integer representing the duration.
+         * @return this builder instance for method chaining.
          */
         public Builder setDuration(final int newDuration) {
             this.duration = newDuration;
@@ -59,9 +75,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
         }
 
         /**
-         * Placeholder.
-         *
-         * @return Placeholder.
+         * {@inheritDoc}
          */
         @Override
         protected PowerUpDefinition.Builder self() {
@@ -69,9 +83,11 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
         }
 
         /**
-         * Placeholder.
+         * {@inheritDoc}
          *
-         * @return Placeholder.
+         * <p>
+         * Creates a new immutable {@link PowerUpDefinition} instance.
+         * </p>
          */
         @Override
         public PowerUpDefinition build() {

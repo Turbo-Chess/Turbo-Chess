@@ -14,7 +14,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * placeholder.
+ * Implementation of {@link MoveRules} that defines how a piece moves.
+ *
+ * <p>
+ * A {@code MoveRulesImpl} encapsulates:
+ * - A direction vector.
+ * - A movement restriction (e.g., move-only, capture-only).
+ * - A strategy (sliding, stepping, or jumping).
+ * - A conditional flag checking if the piece has already moved.
+ * </p>
  */
 @EqualsAndHashCode
 @Getter
@@ -27,12 +35,13 @@ public class MoveRulesImpl implements MoveRules {
     private final boolean hasMoved;
 
     /**
-     * placeholder.
+     * Creates a new movement rule.
      *
-     * @param direction placeholder.
-     * @param restriction placeholder.
-     * @param moveStrategy placeholder.
-     * @param hasMoved placeholder.
+     * @param direction    the vector defining the direction of movement.
+     * @param restriction  the type of move allowed (e.g., capture only, move only).
+     * @param moveStrategy the strategy used to calculate the path (e.g., sliding vs stepping).
+     * @param hasMoved     if {@code true}, this rule is valid only if the piece has not moved yet
+     *                     (e.g., for a Pawn's initial double step).
      */
     @JsonCreator
     public MoveRulesImpl(
@@ -66,27 +75,12 @@ public class MoveRulesImpl implements MoveRules {
         };
     }
 
-    /**
-     *  placeholder.
-     *
-     * @param board  placeholder.
-     * @param tempResult placeholder.
-     * @return placeholder.
-     */
     private List<Point2D> moveOnlyFilter(final ChessBoard board, final List<Point2D> tempResult) {
         return tempResult.stream()
                 .filter(board::isFree)
                 .toList();
     }
 
-    /**
-     *  placeholder.
-     *
-     * @param board placeholder.
-     * @param tempResult placeholder.
-     * @param playerColor placeholder.
-     * @return placeholder.
-     */
     private List<Point2D> eatOnlyFilter(final ChessBoard board, final List<Point2D> tempResult, final PlayerColor playerColor) {
         return tempResult.stream()
                 .filter(pos -> !board.isFree(pos))
@@ -94,14 +88,6 @@ public class MoveRulesImpl implements MoveRules {
                 .toList();
     }
 
-    /**
-     *  placeholder.
-     *
-     * @param board  placeholder.
-     * @param tempResult placeholder.
-     * @param playerColor placeholder.
-     * @return placeholder.
-     */
     private List<Point2D> moveAndEatFilter(
             final ChessBoard board, final List<Point2D> tempResult, final PlayerColor playerColor
     ) {
@@ -117,21 +103,39 @@ public class MoveRulesImpl implements MoveRules {
     }
 
     /**
-     *  placeholder.
+     * Defines restrictions on the move type.
      */
     public enum MoveType {
+        /**
+         * The piece can only move to an empty cell (cannot capture).
+         */
         MOVE_ONLY,
+        /**
+         * The piece can only move if it captures an enemy piece.
+         */
         EAT_ONLY,
+        /**
+         * The piece can move to an empty cell or capture an enemy piece.
+         */
         MOVE_AND_EAT
     }
 
     /**
-     * placeholder.
+     * Defines the algorithmic strategy for movement generation.
      */
     @Getter
     public enum MoveStrategy {
+        /**
+         * Jumps directly to the target square (like a Knight).
+         */
         JUMPING(new JumpingMovement()),
+        /**
+         * Slides along a line until blocked (like a Rook or Bishop).
+         */
         SLIDING(new SlidingMovement()),
+        /**
+         * Moves a single step in the direction (like a King).
+         */
         STEPPING(new SteppingMovement());
 
         private final MovementStrategy strategy;
@@ -141,14 +145,3 @@ public class MoveRulesImpl implements MoveRules {
         }
     }
 }
-
-/*MOVE_ONLY(ChessBoard::isFree),
- EAT_ONLY((board, pos) -> !board.isFree(pos) && (board.getEntity().)),
- MOVE_AND_EAT((board, pos) -> true);
-
- private final BiPredicate<ChessBoard, Point2D> filterFunc;
-
- MoveType(final BiPredicate<ChessBoard, Point2D> filterFunc) {
- this.filterFunc = filterFunc;
- }
-}*/

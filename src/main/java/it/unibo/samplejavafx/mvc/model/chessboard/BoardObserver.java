@@ -4,40 +4,48 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
- * Observer interface for monitoring changes on the ChessBoard.
+ * The {@code BoardObserver} interface defines a mechanism for objects to listen and react to changes
+ * occurring on the {@link ChessBoard}.
+ *
+ * <p>
+ * Implementing classes can receive notifications when entities are added, removed, or moved on the board,
+ * allowing for decoupling between the board's data and dependent systems such as the UI or game logic.
+ * </p>
  */
 public interface BoardObserver {
     /**
-     * Called when an entity is added to the board.
+     * Triggered when a new entity is placed on the board.
      *
-     * @param pos the position where the entity was added.
-     * @param entity the entity added.
+     * @param pos    The {@link Point2D} coordinate where the entity serves as the destination.
+     * @param entity The {@link Entity} that has been added to the board.
      */
     void onEntityAdded(Point2D pos, Entity entity);
 
     /**
-     * Called when an entity is removed from the board.
+     * Triggered when an entity is removed from the board.
      *
-     * @param pos the position where the entity was removed.
-     * @param entity the entity removed.
+     * @param pos    The {@link Point2D} coordinate from which the entity was removed.
+     * @param entity The {@link Entity} that was removed.
      */
     void onEntityRemoved(Point2D pos, Entity entity);
 
+    // TODO: this two methods maybe can be merged into one
+
     /**
-     * Called when an entity moves from one position to another.
+     * placeholder.
      *
-     * @param from the starting position.
-     * @param to the ending position.
+     * @param from placeholder.
+     * @param to placeholder.
      */
     default void onEntityMoved(final Point2D from, final Point2D to) {
     }
 
     /**
-     * Called when an entity is moved on the board.
+     * placeholder.
      *
-     * @param from the starting position.
-     * @param to the ending position.
-     * @param entity the entity moved.
+     * @param from placeholder.
+     * @param to placeholder.
+     * @param entity placeholder.
      */
     void onEntityMoved(Point2D from, Point2D to, Entity entity);
 

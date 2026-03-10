@@ -19,7 +19,17 @@ import java.util.Collections;
 import java.util.stream.Stream;
 
 /**
- * placeholder.
+ * A concrete implementation of the {@link LoaderController} interface.
+ *
+ * <p>
+ * This class handles the filesystem operations required to traverse resource directories,
+ * utilizing {@link EntityLoader} to parse individual files. It maintains an in-memory cache
+ * of all successfully loaded definitions for efficient runtime access.
+ * </p>
+ *
+ * <p>
+ * It is robust against missing directories or malformed files, logging errors rather than crashing the application.
+ * </p>
  */
 public class LoaderControllerImpl implements LoaderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoaderControllerImpl.class);
@@ -29,9 +39,9 @@ public class LoaderControllerImpl implements LoaderController {
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
     /**
-     * placeholder.
+     * Constructs a new {@code LoaderControllerImpl}.
      *
-     * @param paths placeholder.
+     * @param paths A {@link List} of root directory paths (internal or external) to scan for resource packs.
      */
     public LoaderControllerImpl(final List<String> paths) {
         entityResRootPath.addAll(paths);
@@ -39,6 +49,11 @@ public class LoaderControllerImpl implements LoaderController {
 
     /**
      * {@inheritDoc}
+     *
+     * <p>
+     * Iterates over all configured root paths. It attempts to access each path as a directory
+     * and load all subordinate resource packs into the cache.
+     * </p>
      */
     @Override
     public void load() {
@@ -94,13 +109,14 @@ public class LoaderControllerImpl implements LoaderController {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      *
-     * @return placeholder.
+     * <p>
+     * Returns an unmodifiable view of the internal cache to prevent external modification.
+     * </p>
      */
     @Override
     public Map<String, Map<String, AbstractEntityDefinition>> getEntityCache() {
         return Collections.unmodifiableMap(entityCache);
     }
-
 }
