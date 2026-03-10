@@ -124,5 +124,4 @@ public final class LoadoutSelector implements Initializable {
         this.coordinator.initLoadoutEditor();
     }
 
-    // TODO: remove the getter and pass the loadout manager
 }
