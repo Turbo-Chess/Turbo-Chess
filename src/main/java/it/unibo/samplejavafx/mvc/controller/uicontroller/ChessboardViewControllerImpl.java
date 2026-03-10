@@ -74,6 +74,7 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  */
 public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
+    private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;
 
     @FXML
@@ -312,11 +313,11 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private void updateReplayScore(final int whiteScore, final int blackScore) {
         final int diff = whiteScore - blackScore;
         if (diff >= 0) {
-            whiteScoreLabel.setText("+" + diff);
+            whiteScoreLabel.setText(PLUS_SIGN + diff);
             blackScoreLabel.setText(String.valueOf(-diff));
         } else {
             whiteScoreLabel.setText(String.valueOf(diff));
-            blackScoreLabel.setText("+" + Math.abs(diff));
+            blackScoreLabel.setText(PLUS_SIGN + Math.abs(diff));
         }
     }
 
@@ -574,12 +575,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
             final int diff = whiteTotal - blackTotal;
 
             if (diff >= 0) {
-                whiteScoreLabel.setText("+" + diff);
-                blackScoreLabel.setText(String.valueOf(-diff));
-            } else {
-                whiteScoreLabel.setText(String.valueOf(diff));
-                blackScoreLabel.setText("+" + Math.abs(diff));
-            }
+                    whiteScoreLabel.setText(PLUS_SIGN + diff);
+                    blackScoreLabel.setText(String.valueOf(-diff));
+                } else {
+                    whiteScoreLabel.setText(String.valueOf(diff));
+                    blackScoreLabel.setText(PLUS_SIGN + Math.abs(diff));
+                }
         });
     }
 
@@ -597,7 +598,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         final var match = gameController.getMatch();
         final String scoreText = String.format("White: %d - Black: %d", 
             match.getScore(PlayerColor.WHITE), match.getScore(PlayerColor.BLACK));
-        
+
         if (playerColor.isPresent()) {
             gameOverController.setTextLabel(statusText, playerColor.get() + messageText, scoreText);
         } else {

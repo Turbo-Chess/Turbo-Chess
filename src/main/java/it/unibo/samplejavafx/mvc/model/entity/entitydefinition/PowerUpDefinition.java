@@ -53,6 +53,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
 
     /**
      * Placeholder.
+     *
      * <p>
      * Allows for setting the duration before building the immutable definition object.
      * </p>

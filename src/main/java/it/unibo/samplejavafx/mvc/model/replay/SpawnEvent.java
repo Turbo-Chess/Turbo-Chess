@@ -10,6 +10,8 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * @param turn the turn number.
  * @param entity the entity that spawned.
  * @param position the position where it spawned.
+ * @param whiteScore the score of the white player.
+ * @param blackScore the score of the black player.
  */
 public record SpawnEvent(
     @JsonProperty("turn") int turn, 

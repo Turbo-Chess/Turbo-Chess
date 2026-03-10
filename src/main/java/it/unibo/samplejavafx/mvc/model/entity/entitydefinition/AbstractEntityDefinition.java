@@ -174,7 +174,6 @@ public abstract class AbstractEntityDefinition {
         /**
          * Placeholder.
          *
-         * @return Placeholder.
          * @return the builder instance of type {@code X}.
          */
         protected abstract X self();

@@ -29,7 +29,7 @@ public enum GameProperties {
     private static String getAppDataFolder() {
         final String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         final String userHome = System.getProperty("user.home");
-        String path;
+        final String path;
         if (os.contains("win")) {
             path = System.getenv("APPDATA") + File.separator + "TurboChess";
         } else if (os.contains("mac")) {
@@ -52,14 +52,14 @@ public enum GameProperties {
             if (folder.exists()) {
                 canUse = folder.canWrite();
             } else {
-                File parent = folder.getParentFile();
+                final File parent = folder.getParentFile();
                 canUse = parent != null && parent.exists() && parent.canWrite();
             }
 
             if (canUse) {
                 return path;
             }
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // Ignore and fallback
         }
 

@@ -1,7 +1,5 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
@@ -70,7 +68,7 @@ public final class GameHistoryRecorder implements BoardObserver {
                 }
             }
         }
-        
+
         final var spawnEvent = new SpawnEvent(turnSupplier.get(), entity, pos, 
             scoreSupplier.get().getScore(PlayerColor.WHITE), 
             scoreSupplier.get().getScore(PlayerColor.BLACK));

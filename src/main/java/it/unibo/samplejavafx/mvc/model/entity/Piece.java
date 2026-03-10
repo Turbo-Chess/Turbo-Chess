@@ -109,6 +109,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
      *
      * @return an integer representing the relative positive value or weight of this piece.
      */
+    @Override
     @JsonIgnore
     public int getWeight() {
         return super.getEntityDefinition().getWeight();

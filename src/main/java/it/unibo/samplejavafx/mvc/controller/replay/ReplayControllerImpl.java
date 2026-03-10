@@ -81,14 +81,14 @@ public final class ReplayControllerImpl implements ReplayController {
     @Override
     public void jumpToStart() {
         while (prev().isPresent()) {
-            // Keep reverting
+            this.currentIndex += 0;
         }
     }
 
     @Override
     public void jumpToEnd() {
         while (next().isPresent()) {
-            // Keep advancing
+            this.currentIndex += 0;
         }
     }
 

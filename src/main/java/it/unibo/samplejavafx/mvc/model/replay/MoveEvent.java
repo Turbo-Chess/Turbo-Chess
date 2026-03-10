@@ -18,6 +18,8 @@ import it.unibo.samplejavafx.mvc.model.entity.Entity;
  * @param capturedEntity the entity being captured, if any.
  * @param promotedEntity the entity that the piece is promoted to, if any.
  * @param originalEntity the entity that was moved, if any (used for promotion revert).
+ * @param whiteScore the score of the white player.
+ * @param blackScore the score of the black player.
  */
 public record MoveEvent(
     @JsonProperty("turn") int turn, 
@@ -32,7 +34,26 @@ public record MoveEvent(
     @JsonProperty("blackScore") int blackScore
 ) implements GameEvent {
 
-    public MoveEvent(int turn, String entityName, PlayerColor entityColor, Point2D from, Point2D to, Entity capturedEntity, int whiteScore, int blackScore) {
+    /**
+     * @param turn turn.
+     * @param entityName entityName.
+     * @param entityColor entityColor.
+     * @param from from.
+     * @param to to.
+     * @param capturedEntity capturedEntity.
+     * @param whiteScore whiteScore.
+     * @param blackScore blackScore.
+     */
+    public MoveEvent(
+        final int turn, 
+        final String entityName, 
+        final PlayerColor entityColor, 
+        final Point2D from, 
+        final Point2D to, 
+        final Entity capturedEntity, 
+        final int whiteScore, 
+        final int blackScore
+    ) {
         this(turn, entityName, entityColor, from, to, capturedEntity, null, null, whiteScore, blackScore);
     }
 
