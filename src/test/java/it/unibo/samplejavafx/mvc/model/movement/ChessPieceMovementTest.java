@@ -100,7 +100,7 @@ class ChessPieceMovementTest {
         // Test y edge - no moves available
         board.removeEntity(new Point2D(0, 4));
         board.setEntity(new Point2D(3, 0), whitePawn);
-        assertFalse(whitePawn.getAvailableCells().contains(new Point2D(3,  -1)), "No moves at board edge");
+        assertFalse(whitePawn.getValidMoves(new Point2D(3, 0), board).contains(new Point2D(3,  -1)), "No moves at board edge");
 
     }
 
