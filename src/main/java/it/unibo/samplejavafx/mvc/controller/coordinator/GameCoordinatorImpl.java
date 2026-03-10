@@ -1,10 +1,9 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
-import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
@@ -29,7 +28,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,12 +54,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private final Stage stage;
     private Parent gameRoot;
     private Scene gameScene;
+    private final ControllerContext controllerContext = ControllerContext.createDefaultContext();
     private ChessboardViewControllerImpl chessboardViewController;
-    private final GameController gameController = new GameControllerImpl(this);
-    @Setter
-    private BoardFactory boardFactory;
-    @Setter
-    private LoaderController loaderController;
+    private final GameController gameController = new GameControllerImpl(this, controllerContext);
     private final ReplayManager replayManager = new ReplayManager();
     private Path currentSaveFile;
 
@@ -75,7 +70,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @SuppressFBWarnings("EI_EXPOSE_REP2")
     public GameCoordinatorImpl(final Stage stage) {
         this.stage = stage;
-        gameController.setupCoordinator();
     }
 
     /**
@@ -87,7 +81,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void loadPieces() {
-        this.loaderController.load();
+        this.controllerContext.loaderController().load();
     }
 
     /**
@@ -153,7 +147,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public void initLoadout() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutSelector.fxml"));
-            loader.setControllerFactory(c -> new LoadoutSelector(this.gameController, this));
+            loader.setControllerFactory(c -> new LoadoutSelector(this.gameController, this, controllerContext.loadoutManager()));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -175,7 +169,10 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public void initLoadoutEditor() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
-            loader.setControllerFactory(c -> new LoadoutEditor(gameController, this));
+            loader.setControllerFactory(c -> new LoadoutEditor(
+                    this, controllerContext.loaderController(), controllerContext.loadoutManager()
+            ));
+
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
@@ -202,7 +199,10 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public void initPromotion() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
-            loader.setControllerFactory(c -> new PromotionController(this.gameController, this.loaderController));
+            loader.setControllerFactory(c -> new PromotionController(
+                    this.gameController, controllerContext.loaderController()
+            ));
+
             final Parent root = loader.load();
             final PromotionController prom = loader.getController();
             prom.init(gameController.getMatch().getCurrentPlayer());
@@ -275,6 +275,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         // TODO: Add crash on exceptions
        try {
            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
+           // TODO: maybe refactor with game history
            loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
 
            this.gameRoot = loader.load();
@@ -293,11 +294,10 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     private void createNewMatch() {
-        gameController.setupCoordinator();
         final ChessMatch match = new ChessMatchImpl();
         match.addObserver(this.chessboardViewController);
         match.getBoard().addObserver(this.chessboardViewController);
-        boardFactory.populateChessboard(
+        controllerContext.boardFactory().populateChessboard(
                 gameController.getWhiteLoadout(),
                 gameController.getBlackLoadout(),
                 match.getBoard());
@@ -308,7 +308,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         this.chessboardViewController.refreshBoardView(match.getBoard());
 
         // TODO: check the bug in the loading
-       loaderController.load();
+       controllerContext.loaderController().load();
     }
 
     /**

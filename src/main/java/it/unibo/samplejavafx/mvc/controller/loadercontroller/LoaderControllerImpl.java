@@ -4,6 +4,7 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDef
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
+import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,18 +34,18 @@ import java.util.stream.Stream;
  */
 public class LoaderControllerImpl implements LoaderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoaderControllerImpl.class);
+    // TODO: maybe move outside
+    private static final List<String> PATHS = List.of(
+            GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
+            GameProperties.EXTERNAL_MOD_FOLDER.getPath());
 
-    private final List<String> entityResRootPath = new ArrayList<>();
     private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
     /**
      * Constructs a new {@code LoaderControllerImpl}.
-     *
-     * @param paths A {@link List} of root directory paths (internal or external) to scan for resource packs.
      */
-    public LoaderControllerImpl(final List<String> paths) {
-        entityResRootPath.addAll(paths);
+    public LoaderControllerImpl() {
     }
 
     /**
@@ -58,7 +59,7 @@ public class LoaderControllerImpl implements LoaderController {
     @Override
     public void load() {
         // Get a path from URI
-        for (final String basePathString : entityResRootPath) {
+        for (final String basePathString : PATHS) {
             final Path unifiedBasePath = LoadingUtils.getCorrectPath(basePathString);
             try {
                 FileSystemUtils.ensureDirectoryExists(unifiedBasePath);

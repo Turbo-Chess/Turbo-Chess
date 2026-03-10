@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -41,7 +43,8 @@ public final class LoadoutEditor implements Initializable {
     private ListView<String> pieceView;
     @FXML
     private TextField textLabel;
-    private final GameController controller;
+    private final LoaderController loaderController;
+    private final LoadoutManager loadoutManager;
     private final GameCoordinator coordinator;
     private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private final Map<Point2D, LoadoutEntry> entries = new HashMap<>();
@@ -52,13 +55,13 @@ public final class LoadoutEditor implements Initializable {
     /**
      * Constructor for the LoadoutEditor.
      * 
-     * @param controller the {@link GameController} needed for this class to operate.
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
      */
-    public LoadoutEditor(final GameController controller, final GameCoordinator coordinator) {
-        this.controller = controller;
+    public LoadoutEditor(final GameCoordinator coordinator, final LoaderController loaderController, final LoadoutManager loadoutManager) {
         this.coordinator = coordinator;
-        this.entityCache.putAll(controller.getLoaderController().getEntityCache());
+        this.loadoutManager = loadoutManager;
+        this.loaderController = loaderController;
+        this.entityCache.putAll(loaderController.getEntityCache());
         this.x = 0;
         this.y = 0;
     }
@@ -80,7 +83,7 @@ public final class LoadoutEditor implements Initializable {
 
         saveButton.setOnAction(event -> {
             if (entries.size() == SIZE && !textLabel.getText().isBlank()) {
-               controller.getLoadoutManager().save(Loadout.create(textLabel.getText(), new ArrayList<>(entries.values())));
+               loadoutManager.save(Loadout.create(textLabel.getText(), new ArrayList<>(entries.values())));
             }
         });
 

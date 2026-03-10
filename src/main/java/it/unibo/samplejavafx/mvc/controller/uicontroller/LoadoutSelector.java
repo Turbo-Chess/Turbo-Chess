@@ -14,6 +14,7 @@ import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,6 +42,7 @@ public final class LoadoutSelector implements Initializable {
     private CheckBox forBlack;
     private final GameController controller;
     private final GameCoordinator coordinator;
+    private final LoadoutManager loadoutManager;
     private final Map<String, String> loadoutIds = new HashMap<>();
     private final List<LoadoutEntry> entries = new LinkedList<>();
     private String selectedLoadoutName;
@@ -51,10 +53,11 @@ public final class LoadoutSelector implements Initializable {
      * @param controller the {@link GameController} needed for this class to operate.
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
      */
-    public LoadoutSelector(final GameController controller, final GameCoordinator coordinator) {
+    public LoadoutSelector(final GameController controller, final GameCoordinator coordinator, final LoadoutManager loadoutManager) {
         this.controller = controller;
         this.coordinator = coordinator;
-        this.loadoutIds.putAll(controller.getLoadoutManager().getAll().stream()
+        this.loadoutManager = loadoutManager;
+        this.loadoutIds.putAll(loadoutManager.getAll().stream()
                                .collect(Collectors.toMap(Loadout::getName, Loadout::getId)));
     }
 
@@ -72,11 +75,11 @@ public final class LoadoutSelector implements Initializable {
 
         useButton.setOnAction(event -> {
             if (selectedLoadoutName != null
-                && controller.getLoadoutManager().load(loadoutIds.get(selectedLoadoutName)).isPresent()) {
+                && loadoutManager.load(loadoutIds.get(selectedLoadoutName)).isPresent()) {
                 if (!forBlack.isSelected()) {
-                    controller.setWhiteLoadout(controller.getLoadoutManager().load(loadoutIds.get(selectedLoadoutName)).get());
+                    controller.setWhiteLoadout(loadoutManager.load(loadoutIds.get(selectedLoadoutName)).get());
                 } else {
-                    controller.setBlackLoadout(controller.getLoadoutManager().load(loadoutIds.get(selectedLoadoutName)).get());
+                    controller.setBlackLoadout(loadoutManager.load(loadoutIds.get(selectedLoadoutName)).get());
                 }
             }
         });
@@ -84,8 +87,8 @@ public final class LoadoutSelector implements Initializable {
         loadButton.setOnAction(event -> {
             final Set<String> holder = new HashSet<>();
             if (selectedLoadoutName != null
-                && controller.getLoadoutManager().load(loadoutIds.get(selectedLoadoutName)).isPresent()) {
-                entries.addAll(controller.getLoadoutManager().load(loadoutIds.get(selectedLoadoutName)).get().getEntries());
+                && loadoutManager.load(loadoutIds.get(selectedLoadoutName)).isPresent()) {
+                entries.addAll(loadoutManager.load(loadoutIds.get(selectedLoadoutName)).get().getEntries());
                 for (final LoadoutEntry entry : entries) {
                     int count = 0;
                     if (holder.contains(entry.pieceId())) {

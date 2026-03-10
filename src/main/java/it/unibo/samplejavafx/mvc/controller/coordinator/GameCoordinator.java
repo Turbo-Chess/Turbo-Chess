@@ -95,8 +95,4 @@ public interface GameCoordinator {
      * @return the {@link Path} of the save file. 
      */
     Path getCurrentSaveFile();
-
-    void setBoardFactory(BoardFactory boardFactory);
-
-    void setLoaderController(LoaderController loaderController);
 }

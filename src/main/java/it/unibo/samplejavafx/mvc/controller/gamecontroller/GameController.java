@@ -108,6 +108,7 @@ public interface GameController {
      */
     Loadout getBlackLoadout();
 
+    // TODO: check removal
     /**
      * @return the game history.
      */
@@ -129,23 +130,4 @@ public interface GameController {
      * @return the {@link ChessMatch} object.
      */
     ChessMatch getMatch();
-
-    /**
-     * Set's up all the coordinator dependencies via setters to avoid getters.
-     */
-    void setupCoordinator();
-
-    /**
-     * To be removed
-     *
-     * @return to be removed.
-     */
-    LoaderController getLoaderController();
-
-    /**
-     * to be removed.
-     *
-     * @return to be removed.
-     */
-    LoadoutManager getLoadoutManager();
 }
