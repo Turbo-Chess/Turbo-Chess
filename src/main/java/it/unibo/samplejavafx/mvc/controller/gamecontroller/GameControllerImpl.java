@@ -22,6 +22,7 @@ import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
+import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -215,7 +216,7 @@ public final class GameControllerImpl implements GameController {
         match.getBoard().removeEntity(pos);
         boardFactory.createNewPiece(pos, match.getBoard(),
                 (PieceDefinition) loaderController.getEntityCache().get(pieceEntry.packId()).get(pieceEntry.pieceId()),
-                AdvancedRules.swapColor(match.getCurrentPlayer()));
+                RulesUtils.swapColor(match.getCurrentPlayer()));
     }
 
     /**
@@ -237,19 +238,14 @@ public final class GameControllerImpl implements GameController {
      * Scans the board to find the King of the opponent of the current player.
      * </p>
      *
-     * @deprecated This method is deprecated and should be replaced by internal state tracking in {@link AdvancedRules}.
      */
-    @Deprecated
     @Override
     public Point2D getKingPos() {
         if (this.match == null) {
             throw new IllegalStateException("Match should be initialized before using it");
         }
-        return this.match.getBoard().getPosByEntity(this.match.getBoard().getBoard().inverse().keySet().stream()
-                .filter(e -> e.getType() == PieceType.KING)
-                // Get the king of the opposite player
-                .filter(e -> e.getPlayerColor() != this.match.getCurrentPlayer())
-                .findFirst().get()); // Impossible to not have a king of the specified color
+        return this.match.getBoard().getPosByEntity(RulesUtils
+            .getKing(this.match.getBoard(), this.match.getCurrentPlayer()).get());
     }
 
     @Override

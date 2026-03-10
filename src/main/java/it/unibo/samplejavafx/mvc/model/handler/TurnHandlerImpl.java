@@ -18,6 +18,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.rules.CastleCondition;
 import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
+import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 
 /**
  * Placeholder.
@@ -125,16 +126,15 @@ public final class TurnHandlerImpl implements TurnHandler {
         }
 
         this.interposingPieces.clear();
-        this.state = AdvancedRules.check(board, AdvancedRules.swapColor(currentColor));
+        this.state = AdvancedRules.check(board, RulesUtils.swapColor(currentColor));
 
         if (this.state == GameState.CHECK) {
-            this.interposingPieces.putAll(CheckCalculator.getInterposingPieces(board, AdvancedRules.swapColor(currentColor)));
+            this.interposingPieces.putAll(CheckCalculator.getInterposingPieces(board, RulesUtils.swapColor(currentColor)));
         }
 
-        if ((state == GameState.CHECK || state == GameState.DOUBLE_CHECK)
-                && AdvancedRules.checkmate(board, AdvancedRules.swapColor(currentColor), state, interposingPieces)) {
-            surrender();
-            return false;
+        if ((state == GameState.CHECK || state == GameState.DOUBLE_CHECK)) {
+            this.state = AdvancedRules.checkmate(board, RulesUtils.swapColor(currentColor), state, interposingPieces);
+            updateStats();
         }
 
         switch (currentColor) {
@@ -146,14 +146,11 @@ public final class TurnHandlerImpl implements TurnHandler {
                 break;
         }
 
+        this.state = AdvancedRules.draw(board, RulesUtils.swapColor(currentColor), state);
         this.turn += 1;
-        this.currentColor = AdvancedRules.swapColor(currentColor);
+        this.currentColor = RulesUtils.swapColor(currentColor);
         updateStats();
 
-        if (AdvancedRules.draw(board, AdvancedRules.swapColor(currentColor))) {
-            updateStats();
-            return false;
-        }
         this.castlingOptions = AdvancedRules.castle(board, currentColor);
         unsetCurrentPiece();
         return true;
@@ -188,7 +185,7 @@ public final class TurnHandlerImpl implements TurnHandler {
                 && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
-            this.pieceMoves = AdvancedRules.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
             switch (castlingOptions) {
                 case CASTLE_BOTH:
                     this.pieceMoves.addAll(List.of(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()), 
@@ -213,7 +210,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             return this.pieceMoves;
         }
         if (!board.isFree(pos)
-            && board.getEntity(pos).get().getPlayerColor() == AdvancedRules.swapColor(currentColor)
+            && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
             && currentPiece.isPresent() && pieceMoves.contains(pos)) {
             return executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
         }
@@ -240,7 +237,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
-            this.pieceMoves = AdvancedRules.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
             return this.pieceMoves;
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
@@ -251,7 +248,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             return this.pieceMoves;
         }
         if (!board.isFree(pos)
-            && board.getEntity(pos).get().getPlayerColor() == AdvancedRules.swapColor(currentColor)
+            && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
             && currentPiece.isPresent() && pieceMoves.contains(pos)) {
             return executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
         }
@@ -278,11 +275,11 @@ public final class TurnHandlerImpl implements TurnHandler {
             && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
-            this.pieceMoves = AdvancedRules.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
             return this.pieceMoves;
         }
         if (!board.isFree(pos)
-            && board.getEntity(pos).get().getPlayerColor() == AdvancedRules.swapColor(currentColor)
+            && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
             && currentPiece.isPresent() && pieceMoves.contains(pos)) {
             return executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
         }
@@ -333,7 +330,7 @@ public final class TurnHandlerImpl implements TurnHandler {
     @Override
     public void surrender() {
         this.state = GameState.CHECKMATE;
-        match.updateGameState(this.state, AdvancedRules.swapColor(this.currentColor));
+        match.updateGameState(this.state, RulesUtils.swapColor(this.currentColor));
         match.updatePlayerColor(this.currentColor);
         match.updateTurn(this.turn);
     }
