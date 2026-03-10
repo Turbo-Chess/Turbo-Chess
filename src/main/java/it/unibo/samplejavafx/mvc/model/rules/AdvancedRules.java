@@ -140,7 +140,7 @@ public final class AdvancedRules {
      * 
      * @param cb chessboard of the current game.
      * @param currentColor color of the player.
-     * @return a value of the {@code CastleCondition} enum, describing which castles are possible.
+     * @return a value of the {@link CastleCondition} enum, describing which castles are possible.
      */
     public static CastleCondition castle(final ChessBoard cb, final PlayerColor currentColor) {
         final Point2D kingPos;

@@ -33,9 +33,7 @@ public final class RulesUtils {
     public static boolean hasNotMoved(final ChessBoard cb, final Point2D pos) {
         if (cb.getEntity(pos).get().asMoveable().isPresent()) {
             final var piece = (Piece) cb.getEntity(pos).get().asMoveable().get();
-            if (!piece.hasMoved()) {
-                return true;
-            }
+            return !piece.hasMoved();
         }
         return false; // cell is empty or piece has moved
     }
