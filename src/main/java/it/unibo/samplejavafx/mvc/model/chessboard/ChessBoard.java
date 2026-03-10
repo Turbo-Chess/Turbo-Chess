@@ -90,6 +90,13 @@ public interface ChessBoard {
     BiMap<Point2D, Entity> getBoard();
 
     /**
+     * Returns a copy of all Entities on the board.
+     * 
+     * @return the {@link BiMap} containing the cloned entities.
+     */
+    BiMap<Point2D, Entity> copyCells();
+
+    /**
      * Registers an observer to receive notifications about state changes on the board.
      *
      * @param observer The {@link BoardObserver} implementation to attach.

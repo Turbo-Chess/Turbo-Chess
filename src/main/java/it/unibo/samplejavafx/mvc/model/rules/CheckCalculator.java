@@ -173,8 +173,7 @@ public final class CheckCalculator {
      */
     public static boolean isMoveSafe(final ChessBoard cb, final Piece piece, final Point2D from,
                                     final Point2D to, final PlayerColor kingColor) {
-
-        final ChessBoard tempBoard = new ChessBoardImpl(cb.getBoard());
+        final ChessBoard tempBoard = new ChessBoardImpl(cb.copyCells());
         if (tempBoard.isFree(to)) {
             tempBoard.move(from, to);
         } else {

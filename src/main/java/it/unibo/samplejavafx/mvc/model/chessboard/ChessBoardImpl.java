@@ -7,8 +7,10 @@ import com.google.common.collect.ImmutableBiMap;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -188,6 +190,18 @@ public class ChessBoardImpl implements ChessBoard {
     @Override
     public BiMap<Point2D, Entity> getBoard() {
         return ImmutableBiMap.copyOf(this.cells);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BiMap<Point2D, Entity> copyCells() {
+        final Map<Point2D, Entity> newMap = new HashMap<>();
+        for (final Point2D pos : this.cells.keySet()) {
+            newMap.put(pos, this.cells.get(pos).cloneEntity());
+        }
+        return HashBiMap.create(newMap);
     }
 
     /**
