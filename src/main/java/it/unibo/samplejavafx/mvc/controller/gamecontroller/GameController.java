@@ -11,8 +11,6 @@ import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 
-import java.util.List;
-
 /**
  * The {@code GameController} interface orchestrates the flow of the chess game, mediating between
  * the data model (match, board, loadouts) and the user interface.
@@ -132,9 +130,22 @@ public interface GameController {
      */
     ChessMatch getMatch();
 
+    /**
+     * Set's up all the coordinator dependencies via setters to avoid getters.
+     */
     void setupCoordinator();
 
+    /**
+     * To be removed
+     *
+     * @return to be removed.
+     */
     LoaderController getLoaderController();
 
+    /**
+     * to be removed.
+     *
+     * @return to be removed.
+     */
     LoadoutManager getLoadoutManager();
 }

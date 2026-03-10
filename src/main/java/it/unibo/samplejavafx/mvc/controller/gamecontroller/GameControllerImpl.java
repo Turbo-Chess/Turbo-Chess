@@ -50,6 +50,7 @@ public final class GameControllerImpl implements GameController {
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
             GameProperties.EXTERNAL_MOD_FOLDER.getPath());
 
+    // TODO: remove getters for loaderController for LUCA
     // Will the taken from the selected loadout
     private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
     @Getter
@@ -242,6 +243,7 @@ public final class GameControllerImpl implements GameController {
         return this.match.getBoard();
     }
 
+    @Override
     public void setupCoordinator() {
         this.boardFactory = new BoardFactoryImpl(this.loaderController);
         this.gameCoordinator.setBoardFactory(this.boardFactory);
