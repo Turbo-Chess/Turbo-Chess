@@ -7,9 +7,27 @@ import org.junit.jupiter.api.Test;
 
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 
+import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.entity.PieceType;
+import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import java.util.Optional;
+import it.unibo.samplejavafx.mvc.model.entity.Moveable;
+
 class ScoreManagerTest {
 
     private ScoreManager scoreManager;
+
+    private Entity createMockEntity(final PlayerColor color, final int weight) {
+        return new Entity() {
+            @Override public String getId() { return "test"; }
+            @Override public String getName() { return "test"; }
+            @Override public String getImagePath() { return "test"; }
+            @Override public PieceType getType() { return PieceType.PAWN; }
+            @Override public PlayerColor getPlayerColor() { return color; }
+            @Override public int getWeight() { return weight; }
+            @Override public Optional<Moveable> asMoveable() { return Optional.empty(); }
+        };
+    }
 
     @BeforeEach
     void setUp() {
@@ -24,23 +42,23 @@ class ScoreManagerTest {
 
     @Test
     void testAddPoints() {
-        scoreManager.addPoints(PlayerColor.WHITE, 100);
+        scoreManager.onEntityAdded(new Point2D(0, 0), createMockEntity(PlayerColor.WHITE, 100));
         assertEquals(100, scoreManager.getScore(PlayerColor.WHITE));
         
-        scoreManager.addPoints(PlayerColor.WHITE, 900);
+        scoreManager.onEntityAdded(new Point2D(0, 1), createMockEntity(PlayerColor.WHITE, 900));
         assertEquals(1000, scoreManager.getScore(PlayerColor.WHITE));
     }
 
     @Test
     void testRemovePoints() {
-        scoreManager.addPoints(PlayerColor.WHITE, 1000);
-        scoreManager.removePoints(PlayerColor.WHITE, 300);
+        scoreManager.onEntityAdded(new Point2D(0, 0), createMockEntity(PlayerColor.WHITE, 1000));
+        scoreManager.onEntityRemoved(new Point2D(0, 0), createMockEntity(PlayerColor.WHITE, 300));
         assertEquals(700, scoreManager.getScore(PlayerColor.WHITE));
     }
 
     @Test
     void testReset() {
-        scoreManager.addPoints(PlayerColor.WHITE, 100);
+        scoreManager.onEntityAdded(new Point2D(0, 0), createMockEntity(PlayerColor.WHITE, 100));
         scoreManager.reset();
         assertEquals(0, scoreManager.getScore(PlayerColor.WHITE));
     }
@@ -54,7 +72,7 @@ class ScoreManagerTest {
             }
         });
         
-        scoreManager.addPoints(PlayerColor.WHITE, 150);
+        scoreManager.onEntityAdded(new Point2D(0, 0), createMockEntity(PlayerColor.WHITE, 150));
         assertEquals(150, lastScore[0]);
     }
 }

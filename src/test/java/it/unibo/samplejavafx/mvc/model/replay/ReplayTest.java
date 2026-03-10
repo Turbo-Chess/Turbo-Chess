@@ -62,7 +62,9 @@ class ReplayTest {
                 PlayerColor.WHITE,
                 new Point2D(0, 0),
                 new Point2D(0, 1),
-                null
+                null,
+                0,
+                0
             )
         );
 
@@ -71,7 +73,9 @@ class ReplayTest {
             new SpawnEvent(
                 2, 
                 TEST_PIECE, 
-                new Point2D(4, 4)
+                new Point2D(4, 4),
+                0,
+                0
             )
         );
 
@@ -80,7 +84,9 @@ class ReplayTest {
             new DespawnEvent(
                 3, 
                 TEST_PIECE,
-                new Point2D(5, 5)
+                new Point2D(5, 5),
+                0,
+                0
             )
         );
 
@@ -149,19 +155,19 @@ class ReplayTest {
 
         final GameHistory history = new GameHistory();
     
-        history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0)));
-        history.addEvent(new MoveEvent(1, PIECE_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null));
+        history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0), 0, 0));
+        history.addEvent(new MoveEvent(1, PIECE_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null, 0, 0));
         
         controller.loadHistory(history);
         assertTrue(events.isEmpty());
         
-        assertTrue(controller.next());
+        assertTrue(controller.next().isPresent());
         assertEquals(1, events.size());
         assertEquals("ADDED: (0, 0) Pawn", events.get(0));
         events.clear();
 
 
-        assertTrue(controller.next());
+        assertTrue(controller.next().isPresent());
         
         assertEquals(2, events.size());
         assertEquals("REMOVED: (0, 0) Pawn", events.get(0));
@@ -170,7 +176,7 @@ class ReplayTest {
         events.clear();
 
         // Step 2: Revert MoveEvent
-        assertTrue(controller.prev());
+        assertTrue(controller.prev().isPresent());
         
         assertEquals(2, events.size());
         assertEquals("REMOVED: (0, 1) Pawn", events.get(0));

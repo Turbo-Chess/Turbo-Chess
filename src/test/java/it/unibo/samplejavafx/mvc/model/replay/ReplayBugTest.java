@@ -47,20 +47,20 @@ class ReplayBugTest {
         final ReplayController controller = new ReplayControllerImpl(board);
         final GameHistory history = new GameHistory();
 
-        history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0)));
-        history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null));
+        history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0), 0, 0));
+        history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null, 0, 0));
 
         // --- SESSION 1 ---
         controller.loadHistory(history);
         
-        assertTrue(controller.next());
+        assertTrue(controller.next().isPresent());
         assertTrue(board.getEntity(new Point2D(0, 0)).isPresent());
 
-        assertTrue(controller.next());
+        assertTrue(controller.next().isPresent());
         assertTrue(board.getEntity(new Point2D(0, 1)).isPresent());
         assertTrue(board.getEntity(new Point2D(0, 0)).isEmpty());
         
-        assertTrue(controller.prev());
+        assertTrue(controller.prev().isPresent());
         assertTrue(board.getEntity(new Point2D(0, 0)).isPresent(), "After undo, piece should be at (0,0)");
         assertTrue(board.getEntity(new Point2D(0, 1)).isEmpty(), "After undo, piece should NOT be at (0,1)");
 
@@ -81,9 +81,9 @@ class ReplayBugTest {
         final ReplayController controller = new ReplayControllerImpl(board);
         final GameHistory history = new GameHistory();
         
-        history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0)));
-        history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null));
-        history.addEvent(new MoveEvent(2, PAWN_NAME, PlayerColor.BLACK, new Point2D(0, 1), new Point2D(0, 2), null));
+        history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0), 0, 0));
+        history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null, 0, 0));
+        history.addEvent(new MoveEvent(2, PAWN_NAME, PlayerColor.BLACK, new Point2D(0, 1), new Point2D(0, 2), null, 0, 0));
         
         controller.loadHistory(history);
         controller.next();
