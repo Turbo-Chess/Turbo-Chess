@@ -245,7 +245,7 @@ public final class GameControllerImpl implements GameController {
             throw new IllegalStateException("Match should be initialized before using it");
         }
         return this.match.getBoard().getPosByEntity(RulesUtils
-            .getKing(this.match.getBoard(), this.match.getCurrentPlayer()).get());
+            .getKing(this.match.getBoard(), RulesUtils.swapColor(this.match.getCurrentPlayer())).get());
     }
 
     @Override
