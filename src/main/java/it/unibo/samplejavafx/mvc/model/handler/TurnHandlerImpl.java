@@ -176,7 +176,7 @@ public final class TurnHandlerImpl implements TurnHandler {
                 && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
-            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
             switch (castlingOptions) {
                 case CASTLE_BOTH:
                     this.pieceMoves.addAll(List.of(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()), 
@@ -228,7 +228,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
-            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
             return ensureMoveSafety(this.pieceMoves);
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
@@ -266,7 +266,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
-            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor);
+            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
             return ensureMoveSafety(this.pieceMoves);
         }
         if (!board.isFree(pos)

@@ -46,10 +46,12 @@ public final class RulesUtils {
      * @param target cell we want to check.
      * @return an {@link Optional} containing the attacking piece if there is any, returns an empty {@link Optional} otherwise.
      */
-    public static Optional<Piece> underAttack(final ChessBoard cb, final PlayerColor currentColor, final Point2D target) {
+    public static Optional<Piece> underAttack(final ChessBoard cb, final PlayerColor currentColor,
+                                              final Point2D target, final Piece p) {
         final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
-        cells.remove(target);
         final ChessBoard board = new ChessBoardImpl(cells);
+        board.removeEntity(cb.getPosByEntity(p));
+        board.setEntity(target, p);
         final Set<Optional<Entity>> set = getPiecesOfColor(board, currentColor);
 
         for (final Optional<Entity> ent : set) {
@@ -73,10 +75,10 @@ public final class RulesUtils {
      * @return an unmodifiable List of {@link Point2D} containing all safe king moves.
      */
     public static List<Point2D> kingPossibleMoves(final List<Point2D> kingCells,
-            final ChessBoard cb, final PlayerColor currentColor) {
+            final ChessBoard cb, final PlayerColor currentColor, final Piece king) {
         final List<Point2D> possibleMoves = new LinkedList<>();
         for (final Point2D cell : kingCells) {
-            if (underAttack(cb, swapColor(currentColor), cell).isEmpty()) {
+            if (underAttack(cb, swapColor(currentColor), cell, king).isEmpty()) {
                 possibleMoves.add(cell);
             }
         }

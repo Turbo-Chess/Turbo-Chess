@@ -67,7 +67,7 @@ public final class AdvancedRules {
                                     final Map<Piece, List<Point2D>> interposingPieces) {
         final Optional<Piece> king = RulesUtils.getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
-        final List<Point2D> possibleMoves = RulesUtils.kingPossibleMoves(kingCells, cb, currentColor);
+        final List<Point2D> possibleMoves = RulesUtils.kingPossibleMoves(kingCells, cb, currentColor, king.get());
 
         if (!king.isEmpty()) {
             switch (state) {
@@ -108,7 +108,7 @@ public final class AdvancedRules {
             if (piece.get().asMoveable().isPresent()) {
                 if (piece.get().getType() == PieceType.KING) {
                     container.addAll(RulesUtils.kingPossibleMoves(piece.get().asMoveable().get()
-                            .getValidMoves(cb.getPosByEntity(piece.get()), cb), cb, currentColor));
+                            .getValidMoves(cb.getPosByEntity(piece.get()), cb), cb, currentColor, (Piece) piece.get()));
                 } else {
                     container.addAll(new HashSet<>(piece.get().asMoveable().get()
                             .getValidMoves(cb.getPosByEntity(piece.get()), cb)));
@@ -192,8 +192,10 @@ public final class AdvancedRules {
         return cb.isFree(new Point2D(kingPos.x() - 1, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x() - 2, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x() - 3, kingPos.y()))
-                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor), new Point2D(kingPos.x() - 1, kingPos.y())).isEmpty()
-                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor), new Point2D(kingPos.x() - 2, kingPos.y())).isEmpty();
+                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
+                    new Point2D(kingPos.x() - 1, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty()
+                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
+                    new Point2D(kingPos.x() - 2, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty();
     }
 
     /**
@@ -207,8 +209,10 @@ public final class AdvancedRules {
     private static boolean castleRight(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
         return cb.isFree(new Point2D(kingPos.x() + 1, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x() + 2, kingPos.y()))
-                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor), new Point2D(kingPos.x() + 1, kingPos.y())).isEmpty()
-                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor), new Point2D(kingPos.x() + 2, kingPos.y())).isEmpty();
+                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
+                    new Point2D(kingPos.x() + 1, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty()
+                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
+                    new Point2D(kingPos.x() + 2, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty();
     }
 
     
