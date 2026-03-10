@@ -11,6 +11,9 @@ import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
 import it.unibo.samplejavafx.mvc.model.replay.SpawnEvent;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.score.ScoreManager;
+import it.unibo.samplejavafx.mvc.model.score.ScoreManagerImpl;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -40,6 +43,7 @@ public final class ChessMatchImpl implements ChessMatch {
     @Getter
     @SuppressFBWarnings("EI_EXPOSE_REP")
     private final GameHistory gameHistory;
+    private final ScoreManager scoreManager;
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 
     /**
@@ -60,15 +64,20 @@ public final class ChessMatchImpl implements ChessMatch {
         this.turnNumber = 1;
         this.currentPlayer = PlayerColor.WHITE;
 
-        final var historyRecorder = new GameHistoryRecorder(this::getTurnNumber);
+        this.scoreManager = new ScoreManagerImpl();
+        final var historyRecorder = new GameHistoryRecorder(this::getTurnNumber, () -> this.scoreManager);
         this.gameHistory = historyRecorder.getHistory();
         this.turnHandler = new TurnHandlerImpl(this);
 
         this.board.getBoard().forEach((pos, entity) -> {
-            this.gameHistory.addEvent(new SpawnEvent(this.turnNumber, entity, pos));
+            this.scoreManager.onEntityAdded(pos, entity);
+            this.gameHistory.addEvent(new SpawnEvent(this.turnNumber, entity, pos, 
+                this.scoreManager.getScore(PlayerColor.WHITE), 
+                this.scoreManager.getScore(PlayerColor.BLACK)));
         });
-
         this.board.addObserver(historyRecorder);
+        this.board.addObserver(scoreManager);
+        this.scoreManager.addObserver(this::notifyScoreUpdated);
     }
 
     @Override
@@ -105,6 +114,10 @@ public final class ChessMatchImpl implements ChessMatch {
         subscribers.forEach(sub -> sub.onGameStateUpdated(state, playerColor));
     }
 
+    private void notifyScoreUpdated(final PlayerColor playerColor, final int score) {
+        subscribers.forEach(sub -> sub.onScoreChanged(playerColor, score));
+    }
+
     @Override
     public void updateTurn(final int turn) {
        this.turnNumber = turn;
@@ -123,9 +136,19 @@ public final class ChessMatchImpl implements ChessMatch {
         this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
     }
 
+    /**
+     * placeholder.
+     *
+     * @return placeholder.
+     */
+    @Override
     public Point2D getPromotionPos() {
         return turnHandler.getCurrentPiecePos();
     }
-    // TODO: aggiungere per il timer
+
+    @Override
+    public int getScore(final PlayerColor player) {
+        return this.scoreManager.getScore(player);
+    }
 
 }

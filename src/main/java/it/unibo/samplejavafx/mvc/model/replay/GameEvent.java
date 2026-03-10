@@ -25,11 +25,18 @@ public interface GameEvent {
     int getTurn();
 
     /**
-     * Generates a descriptive string for the event.
-     * Format: "Event | Entity: X | Description"
-     *
      * @return the formatted event description string.
      */
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String getEventDescription();
+
+    /**
+     * @return the white player's score at the time of this event.
+     */
+    int getWhiteScore();
+
+    /**
+     * @return the black player's score at the time of this event.
+     */
+    int getBlackScore();
 }

@@ -5,6 +5,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 /**
  * Interface for observing score changes.
  */
+@FunctionalInterface
 public interface ScoreObserver {
     /**
      * Called when the score of a player changes.

@@ -1,11 +1,12 @@
 package it.unibo.samplejavafx.mvc.model.score;
 
+import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 
 /**
  * Interface for managing the score of the game.
  */
-public interface ScoreManager {
+public interface ScoreManager extends BoardObserver {
 
     /**
      * Gets the current score of a player.
@@ -33,20 +34,4 @@ public interface ScoreManager {
      * @param observer the observer to remove.
      */
     void removeObserver(ScoreObserver observer);
-    
-    /**
-     * Increases the score of a player.
-     *
-     * @param player the player who gains points.
-     * @param points the points to add.
-     */
-    void addPoints(PlayerColor player, int points);
-
-    /**
-     * Decreases the score of a player.
-     *
-     * @param player the player who loses points.
-     * @param points the points to subtract.
-     */
-    void removePoints(PlayerColor player, int points);
 }

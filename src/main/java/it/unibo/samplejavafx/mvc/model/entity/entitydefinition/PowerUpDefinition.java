@@ -21,11 +21,11 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
     public PowerUpDefinition(final Builder builder) {
         super(builder);
 
-        if (builder.duration <= 0) {
+        if (builder.getDuration() <= 0) {
             throw new IllegalArgumentException("Duration must be a positive non-0 value");
         }
 
-        this.duration = builder.duration;
+        this.duration = builder.getDuration();
     }
 
     /**
@@ -35,7 +35,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
      */
     @Override
     public String getDescription() {
-        return "PowerUp: " + getName() + " (Duration: " + duration + ")";
+        return "PowerUp: " + getName() + " (Duration: " + getDuration() + ")";
     }
 
     /**
@@ -43,6 +43,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
      */
     @JsonPOJOBuilder(withPrefix = "")
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
     public static class Builder extends AbstractEntityDefinition.AbstractBuilder<PowerUpDefinition.Builder> {
         private int duration;
 
@@ -52,9 +53,9 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
          * @param newDuration Placeholder.
          * @return Placeholder.
          */
-        public Builder duration(final int newDuration) {
-           this.duration = newDuration;
-           return this;
+        public Builder setDuration(final int newDuration) {
+            this.duration = newDuration;
+            return this;
         }
 
         /**

@@ -1,9 +1,13 @@
 package it.unibo.samplejavafx.mvc.model.replay;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.score.ScoreManager;
 
 import java.util.function.Supplier;
 import java.util.List;
@@ -16,13 +20,16 @@ public final class GameHistoryRecorder implements BoardObserver {
 
     private final GameHistory history;
     private final Supplier<Integer> turnSupplier;
+    private final Supplier<ScoreManager> scoreSupplier;
 
     /**
      * @param turnSupplier a supplier that provides the current turn number.
+     * @param scoreSupplier a supplier that provides the score manager.
      */
-    public GameHistoryRecorder(final Supplier<Integer> turnSupplier) {
+    public GameHistoryRecorder(final Supplier<Integer> turnSupplier, final Supplier<ScoreManager> scoreSupplier) {
         this.history = new GameHistory();
         this.turnSupplier = turnSupplier;
+        this.scoreSupplier = scoreSupplier;
     }
 
     /**
@@ -54,7 +61,9 @@ public final class GameHistoryRecorder implements BoardObserver {
                         move.to(),
                         move.capturedEntity(),
                         entity,
-                        despawn.entity()
+                        despawn.entity(),
+                        scoreSupplier.get().getScore(PlayerColor.WHITE),
+                        scoreSupplier.get().getScore(PlayerColor.BLACK)
                     );
                     
                     history.addEvent(mergedMove);
@@ -63,12 +72,18 @@ public final class GameHistoryRecorder implements BoardObserver {
             }
         }
         
-        history.addEvent(new SpawnEvent(turnSupplier.get(), entity, pos));
+        final var spawnEvent = new SpawnEvent(turnSupplier.get(), entity, pos, 
+            scoreSupplier.get().getScore(PlayerColor.WHITE), 
+            scoreSupplier.get().getScore(PlayerColor.BLACK));
+        history.addEvent(spawnEvent);
     }
 
     @Override
     public void onEntityRemoved(final Point2D pos, final Entity entity) {
-        history.addEvent(new DespawnEvent(turnSupplier.get(), entity, pos));
+        final var despawnEvent = new DespawnEvent(turnSupplier.get(), entity, pos, 
+            scoreSupplier.get().getScore(PlayerColor.WHITE), 
+            scoreSupplier.get().getScore(PlayerColor.BLACK));
+        history.addEvent(despawnEvent);
     }
 
     @Override
@@ -94,7 +109,10 @@ public final class GameHistoryRecorder implements BoardObserver {
              history.removeLastEvent();
         }
 
-        history.addEvent(new MoveEvent(turnSupplier.get(), entityName, entityColor, from, to, capturedEntity));
+        final var moveEvent = new MoveEvent(turnSupplier.get(), entityName, entityColor, from, to, capturedEntity, 
+            scoreSupplier.get().getScore(PlayerColor.WHITE), 
+            scoreSupplier.get().getScore(PlayerColor.BLACK));
+        history.addEvent(moveEvent);
     }
 
 }

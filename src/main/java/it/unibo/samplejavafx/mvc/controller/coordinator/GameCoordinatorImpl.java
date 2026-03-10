@@ -218,10 +218,15 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                         this.chessboardViewController
                 ));
         this.gameController.setMatch(match);
+        match.getGameHistory().setWhiteLoadout(gameController.getWhiteLoadout());
+        match.getGameHistory().setBlackLoadout(gameController.getBlackLoadout());
+
         match.addObserver(this.chessboardViewController);
         gameController.setChessboardViewController(this.chessboardViewController);
+            this.chessboardViewController.refreshBoardView(match.getBoard());
+            this.chessboardViewController.onScoreChanged(PlayerColor.WHITE, 0);
+            this.chessboardViewController.onScoreChanged(PlayerColor.BLACK, 0);
         
-        this.chessboardViewController.refreshBoardView(match.getBoard());
 
         gameController.getLoaderController().load();
     }

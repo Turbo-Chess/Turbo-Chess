@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,6 +19,9 @@ public final class GameOverController {
 
     @FXML
     private Label messageLabel;
+
+    @FXML
+    private Label scoreLabel;
 
     @FXML
     private Button restartButton;
@@ -60,9 +62,11 @@ public final class GameOverController {
      *
      * @param statusText  placeholder.
      * @param messageText placeholder.
+     * @param scoreText   placeholder.
      */
-    public void setTextLabel(final String statusText, final String messageText) {
+    public void setTextLabel(final String statusText, final String messageText, final String scoreText) {
         this.statusLabel.setText(statusText);
         this.messageLabel.setText(messageText);
+        this.scoreLabel.setText(scoreText);
     }
 }

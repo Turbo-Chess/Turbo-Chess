@@ -85,6 +85,15 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    @JsonIgnore
+    public int getWeight() {
+        return getEntityDefinition().getWeight();
+    }
+
+    /**
      * Placeholder.
      *
      * @param <T> Placeholder.

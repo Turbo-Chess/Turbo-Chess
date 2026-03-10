@@ -14,11 +14,23 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 public record SpawnEvent(
     @JsonProperty("turn") int turn, 
     @JsonProperty("entity") Entity entity, 
-    @JsonProperty("position") Point2D position
+    @JsonProperty("position") Point2D position,
+    @JsonProperty("whiteScore") int whiteScore,
+    @JsonProperty("blackScore") int blackScore
 ) implements GameEvent {
     @Override
     public int getTurn() {
         return turn;
+    }
+
+    @Override
+    public int getWhiteScore() {
+        return whiteScore;
+    }
+
+    @Override
+    public int getBlackScore() {
+        return blackScore;
     }
 
     @Override

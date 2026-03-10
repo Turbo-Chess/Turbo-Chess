@@ -27,16 +27,28 @@ public record MoveEvent(
     @JsonProperty("to") Point2D to,
     @JsonProperty("capturedEntity") Entity capturedEntity,
     @JsonProperty("promotedEntity") Entity promotedEntity,
-    @JsonProperty("originalEntity") Entity originalEntity
+    @JsonProperty("originalEntity") Entity originalEntity,
+    @JsonProperty("whiteScore") int whiteScore,
+    @JsonProperty("blackScore") int blackScore
 ) implements GameEvent {
 
-    public MoveEvent(int turn, String entityName, PlayerColor entityColor, Point2D from, Point2D to, Entity capturedEntity) {
-        this(turn, entityName, entityColor, from, to, capturedEntity, null, null);
+    public MoveEvent(int turn, String entityName, PlayerColor entityColor, Point2D from, Point2D to, Entity capturedEntity, int whiteScore, int blackScore) {
+        this(turn, entityName, entityColor, from, to, capturedEntity, null, null, whiteScore, blackScore);
     }
 
     @Override
     public int getTurn() {
         return turn;
+    }
+
+    @Override
+    public int getWhiteScore() {
+        return whiteScore;
+    }
+
+    @Override
+    public int getBlackScore() {
+        return blackScore;
     }
 
     @Override
