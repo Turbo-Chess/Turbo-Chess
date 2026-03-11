@@ -32,7 +32,7 @@ class GameEventDescriptionTest {
             .playerColor(PlayerColor.BLACK)
             .build();
 
-        final MoveEvent event = new MoveEvent(1, entityName, PlayerColor.WHITE, from, to, captured);
+        final MoveEvent event = new MoveEvent(1, entityName, PlayerColor.WHITE, from, to, captured, 0, 0);
         final String description = event.getEventDescription();
 
         assertTrue(description.contains("Move"));
@@ -58,7 +58,7 @@ class GameEventDescriptionTest {
             .playerColor(PlayerColor.BLACK)
             .build();
         final Point2D pos = new Point2D(4, 0);
-        final SpawnEvent event = new SpawnEvent(1, piece, pos);
+        final SpawnEvent event = new SpawnEvent(1, piece, pos, 0, 0);
 
         final String description = event.getEventDescription();
 
@@ -81,7 +81,7 @@ class GameEventDescriptionTest {
             .playerColor(PlayerColor.BLACK)
             .build();
         final Point2D pos = new Point2D(3, 3);
-        final DespawnEvent event = new DespawnEvent(5, piece, pos);
+        final DespawnEvent event = new DespawnEvent(5, piece, pos, 0, 0);
 
         final String description = event.getEventDescription();
 

@@ -249,7 +249,7 @@ public final class GameControllerImpl implements GameController {
     @Override
     public void setMatch(final ChessMatch match) {
         this.match = match;
-        this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber);
+        this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber, match::getScoreManager);
         // Record initial state
         this.match.getBoard().getBoard().forEach((pos, entity) -> {
              this.historyRecorder.onEntityAdded(pos, entity);

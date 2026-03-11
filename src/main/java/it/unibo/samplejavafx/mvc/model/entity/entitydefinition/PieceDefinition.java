@@ -31,7 +31,6 @@ import java.util.List;
 @ToString
 @JsonDeserialize(builder = PieceDefinition.Builder.class)
 public class PieceDefinition extends AbstractEntityDefinition {
-    private final int weight;
     @JsonDeserialize(contentAs = MoveRulesImpl.class)
     private final List<MoveRules> moveRules;
 
@@ -49,7 +48,7 @@ public class PieceDefinition extends AbstractEntityDefinition {
    protected PieceDefinition(final Builder builder) {
         super(builder);
 
-        if (builder.weight <= 0) {
+        if (builder.getWeight() <= 0) {
            throw new IllegalArgumentException("Weight must be a positive non-0 number");
         }
 
@@ -57,8 +56,17 @@ public class PieceDefinition extends AbstractEntityDefinition {
             throw new IllegalArgumentException("A piece must have at least one move rule");
         }
 
-        this.weight = builder.weight;
         this.moveRules = List.copyOf(builder.moveRules);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDescription() {
+        return String.format("A piece of type %s with value %d", 
+            getPieceType(), 
+            getWeight());
     }
 
     /**
@@ -71,20 +79,8 @@ public class PieceDefinition extends AbstractEntityDefinition {
     @JsonPOJOBuilder(withPrefix = "")
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Builder extends AbstractEntityDefinition.AbstractBuilder<PieceDefinition.Builder> {
-        private int weight;
         @JsonDeserialize(contentAs = MoveRulesImpl.class)
         private List<MoveRules> moveRules;
-
-        /**
-         * Sets the strategic weight or value of the piece.
-         *
-         * @param newWeight A positive integer representing the piece's value.
-         * @return this builder instance for method chaining.
-         */
-        public Builder weight(final int newWeight) {
-            this.weight = newWeight;
-            return this;
-        }
 
         /**
          * Sets the list of movement rules for the piece.

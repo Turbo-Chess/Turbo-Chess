@@ -293,6 +293,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                         this.chessboardViewController
                 ));
         this.gameController.setMatch(match);
+        match.getGameHistory().setWhiteLoadout(gameController.getWhiteLoadout());
+        match.getGameHistory().setBlackLoadout(gameController.getBlackLoadout());
+
         match.addObserver(this.chessboardViewController);
         gameController.setChessboardViewController(this.chessboardViewController);
 
@@ -304,6 +307,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * placeholder.
      */
+    @Override
     public void initLoadGame() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadGame.fxml"));
@@ -361,7 +365,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                          turn++;
                      }
                 } else {
-                    LOGGER.info("Necessary for PowerUps");
+                    // TODO: Handle spawn/despawn events
+                    LOGGER.debug("Skipping event {}", lastEvent);
                 }
 
                 match.setTurnNumber(turn);

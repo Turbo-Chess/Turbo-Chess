@@ -44,6 +44,12 @@ public interface GameCoordinator {
     void initPromotion();
 
     /**
+     * Initializes the load game menu.
+     */
+    void initLoadGame();
+
+    /**
+     * Quits the application.
      * Terminates the application gracefully.
      * Closes the main stage and releases resources.
      */

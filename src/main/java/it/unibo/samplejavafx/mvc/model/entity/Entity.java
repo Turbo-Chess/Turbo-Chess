@@ -68,6 +68,13 @@ public interface Entity {
     PlayerColor getPlayerColor();
 
     /**
+     * Gets the weight of the entity for scoring.
+     *
+     * @return the weight.
+     */
+    int getWeight();
+
+    /**
      * Returns a new instance of itself.
      * 
      * @return the cloned {@link Entity}.
