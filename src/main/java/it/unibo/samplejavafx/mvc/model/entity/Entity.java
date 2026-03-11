@@ -79,7 +79,9 @@ public interface Entity {
      * 
      * @return the cloned {@link Entity}.
      */
-    Entity cloneEntity();
+    default Entity cloneEntity() { 
+        return this;
+    }
 
     /**
      * Attempts to cast this entity to a {@link Moveable} object.
