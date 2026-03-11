@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model.loader;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import org.slf4j.Logger;
@@ -40,8 +41,9 @@ public final class LoadingUtils {
                 if (p.isAbsolute()) {
                     return p;
                 }
-            } catch (final Exception e) {
-                // Ignore and fall through to exception
+            } catch (final InvalidPathException e) {
+                // Fall through exception
+                LOGGER.info("Caught and ignored InvalidPathException");
             }
         }
 
