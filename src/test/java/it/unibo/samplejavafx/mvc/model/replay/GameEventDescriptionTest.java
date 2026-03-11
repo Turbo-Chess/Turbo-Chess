@@ -23,7 +23,7 @@ class GameEventDescriptionTest {
             .entityDefinition(new PieceDefinition.Builder()
                 .name("EnemyPawn")
                 .id("ep")
-                .imagePath("path")
+                .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(1)
                 .pieceType(PieceType.PAWN)
                 .moveRules(Collections.emptyList())
