@@ -292,7 +292,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     private void createNewMatch() {
         final ChessMatch match = new ChessMatchImpl();
-        match.addObserver(this.chessboardViewController);
         match.getBoard().addObserver(this.chessboardViewController);
         controllerContext.boardFactory().populateChessboard(
                 gameController.getWhiteLoadout(),
