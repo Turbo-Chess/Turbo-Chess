@@ -31,9 +31,10 @@ import javafx.scene.layout.GridPane;
  * Controller for the LoadoutEditor UI.
  */
 public final class LoadoutEditor implements Initializable {
-    private static final int SIZE = 16;
     private static final int ROW = 2;
     private static final int COLUMN = 8;
+    private static final int SIZE = 16;
+    private static final int OFFSET = 6;
     @FXML
     private Button saveButton;
     @FXML
@@ -46,6 +47,7 @@ public final class LoadoutEditor implements Initializable {
     private final GameCoordinator coordinator;
     private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private final Map<Point2D, LoadoutEntry> entries = new HashMap<>();
+    private final Map<Button, Point2D> buttonGrid = new HashMap<>(); 
     private String selectedPiece;
     private int x;
     private int y;
@@ -81,7 +83,7 @@ public final class LoadoutEditor implements Initializable {
         });
 
         saveButton.setOnAction(event -> {
-            if (entries.size() == SIZE && !textLabel.getText().isBlank()) {
+            if (buttonGrid.size() == SIZE && !textLabel.getText().isBlank()) {
                controller.getLoadoutManager().save(Loadout.create(textLabel.getText(), new ArrayList<>(entries.values())));
             }
         });
@@ -89,9 +91,10 @@ public final class LoadoutEditor implements Initializable {
         populateGridPane();
     }
 
-    private void placeOnClick(final int posX, final int posY, final Button btn) {
+    private void placeOnClick(final ActionEvent event) {
         if (selectedPiece != null) {
-            entries.put(new Point2D(posX, posY), new LoadoutEntry(new Point2D(posX, posY), ofPack(selectedPiece), selectedPiece));
+            final Button btn = (Button) event.getSource();
+            entries.put(buttonGrid.get(btn), new LoadoutEntry(buttonGrid.get(btn), ofPack(selectedPiece), selectedPiece));
             btn.setText(selectedPiece);
         }
     }
@@ -109,9 +112,10 @@ public final class LoadoutEditor implements Initializable {
         while (y != ROW) {
             final Button btn = new Button("");
             btn.setOnAction(event -> {
-                placeOnClick(x, y, btn);
+                placeOnClick(event);
             });
             gridPain.add(btn, x, y);
+            buttonGrid.put(btn, new Point2D(x, y + OFFSET));
             x++;
             if (x == COLUMN) {
                 x = 0;

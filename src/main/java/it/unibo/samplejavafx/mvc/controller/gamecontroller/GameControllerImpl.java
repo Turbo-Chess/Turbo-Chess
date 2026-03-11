@@ -71,8 +71,6 @@ public final class GameControllerImpl implements GameController {
     @Setter
     private Loadout whiteLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get();
     @Getter
-    @Setter
-    // TODO: Will be replaced with the effective black loadout, (for now is mirrored because the standard is the same
     private Loadout blackLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get().mirrored();
     @Getter
     // The board factory is created here as is part of the current game, but it needs to be
@@ -271,5 +269,10 @@ public final class GameControllerImpl implements GameController {
             throw new IllegalStateException("Match not initialized");
         }
         return this.match.getBoard();
+    }
+
+    @Override
+    public void setBlackLoadout(final Loadout loadout) {
+        this.blackLoadout = loadout.mirrored();
     }
 }
