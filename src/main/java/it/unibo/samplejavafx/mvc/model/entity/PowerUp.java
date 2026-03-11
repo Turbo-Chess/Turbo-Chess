@@ -48,6 +48,16 @@ public class PowerUp extends AbstractEntity<PowerUpDefinition> {
     }
 
     /**
+     * Returns a new instance of itself.
+     * 
+     * @return the cloned {@link PowerUp}.
+     */
+    @Override
+    public final PowerUp cloneEntity() {
+        return this;
+    }
+
+    /**
      * A builder class for creating instances of {@link PowerUp}.
      * facilitating the construction of immutable PowerUp objects with specific durations.
      */

@@ -18,6 +18,8 @@ import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +46,7 @@ public final class CheckCalculator {
         final Set<Piece> attackers = getAttackers(cb, kingColor).stream().collect(Collectors.toSet());
 
         final Piece attacker = attackers.iterator().next();
-        final Optional<Piece> kingOpt = AdvancedRules.getKing(cb, kingColor);
+        final Optional<Piece> kingOpt = RulesUtils.getKing(cb, kingColor);
         if (kingOpt.isEmpty()) {
             LOGGER.warn("King not found for color: {}", kingColor);
             return Collections.emptyMap();
@@ -63,7 +65,7 @@ public final class CheckCalculator {
 
         final Map<Piece, List<Point2D>> candidates = new HashMap<>();
         final Set<Point2D> holder = new HashSet<>();
-        final Set<Optional<Entity>> friends = AdvancedRules.getPiecesOfColor(cb, kingColor);
+        final Set<Optional<Entity>> friends = RulesUtils.getPiecesOfColor(cb, kingColor);
 
         for (final Optional<Entity> friendOpt : friends) {
             if (friendOpt.isPresent() && friendOpt.get().asMoveable().isPresent()) {
@@ -138,14 +140,14 @@ public final class CheckCalculator {
      */
     public static List<Piece> getAttackers(final ChessBoard cb, final PlayerColor kingColor) {
         final Set<Piece> attackers = new HashSet<>();
-        final Optional<Piece> kingOpt = AdvancedRules.getKing(cb, kingColor);
+        final Optional<Piece> kingOpt = RulesUtils.getKing(cb, kingColor);
         if (kingOpt.isEmpty()) {
             return attackers.stream().toList();
         }
         final Point2D kingPos = cb.getPosByEntity(kingOpt.get());
-        final PlayerColor enemyColor = AdvancedRules.swapColor(kingColor);
+        final PlayerColor enemyColor = RulesUtils.swapColor(kingColor);
 
-        final Set<Optional<Entity>> enemies = AdvancedRules.getPiecesOfColor(cb, enemyColor);
+        final Set<Optional<Entity>> enemies = RulesUtils.getPiecesOfColor(cb, enemyColor);
 
         for (final Optional<Entity> enemyOpt : enemies) {
             if (enemyOpt.isPresent() && enemyOpt.get().asMoveable().isPresent()) {
@@ -171,8 +173,7 @@ public final class CheckCalculator {
      */
     public static boolean isMoveSafe(final ChessBoard cb, final Piece piece, final Point2D from,
                                     final Point2D to, final PlayerColor kingColor) {
-
-        final ChessBoard tempBoard = new ChessBoardImpl(cb.getBoard());
+        final ChessBoard tempBoard = new ChessBoardImpl(cb.copyCells());
         if (tempBoard.isFree(to)) {
             tempBoard.move(from, to);
         } else {

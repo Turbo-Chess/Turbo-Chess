@@ -411,7 +411,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     @Override
-    @SuppressFBWarnings("EI_EXPOSE_REP")
+    @SuppressFBWarnings("EI_EXPOSE_REP") // in a MVC-based structure you have to pass instances of controllers.
     public GameController getGameController() {
         return this.gameController;
     }

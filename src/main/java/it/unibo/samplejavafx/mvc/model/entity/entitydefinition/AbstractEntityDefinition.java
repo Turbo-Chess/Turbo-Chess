@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
+import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -70,7 +71,7 @@ public abstract class AbstractEntityDefinition {
                 && !builder.getImagePath().startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())
                 && !builder.getImagePath().startsWith("file:")
                 && !builder.getImagePath().startsWith("classpath:")
-                && !builder.getImagePath().contains("/assets/images/")) {
+                && !FileSystemUtils.pathContains(builder.getImagePath(), "/assets/images/")) {
             throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.getImagePath());
         }
 

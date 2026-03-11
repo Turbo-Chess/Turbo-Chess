@@ -6,6 +6,9 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * placeholder.
  */
@@ -19,6 +22,7 @@ public enum GameProperties {
     INTERNAL_ASSETS_FOLDER("classpath:/assets"),
     INTERNAL_ENTITIES_FOLDER("classpath:/EntityResources");
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameProperties.class);
     @Getter
     private final String path;
 
@@ -48,7 +52,7 @@ public enum GameProperties {
         final File folder = new File(path);
         try {
             // If folder exists, check if writable. If not, check if parent is writable to create it.
-            boolean canUse = false;
+            final boolean canUse;
             if (folder.exists()) {
                 canUse = folder.canWrite();
             } else {
@@ -61,6 +65,7 @@ public enum GameProperties {
             }
         } catch (final SecurityException e) {
             // Ignore and fallback
+            LOGGER.info("Caught and ignored SecurityException");
         }
 
         return userHome + File.separator + ".turbochess";

@@ -24,7 +24,7 @@ class ReplayManagerTest {
         final PieceDefinition pawnDef = new PieceDefinition.Builder()
                 .name("Pawn")
                 .id("pawn")
-                .imagePath("classpath:/assets/images/white_pawn.png")
+                .imagePath("classpath:/assets/images/")
                 .weight(1)
                 .pieceType(PieceType.PAWN)
                 .moveRules(List.of(

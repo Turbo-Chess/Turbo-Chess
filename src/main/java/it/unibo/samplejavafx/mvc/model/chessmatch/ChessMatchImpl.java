@@ -37,6 +37,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public final class ChessMatchImpl implements ChessMatch {
+    private static final String SUPPRESS_STRING = "EI_EXPOSE_REP";
     @Getter
     private GameState gameState;
     @Getter
@@ -44,17 +45,17 @@ public final class ChessMatchImpl implements ChessMatch {
     @Getter
     private int turnNumber;
     @Getter
-    @SuppressFBWarnings("EI_EXPOSE_REP")
+    @SuppressFBWarnings(SUPPRESS_STRING)
     private final TurnHandler turnHandler;
     @Getter
     // The board needs to be modified by other methods during the game.
-    @SuppressFBWarnings("EI_EXPOSE_REP")
+    @SuppressFBWarnings(SUPPRESS_STRING)
     private final ChessBoard board;
     @Getter
-    @SuppressFBWarnings("EI_EXPOSE_REP")
+    @SuppressFBWarnings(SUPPRESS_STRING)
     private final GameHistory gameHistory;
     @Getter
-    @SuppressFBWarnings("EI_EXPOSE_REP")
+    @SuppressFBWarnings(SUPPRESS_STRING)
     private final ScoreManager scoreManager;
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 

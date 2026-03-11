@@ -81,6 +81,21 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
         return Collections.unmodifiableList(this.availableCells);
     }
 
+    /**
+     * Returns a new instance of itself.
+     * 
+     * @return the cloned {@link Piece}.
+     */
+    @Override
+    public final Piece cloneEntity() {
+        return new Piece.Builder()
+                .entityDefinition(this.getEntityDefinition())
+                .gameId(this.getGameId())
+                .playerColor(this.getPlayerColor())
+                .hasMoved(this.hasMoved)
+                .build();
+    }
+
 
     /**
      * {@inheritDoc}
