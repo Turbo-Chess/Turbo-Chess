@@ -62,7 +62,7 @@ public final class GameControllerImpl implements GameController {
     private final LoadoutManager loadoutManager = new LoadoutManager();
     // The match is intended to be accessed from the game controller to give data to classes
     // that modifies it to play the game correctly.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     @Getter
     private ChessMatch match;
     @Setter

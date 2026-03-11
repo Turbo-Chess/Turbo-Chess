@@ -198,8 +198,8 @@ public class ChessBoardImpl implements ChessBoard {
     @Override
     public BiMap<Point2D, Entity> copyCells() {
         final Map<Point2D, Entity> newMap = new HashMap<>();
-        for (final Point2D pos : this.cells.keySet()) {
-            newMap.put(pos, this.cells.get(pos).cloneEntity());
+        for (final var entry : this.cells.entrySet()) {
+            newMap.put(entry.getKey(), entry.getValue().cloneEntity());
         }
         return HashBiMap.create(newMap);
     }

@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
@@ -51,6 +52,7 @@ public final class LoadoutSelector implements Initializable {
      * @param controller the {@link GameController} needed for this class to operate.
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
      */
+    @SuppressFBWarnings("EI_EXPOSE_REP2") // in a MVC-based structure you have to pass instances of controllers.
     public LoadoutSelector(final GameController controller, final GameCoordinator coordinator) {
         this.controller = controller;
         this.coordinator = coordinator;

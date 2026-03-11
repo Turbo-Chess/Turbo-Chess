@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
@@ -31,6 +32,7 @@ public final class PromotionController {
      *
      * @param controller the {@link GameController} connected to this GUI.
      */
+    @SuppressFBWarnings("EI_EXPOSE_REP2") // in a MVC-based structure you have to pass instances of controllers.
     public PromotionController(final GameController controller) {
         this.controller = controller;
         this.white = controller.getWhiteLoadout();

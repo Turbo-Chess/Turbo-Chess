@@ -133,7 +133,7 @@ public final class TurnHandlerImpl implements TurnHandler {
             this.interposingPieces.putAll(CheckCalculator.getInterposingPieces(board, RulesUtils.swapColor(currentColor)));
         }
 
-        if ((state == GameState.CHECK || state == GameState.DOUBLE_CHECK)) {
+        if (state == GameState.CHECK || state == GameState.DOUBLE_CHECK) {
             this.state = AdvancedRules.checkmate(board, RulesUtils.swapColor(currentColor), state, interposingPieces);
             updateStats();
         }

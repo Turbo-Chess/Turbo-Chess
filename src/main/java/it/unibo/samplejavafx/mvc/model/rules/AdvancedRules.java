@@ -214,6 +214,4 @@ public final class AdvancedRules {
                 && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
                     new Point2D(kingPos.x() + 2, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty();
     }
-
-    
 }

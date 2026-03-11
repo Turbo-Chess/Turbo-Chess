@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
@@ -55,6 +56,7 @@ public final class LoadoutEditor implements Initializable {
      * @param controller the {@link GameController} needed for this class to operate.
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
      */
+    @SuppressFBWarnings("EI_EXPOSE_REP2") // in a MVC-based structure you have to pass instances of controllers.
     public LoadoutEditor(final GameController controller, final GameCoordinator coordinator) {
         this.controller = controller;
         this.coordinator = coordinator;
@@ -95,9 +97,9 @@ public final class LoadoutEditor implements Initializable {
     }
 
     private String ofPack(final String id) {
-        for (final String packId : entityCache.keySet()) {
-            if (entityCache.get(packId).containsKey(id)) {
-                return packId;
+        for (final var packEntry : entityCache.entrySet()) {
+            if (entityCache.get(packEntry.getKey()).containsKey(id)) {
+                return packEntry.getKey();
             }
         }
         return null;

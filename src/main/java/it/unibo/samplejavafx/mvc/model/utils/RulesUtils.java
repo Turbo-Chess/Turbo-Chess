@@ -23,6 +23,11 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * Utility class for methods involving checks and condition for pieces on the board.
  */
 public final class RulesUtils {
+
+    private RulesUtils() {
+        // Utility class.
+    }
+
     /**
      * Utility method that checks if a certain piece hasn't moved at all.
      * 
@@ -44,6 +49,7 @@ public final class RulesUtils {
      * @param cb chessboard of the current game.
      * @param currentColor color of the enemy player.
      * @param target cell we want to check.
+     * @param p piece moved to check if it can be eaten
      * @return an {@link Optional} containing the attacking piece if there is any, returns an empty {@link Optional} otherwise.
      */
     public static Optional<Piece> underAttack(final ChessBoard cb, final PlayerColor currentColor,
@@ -72,6 +78,7 @@ public final class RulesUtils {
      * @param kingCells cells the king could normally move to.
      * @param cb chessboard of the current game.
      * @param currentColor color of the current player
+     * @param king king whose moves are being calculated
      * @return an unmodifiable List of {@link Point2D} containing all safe king moves.
      */
     public static List<Point2D> kingPossibleMoves(final List<Point2D> kingCells,

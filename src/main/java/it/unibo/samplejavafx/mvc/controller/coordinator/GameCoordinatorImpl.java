@@ -361,7 +361,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                          turn++;
                      }
                 } else {
-                    // TODO: Handle spawn/despawn events
+                    LOGGER.info("Necessary for PowerUps");
                 }
 
                 match.setTurnNumber(turn);
@@ -406,6 +406,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     @Override
+    @SuppressFBWarnings("EI_EXPOSE_REP") // in a MVC-based structure you have to pass instances of controllers.
     public GameController getGameController() {
         return this.gameController;
     }
