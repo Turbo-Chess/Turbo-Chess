@@ -27,7 +27,6 @@ public final class App extends Application {
 
         stage.setMinHeight(WINDOW_HEIGHT);
         stage.setMinWidth(WINDOW_WIDTH);
-        stage.show();
 
         try {
             final GameCoordinator coordinator = new GameCoordinatorImpl(stage);

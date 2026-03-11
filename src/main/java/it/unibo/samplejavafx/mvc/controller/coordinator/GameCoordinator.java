@@ -1,5 +1,7 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
+import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
+
 import java.nio.file.Path;
 
 /**

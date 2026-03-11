@@ -20,6 +20,7 @@ class ScoreManagerTest {
     private Entity createMockEntity(final PlayerColor color, final int weight) {
         return new Entity() {
             @Override public String getId() { return "test"; }
+            @Override public int getGameId() { return 0; }
             @Override public String getName() { return "test"; }
             @Override public String getImagePath() { return "test"; }
             @Override public PieceType getType() { return PieceType.PAWN; }

@@ -415,10 +415,4 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     public Path getCurrentSaveFile() {
         return this.currentSaveFile;
     }
-
-    @Override
-    @SuppressFBWarnings("EI_EXPOSE_REP") // in an MVC-based structure you have to pass instances of controllers.
-    public GameController getGameController() {
-        return this.gameController;
-    }
 }
