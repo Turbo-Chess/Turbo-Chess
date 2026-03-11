@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ReplayTest {
     private static final String PIECE_ID = "test";
     private static final String PIECE_NAME = "Pawn";
-    private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath().replace("file:", "");
+    private static final String IMAGE_PATH = "classpath:/assets/images/white_pawn.png";
     private static final Piece TEST_PIECE = new Piece.Builder()
         .hasMoved(false)
         .entityDefinition(new PieceDefinition.Builder()

@@ -34,6 +34,15 @@ public final class LoadingUtils {
 
         } else if (basePath.startsWith("file:")) {
             return Path.of(basePath.replace("file:", ""));
+        } else {
+            try {
+                final Path p = Path.of(basePath);
+                if (p.isAbsolute()) {
+                    return p;
+                }
+            } catch (final Exception e) {
+                // Ignore and fall through to exception
+            }
         }
 
         throw new IllegalStateException("Path does not start with the right prefix: " + basePath);
