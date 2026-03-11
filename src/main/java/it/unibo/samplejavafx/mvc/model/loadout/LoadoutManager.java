@@ -2,6 +2,10 @@ package it.unibo.samplejavafx.mvc.model.loadout;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
+import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import org.slf4j.Logger;
@@ -12,7 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +30,7 @@ import java.util.stream.Stream;
 public final class LoadoutManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadoutManager.class);
     private static final String JSON_EXTENSION = ".json";
+    private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
 
     private final Path loadoutDir;
     private final ObjectMapper mapper;
@@ -39,8 +46,7 @@ public final class LoadoutManager {
     }
 
     private void ensureStandardLoadoutExists() {
-        final String standardId = "standard-chess-loadout";
-        final Path file = loadoutDir.resolve(standardId + JSON_EXTENSION);
+        final Path file = loadoutDir.resolve(STANDARD_LOADOUT_ID + JSON_EXTENSION);
 
         if (Files.exists(file)) {
             return;
@@ -50,7 +56,7 @@ public final class LoadoutManager {
             final Loadout generated = StandardLoadoutFactory.createStandard();
 
             final Loadout standard = new Loadout(
-                standardId,
+                STANDARD_LOADOUT_ID,
                 generated.getName(),
                 generated.getCreatedAt(),
                 generated.getUpdatedAt(),
@@ -78,6 +84,9 @@ public final class LoadoutManager {
      * @param loadout placeholder.
      */
     public void save(final Loadout loadout) {
+        if (!STANDARD_LOADOUT_ID.equals(loadout.getId()) && !isValid(loadout)) {
+            return;
+        }
         createDirIfNotExists();
         final Path file = loadoutDir.resolve(loadout.getId() + JSON_EXTENSION);
         try {
@@ -86,6 +95,72 @@ public final class LoadoutManager {
         } catch (final IOException e) {
             LOGGER.error("Failed to save loadout: {}", loadout.getId(), e);
         }
+    }
+
+    private boolean isValid(final Loadout loadout) {
+        final Optional<Loadout> standardOpt = load(STANDARD_LOADOUT_ID);
+        if (standardOpt.isEmpty()) {
+            return false;
+        }
+        final Loadout standard = standardOpt.get();
+        final Map<String, PieceDefinition> definitions = loadPieceDefinitions();
+        return loadout.isValid(definitions, standard);
+    }
+
+    public void saveValid(final Loadout loadout, final Map<String, PieceDefinition> definitions) {
+        final Optional<Loadout> standardOpt = load(STANDARD_LOADOUT_ID);
+        if (standardOpt.isEmpty()) {
+            return;
+        }
+        final Loadout standard = standardOpt.get();
+        if (!loadout.isValid(definitions, standard)) {
+            return;
+        }
+        save(loadout);
+    }
+
+    private Map<String, PieceDefinition> loadPieceDefinitions() {
+        final var entityLoader = new EntityLoaderImpl();
+        final Map<String, PieceDefinition> definitions = new HashMap<>();
+        final List<String> roots = List.of(
+                GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
+                GameProperties.EXTERNAL_MOD_FOLDER.getPath()
+        );
+        for (final String basePathString : roots) {
+            final Path basePath;
+            try {
+                basePath = LoadingUtils.getCorrectPath(basePathString);
+            } catch (final Exception e) {
+                LOGGER.warn("Failed to resolve entity root path: {}", basePathString, e);
+                continue;
+            }
+            try {
+                FileSystemUtils.ensureDirectoryExists(basePath);
+            } catch (final IOException e) {
+                LOGGER.warn("Cannot access entity root path: {}", basePath, e);
+                continue;
+            }
+            if (!Files.isDirectory(basePath)) {
+                continue;
+            }
+            try (Stream<Path> packs = Files.list(basePath)) {
+                packs.filter(Files::isDirectory).forEach(packPath -> {
+                    try {
+                        final List<AbstractEntityDefinition> loaded =
+                                entityLoader.loadEntityFile(packPath, AbstractEntityDefinition.class);
+                        loaded.stream()
+                                .filter(def -> def instanceof PieceDefinition)
+                                .map(def -> (PieceDefinition) def)
+                                .forEach(def -> definitions.putIfAbsent(def.getId(), def));
+                    } catch (final RuntimeException ex) {
+                        LOGGER.warn("Failed to load entity definitions from {}", packPath, ex);
+                    }
+                });
+            } catch (final IOException e) {
+                LOGGER.warn("Failed to list entity packs in {}", basePath, e);
+            }
+        }
+        return Collections.unmodifiableMap(definitions);
     }
 
     /**

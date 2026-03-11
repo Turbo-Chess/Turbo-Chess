@@ -1,6 +1,9 @@
 package it.unibo.samplejavafx.mvc.controller.replay;
 
+import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
+
+import java.util.Optional;
 
 /**
  * Controller for managing game replay playback.
@@ -18,16 +21,16 @@ public interface ReplayController {
     /**
      * Advances the replay by one step.
      *
-     * @return true if advanced, false if at the end.
+     * @return an Optional containing the event that was applied, or empty if at the end.
      */
-    boolean next();
+    Optional<GameEvent> next();
 
     /**
      * Reverts the replay by one step.
      *
-     * @return true if reverted, false if at the start.
+     * @return an Optional containing the event that was reverted, or empty if at the start.
      */
-    boolean prev();
+    Optional<GameEvent> prev();
 
     /**
      * Jumps to the start of the replay.

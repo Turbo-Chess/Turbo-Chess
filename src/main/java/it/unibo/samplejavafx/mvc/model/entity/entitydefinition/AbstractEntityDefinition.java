@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
+import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -44,6 +45,7 @@ public abstract class AbstractEntityDefinition {
     private final String id;
     private final String imagePath;
     private final PieceType pieceType;
+    private final int weight;
 
     /**
      * Constructs a new {@code AbstractEntityDefinition} from the provided builder.
@@ -55,33 +57,41 @@ public abstract class AbstractEntityDefinition {
      * @throws IllegalArgumentException if any required field (name, id, imagePath, pieceType) is missing or invalid.
      */
     protected <T extends AbstractBuilder<T>> AbstractEntityDefinition(final AbstractBuilder<T> builder) {
-        if (builder.name == null || builder.name.isEmpty()) {
+        if (builder.getName() == null || builder.getName().isEmpty()) {
             throw new IllegalArgumentException("Missing required field: name");
         }
 
-        if (builder.id == null || builder.id.isEmpty()) {
+        if (builder.getId() == null || builder.getId().isEmpty()) {
             throw new IllegalArgumentException("Missing required field: id");
         }
 
-        if (builder.imagePath == null || builder.imagePath.isEmpty()) {
+        if (builder.getImagePath() == null || builder.getImagePath().isEmpty()) {
             throw new IllegalArgumentException("Missing required filed: imagePath");
-        } else if (!builder.imagePath.startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath())
-                && !builder.imagePath.startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())
-                && !builder.imagePath.startsWith("file:")
-                && !builder.imagePath.startsWith("classpath:")
-                && !builder.imagePath.contains("/assets/images/")) {
-            throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.imagePath);
+        } else if (!builder.getImagePath().startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath())
+                && !builder.getImagePath().startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())
+                && !builder.getImagePath().startsWith("file:")
+                && !builder.getImagePath().startsWith("classpath:")
+                && !FileSystemUtils.pathContains(builder.getImagePath(), "/assets/images/")) {
+            throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.getImagePath());
         }
 
-        if (builder.pieceType == null) {
-            throw new IllegalArgumentException("Missing required field: PieceType");
+        if (builder.getPieceType() == null) {
+            throw new IllegalArgumentException("Missing required field: name");
         }
 
-        this.name = builder.name;
-        this.id = builder.id;
-        this.imagePath = String.valueOf(LoadingUtils.getCorrectPath(builder.imagePath));
-        this.pieceType = builder.pieceType;
+        this.name = builder.getName();
+        this.id = builder.getId();
+        this.imagePath = String.valueOf(LoadingUtils.getCorrectPath(builder.getImagePath()));
+        this.pieceType = builder.getPieceType();
+        this.weight = builder.getWeight();
     }
+
+    /**
+     * Retrieves a text description of the entity.
+     *
+     * @return a String description.
+     */
+    public abstract String getDescription();
 
     /**
      * A generic abstract builder for constructing {@link AbstractEntityDefinition} instances.
@@ -93,11 +103,13 @@ public abstract class AbstractEntityDefinition {
      * @param <X> The recursive type of the builder subclass.
      */
     @JsonPOJOBuilder(withPrefix = "")
+    @Getter
     public abstract static class AbstractBuilder<X extends AbstractBuilder<X>> {
         private String name;
         private String id;
         private String imagePath;
         private PieceType pieceType;
+        private int weight;
 
         /**
          * Sets the display name of the entity definition.
@@ -151,6 +163,17 @@ public abstract class AbstractEntityDefinition {
          * Designed to be implemented by subclasses to return {@code this}, ensuring the correct return type
          * for fluent method chaining (otherwise the abstract type would be returned and method chaining will break).
          * </p>
+         *
+         * @param newWeight Placeholder.
+         * @return Placeholder.
+         */
+        public X weight(final int newWeight) {
+            this.weight = newWeight;
+            return self();
+        }
+
+        /**
+         * Placeholder.
          *
          * @return the builder instance of type {@code X}.
          */

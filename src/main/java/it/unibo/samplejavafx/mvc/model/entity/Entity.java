@@ -22,7 +22,8 @@ import java.util.Optional;
     property = "entityType"
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = Piece.class, name = "piece")
+    @JsonSubTypes.Type(value = Piece.class, name = "piece"),
+    @JsonSubTypes.Type(value = PowerUp.class, name = "powerup")
 })
 public interface Entity {
     /**
@@ -74,6 +75,22 @@ public interface Entity {
      * @return an {@link int} representing the game ID associated with this entity.
      */
     int getGameId();
+
+    /**
+     * Gets the weight of the entity for scoring.
+     *
+     * @return the weight.
+     */
+    int getWeight();
+
+    /**
+     * Returns a new instance of itself.
+     *
+     * @return the cloned {@link Entity}.
+     */
+    default Entity cloneEntity() {
+        return this;
+    }
 
     /**
      * Attempts to cast this entity to a {@link Moveable} object.

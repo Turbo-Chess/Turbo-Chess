@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
@@ -31,9 +32,10 @@ import javafx.scene.layout.GridPane;
  * Controller for the LoadoutEditor UI.
  */
 public final class LoadoutEditor implements Initializable {
-    private static final int SIZE = 16;
     private static final int ROW = 2;
     private static final int COLUMN = 8;
+    private static final int SIZE = 16;
+    private static final int OFFSET = 6;
     @FXML
     private Button saveButton;
     @FXML
@@ -42,24 +44,25 @@ public final class LoadoutEditor implements Initializable {
     private ListView<String> pieceView;
     @FXML
     private TextField textLabel;
-    private final LoaderController loaderController;
     private final LoadoutManager loadoutManager;
     private final GameCoordinator coordinator;
     private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private final Map<Point2D, LoadoutEntry> entries = new HashMap<>();
+    private final Map<Button, Point2D> buttonGrid = new HashMap<>();
     private String selectedPiece;
     private int x;
     private int y;
 
     /**
      * Constructor for the LoadoutEditor.
-     * 
+     *
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
+     * @param loaderController the {@link LoaderController} needed to retrieve all the definitions.
+     * @param loadoutManager the {@link LoadoutManager} needed to access the methods to manipulate loadouts.
      */
     public LoadoutEditor(final GameCoordinator coordinator, final LoaderController loaderController, final LoadoutManager loadoutManager) {
         this.coordinator = coordinator;
         this.loadoutManager = loadoutManager;
-        this.loaderController = loaderController;
         this.entityCache.putAll(loaderController.getEntityCache());
         this.x = 0;
         this.y = 0;
@@ -81,7 +84,7 @@ public final class LoadoutEditor implements Initializable {
         });
 
         saveButton.setOnAction(event -> {
-            if (entries.size() == SIZE && !textLabel.getText().isBlank()) {
+            if (buttonGrid.size() == SIZE && !textLabel.getText().isBlank()) {
                loadoutManager.save(Loadout.create(textLabel.getText(), new ArrayList<>(entries.values())));
             }
         });
@@ -89,17 +92,18 @@ public final class LoadoutEditor implements Initializable {
         populateGridPane();
     }
 
-    private void placeOnClick(final int posX, final int posY, final Button btn) {
+    private void placeOnClick(final ActionEvent event) {
         if (selectedPiece != null) {
-            entries.put(new Point2D(posX, posY), new LoadoutEntry(new Point2D(posX, posY), ofPack(selectedPiece), selectedPiece));
+            final Button btn = (Button) event.getSource();
+            entries.put(buttonGrid.get(btn), new LoadoutEntry(buttonGrid.get(btn), ofPack(selectedPiece), selectedPiece));
             btn.setText(selectedPiece);
         }
     }
 
     private String ofPack(final String id) {
-        for (final String packId : entityCache.keySet()) {
-            if (entityCache.get(packId).containsKey(id)) {
-                return packId;
+        for (final var packEntry : entityCache.entrySet()) {
+            if (entityCache.get(packEntry.getKey()).containsKey(id)) {
+                return packEntry.getKey();
             }
         }
         return null;
@@ -109,9 +113,10 @@ public final class LoadoutEditor implements Initializable {
         while (y != ROW) {
             final Button btn = new Button("");
             btn.setOnAction(event -> {
-                placeOnClick(x, y, btn);
+                placeOnClick(event);
             });
             gridPain.add(btn, x, y);
+            buttonGrid.put(btn, new Point2D(x, y + OFFSET));
             x++;
             if (x == COLUMN) {
                 x = 0;

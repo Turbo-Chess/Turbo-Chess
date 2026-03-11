@@ -7,7 +7,6 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControlle
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
-import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
@@ -15,7 +14,7 @@ import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
-import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
+import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,7 +45,7 @@ public final class GameControllerImpl implements GameController {
 
     // The match is intended to be accessed from the game controller to give data to classes
     // that modifies it to play the game correctly.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     @Getter
     private ChessMatch match;
     @Setter
@@ -155,13 +154,12 @@ public final class GameControllerImpl implements GameController {
     public void promote(final LoadoutEntry pieceEntry) {
         final Point2D pos = match.getPromotionPos();
         match.getBoard().removeEntity(pos);
-        final PieceDefinition promotedPiece = (PieceDefinition) controllerContext.loaderController()
-                .getEntityCache()
-                .get(pieceEntry.packId())
-                .get(pieceEntry.pieceId());
         controllerContext.boardFactory().createNewPiece(pos, match.getBoard(),
-                promotedPiece,
-                AdvancedRules.swapColor(match.getCurrentPlayer()));
+                (PieceDefinition) controllerContext.loaderController()
+                        .getEntityCache()
+                        .get(pieceEntry.packId())
+                        .get(pieceEntry.pieceId()),
+                RulesUtils.swapColor(match.getCurrentPlayer()));
     }
 
     /**
@@ -183,25 +181,20 @@ public final class GameControllerImpl implements GameController {
      * Scans the board to find the King of the opponent of the current player.
      * </p>
      *
-     * @deprecated This method is deprecated and should be replaced by internal state tracking in {@link AdvancedRules}.
      */
-    @Deprecated
     @Override
     public Point2D getKingPos() {
         if (this.match == null) {
             throw new IllegalStateException("Match should be initialized before using it");
         }
-        return this.match.getBoard().getPosByEntity(this.match.getBoard().getBoard().inverse().keySet().stream()
-                .filter(e -> e.getType() == PieceType.KING)
-                // Get the king of the opposite player
-                .filter(e -> e.getPlayerColor() != this.match.getCurrentPlayer())
-                .findFirst().get()); // Impossible to not have a king of the specified color
+        return this.match.getBoard().getPosByEntity(RulesUtils
+            .getKing(this.match.getBoard(), RulesUtils.swapColor(this.match.getCurrentPlayer())).get());
     }
 
     @Override
     public void setMatch(final ChessMatch match) {
         this.match = match;
-        this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber);
+        this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber, match::getScoreManager);
         // Record initial state
         this.match.getBoard().getBoard().forEach((pos, entity) -> {
              this.historyRecorder.onEntityAdded(pos, entity);
@@ -224,5 +217,10 @@ public final class GameControllerImpl implements GameController {
             throw new IllegalStateException("Match not initialized");
         }
         return this.match.getBoard();
+    }
+
+    @Override
+    public void setBlackLoadout(final Loadout loadout) {
+        this.blackLoadout = loadout.mirrored();
     }
 }

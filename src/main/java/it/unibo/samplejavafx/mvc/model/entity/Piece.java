@@ -60,6 +60,22 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     }
 
     /**
+     * Returns a new instance of itself.
+     *
+     * @return the cloned {@link Piece}.
+     */
+    @Override
+    public final Piece cloneEntity() {
+        return new Piece.Builder()
+                .entityDefinition(this.getEntityDefinition())
+                .gameId(this.getGameId())
+                .playerColor(this.getPlayerColor())
+                .hasMoved(this.hasMoved)
+                .build();
+    }
+
+
+    /**
      * {@inheritDoc}
      *
      * @return an {@link Optional} containing this piece instance, confirming it is a moveable entity.
@@ -86,6 +102,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
      *
      * @return an integer representing the relative positive value or weight of this piece.
      */
+    @Override
     @JsonIgnore
     public int getWeight() {
         return super.getEntityDefinition().getWeight();

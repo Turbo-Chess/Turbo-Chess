@@ -8,6 +8,7 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
+import it.unibo.samplejavafx.mvc.model.score.ScoreManagerImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -19,13 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameHistoryRecorderTest {
 
-    private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath().replace("file:", "");
-    private static final String PIECE_NAME = "Pawn";
+    private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath();
 
     private static final Piece TEST_PIECE = new Piece.Builder()
         .hasMoved(false)
         .entityDefinition(new PieceDefinition.Builder()
-            .name(PIECE_NAME)
+            .name("Pawn")
             .id("test")
             .imagePath(IMAGE_PATH)
             .weight(1)
@@ -61,7 +61,7 @@ class GameHistoryRecorderTest {
 
     @Test
     void testMoveRecording() {
-        final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1);
+        final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1, () -> new ScoreManagerImpl());
         final Point2D from = new Point2D(0, 0);
         final Point2D to = new Point2D(0, 1);
 
@@ -82,7 +82,7 @@ class GameHistoryRecorderTest {
 
     @Test
     void testCaptureRecording() {
-        final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1);
+        final GameHistoryRecorder recorder = new GameHistoryRecorder(() -> 1, () -> new ScoreManagerImpl());
         final Point2D from = new Point2D(0, 0);
         final Point2D to = new Point2D(1, 1);
         final Entity entity = createTestPiece("Pawn", PlayerColor.WHITE);

@@ -48,7 +48,7 @@ class CheckmateTest {
         countInc();
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
-        assertTrue(AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
+        assertEquals(GameState.CHECKMATE, AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
         assertTrue(intPieces.keySet().isEmpty());
     }
 
@@ -66,7 +66,7 @@ class CheckmateTest {
         countInc();
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
-        assertFalse(AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
+        assertEquals(GameState.CHECK, AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
         assertTrue(intPieces.keySet().isEmpty());
     }
 
@@ -86,7 +86,7 @@ class CheckmateTest {
         countInc();
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
-        assertFalse(AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
+        assertEquals(GameState.CHECK, AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
         assertFalse(intPieces.keySet().isEmpty());
     }
 
@@ -108,7 +108,7 @@ class CheckmateTest {
         countInc();
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
-        assertFalse(AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
+        assertEquals(GameState.CHECK, AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
         assertEquals(2, intPieces.keySet().size());
     }
 
@@ -128,7 +128,7 @@ class CheckmateTest {
         countInc();
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
-        assertTrue(AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.DOUBLE_CHECK, intPieces));
+        assertEquals(GameState.CHECKMATE, AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.DOUBLE_CHECK, intPieces));
     }
 
     @Test
@@ -145,7 +145,7 @@ class CheckmateTest {
         countInc();
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
-        assertFalse(AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.DOUBLE_CHECK, intPieces));
+        assertEquals(GameState.DOUBLE_CHECK, AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.DOUBLE_CHECK, intPieces));
     }
 
     private void countInc() {

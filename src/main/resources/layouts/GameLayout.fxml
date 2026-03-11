@@ -82,9 +82,15 @@
    <top>
       <BorderPane id="infoBar" fx:id="infoBar" BorderPane.alignment="CENTER" styleClass="info-bar">
          <left>
-            <HBox alignment="CENTER_LEFT" spacing="4">
-               <Label id="turnLabel" fx:id="turnLabel" text="Turn: " />
-               <Label id="turnValueLabel" fx:id="turnValueLabel" text="" />
+            <HBox alignment="CENTER_LEFT" spacing="10">
+               <HBox spacing="4">
+                  <Label id="turnLabel" fx:id="turnLabel" text="Turn: " />
+                  <Label id="turnValueLabel" fx:id="turnValueLabel" text="" />
+               </HBox>
+               <HBox spacing="4">
+                  <Label text="White Score: " />
+                  <Label fx:id="whiteScoreLabel" text="0" />
+               </HBox>
             </HBox>
          </left>
          <center>
@@ -94,9 +100,15 @@
             </HBox>
          </center>
          <right>
-            <HBox alignment="CENTER_RIGHT" spacing="4">
-               <Label id="timeLabel" fx:id="timeLabel" text="Time of the Match: " />
-               <Label id="timeValueLabel" fx:id="timeValueLabel" text="" />
+            <HBox alignment="CENTER_RIGHT" spacing="10">
+               <HBox spacing="4">
+                  <Label text="Black Score: " />
+                  <Label fx:id="blackScoreLabel" text="0" />
+               </HBox>
+               <HBox spacing="4">
+                  <Label id="timeLabel" fx:id="timeLabel" text="Time of the Match: " />
+                  <Label id="timeValueLabel" fx:id="timeValueLabel" text="" />
+               </HBox>
             </HBox>
          </right>
       </BorderPane>

@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model.loader;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import org.slf4j.Logger;
@@ -34,6 +35,16 @@ public final class LoadingUtils {
 
         } else if (basePath.startsWith("file:")) {
             return Path.of(basePath.replace("file:", ""));
+        } else {
+            try {
+                final Path p = Path.of(basePath);
+                if (p.isAbsolute()) {
+                    return p;
+                }
+            } catch (final InvalidPathException e) {
+                // Fall through exception
+                LOGGER.info("Caught and ignored InvalidPathException");
+            }
         }
 
         throw new IllegalStateException("Path does not start with the right prefix: " + basePath);

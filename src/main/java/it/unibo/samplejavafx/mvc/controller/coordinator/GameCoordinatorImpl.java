@@ -298,6 +298,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 gameController.getBlackLoadout(),
                 match.getBoard());
         this.gameController.setMatch(match);
+        match.getGameHistory().setWhiteLoadout(gameController.getWhiteLoadout());
+        match.getGameHistory().setBlackLoadout(gameController.getBlackLoadout());
+
         match.addObserver(this.chessboardViewController);
         gameController.setChessboardViewController(this.chessboardViewController);
 
@@ -310,6 +313,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * placeholder.
      */
+    @Override
     public void initLoadGame() {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadGame.fxml"));
@@ -366,8 +370,10 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                      if (move.entityColor() == PlayerColor.BLACK) {
                          turn++;
                      }
+                } else {
+                    // TODO: Handle spawn/despawn events
+                    LOGGER.debug("Skipping event {}", lastEvent);
                 }
-                // TODO: Handle spawn/despawn events ONLY for power ups
 
                 match.setTurnNumber(turn);
                 match.setPlayerColor(player);
@@ -408,5 +414,11 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public Path getCurrentSaveFile() {
         return this.currentSaveFile;
+    }
+
+    @Override
+    @SuppressFBWarnings("EI_EXPOSE_REP") // in an MVC-based structure you have to pass instances of controllers.
+    public GameController getGameController() {
+        return this.gameController;
     }
 }

@@ -2,25 +2,20 @@ package it.unibo.samplejavafx.mvc.model.rules;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
-import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 
 /**
  * Contains all the complex core rules of chess.
@@ -41,7 +36,9 @@ public final class AdvancedRules {
      * 
      * @param cb chessboard of the current game.
      * @param currentColor color of the player.
-     * @return {@code true} if the king is under attack, {@code false} otherwise.
+     * @return  {@link GameState} {@code CHECK} if the king is under attack,
+     *          {@code DOUBLE_CHECK} if the king is under attack by two pieces,
+     *          {@code NORMAL} otherwise.
      */
     public static GameState check(final ChessBoard cb, final PlayerColor currentColor) {
         final int totalAttackers = CheckCalculator.getAttackers(cb, currentColor).size();
@@ -54,20 +51,6 @@ public final class AdvancedRules {
         }
     }
 
-    /*public static boolean secondaryCheck(final ChessBoard cb, final PlayerColor currentColor, final Piece pastAttacker) {
-        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
-        cells.remove(cb.getPosByEntity(pastAttacker));
-        final ChessBoard board = new ChessBoardImpl(cells);
-        final Optional<Piece> king = getKing(cb, swapColor(currentColor));
-        if (!king.isEmpty()) {
-            if (!underAttack(board, currentColor, board.getPosByEntity(king.get())).isEmpty()) {
-                SEC_ATTACKING_PIECE = underAttack(board, currentColor, board.getPosByEntity(king.get())).get();
-                return true;
-            }
-        }
-        return false; // otherwise
-    }*/
-
     /**
      * Method that checks if the king of the current player is under attack and can't defend himself,
      * therefore ending the game in a checkmate.
@@ -77,13 +60,14 @@ public final class AdvancedRules {
      * @param currentColor color of the player.
      * @param state current game-state.
      * @param interposingPieces empty map that will contain the result of getInterposingPieces().
-     * @return {@code true} if the king is under attack and can't defend himself, {@code false} otherwise.
+     * @return  {@link GameState} {@code CHECKMATE} if the king is under attack and can't defend himself,
+     *          otherwise returns the same state taken as imput.
      */
-    public static boolean checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
+    public static GameState checkmate(final ChessBoard cb, final PlayerColor currentColor, final GameState state,
                                     final Map<Piece, List<Point2D>> interposingPieces) {
-        final Optional<Piece> king = getKing(cb, currentColor);
+        final Optional<Piece> king = RulesUtils.getKing(cb, currentColor);
         final List<Point2D> kingCells = king.get().getValidMoves(cb.getPosByEntity(king.get()), cb);
-        final List<Point2D> possibleMoves = kingPossibleMoves(kingCells, cb, currentColor);
+        final List<Point2D> possibleMoves = RulesUtils.kingPossibleMoves(kingCells, cb, currentColor, king.get());
 
         if (!king.isEmpty()) {
             switch (state) {
@@ -91,19 +75,19 @@ public final class AdvancedRules {
                     if (possibleMoves.isEmpty()) {
                         interposingPieces.putAll(CheckCalculator.getInterposingPieces(cb, currentColor));
                         if (interposingPieces.isEmpty()) {
-                            return true;
+                            return GameState.CHECKMATE;
                         }
                     }
                     break;
                 case DOUBLE_CHECK:
                     if (possibleMoves.isEmpty()) {
-                        return true;
+                        return GameState.CHECKMATE;
                     }
                 default:
-                    return false;
+                    return state;
             }
         }
-        return false;
+        return state;
     }
 
     /**
@@ -112,17 +96,19 @@ public final class AdvancedRules {
      * 
      * @param cb chessboard of the current game.
      * @param currentColor color of the player.
-     * @return {@code true} if the current player has no legal moves left, {@code false} otherwise.
+     * @param state current state of the ChessMatch.
+     * @return  {@link GameState} {@code NORMAL} if the current player has no legal moves left,
+     *          otherwise returns the same state taken as imput.
      */
-    public static boolean draw(final ChessBoard cb, final PlayerColor currentColor) {
-        final Set<Optional<Entity>> set = getPiecesOfColor(cb, currentColor);
+    public static GameState draw(final ChessBoard cb, final PlayerColor currentColor, final GameState state) {
+        final Set<Optional<Entity>> set = RulesUtils.getPiecesOfColor(cb, currentColor);
         final List<Point2D> container = new LinkedList<>();
 
         for (final Optional<Entity> piece : set) {
             if (piece.get().asMoveable().isPresent()) {
                 if (piece.get().getType() == PieceType.KING) {
-                    container.addAll(kingPossibleMoves(piece.get().asMoveable().get()
-                            .getValidMoves(cb.getPosByEntity(piece.get()), cb), cb, currentColor));
+                    container.addAll(RulesUtils.kingPossibleMoves(piece.get().asMoveable().get()
+                            .getValidMoves(cb.getPosByEntity(piece.get()), cb), cb, currentColor, (Piece) piece.get()));
                 } else {
                     container.addAll(new HashSet<>(piece.get().asMoveable().get()
                             .getValidMoves(cb.getPosByEntity(piece.get()), cb)));
@@ -130,26 +116,23 @@ public final class AdvancedRules {
             }
         }
         if (container.isEmpty()) {
-            //state = GameState.DRAW;
-            return true;
+            return GameState.DRAW;
         }
         final List<Entity> holder = cb.getBoard().inverse().keySet().stream()
                 .filter(e -> e.getType() != PieceType.POWERUP)
                 .toList();
         if (holder.size() == 2) {
-            //state = GameState.DRAW;
-            return true;
+            return GameState.DRAW;
         }
         if (holder.size() == 3) {
             final List<Entity> list = holder.stream()
                 .filter(e -> e.getType() != PieceType.KING)
                 .toList();
             if (list.size() == 1 && list.getFirst().getType() == PieceType.INFERIOR) {
-                //state = GameState.DRAW;
-                return true;
+                return GameState.DRAW;
             }
         }
-        return false;
+        return state;
     }
 
     /**
@@ -157,7 +140,7 @@ public final class AdvancedRules {
      * 
      * @param cb chessboard of the current game.
      * @param currentColor color of the player.
-     * @return a value of the {@code CastleCondition} enum, describing which castles are possible.
+     * @return a value of the {@link CastleCondition} enum, describing which castles are possible.
      */
     public static CastleCondition castle(final ChessBoard cb, final PlayerColor currentColor) {
         final Point2D kingPos;
@@ -175,19 +158,19 @@ public final class AdvancedRules {
             if (piece.getType() == PieceType.KING && !piece.hasMoved()) {
                 if (cb.getEntity(new Point2D(TOWERS_X.x(), kingPos.y())).isPresent()
                         && cb.getEntity(new Point2D(TOWERS_X.y(), kingPos.y())).isPresent() 
-                        && hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y())) 
-                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))
+                        && RulesUtils.hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y())) 
+                        && RulesUtils.hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))
                         && castleLeft(cb, kingPos, currentColor)
-                        && castleRight(cb, kingPos, currentColor)) { // AGGIUNGERE CONDIZIONI SU CELLE LIBERE
+                        && castleRight(cb, kingPos, currentColor)) {
                     return CastleCondition.CASTLE_BOTH;
                 } 
                 if (cb.getEntity(new Point2D(TOWERS_X.x(), kingPos.y())).isPresent()
-                        && hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y()))
+                        && RulesUtils.hasNotMoved(cb, new Point2D(TOWERS_X.x(), kingPos.y()))
                         && castleLeft(cb, kingPos, currentColor)) {
                     return CastleCondition.CASTLE_LEFT;
                 }
                 if (cb.getEntity(new Point2D(TOWERS_X.y(), kingPos.y())).isPresent()
-                        && hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))
+                        && RulesUtils.hasNotMoved(cb, new Point2D(TOWERS_X.y(), kingPos.y()))
                         && castleRight(cb, kingPos, currentColor)) {
                     return CastleCondition.CASTLE_RIGHT;
                 }
@@ -198,143 +181,37 @@ public final class AdvancedRules {
     }
 
     /**
-     * placeholder.
+     * Utility method that checks if castling is possible on the left.
      * 
-     * @param cb placeholder.
-     * @param kingPos placeholder.
-     * @param currentColor placeholder.
-     * @return placeholder.
+     * @param cb chessboard of the current game
+     * @param kingPos position of the king.
+     * @param currentColor color of the current player.
+     * @return {@code true} if the castle is possible, {@code false} otherwise.
      */
     private static boolean castleLeft(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
         return cb.isFree(new Point2D(kingPos.x() - 1, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x() - 2, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x() - 3, kingPos.y()))
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x() - 1, kingPos.y())).isEmpty()
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x() - 2, kingPos.y())).isEmpty();
+                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
+                    new Point2D(kingPos.x() - 1, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty()
+                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
+                    new Point2D(kingPos.x() - 2, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty();
     }
 
     /**
-     * placeholder.
+     * Utility method that checks if castling is possible on the right.
      * 
-     * @param cb placeholder.
-     * @param kingPos placeholder.
-     * @param currentColor placeholder.
-     * @return placeholder.
+     * @param cb chessboard of the current game
+     * @param kingPos position of the king.
+     * @param currentColor color of the current player.
+     * @return {@code true} if the castle is possible, {@code false} otherwise.
      */
     private static boolean castleRight(final ChessBoard cb, final Point2D kingPos, final PlayerColor currentColor) {
         return cb.isFree(new Point2D(kingPos.x() + 1, kingPos.y()))
                 && cb.isFree(new Point2D(kingPos.x() + 2, kingPos.y()))
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x() + 1, kingPos.y())).isEmpty()
-                && underAttack(cb, swapColor(currentColor), new Point2D(kingPos.x() + 2, kingPos.y())).isEmpty();
-    }
-
-    /**
-     * Utility method that checks if a certain piece hasn't moved at all.
-     * 
-     * @param cb chessboard of the current game.
-     * @param pos position of the aimed piece.
-     * @return {@code true} if the piece has not moved, {@code false} otherwise.
-     */
-    private static boolean hasNotMoved(final ChessBoard cb, final Point2D pos) {
-        if (cb.getEntity(pos).get().asMoveable().isPresent()) {
-            final var piece = (Piece) cb.getEntity(pos).get().asMoveable().get();
-            if (!piece.hasMoved()) {
-                return true;
-            }
-        }
-        return false; // cell is empty or piece has moved
-    }
-
-    /**
-     * Utility method to scan a certain cell and see if it's under attack by any piece owned by the opposing player.
-     * 
-     * @param cb chessboard of the current game.
-     * @param currentColor color of the enemy player.
-     * @param target the cell we want to check.
-     * @return an {@code Optional} containing the attacking piece if there is any, returns an empty Optional otherwise.
-     */
-    private static Optional<Piece> underAttack(final ChessBoard cb, final PlayerColor currentColor, final Point2D target) {
-        final BiMap<Point2D, Entity> cells = HashBiMap.create(cb.getBoard());
-        cells.remove(target);
-        final ChessBoard board = new ChessBoardImpl(cells);
-        final Set<Optional<Entity>> set = getPiecesOfColor(board, currentColor);
-
-        for (final Optional<Entity> ent : set) {
-            //if(cb.getEntity(piece).get() instanceof Moveable moveable) {
-            if (ent.get().asMoveable().isPresent()
-                    && new HashSet<>(ent.get().asMoveable().get()
-                    .getValidMoves(board.getPosByEntity(ent.get()), board)).contains(target)) {
-                // if the piece is a moveable we can use its movement methods
-                return Optional.of((Piece) ent.get());
-            }
-        }
-        return Optional.empty(); // otherwise
-    }
-
-    /**
-     * placeholder.
-     * 
-     * @param kingCells placeholder.
-     * @param cb placeholder.
-     * @param currentColor placeholder.
-     * @return placeholder.
-     */
-    public static List<Point2D> kingPossibleMoves(final List<Point2D> kingCells,
-            final ChessBoard cb, final PlayerColor currentColor) {
-        final List<Point2D> possibleMoves = new LinkedList<>();
-        for (final Point2D cell : kingCells) {
-            if (underAttack(cb, swapColor(currentColor), cell).isEmpty()) {
-                possibleMoves.add(cell);
-            }
-        }
-        return possibleMoves;
-    }
-
-    /**
-     * Utility method to get all the pieces on the board of a specific color.
-     * 
-     * @param cb chessboard of the current game.
-     * @param currentColor color of the player.
-     * @return an unmodifiable Set containing all pieces of a certain color, encapsulated in Optionals.
-     */
-    public static Set<Optional<Entity>> getPiecesOfColor(final ChessBoard cb, final PlayerColor currentColor) {
-        final Set<Optional<Entity>> container = new HashSet<>();
-        final Set<Point2D> set = cb.getBoard().keySet().stream()
-                .filter(pos -> !cb.isFree(pos))
-                .filter(pos -> {
-                    final Optional<Entity> e = cb.getEntity(pos);
-                    return e.isPresent() && e.get().getPlayerColor() == currentColor;
-                })
-                .collect(Collectors.toSet());
-
-        for (final Point2D pos : set) {
-            container.add(cb.getEntity(pos));
-        }
-        return Collections.unmodifiableSet(container);
-    }
-
-    /**
-     * Utility method that returns the corresponding king of the current player.
-     * 
-     * @param cb chessboard of the current game.
-     * @param color color of the current player.
-     * @return an {@code Optional} containing the king of the given color, an empty otherwise.
-     */
-    public static Optional<Piece> getKing(final ChessBoard cb, final PlayerColor color) {
-        return cb.getBoard().values().stream()
-                .filter(e -> e.asMoveable().isPresent())
-                .map(e -> (Piece) e)
-                .filter(p -> p.getPlayerColor() == color && p.getType() == PieceType.KING)
-                .findFirst();
-    }
-
-    /**
-     * Utility method to swap the player color.
-     * 
-     * @param currentColor color of the current player.
-     * @return the other PlayerColor.
-     */
-    public static PlayerColor swapColor(final PlayerColor currentColor) {
-        return (currentColor == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
+                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
+                    new Point2D(kingPos.x() + 1, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty()
+                && RulesUtils.underAttack(cb, RulesUtils.swapColor(currentColor),
+                    new Point2D(kingPos.x() + 2, kingPos.y()), (Piece) cb.getEntity(kingPos).get()).isEmpty();
     }
 }

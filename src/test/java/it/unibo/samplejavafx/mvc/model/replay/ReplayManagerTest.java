@@ -24,7 +24,7 @@ class ReplayManagerTest {
         final PieceDefinition pawnDef = new PieceDefinition.Builder()
                 .name("Pawn")
                 .id("pawn")
-                .imagePath("classpath:/assets/images/white_pawn.png")
+                .imagePath("classpath:/assets/images/")
                 .weight(1)
                 .pieceType(PieceType.PAWN)
                 .moveRules(List.of(
@@ -39,8 +39,8 @@ class ReplayManagerTest {
                 .build();
 
 
-        history.addEvent(new SpawnEvent(1, pawn, new Point2D(0, 1)));
-        history.addEvent(new MoveEvent(2, "Pawn", PlayerColor.WHITE, new Point2D(0, 1), new Point2D(0, 2), null));
+        history.addEvent(new SpawnEvent(1, pawn, new Point2D(0, 1), 0, 0));
+        history.addEvent(new MoveEvent(2, "Pawn", PlayerColor.WHITE, new Point2D(0, 1), new Point2D(0, 2), null, 0, 0));
 
         history.setWhiteLoadout(it.unibo.samplejavafx.mvc.model.loadout.Loadout.create("White", List.of()));
         history.setBlackLoadout(it.unibo.samplejavafx.mvc.model.loadout.Loadout.create("Black", List.of()));

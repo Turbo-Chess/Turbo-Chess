@@ -19,6 +19,34 @@ public final class FileSystemUtils {
     }
 
     /**
+     * Normalizes a file path by converting backslashes to forward slashes.
+     * This ensures consistent path handling across different operating systems (Windows/Unix).
+     *
+     * @param path the raw file path string.
+     * @return the normalized path string with forward slashes.
+     */
+    public static String normalizePath(final String path) {
+        if (path == null) {
+            return null;
+        }
+        return path.replace("\\", "/");
+    }
+
+    /**
+     * Checks if a path contains a subpath, regardless of the separator used.
+     *
+     * @param path    the path to check.
+     * @param subPath the subpath to search for.
+     * @return true if the path contains the subpath.
+     */
+    public static boolean pathContains(final String path, final String subPath) {
+        if (path == null || subPath == null) {
+            return false;
+        }
+        return normalizePath(path).contains(normalizePath(subPath));
+    }
+
+    /**
      * Ensures that the specified directory exists.
      * If it does not exist, it attempts to create it.
      *

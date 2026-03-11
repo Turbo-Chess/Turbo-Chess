@@ -34,15 +34,25 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
     public PowerUpDefinition(final Builder builder) {
         super(builder);
 
-        if (builder.duration < 0) {
+        if (builder.getDuration() <= 0) {
             throw new IllegalArgumentException("Duration must be a positive non-0 value");
         }
 
-        this.duration = builder.duration;
+        this.duration = builder.getDuration();
     }
 
     /**
      * A concrete builder for creating {@link PowerUpDefinition} instances.
+     *
+     * @return Placeholder.
+     */
+    @Override
+    public String getDescription() {
+        return "PowerUp: " + getName() + " (Duration: " + getDuration() + ")";
+    }
+
+    /**
+     * Placeholder.
      *
      * <p>
      * Allows for setting the duration before building the immutable definition object.
@@ -50,6 +60,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
      */
     @JsonPOJOBuilder(withPrefix = "")
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
     public static class Builder extends AbstractEntityDefinition.AbstractBuilder<PowerUpDefinition.Builder> {
         private int duration;
 
@@ -59,9 +70,9 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
          * @param newDuration A non-negative integer representing the duration.
          * @return this builder instance for method chaining.
          */
-        public Builder duration(final int newDuration) {
-           this.duration = newDuration;
-           return this;
+        public Builder setDuration(final int newDuration) {
+            this.duration = newDuration;
+            return this;
         }
 
         /**
