@@ -12,6 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.nio.file.Paths;
+
 /**
  * Defines the fundamental properties and structure for all entity types in the game.
  *
@@ -136,12 +138,21 @@ public abstract class AbstractEntityDefinition {
         /**
          * Sets the path to the image asset representing the entity.
          * The path must be valid and verifiable against the game's asset loading mechanism.
+         * The method checks from where the image is coming from:
+         * - if it's classpath that the reference is stored as it is;
+         * - if it's from file system then the "partial" path is concatenated with the correct system path and "file:"
          *
-         * @param newImagePath The string path to the image resource.
+         * @param newImagePath The string partial path to the image resource.
          * @return this builder concrete instance for method chaining.
          */
         public X imagePath(final String newImagePath) {
-            this.imagePath = newImagePath;
+            final String correctPath;
+            if (!newImagePath.startsWith("classpath:")) {
+                correctPath = "" + (Paths.get(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath(), newImagePath));
+            } else {
+                correctPath = newImagePath;
+            }
+            this.imagePath = correctPath;
             return self();
         }
 
