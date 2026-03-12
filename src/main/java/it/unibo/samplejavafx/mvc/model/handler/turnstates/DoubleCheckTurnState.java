@@ -24,6 +24,14 @@ public final class DoubleCheckTurnState extends AbstractTurnState {
         this.currentColor = context.getCurrentColor();
     }
 
+    /**
+     * Strategy for handling thinking during a {@code DOUBLE_CHECK}.
+     * 
+     * @param pos the {@link Point2D} of the chosen cell.
+     * @return  a list of {@link Point2D} containing all the possible moves for a piece,
+     *          returns a single {@link Point2D} of the chosen movement if the piece moves,
+     *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
+     */
     @Override
     public List<Point2D> thinking(Point2D pos) {
         if (board.isFree(pos) && context.getCurrentPiece().isEmpty()) {

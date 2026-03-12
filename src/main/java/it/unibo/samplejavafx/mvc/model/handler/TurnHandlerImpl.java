@@ -68,30 +68,6 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         final List<Point2D> results = this.turnState.thinking(pos);
         this.turnState.passOnStats(promotionHolder);
         return results;
-
-        /*
-        return switch (state) {
-            case NORMAL -> {
-                yield doIfNormal(pos);
-            }
-            case CHECK -> {
-                yield doIfCheck(pos);
-            }
-            case DOUBLE_CHECK -> {
-                yield doIfDoubleCheck(pos);
-            }
-            case PROMOTION -> {
-                if (AdvancedRules.check(board, currentColor) == GameState.CHECK) {
-                    this.interposingPieces.putAll(CheckCalculator
-                        .getInterposingPieces(board, currentColor));
-                    yield doIfCheck(pos);
-                }
-                yield doIfNormal(pos);
-            }
-            default -> {
-                yield new LinkedList<>();
-            }
-        };*/
     }
 
     /**
@@ -166,7 +142,6 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         this.state = AdvancedRules.draw(board, RulesUtils.swapColor(currentColor), state);
         this.turn += 1;
         this.currentColor = RulesUtils.swapColor(currentColor);
-        updateStats();
         switch (state) {
             case NORMAL -> transitionTo(new NormalTurnState(this));
             case CHECK -> transitionTo(new CheckTurnState(this));
@@ -174,158 +149,18 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
             case PROMOTION -> transitionTo(turnState);
             default -> transitionTo(turnState);
         }
+        updateStats();
 
         this.castlingOptions = AdvancedRules.castle(board, currentColor);
         unsetCurrentPiece();
         return true;
     }
 
-    /**
-     * Strategy for handling thinking during a {@code NORMAL}.
-     * 
-     * @param pos the {@link Point2D} of the chosen cell.
-     * @return  a list of {@link Point2D} containing all the possible moves for a piece,
-     *          returns a single {@link Point2D} of the chosen movement if the piece moves,
-     *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
-     * QUI
-    private List<Point2D> doIfNormal(final Point2D pos) {
-        if (board.isFree(pos) && currentPiece.isEmpty()) {
-            return Collections.emptyList();
-        }
-        if (board.isFree(pos) && pieceMoves.contains(pos)) {
-            return executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
-        }
-        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
-                && board.getEntity(pos).get().getType() == PieceType.KING) {
-            final var king = (Piece) board.getEntity(pos).get();
-            this.currentPiece = Optional.of(king);
-            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
-            switch (castlingOptions) {
-                case CASTLE_BOTH:
-                    this.pieceMoves.addAll(List.of(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()), 
-                                                   new Point2D(CASTLE_POS.y(), board.getPosByEntity(king).y())));
-                    break;
-                case CASTLE_LEFT:
-                    this.pieceMoves.add(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()));
-                    break;
-                case CASTLE_RIGHT:
-                    this.pieceMoves.add(new Point2D(CASTLE_POS.y(), board.getPosByEntity(king).y()));
-                    break;
-                case NO_CASTLE:
-                    break;
-            }
-            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
-            return safeMoves;
-        }
-        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
-            final var newPiece = (Piece) board.getEntity(pos).get();
-            this.currentPiece = Optional.of(newPiece);
-            this.promotionHolder = Optional.of(newPiece);
-            this.pieceMoves = newPiece.getValidMoves(pos, board);
-            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
-            return safeMoves;
-        }
-        if (!board.isFree(pos)
-            && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
-            && currentPiece.isPresent() && pieceMoves.contains(pos)) {
-            return executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
-        }
-        unsetCurrentPiece();
-        return this.pieceMoves;
-    }
-
-    /**
-     * Strategy for handling thinking during a {@code CHECK}.
-     * 
-     * @param pos the {@link Point2D} of the chosen cell.
-     * @return  a list of {@link Point2D} containing all the possible moves for a piece,
-     *          returns a single {@link Point2D} of the chosen movement if the piece moves,
-     *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
-     * QUI
-    private List<Point2D> doIfCheck(final Point2D pos) {
-        if (board.isFree(pos) && currentPiece.isEmpty()) {
-            return Collections.emptyList();
-        }
-        if (board.isFree(pos) && pieceMoves.contains(pos)) {
-            return executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
-        }
-        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
-            && board.getEntity(pos).get().getType() == PieceType.KING) {
-            final var king = (Piece) board.getEntity(pos).get();
-            this.currentPiece = Optional.of(king);
-            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
-            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
-            return safeMoves;
-        }
-        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
-            && interposingPieces.keySet().contains(board.getEntity(pos).get())) {
-            final var piece = (Piece) board.getEntity(pos).get();
-            this.currentPiece = Optional.of(piece);
-            this.pieceMoves = interposingPieces.get(piece);
-            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
-            return safeMoves;
-        }
-        if (!board.isFree(pos)
-            && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
-            && currentPiece.isPresent() && pieceMoves.contains(pos)) {
-            return executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
-        }
-        unsetCurrentPiece();
-        return this.pieceMoves;
-    }
-
-    /**
-     * Strategy for handling thinking during a {@code DOUBLE_CHECK}.
-     * 
-     * @param pos the {@link Point2D} of the chosen cell.
-     * @return  a list of {@link Point2D} containing all the possible moves for a piece,
-     *          returns a single {@link Point2D} of the chosen movement if the piece moves,
-     *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
-     * QUI
-    private List<Point2D> doIfDoubleCheck(final Point2D pos) {
-        if (board.isFree(pos) && currentPiece.isEmpty()) {
-            return Collections.emptyList();
-        }
-        if (board.isFree(pos) && pieceMoves.contains(pos)) {
-            return executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
-        }
-        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
-            && board.getEntity(pos).get().getType() == PieceType.KING) {
-            final var king = (Piece) board.getEntity(pos).get();
-            this.currentPiece = Optional.of(king);
-            this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
-            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
-            return safeMoves;
-        }
-        if (!board.isFree(pos)
-            && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
-            && currentPiece.isPresent() && pieceMoves.contains(pos)) {
-            return executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
-        }
-        unsetCurrentPiece();
-        return this.pieceMoves;
-    }*/
-
     private List<Point2D> ensureMoveSafety(final List<Point2D> list) {
         return list.stream()
                    .filter(pos -> CheckCalculator.isMoveSafe(board, currentPiece.get(),
                            board.getPosByEntity(currentPiece.get()), pos, currentColor))
                    .collect(Collectors.toList());
-    }
-
-    @Override
-    public void setTurn(final int turn) {
-        this.turn = turn;
-    }
-
-    @Override
-    public void setPlayerColor(final PlayerColor color) {
-        this.currentColor = color;
     }
 
     /**
@@ -345,15 +180,6 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Unsets the current piece and all related fields.
-     */
-    @Override
-    public void unsetCurrentPiece() {
-        this.currentPiece = Optional.empty();
-        this.pieceMoves = Collections.emptyList();
     }
 
     /**
@@ -385,6 +211,17 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         match.updatePlayerColor(currentColor);
         match.updateTurn(turn);
     }
+
+    /**
+     * Unsets the current piece and all related fields.
+     */
+    @Override
+    public void unsetCurrentPiece() {
+        this.currentPiece = Optional.empty();
+        this.pieceMoves = Collections.emptyList();
+    }
+
+// - - - Helper methods for TurnState implementations - - -
 
     /**
      * {@inheritDoc}
@@ -448,5 +285,17 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     @Override
     public CastleCondition getCastleCon() {
         return this.castlingOptions;
+    }
+
+// - - - Helper methods for Replay and LoadGame related features - - -
+
+    @Override
+    public void setTurn(final int turn) {
+        this.turn = turn;
+    }
+
+    @Override
+    public void setPlayerColor(final PlayerColor color) {
+        this.currentColor = color;
     }
 }
