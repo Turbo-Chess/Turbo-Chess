@@ -27,7 +27,7 @@ public final class MainMenuController {
      * @throws IOException placeholder.
      */
     public void startNewGame(final ActionEvent e) throws IOException {
-        this.coordinator.initGame();
+        this.coordinator.resetGame();
     }
 
     /**

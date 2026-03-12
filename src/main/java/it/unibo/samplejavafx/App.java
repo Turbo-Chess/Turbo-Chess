@@ -2,6 +2,8 @@ package it.unibo.samplejavafx;
 
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
+import it.unibo.samplejavafx.mvc.view.JafaFXViewFactory;
+import it.unibo.samplejavafx.mvc.view.ViewFactory;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -29,7 +31,8 @@ public final class App extends Application {
         stage.setMinWidth(WINDOW_WIDTH);
 
         try {
-            final GameCoordinator coordinator = new GameCoordinatorImpl(stage);
+            final ViewFactory viewFactory = new JafaFXViewFactory(stage);
+            final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
 
             // Load game resources
             coordinator.loadPieces();
