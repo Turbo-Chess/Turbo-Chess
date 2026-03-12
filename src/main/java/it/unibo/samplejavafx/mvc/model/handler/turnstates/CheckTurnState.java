@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -18,6 +19,7 @@ public final class CheckTurnState extends AbstractTurnState {
     private final ChessBoard board;
     private final Map<Piece, List<Point2D>> interposingPieces = new HashMap<>();
     private PlayerColor currentColor;
+    private Optional<Piece> promotionHolder = Optional.empty();
 
     public CheckTurnState(final TurnHandlerContext context) {
         super(context);
@@ -63,5 +65,13 @@ public final class CheckTurnState extends AbstractTurnState {
         }
         context.unsetCurrentPiece();
         return context.getCurrentMoves();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void passOnStats(Optional<Piece> promotion) {
+        promotion = this.promotionHolder.isPresent() ? Optional.of(this.promotionHolder.get()) : Optional.empty();
     }
 }
