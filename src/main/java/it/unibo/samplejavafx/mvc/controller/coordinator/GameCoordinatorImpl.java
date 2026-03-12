@@ -293,6 +293,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private void createNewMatch() {
         final ChessMatch match = new ChessMatchImpl();
         match.getBoard().addObserver(this.chessboardViewController);
+
+        //controllerContext.loaderController().load();
+
         controllerContext.boardFactory().populateChessboard(
                 gameController.getWhiteLoadout(),
                 gameController.getBlackLoadout(),
@@ -305,9 +308,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         gameController.setChessboardViewController(this.chessboardViewController);
 
         this.chessboardViewController.refreshBoardView(match.getBoard());
-
-        // TODO: check the bug in the loading
-       controllerContext.loaderController().load();
     }
 
     /**

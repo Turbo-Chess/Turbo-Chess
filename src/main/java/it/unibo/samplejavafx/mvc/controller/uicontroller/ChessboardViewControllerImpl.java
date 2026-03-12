@@ -374,6 +374,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      */
     private ImageView createResponsiveImageView(final String imagePath, final Button button) {
         final ImageView imageView = new ImageView(new Image(imagePath));
+        //TODO: add exception if file doesn't exist
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
         imageView.fitHeightProperty().bind(button.heightProperty().multiply(IMAGE_SCALE));

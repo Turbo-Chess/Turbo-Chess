@@ -148,10 +148,10 @@ public abstract class AbstractEntityDefinition {
          */
         public X imagePath(final String newImagePath) {
             final String correctPath;
-            if (!newImagePath.startsWith("classpath:")) {
-                correctPath = "" + (Paths.get(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath(), newImagePath));
-            } else {
+            if (newImagePath.startsWith("classpath:") || newImagePath.startsWith("file:") || Paths.get(newImagePath).isAbsolute()) {
                 correctPath = newImagePath;
+            } else {
+                correctPath = "" + (Paths.get(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath(), newImagePath));
             }
             this.imagePath = correctPath;
             return self();
