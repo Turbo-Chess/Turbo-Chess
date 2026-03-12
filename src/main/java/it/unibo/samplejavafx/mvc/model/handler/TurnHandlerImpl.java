@@ -66,7 +66,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     @Override
     public List<Point2D> thinking(final Point2D pos) {
         final List<Point2D> results = this.turnState.thinking(pos);
-        this.turnState.passOnStats(promotionHolder);
+        this.promotionHolder = this.turnState.passOnStats().isPresent() ? this.turnState.passOnStats() : this.promotionHolder;
         return results;
     }
 
@@ -74,8 +74,17 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      * {@inheritDoc}
      */
     @Override
-    public void transitionTo(TurnState newState) {
+    public void transitionTo(final TurnState newState) {
         this.turnState = newState;
+    }
+
+    private void choosingTurnState() {
+        switch (state) {
+            case NORMAL -> transitionTo(new NormalTurnState(this));
+            case CHECK -> transitionTo(new CheckTurnState(this));
+            case DOUBLE_CHECK -> transitionTo(new DoubleCheckTurnState(this));
+            default -> transitionTo(turnState);
+        }
     }
 
     /**
@@ -114,7 +123,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
                 board.eat(board.getPosByEntity(currentPiece.get()), target);
                 break;
             default:
-                // the move wasn't safe, so we cancel the move and go back
+                break;
         }
 
         this.interposingPieces.clear();
@@ -141,13 +150,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         this.state = AdvancedRules.draw(board, RulesUtils.swapColor(currentColor), state);
         this.turn += 1;
         this.currentColor = RulesUtils.swapColor(currentColor);
-        switch (state) {
-            case NORMAL -> transitionTo(new NormalTurnState(this));
-            case CHECK -> transitionTo(new CheckTurnState(this));
-            case DOUBLE_CHECK -> transitionTo(new DoubleCheckTurnState(this));
-            case PROMOTION -> transitionTo(turnState);
-            default -> transitionTo(turnState);
-        }
+        choosingTurnState();
         updateStats();
 
         this.castlingOptions = AdvancedRules.castle(board, currentColor);
@@ -176,6 +179,10 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         if (!pawn.isEmpty()) {
             currentPiece = Optional.of((Piece) board.getEntity(pawn.getFirst()).get());
             state = GameState.PROMOTION;
+            updateStats();
+            this.state = AdvancedRules.check(board, RulesUtils.swapColor(currentColor));
+            choosingTurnState();
+            updateStats();
             return true;
         }
         return false;

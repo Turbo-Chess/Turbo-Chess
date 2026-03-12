@@ -71,7 +71,7 @@ public final class CheckTurnState extends AbstractTurnState {
      * {@inheritDoc}
      */
     @Override
-    public void passOnStats(Optional<Piece> promotion) {
-        promotion = this.promotionHolder.isPresent() ? Optional.of(this.promotionHolder.get()) : Optional.empty();
+    public Optional<Piece> passOnStats() {
+        return this.promotionHolder.isPresent() ? Optional.of(this.promotionHolder.get()) : Optional.empty();
     }
 }

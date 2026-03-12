@@ -65,20 +65,6 @@ public interface TurnHandlerContext {
     List<Point2D> getCurrentMoves();
 
     /**
-     * Setter for the current piece, called by the TurnState implementations.
-     * 
-     * @param piece the {@link Piece} to set.
-     */
-    void setCurrentPiece(Piece piece);
-
-    /**
-     * Setter for the current piece moves, called by the TurnState implementations.
-     * 
-     * @param moves the List of {@link Point2D} to set.
-     */
-    void setPieceMoves(List<Point2D> moves);
-
-    /**
      * Getter for the board of the current match.
      * 
      * @return the {@link ChessBoard} of the match.
@@ -98,6 +84,34 @@ public interface TurnHandlerContext {
      * @return a value of the {@link CastleCondition} enum.
      */
     CastleCondition getCastleCon();
+
+    /**
+     * Getter for the current turn.
+     * 
+     * @return the {@code int} of the turn.
+     */
+    int getTurn();
+
+    /**
+     * Setter for the current piece, called by the TurnState implementations.
+     * 
+     * @param piece the {@link Piece} to set.
+     */
+    void setCurrentPiece(Piece piece);
+
+    /**
+     * Setter for the current piece moves, called by the TurnState implementations.
+     * 
+     * @param moves the List of {@link Point2D} to set.
+     */
+    void setPieceMoves(List<Point2D> moves);
+
+    /**
+     * Setter for the turn.
+     * 
+     * @param newTurn the new {@code int} symbolizing the turn.
+     */
+    void setTurn(int newTurn);
 
     /**
      * Unsets the current piece and all related fields.

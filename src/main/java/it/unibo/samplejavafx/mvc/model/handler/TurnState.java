@@ -23,7 +23,7 @@ public interface TurnState {
     /**
      * Updates the values needed by the TurnHandler.
      * 
-     * @param promotion the {@link Optional} where we want to save a promoting piece.
+     * @return the {@link Optional} where we want to save a promoting piece.
      */
-    void passOnStats(Optional<Piece> promotion);
+    Optional<Piece> passOnStats();
 }

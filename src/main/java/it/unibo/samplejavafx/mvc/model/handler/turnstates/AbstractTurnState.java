@@ -31,5 +31,5 @@ public abstract class AbstractTurnState implements TurnState {
     /**
      * {@inheritDoc}
      */
-    public abstract void passOnStats(Optional<Piece> promotion);
+    public abstract Optional<Piece> passOnStats();
 }
