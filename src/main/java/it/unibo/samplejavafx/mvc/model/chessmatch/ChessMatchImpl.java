@@ -183,7 +183,7 @@ public final class ChessMatchImpl implements ChessMatch {
      */
     @Override
     public Point2D getPromotionPos() {
-        return turnHandler.getCurrentPiecePos();
+        return turnHandler.getPromotingPawnPos();
     }
 
     @Override
