@@ -122,7 +122,6 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
 
         if (this.state == GameState.CHECK) {
             this.interposingPieces.putAll(CheckCalculator.getInterposingPieces(board, RulesUtils.swapColor(currentColor)));
-
         }
 
         if (state == GameState.CHECK || state == GameState.DOUBLE_CHECK) {
@@ -287,15 +286,31 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         return this.castlingOptions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getTurn() {
+        return this.turn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTurn(final int newTurn) {
+        this.turn = newTurn;
+    }
+
 // - - - Helper methods for Replay and LoadGame related features - - -
 
     @Override
-    public void setTurn(final int turn) {
+    public void setStartTurn(final int turn) {
         this.turn = turn;
     }
 
     @Override
-    public void setPlayerColor(final PlayerColor color) {
+    public void setStartPlayerColor(final PlayerColor color) {
         this.currentColor = color;
     }
 }

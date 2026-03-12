@@ -35,14 +35,14 @@ public interface TurnHandler {
      *
      * @param turn the new turn number.
      */
-    void setTurn(int turn);
+    void setStartTurn(int turn);
 
     /**
      * Sets the current player color.
      *
      * @param color the new player color.
      */
-    void setPlayerColor(PlayerColor color);
+    void setStartPlayerColor(PlayerColor color);
 
     /**
      * Sets the game state to checkmate.
