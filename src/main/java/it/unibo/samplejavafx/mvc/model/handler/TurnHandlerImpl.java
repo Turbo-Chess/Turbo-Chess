@@ -68,14 +68,14 @@ public final class TurnHandlerImpl implements TurnHandler {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
-        if (board.getEntity(pos).isPresent() && board.getEntity(pos).get().asMoveable().isPresent()) {
+        /*if (board.getEntity(pos).isPresent() && board.getEntity(pos).get().asMoveable().isPresent()) {
             final List<Point2D> cachedMoves = moveCache.getAvailableCells(board.getEntity(pos).get().getGameId());
             if (!cachedMoves.isEmpty()) {
                 this.currentPiece = Optional.of((Piece) board.getEntity(pos).get().asMoveable().get());
-                pieceMoves = cachedMoves;
+                // pieceMoves = cachedMoves;
                 return cachedMoves;
             }
-        }
+        }*/
 
         return switch (state) {
             case NORMAL -> {
@@ -89,6 +89,8 @@ public final class TurnHandlerImpl implements TurnHandler {
             }
             case PROMOTION -> {
                 if (AdvancedRules.check(board, currentColor) == GameState.CHECK) {
+                    this.interposingPieces.putAll(CheckCalculator
+                        .getInterposingPieces(board, currentColor));
                     yield doIfCheck(pos);
                 }
                 yield doIfNormal(pos);
@@ -204,8 +206,8 @@ public final class TurnHandlerImpl implements TurnHandler {
                 case NO_CASTLE:
                     break;
             }
-            final var safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
+            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
+            // moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
             return safeMoves;
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
@@ -213,8 +215,8 @@ public final class TurnHandlerImpl implements TurnHandler {
             this.currentPiece = Optional.of(newPiece);
             this.promotionHolder = Optional.of(newPiece);
             this.pieceMoves = newPiece.getValidMoves(pos, board);
-            final var safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
+            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
+            // moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
             return safeMoves;
         }
         if (!board.isFree(pos)
@@ -246,8 +248,8 @@ public final class TurnHandlerImpl implements TurnHandler {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
             this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
-            final var safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
+            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
+            // moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
             return safeMoves;
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
@@ -255,8 +257,8 @@ public final class TurnHandlerImpl implements TurnHandler {
             final var piece = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(piece);
             this.pieceMoves = interposingPieces.get(piece);
-            final var safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
+            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
+            // moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
             return safeMoves;
         }
         if (!board.isFree(pos)
@@ -288,8 +290,8 @@ public final class TurnHandlerImpl implements TurnHandler {
             final var king = (Piece) board.getEntity(pos).get();
             this.currentPiece = Optional.of(king);
             this.pieceMoves = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
-            final var safeMoves = ensureMoveSafety(this.pieceMoves);
-            moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
+            final List<Point2D> safeMoves = ensureMoveSafety(this.pieceMoves);
+            // moveCache.cacheAvailableCells(currentPiece.get().getGameId(), safeMoves);
             return safeMoves;
         }
         if (!board.isFree(pos)
