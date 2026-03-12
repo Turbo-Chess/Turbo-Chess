@@ -141,6 +141,7 @@ public abstract class AbstractEntityDefinition {
          * The method checks from where the image is coming from:
          * - if it's classpath that the reference is stored as it is;
          * - if it's from file system then the "partial" path is concatenated with the correct system path and "file:"
+         * The path needs to be forced in that way to ensure correct handling between different OSes
          *
          * @param newImagePath The string partial path to the image resource.
          * @return this builder concrete instance for method chaining.

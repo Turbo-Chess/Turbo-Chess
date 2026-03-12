@@ -222,6 +222,6 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void setBlackLoadout(final Loadout loadout) {
-        this.blackLoadout = loadout.mirrored();
+        this.blackLoadout = loadout;
     }
 }

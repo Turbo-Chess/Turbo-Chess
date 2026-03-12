@@ -84,7 +84,7 @@ public final class LoadoutSelector implements Initializable {
                 if (!forBlack.isSelected()) {
                     controller.setWhiteLoadout(loadoutManager.load(loadoutIds.get(selectedLoadoutName)).get());
                 } else {
-                    controller.setBlackLoadout(loadoutManager.load(loadoutIds.get(selectedLoadoutName)).get());
+                    controller.setBlackLoadout(loadoutManager.load(loadoutIds.get(selectedLoadoutName)).get().mirrored());
                 }
             }
         });
