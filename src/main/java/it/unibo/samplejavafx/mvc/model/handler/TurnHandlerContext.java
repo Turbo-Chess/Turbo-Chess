@@ -11,6 +11,11 @@ import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.rules.CastleCondition;
 
+/**
+ * The {@link TurnHandlerContext} acts as an additional interface meant for implementations of TurnHandlers that
+ * TurnStates need to gather information from the TurnHandler, this interface ensures that TurnStates don't
+ * call methods they shouldn't have access to by exposing only the needed ones.
+ */
 public interface TurnHandlerContext {
 
     /**

@@ -80,7 +80,11 @@ public final class NormalTurnState extends AbstractTurnState {
         return context.getCurrentMoves();
     }
 
-    @Override
+    /**
+     * Updates the {@code promotionHolder} value needed by the TurnHandler.
+     * 
+     * @param promotion the {@link Optional} where we want to save a promoting piece.
+     */
     public void passOnStats(Optional<Piece> promotion) {
         promotion = this.promotionHolder.isPresent() ? Optional.of(this.promotionHolder.get()) : Optional.empty();
     }

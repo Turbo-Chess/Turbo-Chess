@@ -2,7 +2,6 @@ package it.unibo.samplejavafx.mvc.model.handler.turnstates;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -16,7 +15,6 @@ import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 public final class DoubleCheckTurnState extends AbstractTurnState {
     private final ChessBoard board;
     private PlayerColor currentColor;
-    private Optional<Piece> promotionHolder = Optional.empty();
 
     public DoubleCheckTurnState(final TurnHandlerContext context) {
         super(context);
@@ -54,10 +52,5 @@ public final class DoubleCheckTurnState extends AbstractTurnState {
         }
         context.unsetCurrentPiece();
         return context.getCurrentMoves();
-    }
-
-    @Override
-    public void passOnStats(Optional<Piece> promotion) {
-        promotion = this.promotionHolder.isPresent() ? Optional.of(this.promotionHolder.get()) : Optional.empty();
     }
 }
