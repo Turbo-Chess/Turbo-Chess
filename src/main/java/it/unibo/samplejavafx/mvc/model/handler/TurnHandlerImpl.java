@@ -2,20 +2,20 @@ package it.unibo.samplejavafx.mvc.model.handler;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCache;
-import it.unibo.samplejavafx.mvc.controller.movecontroller.MoveCacheImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.handler.turnstates.CheckTurnState;
+import it.unibo.samplejavafx.mvc.model.handler.turnstates.DoubleCheckTurnState;
+import it.unibo.samplejavafx.mvc.model.handler.turnstates.NormalTurnState;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
@@ -26,15 +26,15 @@ import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 /**
  * Placeholder.
  */
-public final class TurnHandlerImpl implements TurnHandler {
+public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     private static final Point2D CASTLE_POS = new Point2D(2, 6);
     private static final Point2D ROOK_CASTLE_POS = new Point2D(3, 5);
     private static final Point2D BOUNDARIES = new Point2D(0, 7);
     private final ChessMatch match;
     private final ChessBoard board;
-    private final MoveCache moveCache = new MoveCacheImpl();
     private final Map<Piece, List<Point2D>> interposingPieces;
     private GameState state;
+    private TurnState turnState;
     private CastleCondition castlingOptions;
     private PlayerColor currentColor;
     private int turn;
@@ -56,27 +56,20 @@ public final class TurnHandlerImpl implements TurnHandler {
         this.board = match.getBoard();
         this.currentColor = match.getCurrentPlayer();
         this.state = match.getGameState();
-        this.castlingOptions = CastleCondition.NO_CASTLE;
+        this.turnState = new NormalTurnState(this);
         this.interposingPieces = new HashMap<>();
     }
 
     /**
-     * Handles all the actions of the players during his turn.
-     * 
-     * @param pos the {@link Point2D} of the clicked cell.
-     * @return a list of {@link Point2D} of all possible moves for the View side.
+     * {@inheritDoc}
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
-        if (board.getEntity(pos).isPresent() && board.getEntity(pos).get().asMoveable().isPresent()) {
-            final List<Point2D> cachedMoves = moveCache.getAvailableCells(board.getEntity(pos).get().getGameId());
-            if (!cachedMoves.isEmpty()) {
-                this.currentPiece = Optional.of((Piece) board.getEntity(pos).get().asMoveable().get());
-                pieceMoves = cachedMoves;
-                return cachedMoves;
-            }
-        }
+        final List<Point2D> results = this.turnState.thinking(pos);
+        this.turnState.passOnStats(promotionHolder);
+        return results;
 
+        /*
         return switch (state) {
             case NORMAL -> {
                 yield doIfNormal(pos);
@@ -98,7 +91,15 @@ public final class TurnHandlerImpl implements TurnHandler {
             default -> {
                 yield new LinkedList<>();
             }
-        };
+        };*/
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void transitionTo(TurnState newState) {
+        this.turnState = newState;
     }
 
     /**
@@ -145,6 +146,7 @@ public final class TurnHandlerImpl implements TurnHandler {
 
         if (this.state == GameState.CHECK) {
             this.interposingPieces.putAll(CheckCalculator.getInterposingPieces(board, RulesUtils.swapColor(currentColor)));
+
         }
 
         if (state == GameState.CHECK || state == GameState.DOUBLE_CHECK) {
@@ -165,10 +167,16 @@ public final class TurnHandlerImpl implements TurnHandler {
         this.turn += 1;
         this.currentColor = RulesUtils.swapColor(currentColor);
         updateStats();
+        switch (state) {
+            case NORMAL -> transitionTo(new NormalTurnState(this));
+            case CHECK -> transitionTo(new CheckTurnState(this));
+            case DOUBLE_CHECK -> transitionTo(new DoubleCheckTurnState(this));
+            case PROMOTION -> transitionTo(turnState);
+            default -> transitionTo(turnState);
+        }
 
         this.castlingOptions = AdvancedRules.castle(board, currentColor);
         unsetCurrentPiece();
-        moveCache.clearCache();
         return true;
     }
 
@@ -179,7 +187,7 @@ public final class TurnHandlerImpl implements TurnHandler {
      * @return  a list of {@link Point2D} containing all the possible moves for a piece,
      *          returns a single {@link Point2D} of the chosen movement if the piece moves,
      *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
-     */
+     * QUI
     private List<Point2D> doIfNormal(final Point2D pos) {
         if (board.isFree(pos) && currentPiece.isEmpty()) {
             return Collections.emptyList();
@@ -235,7 +243,7 @@ public final class TurnHandlerImpl implements TurnHandler {
      * @return  a list of {@link Point2D} containing all the possible moves for a piece,
      *          returns a single {@link Point2D} of the chosen movement if the piece moves,
      *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
-     */
+     * QUI
     private List<Point2D> doIfCheck(final Point2D pos) {
         if (board.isFree(pos) && currentPiece.isEmpty()) {
             return Collections.emptyList();
@@ -277,7 +285,7 @@ public final class TurnHandlerImpl implements TurnHandler {
      * @return  a list of {@link Point2D} containing all the possible moves for a piece,
      *          returns a single {@link Point2D} of the chosen movement if the piece moves,
      *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
-     */
+     * QUI
     private List<Point2D> doIfDoubleCheck(final Point2D pos) {
         if (board.isFree(pos) && currentPiece.isEmpty()) {
             return Collections.emptyList();
@@ -301,7 +309,7 @@ public final class TurnHandlerImpl implements TurnHandler {
         }
         unsetCurrentPiece();
         return this.pieceMoves;
-    }
+    }*/
 
     private List<Point2D> ensureMoveSafety(final List<Point2D> list) {
         return list.stream()
@@ -342,7 +350,8 @@ public final class TurnHandlerImpl implements TurnHandler {
     /**
      * Unsets the current piece and all related fields.
      */
-    private void unsetCurrentPiece() {
+    @Override
+    public void unsetCurrentPiece() {
         this.currentPiece = Optional.empty();
         this.pieceMoves = Collections.emptyList();
     }
@@ -353,7 +362,7 @@ public final class TurnHandlerImpl implements TurnHandler {
      * @return the {@link Point2D} position.
      */
     @Override
-    public Point2D getCurrentPiecePos() {
+    public Point2D getPromotingPawnPos() {
         return board.getPosByEntity(promotionHolder.get());
     }
 
@@ -375,5 +384,69 @@ public final class TurnHandlerImpl implements TurnHandler {
         match.updateGameState(state, currentColor);
         match.updatePlayerColor(currentColor);
         match.updateTurn(turn);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PlayerColor getCurrentColor() {
+        return this.currentColor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Piece> getCurrentPiece() {
+        return this.currentPiece;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Point2D> getCurrentMoves() {
+        return this.pieceMoves;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCurrentPiece(final Piece piece) {
+        this.currentPiece = Optional.of(piece);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPieceMoves(final List<Point2D> moves) {
+        this.pieceMoves = ensureMoveSafety(moves);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ChessBoard getBoard() {
+        return this.board;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Piece, List<Point2D>> getInterposing() {
+        return this.interposingPieces;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CastleCondition getCastleCon() {
+        return this.castlingOptions;
     }
 }

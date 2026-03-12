@@ -4,8 +4,6 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 
-import java.util.List;
-
 /**
  * Placeholder.
  */
@@ -35,22 +33,14 @@ public interface TurnHandler {
     void setPlayerColor(PlayerColor color);
 
     /**
-     * placeholder.
-     *
-     * @param pos placeholder.
-     * @return placeholder.
-     */
-    List<Point2D> thinking(Point2D pos);
-
-    /**
      * Sets the game state to checkmate.
      */
     void surrender();
 
     /**
-     * placeholder.
+     * Getter for the pawn's position that is undergoing promotion.
      * 
-     * @return placeholder.
+     * @return the {@link Point2D} position.
      */
-    Point2D getCurrentPiecePos();
+    Point2D getPromotingPawnPos();
 }
