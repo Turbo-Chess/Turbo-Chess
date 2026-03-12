@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.Optional;
 
 /**
- * The {@code Entity} interface represents any distinct object that can exist on the game board.
+ * The {@link Entity} interface represents any distinct object that can exist on the game board.
  * This abstraction serves as the root for various game elements such as pieces, power-ups, or obstacles.
  * Implementing classes must define core characteristics including identification, visual representation,
  * and ownership information.
