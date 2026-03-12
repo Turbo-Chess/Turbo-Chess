@@ -9,6 +9,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -54,7 +55,7 @@ public final class GameControllerImpl implements GameController {
     @Setter
     private Loadout whiteLoadout;
     @Getter
-    @Setter
+    //@Setter
     private Loadout blackLoadout;
     private final GameCoordinator gameCoordinator;
 
@@ -125,7 +126,7 @@ public final class GameControllerImpl implements GameController {
     @Override
     public String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
         final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
-        return "file:" + imagePath + "/" + color + "_" + id + ".png";
+        return "file:" + LoadingUtils.getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
     }
 
     /**

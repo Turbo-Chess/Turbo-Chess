@@ -76,12 +76,12 @@ public abstract class AbstractEntityDefinition {
         }
 
         if (builder.getPieceType() == null) {
-            throw new IllegalArgumentException("Missing required field: name");
+            throw new IllegalArgumentException("Missing required field: pieceType");
         }
 
         this.name = builder.getName();
         this.id = builder.getId();
-        this.imagePath = String.valueOf(LoadingUtils.getCorrectPath(builder.getImagePath()));
+        this.imagePath = builder.getImagePath();
         this.pieceType = builder.getPieceType();
         this.weight = builder.getWeight();
     }
