@@ -97,7 +97,7 @@ public final class ChessMatchImpl implements ChessMatch {
     @Override
     public void setTurnNumber(final int turnNumber) {
         this.turnNumber = turnNumber;
-        this.turnHandler.setTurn(turnNumber);
+        this.turnHandler.setStartTurn(turnNumber);
         this.notifyTurnUpdated(this.turnNumber);
     }
 
@@ -109,7 +109,7 @@ public final class ChessMatchImpl implements ChessMatch {
     @Override
     public void setPlayerColor(final PlayerColor playerColor) {
         this.currentPlayer = playerColor;
-        this.turnHandler.setPlayerColor(playerColor);
+        this.turnHandler.setStartPlayerColor(playerColor);
         this.notifyPlayerColorUpdated(this.currentPlayer);
     }
 
@@ -183,7 +183,7 @@ public final class ChessMatchImpl implements ChessMatch {
      */
     @Override
     public Point2D getPromotionPos() {
-        return turnHandler.getCurrentPiecePos();
+        return turnHandler.getPromotingPawnPos();
     }
 
     @Override

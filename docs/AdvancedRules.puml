@@ -4,12 +4,40 @@ skinparam classAttributeIconSize 0
 hide empty fields
 hide empty method
 
-interface AdvancedRules {
-
-    +{static}check()
-    +{static}checkmate()
-    +{static}draw()
-    +{static}enPassant()
-    +{static}castle()
+class AdvancedRules {
+    +{static}check( . . . ) : GameState
+    +{static}checkmate( . . . ) : GameState
+    +{static}draw( . . . ) : GameState
+    +{static}castle( . . . ) : CastleCondition
 }
+
+class CheckCalculator {
+    +{static}getInterposingPieces( . . . ) : Map<Piece, List<Point2D>>
+    +{static}getLineOfSight( . . . ) : List<Point2D>
+    +{static}getAttackers( . . . ) : List<Piece>
+    +{static}isMoveSafe( . . . ) : boolean
+}
+
+class RulesUtils {
+    +{static}hasNotMoved( . . . ) : boolean
+    +{static}underAttack( . . . ) : Optional<Piece>
+    +{static}kingPossibleMoves( . . . ) : List<Point2D>
+    +{static}getPiecesOfColor( . . . ) : Set<Optional<Entity>>
+    +{static}getKing( . . . ) : Optional<Piece>
+    +{static}swapColor(currentColor : PlayerColor) : PlayerColor 
+}
+
+enum CastleCondition {
+    NO_CASTLE
+    CASTLE_LEFT
+    CASTLE_RIGHT
+    CASTLE_BOTH
+}
+class TurnHandlerImpl
+TurnHandlerImpl .. AdvancedRules
+TurnHandlerImpl .. RulesUtils
+AdvancedRules .. CheckCalculator
+AdvancedRules .. CastleCondition
+AdvancedRules .. RulesUtils
+
 @enduml
