@@ -56,7 +56,7 @@ public class BoardFactoryImpl implements BoardFactory {
                 )
                 .gameId(gameId)
                 .playerColor(color)
-                .hasMoved(false)
+                .moved(false)
                 .build()
         );
         gameId++;
@@ -77,7 +77,7 @@ public class BoardFactoryImpl implements BoardFactory {
         final var newPiece = new Piece.Builder()
                 .entityDefinition(pieceDefinition)
                 .gameId(gameId)
-                .hasMoved(false)
+                .moved(false)
                 .playerColor(color)
                 .build();
 

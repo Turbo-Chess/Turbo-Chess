@@ -59,7 +59,11 @@ public final class LoadoutEditor implements Initializable {
      * @param loaderController the {@link LoaderController} needed to retrieve all the definitions.
      * @param loadoutManager the {@link LoadoutManager} needed to access the methods to manipulate loadouts.
      */
-    public LoadoutEditor(final GameCoordinator coordinator, final LoaderController loaderController, final LoadoutManager loadoutManager) {
+    public LoadoutEditor(
+            final GameCoordinator coordinator,
+            final LoaderController loaderController,
+            final LoadoutManager loadoutManager
+    ) {
         this.coordinator = coordinator;
         this.loadoutManager = loadoutManager;
         this.entityCache.putAll(loaderController.getEntityCache());
