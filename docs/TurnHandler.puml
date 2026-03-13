@@ -30,6 +30,15 @@ TurnHandler <|.. TurnHandlerImpl
 TurnHandlerContext <|.. TurnHandlerImpl
 TurnHandlerImpl o-- TurnState
 
+enum GameState {
+    NORMAL
+    CHECK
+    DOUBLE_CHECK
+    CHECKMATE
+    DRAW
+    PROMOTION
+}
+TurnHandlerImpl o-- GameState
 abstract class AbstractTurnState {
     -context : TurnHandlerContext
 }
