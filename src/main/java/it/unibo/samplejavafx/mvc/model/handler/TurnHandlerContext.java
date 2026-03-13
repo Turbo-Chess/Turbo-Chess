@@ -114,6 +114,13 @@ public interface TurnHandlerContext {
     void setTurn(int newTurn);
 
     /**
+     * Setter for the promotionHolder of the TurnHandler.
+     * 
+     * @return the {@link Optional} where we want to save a promoting piece.
+     */
+    void passOnPromotion(Optional<Piece> pawn);
+
+    /**
      * Unsets the current piece and all related fields.
      */
     void unsetCurrentPiece();

@@ -1,9 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.handler;
 
 import java.util.List;
-import java.util.Optional;
 
-import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 /**
@@ -19,11 +17,4 @@ public interface TurnState {
      * @return a List of {@link Point2D} of all possible moves.
      */
     List<Point2D> thinking(Point2D pos);
-
-    /**
-     * Updates the values needed by the TurnHandler.
-     * 
-     * @return the {@link Optional} where we want to save a promoting piece.
-     */
-    Optional<Piece> passOnStats();
 }

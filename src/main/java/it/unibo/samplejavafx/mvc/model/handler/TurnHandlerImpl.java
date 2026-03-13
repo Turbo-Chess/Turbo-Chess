@@ -66,7 +66,6 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     @Override
     public List<Point2D> thinking(final Point2D pos) {
         final List<Point2D> results = this.turnState.thinking(pos);
-        this.promotionHolder = this.turnState.passOnStats().isPresent() ? this.turnState.passOnStats() : this.promotionHolder;
         return results;
     }
 
@@ -307,6 +306,15 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     @Override
     public void setTurn(final int newTurn) {
         this.turn = newTurn;
+    }
+
+    /**
+     * Setter for the promotionHolder of the TurnHandler.
+     * 
+     * @return the {@link Optional} where we want to save a promoting piece.
+     */
+    public void passOnPromotion(final Optional<Piece> pawn) {
+        this.promotionHolder = pawn;
     }
 
 // - - - Helper methods for Replay and LoadGame related features - - -

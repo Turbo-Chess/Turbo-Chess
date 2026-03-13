@@ -19,7 +19,6 @@ public final class NormalTurnState extends AbstractTurnState {
     private final ChessBoard board;
     private CastleCondition castlingOptions;
     private PlayerColor currentColor;
-    private Optional<Piece> promotionHolder = Optional.empty();
 
     public NormalTurnState(final TurnHandlerContext context) {
         super(context);
@@ -67,7 +66,7 @@ public final class NormalTurnState extends AbstractTurnState {
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
             final var newPiece = (Piece) board.getEntity(pos).get();
             context.setCurrentPiece(newPiece);
-            this.promotionHolder = Optional.of(newPiece);
+            context.passOnPromotion(Optional.of(newPiece));
             context.setPieceMoves(newPiece.getValidMoves(pos, board));
             return context.getCurrentMoves();
         }
@@ -78,14 +77,5 @@ public final class NormalTurnState extends AbstractTurnState {
         }
         context.unsetCurrentPiece();
         return context.getCurrentMoves();
-    }
-
-    /**
-     * Updates the {@code promotionHolder} value needed by the TurnHandler.
-     * 
-     * @param promotion the {@link Optional} where we want to save a promoting piece.
-     */
-    public Optional<Piece> passOnStats() {
-        return this.promotionHolder;
     }
 }

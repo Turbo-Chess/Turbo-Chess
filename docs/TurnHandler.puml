@@ -5,7 +5,33 @@ hide empty fields
 hide empty method
 
 interface TurnHandler {
+    +thinking(pos : Point2D) : List<Point2D>
+    +executeTurn(moveAction : MoveType, pos : Point2D) : boolean
+    +setStartTurn(turn : int)
+    +setStartPlayerColor(color : PlayerColor)
+    +surrender()
+    +getPromotingPawnPos() : Point2D
+}
 
-    +executeTurn()
+interface TurnHandlerContext {
+    +thinking(pos : Point2D) : List<Point2D>
+    +executeTurn() : boolean
+    +transitionTo(newState : TurnState)
+    +getCurrentColor() : PlayerColor
+    +getCurrentPiece() : Optional<Piece>
+    +getCurrentMoves() : List<Point2D>
+    +getBoard() : ChessBoard
+    +getInterposing() : Map<Piece, List<Point2D>>
+    +getCastleCon() : CastleCondition
+    +getTurn() : int
+    +setCurrentPiece(piece : Piece)
+    +setPieceMoves(moves : List<Point2D>)
+    +setTurn(newTurn : int)
+    +unsetCurrentPiece()
+}
+
+interface TurnState {
+    +thinking(pos : Point2D) : List<Point2D>
+    +passOnStats() : Optional<Piece>
 }
 @enduml
