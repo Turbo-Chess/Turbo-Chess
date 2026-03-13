@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
-import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.utils.FileSystemUtils;
 import lombok.EqualsAndHashCode;
@@ -148,10 +147,12 @@ public abstract class AbstractEntityDefinition {
          */
         public X imagePath(final String newImagePath) {
             final String correctPath;
-            if (newImagePath.startsWith("classpath:") || newImagePath.startsWith("file:") || Paths.get(newImagePath).isAbsolute()) {
+            if (newImagePath.startsWith("classpath:")
+                    || newImagePath.startsWith("file:")
+                    || Paths.get(newImagePath).isAbsolute()) {
                 correctPath = newImagePath;
             } else {
-                correctPath = "" + (Paths.get(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath(), newImagePath));
+                correctPath = Paths.get(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath(), newImagePath).toString();
             }
             this.imagePath = correctPath;
             return self();

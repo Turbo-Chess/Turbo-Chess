@@ -50,7 +50,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * Constructs a new {@code GameCoordinatorImpl}.
      *
-     * @param stage The primary {@link Stage} of the JavaFX application, used as the main window container.
+     * @param viewFactory The {@link ViewFactory} used to create view scenes.
      */
     // The stage is the main window passed from javafx library, and it's designed to be mutable
     // so it's correct in that case.

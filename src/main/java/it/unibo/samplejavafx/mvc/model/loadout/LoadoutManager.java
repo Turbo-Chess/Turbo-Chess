@@ -107,6 +107,12 @@ public final class LoadoutManager {
         return loadout.isValid(definitions, standard);
     }
 
+    /**
+     * Saves a loadout if valid.
+     *
+     * @param loadout     the loadout to save
+     * @param definitions the piece definitions to validate against
+     */
     public void saveValid(final Loadout loadout, final Map<String, PieceDefinition> definitions) {
         final Optional<Loadout> standardOpt = load(STANDARD_LOADOUT_ID);
         if (standardOpt.isEmpty()) {
@@ -130,7 +136,7 @@ public final class LoadoutManager {
             final Path basePath;
             try {
                 basePath = LoadingUtils.getCorrectPath(basePathString);
-            } catch (final Exception e) {
+            } catch (final IllegalStateException e) {
                 LOGGER.warn("Failed to resolve entity root path: {}", basePathString, e);
                 continue;
             }
@@ -152,7 +158,7 @@ public final class LoadoutManager {
                                 .filter(def -> def instanceof PieceDefinition)
                                 .map(def -> (PieceDefinition) def)
                                 .forEach(def -> definitions.putIfAbsent(def.getId(), def));
-                    } catch (final RuntimeException ex) {
+                    } catch (final IllegalStateException ex) {
                         LOGGER.warn("Failed to load entity definitions from {}", packPath, ex);
                     }
                 });

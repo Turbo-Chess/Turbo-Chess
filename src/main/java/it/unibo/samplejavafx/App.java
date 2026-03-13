@@ -22,7 +22,7 @@ public final class App extends Application {
      * @param stage placeholder.
      */
     @Override
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "checkstyle:IllegalCatch"})
     // I'm catching all exception because I want this window to spawn an alert for different exceptions thrown
     // from different part of the program.
     public void start(final Stage stage) {
@@ -39,9 +39,9 @@ public final class App extends Application {
 
             // Start with Main Menu
             coordinator.initMainMenu();
-        } catch (final Exception e) { // CHECKSTYLE:OFF: IllegalCatch
+        } catch (final Exception e) {
             showFatalStartupError(e);
-        } // CHECKSTYLE:ON: IllegalCatch
+        }
 
     }
 
@@ -57,7 +57,10 @@ public final class App extends Application {
                 rootCause = rootCause.getCause();
             }
 
-            alert.setContentText(rootCause.getMessage() != null ? e.getMessage() + " \nReason: " + rootCause.getMessage() : "Unknown error");
+            final String errorMsg = rootCause.getMessage() != null
+                    ? e.getMessage() + " \nReason: " + rootCause.getMessage()
+                    : "Unknown error";
+            alert.setContentText(errorMsg);
             alert.showAndWait();
         });
     }

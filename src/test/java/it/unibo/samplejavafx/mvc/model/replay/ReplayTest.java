@@ -28,7 +28,7 @@ class ReplayTest {
     private static final String PIECE_NAME = "Pawn";
     private static final String IMAGE_PATH = "classpath:/assets/images/white_pawn.png";
     private static final Piece TEST_PIECE = new Piece.Builder()
-        .hasMoved(false)
+        .moved(false)
         .entityDefinition(new PieceDefinition.Builder()
             .name(PIECE_NAME)
             .id(PIECE_ID)
