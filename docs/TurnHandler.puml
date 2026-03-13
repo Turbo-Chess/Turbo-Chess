@@ -17,21 +17,28 @@ interface TurnHandlerContext {
     +thinking(pos : Point2D) : List<Point2D>
     +executeTurn() : boolean
     +transitionTo(newState : TurnState)
-    +getCurrentColor() : PlayerColor
-    +getCurrentPiece() : Optional<Piece>
-    +getCurrentMoves() : List<Point2D>
-    +getBoard() : ChessBoard
-    +getInterposing() : Map<Piece, List<Point2D>>
-    +getCastleCon() : CastleCondition
-    +getTurn() : int
-    +setCurrentPiece(piece : Piece)
-    +setPieceMoves(moves : List<Point2D>)
-    +setTurn(newTurn : int)
+    +passOnPromotion(pawn : Optional<Piece>)
     +unsetCurrentPiece()
 }
 
 interface TurnState {
     +thinking(pos : Point2D) : List<Point2D>
-    +passOnStats() : Optional<Piece>
 }
+
+class TurnHandlerImpl
+TurnHandler <|.. TurnHandlerImpl
+TurnHandlerContext <|.. TurnHandlerImpl
+TurnHandlerImpl o-- TurnState
+
+abstract class AbstractTurnState {
+    -context : TurnHandlerContext
+}
+TurnState <|.. AbstractTurnState
+
+class NormalTurnState
+class CheckTurnState
+class DoubleCheckTurnState
+AbstractTurnState <|-- NormalTurnState
+AbstractTurnState <|-- CheckTurnState
+AbstractTurnState <|-- DoubleCheckTurnState
 @enduml
