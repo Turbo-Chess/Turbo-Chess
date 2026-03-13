@@ -66,11 +66,12 @@ public class LoaderControllerImpl implements LoaderController {
         // Get a path from URI
         for (final String basePathString : PATHS) {
             final Path unifiedBasePath = LoadingUtils.getCorrectPath(basePathString);
-            try {
-                FileSystemUtils.ensureDirectoryExists(unifiedBasePath);
-            } catch (final IOException e) {
-                LOGGER.error("Cannot ensure directory exists: " + unifiedBasePath);
-                // Continue even if directory creation fails, it might be read-only or handled elsewhere
+            if (basePathString.startsWith("file:")) {
+                try {
+                    FileSystemUtils.ensureDirectoryExists(unifiedBasePath);
+                } catch (final IOException e) {
+                    LOGGER.error("Cannot ensure directory exists: " + unifiedBasePath);
+                }
             }
             if (Files.isDirectory(unifiedBasePath)) {
                 try {

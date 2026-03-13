@@ -80,7 +80,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.21.0")
 }
 
-val mainApp = "it.unibo.samplejavafx.App"
+val mainApp = "it.unibo.samplejavafx.Main"
 
 // JavaFX modules to include
 val javaFXOptions = javaFXModules.map { "javafx.$it" }

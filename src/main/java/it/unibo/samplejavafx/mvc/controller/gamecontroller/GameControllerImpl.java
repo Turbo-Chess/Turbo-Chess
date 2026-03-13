@@ -126,7 +126,16 @@ public final class GameControllerImpl implements GameController {
     @Override
     public String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
         final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
-        return "file:" + LoadingUtils.getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
+        final String fileName = color + "_" + id + ".png";
+        if (imagePath.startsWith("classpath:")) {
+            final String resourcePath = imagePath.replace("classpath:", "") + fileName;
+            final var url = GameControllerImpl.class.getResource(resourcePath);
+            if (url == null) {
+                throw new IllegalStateException("Image resource not found: " + resourcePath);
+            }
+            return url.toExternalForm();
+        }
+        return LoadingUtils.getCorrectPath(imagePath).resolve(fileName).toUri().toString();
     }
 
     /**
