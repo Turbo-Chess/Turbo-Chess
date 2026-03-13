@@ -90,6 +90,7 @@ public final class LoadoutSelector implements Initializable {
         });
 
         loadButton.setOnAction(event -> {
+            loadoutView.getItems().clear();
             final Set<String> holder = new HashSet<>();
             if (selectedLoadoutName != null
                 && loadoutManager.load(loadoutIds.get(selectedLoadoutName)).isPresent()) {
@@ -107,6 +108,7 @@ public final class LoadoutSelector implements Initializable {
                     }
                     loadoutView.getItems().add(count + "x " + entry.pieceId());
                 }
+                entries.clear();
             }
         });
     }
