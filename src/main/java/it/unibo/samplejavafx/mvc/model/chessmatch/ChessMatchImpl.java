@@ -172,8 +172,10 @@ public final class ChessMatchImpl implements ChessMatch {
      */
     @Override
     public void updateGameState(final GameState state, final PlayerColor playerColor) {
-        this.gameState = state;
-        this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
+        if (this.gameState != state) {
+            this.gameState = state;
+            this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
+        }
     }
 
     /**
