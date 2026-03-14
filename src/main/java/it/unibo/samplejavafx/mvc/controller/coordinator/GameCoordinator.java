@@ -97,4 +97,24 @@ public interface GameCoordinator {
      * @return the {@link Path} of the save file. 
      */
     Path getCurrentSaveFile();
+    
+    /**
+     * Returns the initial time (in seconds) allocated to each player for the entire game.
+     *
+     * @return the initial time in seconds
+     */
+    long getInitialTimeSeconds();
+
+    /**
+     * Sets the initial time (in seconds) allocated to each player for the entire game.
+     *
+     * @param seconds the desired initial time in seconds; must be non-negative
+     */
+    void setInitialTimeSeconds(long seconds);
+
+    /**
+     * Resets the initial time to its default value.
+     * The exact default is implementation-dependent.
+     */
+    void resetInitialTimeSeconds();
 }
