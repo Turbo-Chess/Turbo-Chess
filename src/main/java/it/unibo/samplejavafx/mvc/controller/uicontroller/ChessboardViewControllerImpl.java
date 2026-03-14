@@ -76,6 +76,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;
+    private static final long SECONDS_IN_MINUTE = 60L;
 
     @FXML
     private GridPane chessboardGridPane;
@@ -614,7 +615,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     }
 
     private String formatTime(final long seconds) {
-        return String.format("%d:%02d", seconds / 60, seconds % 60);
+        return String.format("%d:%02d", seconds / SECONDS_IN_MINUTE, seconds % SECONDS_IN_MINUTE);
     }
 
     private void showEndingDialog(final String statusText, final String messageText, final Optional<PlayerColor> playerColor) {

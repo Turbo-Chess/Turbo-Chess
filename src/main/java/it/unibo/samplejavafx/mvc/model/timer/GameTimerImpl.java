@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 /**
  * Implementation of the game timer.
  */
-public class GameTimerImpl implements GameTimer {
+public final class GameTimerImpl implements GameTimer {
 
     private final ScheduledExecutorService scheduler;
     private long whiteTime;
@@ -29,7 +29,12 @@ public class GameTimerImpl implements GameTimer {
      * @param onTick           the callback for when the timer updates.
      * @param onTimeOut        the callback for when a player's time runs out.
      */
-    public GameTimerImpl(final long whiteTimeSeconds, final long blackTimeSeconds, final BiConsumer<PlayerColor, Long> onTick, final Consumer<PlayerColor> onTimeOut) {
+    public GameTimerImpl(
+        final long whiteTimeSeconds,
+        final long blackTimeSeconds,
+        final BiConsumer<PlayerColor, Long> onTick,
+        final Consumer<PlayerColor> onTimeOut
+    ) {
         this.scheduler = Executors.newSingleThreadScheduledExecutor(newDaemonThreadFactory());
         this.whiteTime = whiteTimeSeconds;
         this.blackTime = blackTimeSeconds;
@@ -47,7 +52,11 @@ public class GameTimerImpl implements GameTimer {
      * @param onTick             the callback for when the timer updates.
      * @param onTimeOut          the callback for when a player's time runs out.
      */
-    public GameTimerImpl(final long initialTimeSeconds, final BiConsumer<PlayerColor, Long> onTick, final Consumer<PlayerColor> onTimeOut) {
+    public GameTimerImpl(
+        final long initialTimeSeconds,
+        final BiConsumer<PlayerColor, Long> onTick,
+        final Consumer<PlayerColor> onTimeOut
+    ) {
         this(initialTimeSeconds, initialTimeSeconds, onTick, onTimeOut);
     }
 

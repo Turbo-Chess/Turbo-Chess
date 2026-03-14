@@ -78,6 +78,12 @@ public final class ChessMatchImpl implements ChessMatch {
         this(DEFAULT_TIME_SECONDS, DEFAULT_TIME_SECONDS);
     }
 
+    /**
+     * Constructs a new chess match setting the initial time for each player.
+     *
+     * @param whiteTimeSeconds the initial time in seconds for white player.
+     * @param blackTimeSeconds the initial time in seconds for black player.
+     */
     public ChessMatchImpl(final long whiteTimeSeconds, final long blackTimeSeconds) {
         this.gameState = GameState.NORMAL;
         this.turnNumber = 1;
