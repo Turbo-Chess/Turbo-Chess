@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
-import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
@@ -44,8 +41,8 @@ public final class LoadoutEditor implements Initializable {
     @FXML
     private TextField textLabel;
     private final LoadoutManager loadoutManager;
+    private final DefinitionRegistry entityCache;
     private final GameCoordinator coordinator;
-    private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private final Map<Point2D, LoadoutEntry> entries = new HashMap<>();
     private final Map<Button, Point2D> buttonGrid = new HashMap<>();
     private String selectedPiece;
@@ -56,27 +53,23 @@ public final class LoadoutEditor implements Initializable {
      * Constructor for the LoadoutEditor.
      *
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
-     * @param loaderController the {@link LoaderController} needed to retrieve all the definitions.
      * @param loadoutManager the {@link LoadoutManager} needed to access the methods to manipulate loadouts.
      */
     public LoadoutEditor(
             final GameCoordinator coordinator,
-            final LoaderController loaderController,
+            final DefinitionRegistry entityCache,
             final LoadoutManager loadoutManager
     ) {
         this.coordinator = coordinator;
+        this.entityCache = entityCache;
         this.loadoutManager = loadoutManager;
-        this.entityCache.putAll(loaderController.getEntityCache());
         this.x = 0;
         this.y = 0;
     }
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        final ObservableList<String> pieceNames = FXCollections.observableArrayList(entityCache.values().stream()
-                .map(Map::keySet)
-                .flatMap(Set::stream)
-                .collect(Collectors.toSet()));
+        final ObservableList<String> pieceNames = FXCollections.observableArrayList(entityCache.getAllIds());
         pieceView.setItems(pieceNames);
         pieceView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<>() {
             @Override
@@ -104,9 +97,9 @@ public final class LoadoutEditor implements Initializable {
     }
 
     private String ofPack(final String id) {
-        for (final var packEntry : entityCache.entrySet()) {
-            if (entityCache.get(packEntry.getKey()).containsKey(id)) {
-                return packEntry.getKey();
+        for (final var packEntry : entityCache.getResPackIds()) {
+            if (entityCache.getPackData(packEntry).containsKey(id)) {
+                return packEntry;
             }
         }
         return null;

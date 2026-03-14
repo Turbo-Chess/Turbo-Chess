@@ -12,6 +12,7 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import javafx.fxml.FXMLLoader;
@@ -109,13 +110,13 @@ public final class JafaFXViewFactory implements ViewFactory {
     @Override
     public void showLoadoutEditor(
             final GameCoordinator gameCoordinator,
-            final LoaderController loaderController,
+            final DefinitionRegistry entityCache,
             final LoadoutManager loadoutManager) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
             loader.setControllerFactory(c -> new LoadoutEditor(
                     gameCoordinator,
-                    loaderController,
+                    entityCache,
                     loadoutManager
             ));
 
@@ -130,10 +131,10 @@ public final class JafaFXViewFactory implements ViewFactory {
     }
 
     @Override
-    public void initPromotion(final GameController gameController, final LoaderController loaderController) {
+    public void initPromotion(final GameController gameController, final DefinitionRegistry entityCache) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
-            loader.setControllerFactory(c -> new PromotionController(gameController, loaderController));
+            loader.setControllerFactory(c -> new PromotionController(gameController, entityCache));
 
             final Parent root = loader.load();
             final PromotionController prom = loader.getController();

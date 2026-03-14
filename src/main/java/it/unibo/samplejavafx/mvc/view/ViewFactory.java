@@ -3,6 +3,7 @@ package it.unibo.samplejavafx.mvc.view;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 
 /**
@@ -39,10 +40,9 @@ public interface ViewFactory {
      * Shows the Loadout Editor scene.
      *
      * @param gameCoordinator   the game coordinator instance
-     * @param loaderController  the loader controller instance
      * @param loadoutManager    the loadout manager instance
      */
-    void showLoadoutEditor(GameCoordinator gameCoordinator, LoaderController loaderController, LoadoutManager loadoutManager);
+    void showLoadoutEditor(GameCoordinator gameCoordinator, DefinitionRegistry entityCache, LoadoutManager loadoutManager);
 
     /**
      * Initializes and shows the Promotion dialog/scene.
@@ -50,7 +50,7 @@ public interface ViewFactory {
      * @param gameController    the game controller instance
      * @param loaderController  the loader controller instance
      */
-    void initPromotion(GameController gameController, LoaderController loaderController);
+    void initPromotion(GameController gameController, DefinitionRegistry entityCache);
 
     /**
      * Initializes and shows the Load Game scene.

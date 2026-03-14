@@ -49,16 +49,6 @@ public interface GameController {
     void setChessboardViewController(ChessboardViewController chessboardViewController);
 
     /**
-     * Generates the correct file path for a piece's image based on its base path, player color, and ID.
-     *
-     * @param imagePath   The base directory or path for the image.
-     * @param playerColor The color of the player owning the piece (affects the image variant).
-     * @param id          The specific ID of the piece type.
-     * @return a {@link String} representing the full path to the image resource.
-     */
-    String calculateImageColorPath(String imagePath, PlayerColor playerColor, String id);
-
-    /**
      * Triggers the surrender action for the current player, typically ending the match.
      */
     void surrender();

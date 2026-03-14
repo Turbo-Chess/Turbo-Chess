@@ -4,7 +4,11 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
+
+import java.util.List;
 
 /**
  * Record acting as a dependency injection container for shared controller and model instances.
@@ -14,12 +18,10 @@ import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
  * to provide access to singleton-like services such as the {@link LoaderController} and {@link LoadoutManager}.
  * </p>
  *
- * @param loaderController the controller responsible for loading resources.
  * @param loadoutManager the manager for player loadouts.
  * @param boardFactory the factory for creating board entities.
  */
 public record ControllerContext(
-        LoaderController loaderController,
         LoadoutManager loadoutManager,
         BoardFactory boardFactory
 ) {
@@ -28,10 +30,10 @@ public record ControllerContext(
      *
      * @return a new instance of {@link ControllerContext} initialized with default controllers.
      */
-    public static ControllerContext createDefaultContext() {
+    public static ControllerContext createDefaultContext(final List<DefinitionCacheEntry> entityCache) {
         final LoaderController loaderController = new LoaderControllerImpl();
-        final BoardFactory boardFactory = new BoardFactoryImpl(loaderController);
+        final BoardFactory boardFactory = new BoardFactoryImpl(entityCache);
 
-        return new ControllerContext(loaderController, new LoadoutManager(), boardFactory);
+        return new ControllerContext(new LoadoutManager(), boardFactory);
     }
 }

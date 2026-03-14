@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,5 +49,18 @@ public final class LoadingUtils {
         }
 
         throw new IllegalStateException("Path does not start with the right prefix: " + basePath);
+    }
+
+    /**
+     * Generates the correct file path for a piece's image based on its base path, player color, and ID.
+     *
+     * @param imagePath   The base directory or path for the image.
+     * @param playerColor The color of the player owning the piece (affects the image variant).
+     * @param id          The specific ID of the piece type.
+     * @return a {@link String} representing the full path to the image resource.
+     */
+    public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
+        final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
+        return "file:" + LoadingUtils.getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
     }
 }

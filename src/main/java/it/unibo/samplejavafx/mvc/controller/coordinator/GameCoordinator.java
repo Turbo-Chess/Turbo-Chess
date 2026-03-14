@@ -72,11 +72,6 @@ public interface GameCoordinator {
     void showGame();
 
     /**
-     * Loads the pieces for the game.
-     */
-    void loadPieces();
-
-    /**
      * Loads the last saved game. 
      * 
      * @param path the path of the save file.

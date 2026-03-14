@@ -39,11 +39,11 @@ public interface BoardFactory {
      *
      * @param pos             The target {@link Point2D} position for the new piece.
      * @param board           The {@link ChessBoard} on which to place the piece.
-     * @param pieceDefinition The {@link PieceDefinition} defining the type and attributes of the new piece.
      * @param color           The {@link PlayerColor} of the player who owns the new piece.
      */
     void createNewPiece(Point2D pos,
                         ChessBoard board,
-                        PieceDefinition pieceDefinition,
+                        String packId,
+                        String pieceId,
                         PlayerColor color);
 }

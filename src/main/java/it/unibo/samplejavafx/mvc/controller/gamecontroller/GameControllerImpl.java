@@ -49,13 +49,14 @@ public final class GameControllerImpl implements GameController {
     @SuppressFBWarnings("EI_EXPOSE_REP")
     @Getter
     private ChessMatch match;
+    //TODO: decouple
     @Setter
     private ChessboardViewController chessboardViewController;
     @Getter
     @Setter
     private Loadout whiteLoadout;
     @Getter
-    //@Setter
+    @Setter
     private Loadout blackLoadout;
     private final GameCoordinator gameCoordinator;
 
@@ -116,18 +117,7 @@ public final class GameControllerImpl implements GameController {
         lastPossibleMoves.addAll(result);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Helper method to construct asset paths for different colored variants of a piece.
-     * </p>
-     */
-    @Override
-    public String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
-        final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
-        return "file:" + LoadingUtils.getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
-    }
+
 
     /**
      * {@inheritDoc}
@@ -156,10 +146,7 @@ public final class GameControllerImpl implements GameController {
         final Point2D pos = match.getPromotionPos();
         match.getBoard().removeEntity(pos);
         controllerContext.boardFactory().createNewPiece(pos, match.getBoard(),
-                (PieceDefinition) controllerContext.loaderController()
-                        .getEntityCache()
-                        .get(pieceEntry.packId())
-                        .get(pieceEntry.pieceId()),
+                pieceEntry.packId(), pieceEntry.pieceId(),
                 RulesUtils.swapColor(match.getCurrentPlayer()));
     }
 
@@ -221,10 +208,5 @@ public final class GameControllerImpl implements GameController {
             throw new IllegalStateException("Match not initialized");
         }
         return this.match.getBoard();
-    }
-
-    @Override
-    public void setBlackLoadout(final Loadout loadout) {
-        this.blackLoadout = loadout;
     }
 }

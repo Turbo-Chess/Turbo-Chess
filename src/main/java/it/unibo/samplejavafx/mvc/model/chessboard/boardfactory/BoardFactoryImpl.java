@@ -4,10 +4,13 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+
+import java.util.*;
 
 /**
  * A concrete implementation of the {@link BoardFactory} interface.
@@ -17,17 +20,19 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * It manages the creation of unique game IDs for each instantiated piece to ensure proper tracking during the match.
  * </p>
  */
-public class BoardFactoryImpl implements BoardFactory {
-    private final LoaderController loaderController;
+public class BoardFactoryImpl implements BoardFactory, DefinitionRegistry {
+    private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private int gameId;
 
     /**
      * Constructs a new {@code BoardFactoryImpl}.
      *
-     * @param loaderController The {@link LoaderController} responsible for providing access to loaded entity definitions.
      */
-    public BoardFactoryImpl(final LoaderController loaderController) {
-        this.loaderController = loaderController;
+    public BoardFactoryImpl(List<DefinitionCacheEntry> definitions) {
+        for(final var definitionEntry : definitions) {
+            entityCache.computeIfAbsent(definitionEntry.packId(), map -> new HashMap<>());
+            entityCache.get(definitionEntry.packId()).put(definitionEntry.pieceId(), definitionEntry.abstractEntityDefinition());
+        }
     }
 
     /**
@@ -50,9 +55,7 @@ public class BoardFactoryImpl implements BoardFactory {
     private void addPieceToBoard(final ChessBoard board, final LoadoutEntry entry, final PlayerColor color) {
         board.setEntity(entry.position(), new Piece.Builder()
                 .entityDefinition(
-                    (PieceDefinition) loaderController.getEntityCache()
-                        .get(entry.packId())
-                        .get(entry.pieceId())
+                    (PieceDefinition) entityCache.get(entry.packId()).get(entry.pieceId())
                 )
                 .gameId(gameId)
                 .playerColor(color)
@@ -73,9 +76,9 @@ public class BoardFactoryImpl implements BoardFactory {
      */
     @Override
     public void createNewPiece(final Point2D pos, final ChessBoard board, 
-                               final PieceDefinition pieceDefinition, final PlayerColor color) {
+                               String packId, String pieceId, final PlayerColor color) {
         final var newPiece = new Piece.Builder()
-                .entityDefinition(pieceDefinition)
+                .entityDefinition((PieceDefinition) entityCache.get(packId).get(pieceId))
                 .gameId(gameId)
                 .moved(false)
                 .playerColor(color)
@@ -84,5 +87,33 @@ public class BoardFactoryImpl implements BoardFactory {
         board.setEntity(pos, newPiece);
 
         this.gameId++;
+    }
+
+    @Override
+    public List<String> getResPackIds() {
+        return List.copyOf(entityCache.keySet());
+    }
+
+    @Override
+    public Map<String, AbstractEntityDefinition> getPackData(String packId) {
+        return Map.copyOf(entityCache.get(packId));
+    }
+
+    @Override
+    public List<AbstractEntityDefinition> getAllDefinitions() {
+        return entityCache.values().stream()
+                .flatMap(inner -> inner.values().stream())
+                .toList();
+    }
+
+    @Override
+    public AbstractEntityDefinition getDefinition(String packId, String pieceId) {
+        return entityCache.get(packId).get(pieceId);
+    }
+
+    @Override
+    public List<String> getAllIds() {
+        return List.copyOf(entityCache.values().stream()
+                .flatMap(pack -> pack.keySet().stream()).toList());
     }
 }

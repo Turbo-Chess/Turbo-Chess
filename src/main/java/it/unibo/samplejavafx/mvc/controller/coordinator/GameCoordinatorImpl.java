@@ -1,12 +1,16 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
@@ -41,8 +45,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinatorImpl.class);
     private static final long DEFAULT_TIME_SECONDS = 600;
 
-    private final ControllerContext controllerContext = ControllerContext.createDefaultContext();
-    private final GameController gameController = new GameControllerImpl(this, controllerContext);
+    private final ControllerContext controllerContext;
+    private final GameController gameController;
     private final ReplayManager replayManager = new ReplayManager();
     private Path currentSaveFile;
     private final ViewFactory viewFactory;
@@ -54,21 +58,12 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     // The stage is the main window passed from javafx library, and it's designed to be mutable
     // so it's correct in that case.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public GameCoordinatorImpl(final ViewFactory viewFactory) {
         this.viewFactory = viewFactory;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Delegates resource loading to the {@link GameController}'s loader.
-     * </p>
-     */
-    @Override
-    public void loadPieces() {
-        this.controllerContext.loaderController().load();
+        final LoaderController loaderController = new LoaderControllerImpl();
+        loaderController.load();
+        this.controllerContext = ControllerContext.createDefaultContext(loaderController.getEntityDefinitionCacheEntries());
+        this.gameController = new GameControllerImpl(this, controllerContext);
     }
 
     /**
@@ -116,7 +111,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public void initLoadoutEditor() {
         shutdownCurrentTimer();
-        viewFactory.showLoadoutEditor(this, controllerContext.loaderController(), controllerContext.loadoutManager());
+        viewFactory.showLoadoutEditor(this, (DefinitionRegistry) this.controllerContext.boardFactory(), controllerContext.loadoutManager());
     }
 
     /**
@@ -129,7 +124,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initPromotion() {
-        viewFactory.initPromotion(this.gameController, controllerContext.loaderController());
+        viewFactory.initPromotion(this.gameController, (DefinitionRegistry) controllerContext.boardFactory());
     }
 
     /**

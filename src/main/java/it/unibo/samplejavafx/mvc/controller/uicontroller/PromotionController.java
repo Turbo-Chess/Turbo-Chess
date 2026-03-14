@@ -6,7 +6,9 @@ import java.util.Set;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import javafx.fxml.FXML;
@@ -25,7 +27,7 @@ public final class PromotionController {
     private final Loadout white;
     private final Loadout black;
     private final GameController controller;
-    private final LoaderController loaderController;
+    private final DefinitionRegistry entityCache;
     private int x;
     private int y;
 
@@ -33,12 +35,11 @@ public final class PromotionController {
      * Constructor for the Promotion GUI.
      *
      * @param controller the {@link GameController} connected to this GUI.
-     * @param loaderController the {@link LoaderController} to retrieve entity definitions.
      */
     @SuppressFBWarnings("EI_EXPOSE_REP2") // in a MVC-based structure you have to pass instances of controllers.
-    public PromotionController(final GameController controller, final LoaderController loaderController) {
+    public PromotionController(final GameController controller, final DefinitionRegistry entityCache) {
         this.controller = controller;
-        this.loaderController = loaderController;
+        this.entityCache = entityCache;
         this.white = controller.getWhiteLoadout();
         this.black = controller.getBlackLoadout();
         this.x = DEFAULT_VALUE;
@@ -71,9 +72,8 @@ public final class PromotionController {
         }
 
         for (final LoadoutEntry entry : set) {
-            final String imagePath = loaderController.getEntityCache()
-                    .get(entry.packId()).get(entry.pieceId()).getImagePath();
-            final String imageColorPath = controller.calculateImageColorPath(imagePath, currentColor, entry.pieceId());
+            final String imagePath = entityCache.getDefinition(entry.packId(), entry.pieceId()).getImagePath();
+            final String imageColorPath = LoadingUtils.calculateImageColorPath(imagePath, currentColor, entry.pieceId());
             final Button btn = new Button("");
             final ImageView imageView = new ImageView(new Image(imageColorPath));
 
@@ -105,7 +105,7 @@ public final class PromotionController {
     }
 
     /**
-     * Private method thay is called whenever a piece is chosen, therefore closing the GUI and returning to the match.
+     * Private method that is called whenever a piece is chosen, therefore closing the GUI and returning to the match.
      *
      * @param entry the {@link LoadoutEntry} of the chosen piece.
      */

@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
@@ -36,10 +37,11 @@ public class LoaderControllerImpl implements LoaderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoaderControllerImpl.class);
     // TODO: maybe move outside
     private static final List<String> PATHS = List.of(
+            //TODO: hardcoded paths
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
             GameProperties.EXTERNAL_MOD_FOLDER.getPath());
 
-    private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
+    private final List<DefinitionCacheEntry> entityDefinitionCache = new ArrayList<>();
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
     /**
@@ -84,6 +86,11 @@ public class LoaderControllerImpl implements LoaderController {
         }
     }
 
+    @Override
+    public List<DefinitionCacheEntry> getEntityDefinitionCacheEntries() {
+        return Collections.unmodifiableList(entityDefinitionCache);
+    }
+
     private List<Path> getDirs(final Path rootResDir) {
         final List<Path> res = new ArrayList<>();
         try (Stream<Path> paths = Files.list(rootResDir)) {
@@ -98,7 +105,6 @@ public class LoaderControllerImpl implements LoaderController {
 
     private void loadResourcePack(final Path basePath, final Path resPackDir) {
         final Path resPackPath = basePath.resolve(resPackDir);
-        entityCache.computeIfAbsent(resPackDir.toString(), map -> new HashMap<>());
         try {
             final List<AbstractEntityDefinition> loadedEntities =
                     entityLoader.loadEntityFile(resPackPath, AbstractEntityDefinition.class);
@@ -111,19 +117,7 @@ public class LoaderControllerImpl implements LoaderController {
 
     private void loadIntoCache(final List<AbstractEntityDefinition> entitiesToLoad, final String packName) {
         for (final var entity : entitiesToLoad) {
-            entityCache.get(packName).put(entity.getId(), entity);
+            entityDefinitionCache.add(new DefinitionCacheEntry(packName, entity.getId(), entity));
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Returns an unmodifiable view of the internal cache to prevent external modification.
-     * </p>
-     */
-    @Override
-    public Map<String, Map<String, AbstractEntityDefinition>> getEntityCache() {
-        return Collections.unmodifiableMap(entityCache);
     }
 }

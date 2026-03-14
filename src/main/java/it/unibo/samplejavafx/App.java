@@ -34,9 +34,6 @@ public final class App extends Application {
             final ViewFactory viewFactory = new JafaFXViewFactory(stage);
             final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
 
-            // Load game resources
-            coordinator.loadPieces();
-
             // Start with Main Menu
             coordinator.initMainMenu();
         } catch (final Exception e) {
