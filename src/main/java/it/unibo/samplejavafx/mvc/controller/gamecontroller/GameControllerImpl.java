@@ -3,13 +3,11 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -51,7 +49,7 @@ public final class GameControllerImpl implements GameController {
     private ChessMatch match;
     //TODO: decouple
     @Setter
-    private ChessboardViewController chessboardViewController;
+    private BoardView boardView;
     @Getter
     @Setter
     private Loadout whiteLoadout;
@@ -99,17 +97,17 @@ public final class GameControllerImpl implements GameController {
         // Added this check to silence the spot bugs error
         // The view is created and injected after the controller instantiation
         // so it needs to be injected by a setter later
-        if (chessboardViewController != null) {
+        if (boardView != null) {
             if (result.isEmpty()) {
-                chessboardViewController.hideMovementCells(lastPossibleMoves);
+                boardView.hideMovementCells(lastPossibleMoves);
             } else if (result.size() == 1 && pointClicked.equals(lastPointClicked)) {
-                chessboardViewController.hideMovementCells(lastPossibleMoves);
+                boardView.hideMovementCells(lastPossibleMoves);
             } else {
-                chessboardViewController.hideMovementCells(lastPossibleMoves);
-                chessboardViewController.showMovementCells(result);
+                boardView.hideMovementCells(lastPossibleMoves);
+                boardView.showMovementCells(result);
             }
 
-            chessboardViewController.hideMovementCells(Set.of(pointClicked));
+            boardView.hideMovementCells(Set.of(pointClicked));
         }
 
         lastPointClicked = pointClicked;

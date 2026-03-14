@@ -5,12 +5,10 @@ import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
@@ -190,7 +188,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 match.getBoard());
         match.getGameHistory().setWhiteLoadout(gameController.getWhiteLoadout());
         match.getGameHistory().setBlackLoadout(gameController.getBlackLoadout());
-        //TODO: refreshBoardView
     }
 
     /**

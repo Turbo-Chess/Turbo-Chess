@@ -3,14 +3,7 @@ package it.unibo.samplejavafx.mvc.view;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.*;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
@@ -181,7 +174,7 @@ public final class JafaFXViewFactory implements ViewFactory {
            final ChessboardViewController chessboardViewController = loader.getController();
            gameController.getMatch().getBoard().addObserver((BoardObserver) chessboardViewController);
            gameController.getMatch().addObserver((ChessMatchObserver) chessboardViewController);
-           gameController.setChessboardViewController(chessboardViewController);
+           gameController.setBoardView((BoardView) chessboardViewController);
            chessboardViewController.refreshBoardView(gameController.getMatch().getBoard());
 
            final var cssLocation = getClass().getResource("/css/GameLayout.css");

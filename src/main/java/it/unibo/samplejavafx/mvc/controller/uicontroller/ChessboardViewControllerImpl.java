@@ -14,6 +14,7 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.application.Platform;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -72,7 +73,7 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  * real-time synchronization between the game state and the UI.
  * </p>
  */
-public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
+public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver, BoardView {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;
@@ -296,7 +297,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
          final Button btn = cells.get(pos);
          if (btn != null) {
             btn.setText("");
-            btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(
+            btn.setGraphic(createResponsiveImageView(LoadingUtils.calculateImageColorPath(
                 entity.getImagePath(), entity.getPlayerColor(), entity.getId()), btn));
         }
     }
@@ -402,7 +403,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         final Button btn = cells.get(pos);
         if (btn != null) {
             btn.setText("");
-            final var imagePath = gameController.calculateImageColorPath(
+            final var imagePath = LoadingUtils.calculateImageColorPath(
                     entity.getImagePath(), entity.getPlayerColor(), entity.getId());
             btn.setGraphic(createResponsiveImageView(imagePath, btn));
         }

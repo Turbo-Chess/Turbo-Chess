@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
@@ -44,9 +45,9 @@ public interface GameController {
      * Links the UI view controller to this game controller.
      * This allows the game controller to trigger UI updates (e.g., highlighting cells).
      *
-     * @param chessboardViewController The {@link ChessboardViewController} to associate.
+     * @param boardView The {@link BoardView} to manage showing of specific cells.
      */
-    void setChessboardViewController(ChessboardViewController chessboardViewController);
+    void setBoardView(BoardView boardView);
 
     /**
      * Triggers the surrender action for the current player, typically ending the match.
