@@ -1,14 +1,16 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
-import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
@@ -43,7 +45,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinatorImpl.class);
     private static final long DEFAULT_TIME_SECONDS = 600;
 
-    private final ControllerContext controllerContext;
+    private final BoardFactory boardFactory;
+    private final LoadoutManager loadoutManager;
     private final GameController gameController;
     private final ReplayManager replayManager = new ReplayManager();
     private Path currentSaveFile;
@@ -60,8 +63,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         this.viewFactory = viewFactory;
         final LoaderController loaderController = new LoaderControllerImpl();
         loaderController.load();
-        this.controllerContext = ControllerContext.createDefaultContext(loaderController.getEntityDefinitionCacheEntries());
-        this.gameController = new GameControllerImpl(this, controllerContext);
+        this.boardFactory = new BoardFactoryImpl(loaderController.getEntityDefinitionCacheEntries());
+        this.loadoutManager = new LoadoutManager();
+        this.gameController = new GameControllerImpl(this, this.boardFactory, this.loadoutManager);
     }
 
     /**
@@ -100,7 +104,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public void initLoadout() {
         shutdownCurrentTimer();
-        viewFactory.showLoadout(this.gameController, this, controllerContext.loadoutManager());
+        viewFactory.showLoadout(this.gameController, this, loadoutManager);
     }
 
     /**
@@ -109,7 +113,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public void initLoadoutEditor() {
         shutdownCurrentTimer();
-        viewFactory.showLoadoutEditor(this, (DefinitionRegistry) this.controllerContext.boardFactory(), controllerContext.loadoutManager());
+        viewFactory.showLoadoutEditor(this, (DefinitionRegistry) this.boardFactory, loadoutManager);
     }
 
     /**
@@ -122,7 +126,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initPromotion() {
-        viewFactory.initPromotion(this.gameController, (DefinitionRegistry) controllerContext.boardFactory());
+        viewFactory.initPromotion(this.gameController, (DefinitionRegistry) boardFactory);
     }
 
     /**
@@ -182,7 +186,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private void createNewMatch(final long whiteTimeSeconds, final long blackTimeSeconds) {
         final ChessMatch match = new ChessMatchImpl(whiteTimeSeconds, blackTimeSeconds);
         this.gameController.setMatch(match);
-        controllerContext.boardFactory().populateChessboard(
+        boardFactory.populateChessboard(
                 gameController.getWhiteLoadout(),
                 gameController.getBlackLoadout(),
                 match.getBoard());

@@ -1,7 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
@@ -10,6 +9,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
@@ -39,9 +39,7 @@ import java.util.Set;
 public final class GameControllerImpl implements GameController {
     // Will the taken from the selected loadout
     private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
-
-    private final ControllerContext controllerContext;
-
+    private final BoardFactory boardFactory;
     // The match is intended to be accessed from the game controller to give data to classes
     // that modifies it to play the game correctly.
     @SuppressFBWarnings("EI_EXPOSE_REP")
@@ -66,13 +64,14 @@ public final class GameControllerImpl implements GameController {
      * Constructs a new {@code GameControllerImpl}.
      *
      * @param gameCoordinator The {@link GameCoordinator} that manages the overall application lifecycle.
-     * @param controllerContext The context containing shared dependencies.
+     * @param boardFactory the {@link BoardFactory} used to create new pieces.
+     * @param loadoutManager the {@link LoadoutManager} used to load the standard loadout.
      */
-    public GameControllerImpl(final GameCoordinator gameCoordinator, final ControllerContext controllerContext) {
+    public GameControllerImpl(final GameCoordinator gameCoordinator, final BoardFactory boardFactory, final LoadoutManager loadoutManager) {
         this.gameCoordinator = gameCoordinator;
-        this.controllerContext = controllerContext;
-        this.whiteLoadout = controllerContext.loadoutManager().load(STANDARD_LOADOUT_ID).get();
-        this.blackLoadout = controllerContext.loadoutManager().load(STANDARD_LOADOUT_ID).get().mirrored();
+        this.boardFactory = boardFactory;
+        this.whiteLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get();
+        this.blackLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get().mirrored();
     }
 
     /**
@@ -143,7 +142,7 @@ public final class GameControllerImpl implements GameController {
     public void promote(final LoadoutEntry pieceEntry) {
         final Point2D pos = match.getPromotionPos();
         match.getBoard().removeEntity(pos);
-        controllerContext.boardFactory().createNewPiece(pos, match.getBoard(),
+        boardFactory.createNewPiece(pos, match.getBoard(),
                 pieceEntry.packId(), pieceEntry.pieceId(),
                 RulesUtils.swapColor(match.getCurrentPlayer()));
     }
