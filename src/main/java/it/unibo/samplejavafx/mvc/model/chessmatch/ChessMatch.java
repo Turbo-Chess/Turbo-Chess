@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.model.handler.TurnHandler;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.score.ScoreManager;
+import it.unibo.samplejavafx.mvc.model.timer.GameTimer;
 
 /**
  * The {@code ChessMatch} interface represents the core session of a chess game.
@@ -118,6 +119,13 @@ public interface ChessMatch {
      * @return the score of the player.
      */
     int getScore(PlayerColor player);
+
+    /**
+     * Accesses the game timer.
+     *
+     * @return the {@link GameTimer} instance.
+     */
+    GameTimer getGameTimer();
 
     /**
      * placeholder.

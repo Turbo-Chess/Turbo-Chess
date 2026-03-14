@@ -38,8 +38,8 @@ import org.slf4j.LoggerFactory;
  * </p>
  */
 public final class GameCoordinatorImpl implements GameCoordinator {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinatorImpl.class);
+    private static final long DEFAULT_TIME_SECONDS = 600;
 
     private final ControllerContext controllerContext = ControllerContext.createDefaultContext();
     private final GameController gameController = new GameControllerImpl(this, controllerContext);
@@ -80,6 +80,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initMainMenu() {
+        shutdownCurrentTimer();
         viewFactory.showMainMenu(this);
     }
 
@@ -92,6 +93,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initSettings() {
+        shutdownCurrentTimer();
         viewFactory.showSettings(this);
     }
 
@@ -104,6 +106,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initLoadout() {
+        shutdownCurrentTimer();
         viewFactory.showLoadout(this.gameController, this, controllerContext.loadoutManager());
     }
 
@@ -112,6 +115,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initLoadoutEditor() {
+        shutdownCurrentTimer();
         viewFactory.showLoadoutEditor(this, controllerContext.loaderController(), controllerContext.loadoutManager());
     }
 
@@ -133,6 +137,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void quit() {
+        shutdownCurrentTimer();
         viewFactory.quit();
     }
 
@@ -145,6 +150,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void resetGame() {
+        shutdownCurrentTimer();
         viewFactory.resetGame();
         initGame();
     }
@@ -158,8 +164,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initGame() {
-        createNewMatch();
+        createNewMatch(DEFAULT_TIME_SECONDS, DEFAULT_TIME_SECONDS);
         loadGameUI();
+        gameController.getMatch().getGameTimer().start();
         showGame();
     }
 
@@ -179,8 +186,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         viewFactory.initGameUI(this.gameController, this);
     }
 
-    private void createNewMatch() {
-        final ChessMatch match = new ChessMatchImpl();
+    private void createNewMatch(final long whiteTimeSeconds, final long blackTimeSeconds) {
+        final ChessMatch match = new ChessMatchImpl(whiteTimeSeconds, blackTimeSeconds);
         this.gameController.setMatch(match);
         controllerContext.boardFactory().populateChessboard(
                 gameController.getWhiteLoadout(),
@@ -196,6 +203,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initLoadGame() {
+        shutdownCurrentTimer();
         viewFactory.initLoadGame(this);
     }
 
@@ -217,7 +225,14 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 gameController.setBlackLoadout(history.getBlackLoadout());
             }
 
-            resetGame();
+            final long whiteTime = history.getWhiteTimeRemaining() > 0 ? history.getWhiteTimeRemaining() : DEFAULT_TIME_SECONDS;
+            final long blackTime = history.getBlackTimeRemaining() > 0 ? history.getBlackTimeRemaining() : DEFAULT_TIME_SECONDS;
+
+            shutdownCurrentTimer();
+            viewFactory.resetGame();
+            createNewMatch(whiteTime, blackTime);
+            loadGameUI();
+            showGame();
 
             final ChessMatch match = gameController.getMatch();
 
@@ -245,6 +260,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 match.setTurnNumber(turn);
                 match.setPlayerColor(player);
             }
+            match.getGameTimer().start();
         }
     }
 
@@ -259,6 +275,13 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         final GameHistory history = gameController.getGameHistory();
         history.setWhiteLoadout(gameController.getWhiteLoadout());
         history.setBlackLoadout(gameController.getBlackLoadout());
+
+        final ChessMatch match = gameController.getMatch();
+        if (match != null) {
+            final var timer = match.getGameTimer();
+            history.setWhiteTimeRemaining(timer.getTimeRemaining(PlayerColor.WHITE));
+            history.setBlackTimeRemaining(timer.getTimeRemaining(PlayerColor.BLACK));
+        }
 
         LOGGER.info("Saving game history with {} events", history.getEvents().size());
 
@@ -281,5 +304,12 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public Path getCurrentSaveFile() {
         return this.currentSaveFile;
+    }
+
+    private void shutdownCurrentTimer() {
+        final ChessMatch match = gameController.getMatch();
+        if (match != null) {
+            match.getGameTimer().shutdown();
+        }
     }
 }

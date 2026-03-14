@@ -194,6 +194,9 @@ public final class GameControllerImpl implements GameController {
 
     @Override
     public void setMatch(final ChessMatch match) {
+        if (this.match != null) {
+            this.match.getGameTimer().shutdown();
+        }
         this.match = match;
         this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber, match::getScoreManager);
         // Record initial state

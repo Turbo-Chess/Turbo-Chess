@@ -234,12 +234,13 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                 updateReplayScore(lastEvent.getWhiteScore(), lastEvent.getBlackScore());
             }
         });
-
+        onTimerUpdated(PlayerColor.WHITE, gameController.getMatch().getGameTimer().getTimeRemaining(PlayerColor.WHITE));
     }
 
     private void enableReplayMode() {
         isReplayMode = true;
         replayControlsBox.setDisable(false);
+        gameController.getMatch().getGameTimer().stop();
 
         final var history = gameController.getGameHistory();
         replayController.loadHistory(history);
@@ -259,6 +260,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private void disableReplayMode() {
         isReplayMode = false;
         replayControlsBox.setDisable(true);
+        final var match = gameController.getMatch();
+        if (match.getGameState() != GameState.CHECKMATE
+                && match.getGameState() != GameState.DRAW
+                && match.getGameState() != GameState.TIMEOUT) {
+            match.getGameTimer().start();
+        }
 
         // Restore Live Board View
         refreshBoardView(gameController.getLiveBoard());
@@ -565,6 +572,8 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
             case PROMOTION -> {
                 coordinator.initPromotion();
             }
+
+            case TIMEOUT -> this.showEndingDialog("Time's up!", " has won!", Optional.of(playerColor));
         }
     }
 
@@ -584,6 +593,28 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                     blackScoreLabel.setText(PLUS_SIGN + Math.abs(diff));
                 }
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onTimerUpdated(final PlayerColor player, final long timeRemaining) {
+        Platform.runLater(() -> {
+            final var match = gameController.getMatch();
+            final var timer = match.getGameTimer();
+            final long whiteTime = timer.getTimeRemaining(PlayerColor.WHITE);
+            final long blackTime = timer.getTimeRemaining(PlayerColor.BLACK);
+
+            final String whiteStr = formatTime(whiteTime);
+            final String blackStr = formatTime(blackTime);
+
+            timeValueLabel.setText("White: " + whiteStr + " - Black: " + blackStr);
+        });
+    }
+
+    private String formatTime(final long seconds) {
+        return String.format("%d:%02d", seconds / 60, seconds % 60);
     }
 
     private void showEndingDialog(final String statusText, final String messageText, final Optional<PlayerColor> playerColor) {

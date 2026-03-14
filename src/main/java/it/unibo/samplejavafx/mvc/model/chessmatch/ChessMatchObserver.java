@@ -51,6 +51,11 @@ public interface ChessMatchObserver {
      */
     void onScoreChanged(PlayerColor player, int newScore);
 
-    // TODO: add for the timer
-    //void onTimerUpdated(final PlayerColor playerColor);
+    /**
+     * Called when the timer updates.
+     *
+     * @param player        the player whose timer updated.
+     * @param timeRemaining the time remaining for the player in seconds.
+     */
+    void onTimerUpdated(PlayerColor player, long timeRemaining);
 }
