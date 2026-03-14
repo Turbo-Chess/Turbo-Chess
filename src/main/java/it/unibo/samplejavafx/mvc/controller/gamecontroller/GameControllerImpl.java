@@ -6,6 +6,7 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.PieceCreator;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
@@ -39,13 +40,13 @@ import java.util.Set;
 public final class GameControllerImpl implements GameController {
     // Will the taken from the selected loadout
     private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
-    private final BoardFactory boardFactory;
-    // The match is intended to be accessed from the game controller to give data to classes
-    // that modifies it to play the game correctly.
-    @SuppressFBWarnings("EI_EXPOSE_REP")
+    private final PieceCreator pieceCreator;
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "The match is intended to be accessed from the game controller to give data " +
+                    "to classes that modifies it to play the game correctly.")
     @Getter
     private ChessMatch match;
-    //TODO: decouple
     @Setter
     private BoardView boardView;
     @Getter
@@ -64,12 +65,12 @@ public final class GameControllerImpl implements GameController {
      * Constructs a new {@code GameControllerImpl}.
      *
      * @param gameCoordinator The {@link GameCoordinator} that manages the overall application lifecycle.
-     * @param boardFactory the {@link BoardFactory} used to create new pieces.
+     * @param pieceCreator the {@link PieceCreator} used to create new pieces.
      * @param loadoutManager the {@link LoadoutManager} used to load the standard loadout.
      */
-    public GameControllerImpl(final GameCoordinator gameCoordinator, final BoardFactory boardFactory, final LoadoutManager loadoutManager) {
+    public GameControllerImpl(final GameCoordinator gameCoordinator, final PieceCreator pieceCreator, final LoadoutManager loadoutManager) {
         this.gameCoordinator = gameCoordinator;
-        this.boardFactory = boardFactory;
+        this.pieceCreator = pieceCreator;
         this.whiteLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get();
         this.blackLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get().mirrored();
     }
@@ -140,13 +141,17 @@ public final class GameControllerImpl implements GameController {
      */
     @Override
     public void promote(final LoadoutEntry pieceEntry) {
+        if (match == null) {
+            throw new IllegalStateException("Chess Match can't be null in this state");
+        }
         final Point2D pos = match.getPromotionPos();
         match.getBoard().removeEntity(pos);
-        boardFactory.createNewPiece(pos, match.getBoard(),
+        pieceCreator.createNewPiece(pos, match.getBoard(),
                 pieceEntry.packId(), pieceEntry.pieceId(),
                 RulesUtils.swapColor(match.getCurrentPlayer()));
     }
 
+    //TODO: remove to decouple
     /**
      * {@inheritDoc}
      *
@@ -177,11 +182,13 @@ public final class GameControllerImpl implements GameController {
     }
 
     @Override
+    @SuppressFBWarnings(value = "UWF_UNWRITTEN_FIELD", justification = "The field is instantiated right before its use")
     public void setMatch(final ChessMatch match) {
         if (this.match != null) {
             this.match.getGameTimer().shutdown();
         }
         this.match = match;
+
         this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber, match::getScoreManager);
         // Record initial state
         this.match.getBoard().getBoard().forEach((pos, entity) -> {

@@ -7,6 +7,7 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImp
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.PieceCreator;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
@@ -65,7 +66,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         loaderController.load();
         this.boardFactory = new BoardFactoryImpl(loaderController.getEntityDefinitionCacheEntries());
         this.loadoutManager = new LoadoutManager();
-        this.gameController = new GameControllerImpl(this, this.boardFactory, this.loadoutManager);
+        this.gameController = new GameControllerImpl(this, boardFactory, this.loadoutManager);
     }
 
     /**
