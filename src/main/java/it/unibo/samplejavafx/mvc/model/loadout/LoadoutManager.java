@@ -79,9 +79,14 @@ public final class LoadoutManager {
     }
 
     /**
-     * placeholder.
+     * Persists a loadout to disk.
      *
-     * @param loadout placeholder.
+     * <p>
+     * For non-standard loadouts, the loadout is validated before being saved. Invalid loadouts are silently
+     * ignored.
+     * </p>
+     *
+     * @param loadout the loadout to save.
      */
     public void save(final Loadout loadout) {
         if (!STANDARD_LOADOUT_ID.equals(loadout.getId()) && !isValid(loadout)) {
@@ -170,10 +175,10 @@ public final class LoadoutManager {
     }
 
     /**
-     * placeholder.
+     * Loads a loadout by its identifier.
      *
-     * @param id placeholder.
-     * @return placeholder.
+     * @param id the loadout identifier (file name without extension).
+     * @return the loaded {@link Loadout}, or {@link Optional#empty()} if not found or unreadable.
      */
     public Optional<Loadout> load(final String id) {
         final Path file = loadoutDir.resolve(id + JSON_EXTENSION);
@@ -190,9 +195,9 @@ public final class LoadoutManager {
     }
 
     /**
-     * placeholder.
+     * Loads all available loadouts from the configured loadout directory.
      *
-     * @return placeholder.
+     * @return the list of successfully parsed {@link Loadout}s. Returns an empty list if none are found.
      */
     public List<Loadout> getAll() {
         if (!Files.exists(loadoutDir)) {
@@ -219,9 +224,9 @@ public final class LoadoutManager {
     }
 
     /**
-     * placeholder.
+     * Deletes the loadout with the given identifier from disk.
      *
-     * @param id placeholder.
+     * @param id the loadout identifier (file name without extension).
      */
     public void delete(final String id) {
         final Path file = loadoutDir.resolve(id + JSON_EXTENSION);
