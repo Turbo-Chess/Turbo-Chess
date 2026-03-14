@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model.handler.turnstates;
 
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerContext;
 import it.unibo.samplejavafx.mvc.model.handler.TurnState;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -10,6 +11,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * Abstract implementation of {@link TurnState}, adding the building blocks that all TurnStates must have.
  */
 public abstract class AbstractTurnState implements TurnState {
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "This field is required for the state pattern")
     protected final TurnHandlerContext context;
 
     /**

@@ -144,8 +144,10 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * @param gameController The central {@link GameController} mediating game logic.
      * @param coordinator    The {@link GameCoordinator} managing high-level application flow.
      */
-    // This is intended to be a shared controller to make the MVC working.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "This is intended to be a shared controller to make the MVC working."
+    )
     public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
         this.gameController = gameController;
         this.coordinator = coordinator;

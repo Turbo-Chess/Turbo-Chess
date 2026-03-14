@@ -36,7 +36,7 @@ public final class PromotionController {
      *
      * @param controller the {@link GameController} connected to this GUI.
      */
-    @SuppressFBWarnings("EI_EXPOSE_REP2") // in a MVC-based structure you have to pass instances of controllers.
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "in a MVC-based structure you have to pass instances of controllers.")
     public PromotionController(final GameController controller, final DefinitionRegistry entityCache) {
         this.controller = controller;
         this.entityCache = entityCache;

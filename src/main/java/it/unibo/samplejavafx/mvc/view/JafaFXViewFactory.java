@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.view;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
@@ -27,6 +28,8 @@ public final class JafaFXViewFactory implements ViewFactory {
     private static final String MAIN_MENU_CSS = "/css/MainMenu.css";
     private static final Logger LOGGER = LoggerFactory.getLogger(JafaFXViewFactory.class);
 
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "The stage is a mutable object by javafx" +
+            "and it can't be defensive copied")
     private final Stage stage;
     private Scene gameScene;
     private Parent gameRoot;

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
@@ -40,6 +41,8 @@ public final class LoadoutEditor implements Initializable {
     private ListView<String> pieceView;
     @FXML
     private TextField textLabel;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "The loadout manager is an effectively" +
+            "immutable object that is a shared service used to manage loadouts")
     private final LoadoutManager loadoutManager;
     private final DefinitionRegistry entityCache;
     private final GameCoordinator coordinator;

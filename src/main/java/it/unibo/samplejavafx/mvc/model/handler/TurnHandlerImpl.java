@@ -47,9 +47,11 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      *
      * @param match placeholder.
      */
-    // The TurnHandler needs to manage the state of the match, so passing a mutable reference to it
-    // is appropriate in this case.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "The TurnHandler needs to manage the state of the match,"
+                + " so passing a mutable reference to it is appropriate."
+    )
     public TurnHandlerImpl(final ChessMatch match) {
         this.match = match;
         this.turn = match.getTurnNumber();
