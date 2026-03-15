@@ -41,8 +41,8 @@ public final class LoadoutEditor implements Initializable {
     private ListView<String> pieceView;
     @FXML
     private TextField textLabel;
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "The loadout manager is an effectively" +
-            "immutable object that is a shared service used to manage loadouts")
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "The loadout manager is an effectively"
+            + "immutable object that is a shared service used to manage loadouts")
     private final LoadoutManager loadoutManager;
     private final DefinitionRegistry entityCache;
     private final GameCoordinator coordinator;
@@ -56,6 +56,7 @@ public final class LoadoutEditor implements Initializable {
      * Constructor for the LoadoutEditor.
      *
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
+     * @param entityCache the {@link DefinitionRegistry} needed for this class to operate.
      * @param loadoutManager the {@link LoadoutManager} needed to access the methods to manipulate loadouts.
      */
     public LoadoutEditor(

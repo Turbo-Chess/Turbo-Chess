@@ -30,20 +30,21 @@ public interface BoardObserver {
     void onEntityRemoved(Point2D pos, Entity entity);
 
     /**
-     * placeholder.
+     * Triggered when an entity moves from one position to another on the board.
      *
-     * @param from placeholder.
-     * @param to placeholder.
+     * @param from The starting {@link Point2D} coordinate.
+     * @param to   The destination {@link Point2D} coordinate.
      */
     default void onEntityMoved(final Point2D from, final Point2D to) {
     }
 
     /**
-     * placeholder.
+     * Triggered when a specific entity moves from one position to another on the board.
+     * Use this if the entity instance itself is needed by the observer.
      *
-     * @param from placeholder.
-     * @param to placeholder.
-     * @param entity placeholder.
+     * @param from   The starting {@link Point2D} coordinate.
+     * @param to     The destination {@link Point2D} coordinate.
+     * @param entity The {@link Entity} that has moved.
      */
     default void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
     }

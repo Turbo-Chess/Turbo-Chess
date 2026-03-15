@@ -10,7 +10,9 @@ import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A concrete implementation of the {@link BoardFactory} interface.
@@ -20,16 +22,17 @@ import java.util.*;
  * It manages the creation of unique game IDs for each instantiated piece to ensure proper tracking during the match.
  * </p>
  */
-public class BoardFactoryImpl implements BoardFactory, DefinitionRegistry {
+public final class BoardFactoryImpl implements BoardFactory, DefinitionRegistry {
     private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
     private int gameId;
 
     /**
      * Constructs a new {@code BoardFactoryImpl}.
      *
+     * @param definitions the list of pre-loaded entity definitions to cache.
      */
-    public BoardFactoryImpl(List<DefinitionCacheEntry> definitions) {
-        for(final var definitionEntry : definitions) {
+    public BoardFactoryImpl(final List<DefinitionCacheEntry> definitions) {
+        for (final var definitionEntry : definitions) {
             entityCache.computeIfAbsent(definitionEntry.packId(), map -> new HashMap<>());
             entityCache.get(definitionEntry.packId()).put(definitionEntry.pieceId(), definitionEntry.abstractEntityDefinition());
         }
@@ -76,7 +79,7 @@ public class BoardFactoryImpl implements BoardFactory, DefinitionRegistry {
      */
     @Override
     public void createNewPiece(final Point2D pos, final ChessBoard board, 
-                               String packId, String pieceId, final PlayerColor color) {
+                               final String packId, final String pieceId, final PlayerColor color) {
         final var newPiece = new Piece.Builder()
                 .entityDefinition((PieceDefinition) entityCache.get(packId).get(pieceId))
                 .gameId(gameId)
@@ -95,7 +98,7 @@ public class BoardFactoryImpl implements BoardFactory, DefinitionRegistry {
     }
 
     @Override
-    public Map<String, AbstractEntityDefinition> getPackData(String packId) {
+    public Map<String, AbstractEntityDefinition> getPackData(final String packId) {
         return Map.copyOf(entityCache.get(packId));
     }
 
@@ -107,7 +110,7 @@ public class BoardFactoryImpl implements BoardFactory, DefinitionRegistry {
     }
 
     @Override
-    public AbstractEntityDefinition getDefinition(String packId, String pieceId) {
+    public AbstractEntityDefinition getDefinition(final String packId, final String pieceId) {
         return entityCache.get(packId).get(pieceId);
     }
 

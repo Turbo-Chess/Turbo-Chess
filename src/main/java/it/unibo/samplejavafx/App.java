@@ -36,9 +36,9 @@ public final class App extends Application {
 
             // Start with Main Menu
             coordinator.initMainMenu();
-        } catch (final Exception e) {
+        } catch (final Exception e) { // CHECKSTYLE:OFF: IllegalCatch
             showFatalStartupError(e);
-        }
+        } // CHECKSTYLE:ON: IllegalCatch
 
     }
 

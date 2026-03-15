@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 

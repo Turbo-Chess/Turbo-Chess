@@ -3,8 +3,15 @@ package it.unibo.samplejavafx.mvc.view;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
-import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.*;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
@@ -28,8 +35,8 @@ public final class JafaFXViewFactory implements ViewFactory {
     private static final String MAIN_MENU_CSS = "/css/MainMenu.css";
     private static final Logger LOGGER = LoggerFactory.getLogger(JafaFXViewFactory.class);
 
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "The stage is a mutable object by javafx" +
-            "and it can't be defensive copied")
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "The stage is a mutable object by javafx"
+            + "and it can't be defensive copied")
     private final Stage stage;
     private Scene gameScene;
     private Parent gameRoot;
@@ -43,6 +50,9 @@ public final class JafaFXViewFactory implements ViewFactory {
         this.stage = stage;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMainMenu(final GameCoordinator gameCoordinator) {
         try {
@@ -62,6 +72,9 @@ public final class JafaFXViewFactory implements ViewFactory {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSettings(final GameCoordinator gameCoordinator) {
         try {
@@ -81,6 +94,9 @@ public final class JafaFXViewFactory implements ViewFactory {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showLoadout(
             final GameController gameController,
@@ -103,6 +119,9 @@ public final class JafaFXViewFactory implements ViewFactory {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showLoadoutEditor(
             final GameCoordinator gameCoordinator,
@@ -126,6 +145,9 @@ public final class JafaFXViewFactory implements ViewFactory {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initPromotion(final GameController gameController, final DefinitionRegistry entityCache) {
         try {
@@ -144,6 +166,9 @@ public final class JafaFXViewFactory implements ViewFactory {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initLoadGame(final GameCoordinator gameCoordinator) {
         try {
@@ -163,6 +188,9 @@ public final class JafaFXViewFactory implements ViewFactory {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initGameUI(final GameController gameController, final GameCoordinator gameCoordinator) {
         if (this.gameRoot != null) {
@@ -191,16 +219,25 @@ public final class JafaFXViewFactory implements ViewFactory {
        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void quit() {
         stage.close();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isGameBeingShown() {
         return this.gameRoot != null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showGame() {
         stage.setTitle("TurboChess - Game");
@@ -208,6 +245,9 @@ public final class JafaFXViewFactory implements ViewFactory {
         stage.show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resetGame() {
         this.gameRoot = null;

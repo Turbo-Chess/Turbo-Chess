@@ -3,6 +3,9 @@ package it.unibo.samplejavafx.mvc.model.chessboard.boardfactory;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 
+/**
+ * Functional interface for populating boards.
+ */
 @FunctionalInterface
 public interface BoardCreator {
     /**

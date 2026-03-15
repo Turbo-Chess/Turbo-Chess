@@ -14,7 +14,7 @@ public class JumpingMovement implements MovementStrategy {
      * Calculate all the position in which the piece could move.
      * These will be filtrated by the {@link MoveRules} class.
      *
-     * @param start         actual point of the piece.
+     * @param start         current position of the piece.
      * @param direction     a {@link Point2D} representing the direction vector of the movement.
      * @param board         the {@link ChessBoard} of the match.
      * @return              an immutable {@link List} containing all the available positions to move to.

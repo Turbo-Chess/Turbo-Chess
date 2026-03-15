@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class LoadingUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadingUtils.class);
+    private static final String FILE_PROTOCOL = "file:";
 
     private LoadingUtils() {
         // utility class
@@ -34,8 +35,8 @@ public final class LoadingUtils {
                 LOGGER.error(e.getMessage(), e);
             }
 
-        } else if (basePath.startsWith("file:")) {
-            return Path.of(basePath.replace("file:", ""));
+        } else if (basePath.startsWith(FILE_PROTOCOL)) {
+            return Path.of(basePath.replace(FILE_PROTOCOL, ""));
         } else {
             try {
                 final Path p = Path.of(basePath);
@@ -61,6 +62,6 @@ public final class LoadingUtils {
      */
     public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
         final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
-        return "file:" + LoadingUtils.getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
+        return FILE_PROTOCOL + getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
     }
 }

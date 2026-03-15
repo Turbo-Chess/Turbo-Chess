@@ -8,10 +8,11 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * The {@link TurnState} interface expresses the methods that are essential for a TurnState, which is how
  * the {@link TurnHandler} should behave according to the current {@link GameState}.
  */
+@FunctionalInterface
 public interface TurnState {
 
     /**
-     * The behaviour of the TurnHandler during a player's own turn.
+     * The behavior of the TurnHandler during a player's own turn.
      * 
      * @param pos the {@link Point2D} of the clicked cell.
      * @return a List of {@link Point2D} of all possible moves.

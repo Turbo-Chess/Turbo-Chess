@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -33,11 +31,10 @@ import java.util.stream.Stream;
  * It is robust against missing directories or malformed files, logging errors rather than crashing the application.
  * </p>
  */
-public class LoaderControllerImpl implements LoaderController {
+public final class LoaderControllerImpl implements LoaderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoaderControllerImpl.class);
-    // TODO: maybe move outside
+
     private static final List<String> PATHS = List.of(
-            //TODO: hardcoded paths
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
             GameProperties.EXTERNAL_MOD_FOLDER.getPath());
 
@@ -46,10 +43,6 @@ public class LoaderControllerImpl implements LoaderController {
 
     /**
      * Constructs a new {@code LoaderControllerImpl}.
-     *
-     * <p>
-     * Default constructor
-     * </p>
      */
     public LoaderControllerImpl() {
         // Default constructor
@@ -86,6 +79,9 @@ public class LoaderControllerImpl implements LoaderController {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<DefinitionCacheEntry> getEntityDefinitionCacheEntries() {
         return Collections.unmodifiableList(entityDefinitionCache);

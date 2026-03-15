@@ -43,8 +43,8 @@ public final class GameControllerImpl implements GameController {
     private final PieceCreator pieceCreator;
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP",
-            justification = "The match is intended to be accessed from the game controller to give data " +
-                    "to classes that modifies it to play the game correctly.")
+            justification = "The match is intended to be accessed from the game controller to give data "
+                    + "to classes that modifies it to play the game correctly.")
     @Getter
     private ChessMatch match;
     @Setter
@@ -68,7 +68,11 @@ public final class GameControllerImpl implements GameController {
      * @param pieceCreator the {@link PieceCreator} used to create new pieces.
      * @param loadoutManager the {@link LoadoutManager} used to load the standard loadout.
      */
-    public GameControllerImpl(final GameCoordinator gameCoordinator, final PieceCreator pieceCreator, final LoadoutManager loadoutManager) {
+    public GameControllerImpl(
+            final GameCoordinator gameCoordinator,
+            final PieceCreator pieceCreator,
+            final LoadoutManager loadoutManager
+    ) {
         this.gameCoordinator = gameCoordinator;
         this.pieceCreator = pieceCreator;
         this.whiteLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get();
@@ -182,7 +186,6 @@ public final class GameControllerImpl implements GameController {
     }
 
     @Override
-    @SuppressFBWarnings(value = "UWF_UNWRITTEN_FIELD", justification = "The field is instantiated right before its use")
     public void setMatch(final ChessMatch match) {
         if (this.match != null) {
             this.match.getGameTimer().shutdown();
@@ -192,12 +195,14 @@ public final class GameControllerImpl implements GameController {
         this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber, match::getScoreManager);
         // Record initial state
         this.match.getBoard().getBoard().forEach((pos, entity) -> {
-             this.historyRecorder.onEntityAdded(pos, entity);
+            if (this.historyRecorder == null) {
+                throw new IllegalStateException("Replay controller should be instantiated at this time");
+            }
+            this.historyRecorder.onEntityAdded(pos, entity);
         });
         this.match.getBoard().addObserver(this.historyRecorder);
     }
 
-    // TODO: See if is removable for LUCA
     @Override
     public GameHistory getGameHistory() {
         if (this.match == null) {

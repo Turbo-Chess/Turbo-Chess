@@ -16,7 +16,7 @@ public interface MovementStrategy {
      * The method that calculates all available cells a piece can move to.
      * It will be then filtered by {@link MoveRules}.
      *
-     * @param start         actual point of the piece.
+     * @param start         current position of the piece.
      * @param direction     a {@link Point2D} representing the direction vector of the movement.
      * @param board         the {@link ChessBoard} of the match.
      * @return              an immutable {@link List} containing all the available positions to move to.

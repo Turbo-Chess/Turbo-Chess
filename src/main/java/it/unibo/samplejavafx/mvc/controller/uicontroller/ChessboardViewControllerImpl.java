@@ -73,7 +73,8 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  * real-time synchronization between the game state and the UI.
  * </p>
  */
-public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver, BoardView {
+public final class ChessboardViewControllerImpl implements ChessboardViewController,
+        BoardObserver, ChessMatchObserver, BoardView {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;

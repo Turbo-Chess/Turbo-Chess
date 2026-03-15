@@ -5,7 +5,6 @@ import java.util.Set;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
-import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
@@ -35,8 +34,10 @@ public final class PromotionController {
      * Constructor for the Promotion GUI.
      *
      * @param controller the {@link GameController} connected to this GUI.
+     * @param entityCache the {@link DefinitionRegistry} containing entity definitions.
      */
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "in a MVC-based structure you have to pass instances of controllers.")
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "in a MVC-based structure"
+            + " you have to pass instances of controllers.")
     public PromotionController(final GameController controller, final DefinitionRegistry entityCache) {
         this.controller = controller;
         this.entityCache = entityCache;

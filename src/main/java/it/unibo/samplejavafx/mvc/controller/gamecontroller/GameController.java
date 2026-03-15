@@ -2,10 +2,8 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -61,7 +59,6 @@ public interface GameController {
      */
     void promote(LoadoutEntry pieceEntry);
 
-    // TODO: remove that and use the one from advanced rules
     /**
      * Retrieves the current position of the King for the active player.
      * useful for validating checks and checkmates.
@@ -98,7 +95,6 @@ public interface GameController {
      */
     Loadout getBlackLoadout();
 
-    // TODO: check removal FOR LUCA (see if getting and setting game history can be moved into the game context)
     /**
      * @return the game history.
      */
