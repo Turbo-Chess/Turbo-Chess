@@ -49,6 +49,7 @@ public interface ViewFactory {
      *
      * @param gameController    the game controller instance
      * @param entityCache       the entity definition registry
+     * @param gameCoordinator   the game coordinator
      */
     void initPromotion(GameCoordinator gameCoordinator, GameController gameController, DefinitionRegistry entityCache);
 

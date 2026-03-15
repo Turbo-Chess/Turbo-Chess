@@ -35,8 +35,9 @@ public final class PromotionController {
     /**
      * Constructor for the Promotion GUI.
      *
-     * @param controller the {@link GameController} connected to this GUI.
+     * @param controller the {@link GameController} to access the promotion function.
      * @param entityCache the {@link DefinitionRegistry} containing entity definitions.
+     * @param coordinator the {@link GameCoordinator} using to connect to the GUI.
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "in a MVC-based structure"
             + " you have to pass instances of controllers.")

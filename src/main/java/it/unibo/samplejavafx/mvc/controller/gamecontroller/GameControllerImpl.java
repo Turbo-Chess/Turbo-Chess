@@ -55,7 +55,6 @@ public final class GameControllerImpl implements GameController {
     @Getter
     @Setter
     private Loadout blackLoadout;
-    private final GameCoordinator gameCoordinator;
 
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
@@ -73,7 +72,6 @@ public final class GameControllerImpl implements GameController {
             final PieceCreator pieceCreator,
             final LoadoutManager loadoutManager
     ) {
-        this.gameCoordinator = gameCoordinator;
         this.pieceCreator = pieceCreator;
         this.whiteLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get();
         this.blackLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get().mirrored();
