@@ -50,7 +50,7 @@ public interface ViewFactory {
      * @param gameController    the game controller instance
      * @param entityCache       the entity definition registry
      */
-    void initPromotion(GameController gameController, DefinitionRegistry entityCache);
+    void initPromotion(GameCoordinator gameCoordinator, GameController gameController, DefinitionRegistry entityCache);
 
     /**
      * Initializes and shows the Load Game scene.

@@ -155,19 +155,6 @@ public final class GameControllerImpl implements GameController {
                 RulesUtils.swapColor(match.getCurrentPlayer()));
     }
 
-    //TODO: remove to decouple
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Delegates to the coordinator to switch the scene to the main game view.
-     * </p>
-     */
-    @Override
-    public void showGame() {
-        this.gameCoordinator.showGame();
-    }
-
     /**
      * {@inheritDoc}
      *

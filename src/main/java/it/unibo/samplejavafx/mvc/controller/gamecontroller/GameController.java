@@ -106,11 +106,6 @@ public interface GameController {
     ChessBoard getLiveBoard();
 
     /**
-     * Requests the UI to display the main game view.
-     */
-    void showGame();
-
-    /**
      * Retrieves the current active match reference.
      *
      * @return the {@link ChessMatch} object.

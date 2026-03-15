@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
@@ -26,6 +27,7 @@ public final class PromotionController {
     private final Loadout white;
     private final Loadout black;
     private final GameController controller;
+    private final GameCoordinator coordinator;
     private final DefinitionRegistry entityCache;
     private int x;
     private int y;
@@ -38,8 +40,12 @@ public final class PromotionController {
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "in a MVC-based structure"
             + " you have to pass instances of controllers.")
-    public PromotionController(final GameController controller, final DefinitionRegistry entityCache) {
+    public PromotionController(
+            final GameCoordinator coordinator,
+            final GameController controller,
+            final DefinitionRegistry entityCache) {
         this.controller = controller;
+        this.coordinator = coordinator;
         this.entityCache = entityCache;
         this.white = controller.getWhiteLoadout();
         this.black = controller.getBlackLoadout();
@@ -112,7 +118,7 @@ public final class PromotionController {
      */
     private void isFinished(final LoadoutEntry entry) {
         controller.promote(entry);
-        controller.showGame();
+        coordinator.showGame();
     }
 
     /**

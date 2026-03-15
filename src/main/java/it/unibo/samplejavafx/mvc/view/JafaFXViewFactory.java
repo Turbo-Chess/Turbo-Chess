@@ -149,10 +149,13 @@ public final class JafaFXViewFactory implements ViewFactory {
      * {@inheritDoc}
      */
     @Override
-    public void initPromotion(final GameController gameController, final DefinitionRegistry entityCache) {
+    public void initPromotion(
+            final GameCoordinator gameCoordinator,
+            final GameController gameController,
+            final DefinitionRegistry entityCache) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
-            loader.setControllerFactory(c -> new PromotionController(gameController, entityCache));
+            loader.setControllerFactory(c -> new PromotionController(gameCoordinator, gameController, entityCache));
 
             final Parent root = loader.load();
             final PromotionController prom = loader.getController();

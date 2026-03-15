@@ -126,7 +126,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initPromotion() {
-        viewFactory.initPromotion(this.gameController, (DefinitionRegistry) boardFactory);
+        viewFactory.initPromotion(this, this.gameController, (DefinitionRegistry) boardFactory);
     }
 
     /**
