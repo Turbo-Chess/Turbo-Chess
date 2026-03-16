@@ -46,7 +46,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     /**
      * Constructor for the TurnHandler.
      *
-     * @param match the {@link Match} that needs to be associated with the TurnHandler.
+     * @param match the {@link ChessMatch} that needs to be associated with the TurnHandler.
      */
     @SuppressFBWarnings(
         value = "EI_EXPOSE_REP2",
