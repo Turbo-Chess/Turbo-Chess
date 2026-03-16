@@ -11,14 +11,14 @@ class AdvancedRules {
     +{static}castle( . . . ) : CastleCondition
 }
 
-class CheckCalculator {
+class CheckCalculator <<Utility>> {
     +{static}getInterposingPieces( . . . ) : Map<Piece, List<Point2D>>
     +{static}getLineOfSight( . . . ) : List<Point2D>
     +{static}getAttackers( . . . ) : List<Piece>
     +{static}isMoveSafe( . . . ) : boolean
 }
 
-class RulesUtils {
+class RulesUtils <<Utility>> {
     +{static}hasNotMoved( . . . ) : boolean
     +{static}underAttack( . . . ) : Optional<Piece>
     +{static}kingPossibleMoves( . . . ) : List<Point2D>
