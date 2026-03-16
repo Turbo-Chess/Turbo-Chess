@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 /**
  * The {@link LoadoutEditor} interface handles the UI needed to create custom loadouts.
  */
-@SuppressFBWarnings("PMD.ImplicitFunctionalInterface") // this interface is not meant to be used ad a functional interface.
+@SuppressWarnings("PMD.ImplicitFunctionalInterface") // this interface is not meant to be used ad a functional interface.
 public interface LoadoutEditor {
 
     /**
