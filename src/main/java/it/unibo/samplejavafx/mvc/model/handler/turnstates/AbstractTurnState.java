@@ -11,14 +11,14 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * Abstract implementation of {@link TurnState}, adding the building blocks that all TurnStates must have.
  */
 public abstract class AbstractTurnState implements TurnState {
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "This field is required for the state pattern")
-    protected final TurnHandlerContext context;
+    private final TurnHandlerContext context;
 
     /**
-     * Constructor for the TurnState
+     * Constructor for the TurnState.
      * 
      * @param turnHandler the TurnHandler of the match, taken as a {@link TurnHandlerContext}.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "this field is part of the State Pattern structure")
     public AbstractTurnState(final TurnHandlerContext turnHandler) {
         this.context = turnHandler;
     }
@@ -26,5 +26,16 @@ public abstract class AbstractTurnState implements TurnState {
     /**
      * {@inheritDoc}
      */
-    public abstract List<Point2D> thinking(final Point2D pos);
+    @Override
+    public abstract List<Point2D> thinking(Point2D pos);
+
+    /**
+     * Getter for the current TurnHandlerContext.
+     * 
+     * @return the {@link TurnHandlerContext}.
+     */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "this field is part of the State Pattern structure")
+    public TurnHandlerContext getContext() {
+        return context;
+    }
 }

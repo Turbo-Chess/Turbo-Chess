@@ -67,6 +67,9 @@ public final class LoadoutSelector implements Initializable {
                                .collect(Collectors.toMap(Loadout::getName, Loadout::getId)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         final ObservableList<String> names = FXCollections.observableArrayList(loadoutIds.keySet());
@@ -79,6 +82,9 @@ public final class LoadoutSelector implements Initializable {
             }
         });
 
+        /*
+         * When a loadout is selected and loaded, sets it as the actual loadout for the chosen color.
+         */
         useButton.setOnAction(event -> {
             if (selectedLoadoutName != null
                 && loadoutManager.load(loadoutIds.get(selectedLoadoutName)).isPresent()) {
@@ -90,6 +96,9 @@ public final class LoadoutSelector implements Initializable {
             }
         });
 
+        /*
+         * When a loadout is selected, views its pieces.
+         */
         loadButton.setOnAction(event -> {
             loadoutView.getItems().clear();
             final Set<String> holder = new HashSet<>();

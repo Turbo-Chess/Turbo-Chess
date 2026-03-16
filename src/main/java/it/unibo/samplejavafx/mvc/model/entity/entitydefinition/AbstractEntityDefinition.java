@@ -44,6 +44,7 @@ import java.nio.file.Paths;
         @JsonSubTypes.Type(value = PowerUpDefinition.class, name = "POWERUP")
 })
 public abstract class AbstractEntityDefinition {
+    private static final String FILE = "file:";
     private final String name;
     private final String id;
     private final String imagePath;
@@ -72,14 +73,14 @@ public abstract class AbstractEntityDefinition {
             throw new IllegalArgumentException("Missing required filed: imagePath");
         } else if (!builder.getImagePath().startsWith(GameProperties.INTERNAL_ASSETS_FOLDER.getPath())
                 && !builder.getImagePath().startsWith(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath())
-                && !builder.getImagePath().startsWith("file:")
+                && !builder.getImagePath().startsWith(FILE)
                 && !builder.getImagePath().startsWith("classpath:")
                 && !FileSystemUtils.pathContains(builder.getImagePath(), "/assets/images/")) {
             throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.getImagePath());
         }
 
-        if (builder.getImagePath().startsWith("file:")) {
-            final Path p = Paths.get(builder.getImagePath().replace("file:", ""));
+        if (builder.getImagePath().startsWith(FILE)) {
+            final Path p = Paths.get(builder.getImagePath().replace(FILE, ""));
             if (!Files.exists(p)) {
                 throw new IllegalArgumentException("Image file does not exist: " + builder.getImagePath());
             }
@@ -155,20 +156,20 @@ public abstract class AbstractEntityDefinition {
          * @return this builder concrete instance for method chaining.
          */
         public X imagePath(final String newImagePath) {
-            final String correctPath;
             if ("".equals(newImagePath)) {
                 throw new IllegalStateException("Image Path cannot be null");
             }
+            final String correctPath;
             if (newImagePath.startsWith("classpath:")
-                    || newImagePath.startsWith("file:")
+                    || newImagePath.startsWith(FILE)
                     || Paths.get(newImagePath).isAbsolute()) {
                 correctPath = newImagePath;
             } else {
                 final String basePath = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath();
-                if (basePath.startsWith("file:")) {
+                if (basePath.startsWith(FILE)) {
                     // I need to strip the "file:" protocol so Paths.get() won't crash on Windows
-                    final String rawPath = basePath.replace("file:", "");
-                    correctPath = "file:" + Paths.get(rawPath, newImagePath);
+                    final String rawPath = basePath.replace(FILE, "");
+                    correctPath = FILE + Paths.get(rawPath, newImagePath);
                 } else {
                     correctPath = Paths.get(basePath, newImagePath).toString();
                 }

@@ -3,7 +3,13 @@ package it.unibo.samplejavafx.mvc.model.loader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystemNotFoundException;
+import java.nio.file.FileSystemAlreadyExistsException;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
@@ -17,7 +23,9 @@ import org.slf4j.LoggerFactory;
 /**
  * placeholder.
  */
+//TODO: Missing javadoc for LUCA and GIACOMO 
 public final class LoadingUtils {
+    private static final String CLASSPATH = "classpath:";
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadingUtils.class);
     private static final Map<URI, FileSystem> JAR_FILE_SYSTEMS = new ConcurrentHashMap<>();
     private static final String FILE_PROTOCOL = "file:";
@@ -33,8 +41,8 @@ public final class LoadingUtils {
      * @return placeholder.
      */
     public static Path getCorrectPath(final String basePath) {
-        if (basePath.startsWith("classpath:")) {
-            final String resourcePath = basePath.replace("classpath:", "");
+        if (basePath.startsWith(CLASSPATH)) {
+            final String resourcePath = basePath.replace(CLASSPATH, "");
             final URL resourceUrl = LoadingUtils.class.getResource(resourcePath);
             if (resourceUrl == null) {
                 throw new IllegalStateException("Classpath resource not found: " + basePath);
@@ -96,15 +104,15 @@ public final class LoadingUtils {
     public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
         final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
         final String fileName = color + "_" + id + ".png";
-        if (imagePath.startsWith("classpath:")) {
-            final String resourcePath = imagePath.replace("classpath:", "") + fileName;
+        if (imagePath.startsWith(CLASSPATH)) {
+            final String resourcePath = imagePath.replace(CLASSPATH, "") + fileName;
             final var url = GameControllerImpl.class.getResource(resourcePath);
             if (url == null) {
                 throw new IllegalStateException("Image resource not found: " + resourcePath);
             }
             return url.toExternalForm();
         }
-        final var finalPath = LoadingUtils.getCorrectPath(imagePath).resolve(fileName);
+        final var finalPath = getCorrectPath(imagePath).resolve(fileName);
         if (!Files.exists(finalPath)) {
             throw new IllegalStateException("File: " + finalPath + " does not exists.");
         }

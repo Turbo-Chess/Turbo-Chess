@@ -15,7 +15,6 @@ import it.unibo.samplejavafx.mvc.model.score.ScoreManager;
 import it.unibo.samplejavafx.mvc.model.score.ScoreManagerImpl;
 import it.unibo.samplejavafx.mvc.model.timer.GameTimer;
 import it.unibo.samplejavafx.mvc.model.timer.GameTimerImpl;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -116,6 +115,7 @@ public final class ChessMatchImpl implements ChessMatch {
      *
      * @param turnNumber placeholder.
      */
+    // TODO: Missing Javadocs FOR LUCA
     @Override
     public void setTurnNumber(final int turnNumber) {
         this.turnNumber = turnNumber;
@@ -128,6 +128,7 @@ public final class ChessMatchImpl implements ChessMatch {
      *
      * @param playerColor placeholder.
      */
+    // TODO: Missing Javadocs FOR LUCA
     @Override
     public void setPlayerColor(final PlayerColor playerColor) {
         this.currentPlayer = playerColor;

@@ -12,10 +12,19 @@ import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 
+/**
+ * {@inheritDoc}
+ * Implementation of {@link TurnState} for the {@code DOUBLE_CHECK} {@link GameState}.
+ */
 public final class DoubleCheckTurnState extends AbstractTurnState {
     private final ChessBoard board;
-    private PlayerColor currentColor;
+    private final PlayerColor currentColor;
 
+    /**
+     * Contructor for the DoubleCheckTurnState.
+     * 
+     * @param context the current {@link TurnHandlerContext}.
+     */
     public DoubleCheckTurnState(final TurnHandlerContext context) {
         super(context);
         this.board = context.getBoard();
@@ -31,26 +40,26 @@ public final class DoubleCheckTurnState extends AbstractTurnState {
      *          returns an empty list if there are no avaiable moves or no owned pieces are selected. 
      */
     @Override
-    public List<Point2D> thinking(Point2D pos) {
-        if (board.isFree(pos) && context.getCurrentPiece().isEmpty()) {
+    public List<Point2D> thinking(final Point2D pos) {
+        if (board.isFree(pos) && getContext().getCurrentPiece().isEmpty()) {
             return Collections.emptyList();
         }
-        if (board.isFree(pos) && context.getCurrentMoves().contains(pos)) {
-            return context.executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
+        if (board.isFree(pos) && getContext().getCurrentMoves().contains(pos)) {
+            return getContext().executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
             && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
-            context.setCurrentPiece(king);
-            context.setPieceMoves(RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king));
-            return context.getCurrentMoves();
+            getContext().setCurrentPiece(king);
+            getContext().setPieceMoves(RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king));
+            return getContext().getCurrentMoves();
         }
         if (!board.isFree(pos)
             && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
-            && context.getCurrentPiece().isPresent() && context.getCurrentMoves().contains(pos)) {
-            return context.executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
+            && getContext().getCurrentPiece().isPresent() && getContext().getCurrentMoves().contains(pos)) {
+            return getContext().executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
         }
-        context.unsetCurrentPiece();
-        return context.getCurrentMoves();
+        getContext().unsetCurrentPiece();
+        return getContext().getCurrentMoves();
     }
 }

@@ -559,7 +559,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
         switch (gameState) {
             case CHECK, DOUBLE_CHECK -> {
-                cells.get(gameController.getKingPos()).pseudoClassStateChanged(CHECK_KING, true);
+                cells.get(gameController.getKingPos(playerColor)).pseudoClassStateChanged(CHECK_KING, true);
             }
 
             case NORMAL -> {
