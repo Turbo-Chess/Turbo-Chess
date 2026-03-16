@@ -18,6 +18,8 @@ import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -116,8 +118,6 @@ public final class GameControllerImpl implements GameController {
         lastPossibleMoves.clear();
         lastPossibleMoves.addAll(result);
     }
-
-
 
     /**
      * {@inheritDoc}

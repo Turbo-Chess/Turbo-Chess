@@ -43,23 +43,21 @@ public final class App extends Application {
     }
 
     private void showFatalStartupError(final Exception e) {
-        Platform.runLater(() -> {
-            final Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Configuration Error");
-            alert.setHeaderText("Invalid JSON Configuration");
+        final Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Configuration Error");
+        alert.setHeaderText("Invalid JSON Configuration");
 
-            // Unwrap the exception to find the root cause (Jackson wrap the ex into another one)
-            Throwable rootCause = e;
-            while (rootCause.getCause() != null && !rootCause.getCause().equals(rootCause)) {
-                rootCause = rootCause.getCause();
-            }
+        // Unwrap the exception to find the root cause
+        Throwable rootCause = e;
+        while (rootCause.getCause() != null && !rootCause.getCause().equals(rootCause)) {
+            rootCause = rootCause.getCause();
+        }
 
-            final String errorMsg = rootCause.getMessage() != null
-                    ? e.getMessage() + " \nReason: " + rootCause.getMessage()
-                    : "Unknown error";
-            alert.setContentText(errorMsg);
-            alert.showAndWait();
-        });
+        final String errorMsg = rootCause.getMessage() != null
+                ? e.getMessage() + " \nReason: " + rootCause.getMessage()
+                : "Unknown error";
+        alert.setContentText(errorMsg);
+        alert.showAndWait();
     }
 
     /**
