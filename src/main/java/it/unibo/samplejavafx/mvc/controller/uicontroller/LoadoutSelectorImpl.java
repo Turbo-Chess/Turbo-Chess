@@ -30,7 +30,7 @@ import javafx.scene.control.ListView;
 /**
  * Controller for the LoadoutSelector UI.
  */
-public final class LoadoutSelector implements Initializable {
+public final class LoadoutSelectorImpl implements Initializable {
     @FXML
     private ListView<String> loadoutListView;
     @FXML
@@ -57,7 +57,7 @@ public final class LoadoutSelector implements Initializable {
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
             justification = "This controllers are meant to be shared objects to follow the MVC architecture")
-    public LoadoutSelector(final GameController controller,
+    public LoadoutSelectorImpl(final GameController controller,
                            final GameCoordinator coordinator,
                            final LoadoutManager loadoutManager) {
         this.controller = controller;
