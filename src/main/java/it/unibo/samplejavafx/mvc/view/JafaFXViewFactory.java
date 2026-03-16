@@ -7,7 +7,7 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditorImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
@@ -129,7 +129,7 @@ public final class JafaFXViewFactory implements ViewFactory {
             final LoadoutManager loadoutManager) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
-            loader.setControllerFactory(c -> new LoadoutEditor(
+            loader.setControllerFactory(c -> new LoadoutEditorImpl(
                     gameCoordinator,
                     entityCache,
                     loadoutManager

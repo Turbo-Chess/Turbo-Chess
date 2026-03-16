@@ -28,7 +28,7 @@ import javafx.scene.layout.GridPane;
 /**
  * Controller for the LoadoutEditor UI.
  */
-public final class LoadoutEditor implements Initializable {
+public final class LoadoutEditorImpl implements Initializable {
     private static final int ROW = 2;
     private static final int COLUMN = 8;
     private static final int SIZE = 16;
@@ -59,7 +59,7 @@ public final class LoadoutEditor implements Initializable {
      * @param entityCache the {@link DefinitionRegistry} needed for this class to operate.
      * @param loadoutManager the {@link LoadoutManager} needed to access the methods to manipulate loadouts.
      */
-    public LoadoutEditor(
+    public LoadoutEditorImpl(
             final GameCoordinator coordinator,
             final DefinitionRegistry entityCache,
             final LoadoutManager loadoutManager
