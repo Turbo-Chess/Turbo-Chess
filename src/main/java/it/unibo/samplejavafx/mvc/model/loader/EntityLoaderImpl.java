@@ -6,8 +6,8 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDef
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -43,10 +43,10 @@ public class EntityLoaderImpl implements EntityLoader {
     private AbstractEntityDefinition parseEntityFile(
             final Path filePath,
             final Class<? extends AbstractEntityDefinition> classToLoad) {
-        try {
+        try (InputStream input = Files.newInputStream(filePath)) {
             final ObjectMapper mapper = new ObjectMapper();
             //return mapper.readerWithView(JsonViews.FirstLoading.class).readValue(new File(filePath.toString()), classToLoad);
-            return mapper.readValue(new File(filePath.toString()), classToLoad);
+            return mapper.readValue(input, classToLoad);
         } catch (final IOException e) {
             LOGGER.error("Cannot read file: {}", filePath, e);
             throw new IllegalStateException("Fatal error loading json configuration of: " + filePath, e);

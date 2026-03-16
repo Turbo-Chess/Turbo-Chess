@@ -8,6 +8,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.PieceCreator;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
@@ -117,8 +118,6 @@ public final class GameControllerImpl implements GameController {
         lastPossibleMoves.addAll(result);
     }
 
-
-
     /**
      * {@inheritDoc}
      *
@@ -162,12 +161,12 @@ public final class GameControllerImpl implements GameController {
      *
      */
     @Override
-    public Point2D getKingPos() {
+    public Point2D getKingPos(final PlayerColor color) {
         if (this.match == null) {
             throw new IllegalStateException("Match should be initialized before using it");
         }
         return this.match.getBoard().getPosByEntity(RulesUtils
-            .getKing(this.match.getBoard(), RulesUtils.swapColor(this.match.getCurrentPlayer())).get());
+            .getKing(this.match.getBoard(), RulesUtils.swapColor(color)).get());
     }
 
     @Override

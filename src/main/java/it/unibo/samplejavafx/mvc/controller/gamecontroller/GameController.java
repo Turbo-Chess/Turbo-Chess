@@ -4,6 +4,7 @@ import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -63,9 +64,10 @@ public interface GameController {
      * Retrieves the current position of the King for the active player.
      * useful for validating checks and checkmates.
      *
+     * @param color the {@link PlayerColor} of the wanted King.
      * @return the {@link Point2D} coordinate of the King.
      */
-    Point2D getKingPos();
+    Point2D getKingPos(PlayerColor color);
 
     /**
      * Retrieves the loadout configuration for the White player.
