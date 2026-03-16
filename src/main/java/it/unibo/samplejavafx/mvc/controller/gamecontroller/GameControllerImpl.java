@@ -9,12 +9,14 @@ import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
+import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
+import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -161,6 +163,11 @@ public final class GameControllerImpl implements GameController {
                         .get(pieceEntry.packId())
                         .get(pieceEntry.pieceId()),
                 RulesUtils.swapColor(match.getCurrentPlayer()));
+        final GameState newState = AdvancedRules.check(match.getBoard(), match.getCurrentPlayer());
+        if (newState == GameState.CHECK
+            || newState == GameState.DOUBLE_CHECK) {
+            match.updateGameState(newState, RulesUtils.swapColor(match.getCurrentPlayer()));
+        }
     }
 
     /**
@@ -184,12 +191,12 @@ public final class GameControllerImpl implements GameController {
      *
      */
     @Override
-    public Point2D getKingPos() {
+    public Point2D getKingPos(final PlayerColor color) {
         if (this.match == null) {
             throw new IllegalStateException("Match should be initialized before using it");
         }
         return this.match.getBoard().getPosByEntity(RulesUtils
-            .getKing(this.match.getBoard(), RulesUtils.swapColor(this.match.getCurrentPlayer())).get());
+            .getKing(this.match.getBoard(), RulesUtils.swapColor(color)).get());
     }
 
     @Override

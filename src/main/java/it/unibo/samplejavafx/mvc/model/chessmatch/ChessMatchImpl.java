@@ -15,7 +15,6 @@ import it.unibo.samplejavafx.mvc.model.score.ScoreManager;
 import it.unibo.samplejavafx.mvc.model.score.ScoreManagerImpl;
 import it.unibo.samplejavafx.mvc.model.timer.GameTimer;
 import it.unibo.samplejavafx.mvc.model.timer.GameTimerImpl;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

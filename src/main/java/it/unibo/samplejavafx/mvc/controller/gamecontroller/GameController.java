@@ -70,14 +70,14 @@ public interface GameController {
      */
     void promote(LoadoutEntry pieceEntry);
 
-    // TODO: remove that and use the one from advanced rules
     /**
      * Retrieves the current position of the King for the active player.
      * useful for validating checks and checkmates.
      *
+     * @param color the {@link PlayerColor} of the wanted King.
      * @return the {@link Point2D} coordinate of the King.
      */
-    Point2D getKingPos();
+    Point2D getKingPos(PlayerColor color);
 
     /**
      * Retrieves the loadout configuration for the White player.
