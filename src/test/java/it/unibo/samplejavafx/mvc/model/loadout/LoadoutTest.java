@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
@@ -35,10 +36,11 @@ class LoadoutTest {
         final var loaderController = new LoaderControllerImpl();
         loaderController.load();
 
-        standardDefinitions = loaderController.getEntityCache().get("StandardChessPieces").entrySet().stream()
+        standardDefinitions = loaderController.getEntityDefinitionCacheEntries().stream()
+                .filter(e -> "StandardChessPieces".equals(e.packId()))
                 .collect(Collectors.toUnmodifiableMap(
-                        Map.Entry::getKey,
-                        e -> (PieceDefinition) e.getValue()
+                        DefinitionCacheEntry::pieceId,
+                        e -> (PieceDefinition) e.abstractEntityDefinition()
                 ));
 
         final ObjectMapper mapper = new ObjectMapper();
