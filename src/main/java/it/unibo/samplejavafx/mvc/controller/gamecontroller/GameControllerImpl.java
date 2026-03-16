@@ -19,6 +19,8 @@ import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -135,7 +137,11 @@ public final class GameControllerImpl implements GameController {
             }
             return url.toExternalForm();
         }
-        return LoadingUtils.getCorrectPath(imagePath).resolve(fileName).toUri().toString();
+        final var finalPath = LoadingUtils.getCorrectPath(imagePath).resolve(fileName);
+        if (!Files.exists(finalPath)) {
+            throw new IllegalStateException("File: " + finalPath + " does not exists.");
+        }
+        return finalPath.toUri().toString();
     }
 
     /**
