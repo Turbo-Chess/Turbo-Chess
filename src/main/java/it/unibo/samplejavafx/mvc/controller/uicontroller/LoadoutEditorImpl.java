@@ -26,7 +26,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 /**
- * Controller for the LoadoutEditor UI.
+ * Implementation of {@link LoadoutEditor}, enables to choose all the pieces in memory and place them in order to create
+ * a new loadout.
  */
 public final class LoadoutEditorImpl implements Initializable, LoadoutEditor {
     private static final int ROW = 2;
