@@ -79,6 +79,9 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         this.turnState = newState;
     }
 
+    /**
+     * Chooses the new TurnState by looking at the current GameState.
+     */
     private void choosingTurnState() {
         switch (state) {
             case NORMAL -> transitionTo(new NormalTurnState(this));
