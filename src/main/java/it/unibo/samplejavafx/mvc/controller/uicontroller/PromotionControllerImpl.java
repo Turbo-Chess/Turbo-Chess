@@ -20,7 +20,7 @@ import javafx.scene.layout.GridPane;
 /**
  * Controller that handles the GUI for promotion.
  */
-public final class PromotionController {
+public final class PromotionControllerImpl {
     private static final int DEFAULT_VALUE = 0;
     @FXML
     private GridPane promotionPane;
@@ -41,7 +41,7 @@ public final class PromotionController {
      */
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "in a MVC-based structure"
             + " you have to pass instances of controllers.")
-    public PromotionController(
+    public PromotionControllerImpl(
             final GameCoordinator coordinator,
             final GameController controller,
             final DefinitionRegistry entityCache) {
