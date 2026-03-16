@@ -28,7 +28,7 @@ import javafx.scene.layout.GridPane;
 /**
  * Controller for the LoadoutEditor UI.
  */
-public final class LoadoutEditorImpl implements Initializable {
+public final class LoadoutEditorImpl implements Initializable, LoadoutEditor {
     private static final int ROW = 2;
     private static final int COLUMN = 8;
     private static final int SIZE = 16;
@@ -143,9 +143,7 @@ public final class LoadoutEditorImpl implements Initializable {
     }
 
     /**
-     * Handles the "Loadout Selector" button action.
-     * 
-     * @param e the {@link ActionEvent} linked to the button.
+     * {@inheritDoc}
      */
     public void backToLoadoutSelector(final ActionEvent e) {
         this.coordinator.initLoadout();
