@@ -36,6 +36,7 @@ enum CastleCondition {
 class TurnHandlerImpl
 TurnHandlerImpl ..> AdvancedRules
 TurnHandlerImpl ..> RulesUtils
+TurnHandlerImpl ..> CheckCalculator
 AdvancedRules ..> CheckCalculator
 AdvancedRules o-- CastleCondition
 AdvancedRules ..> RulesUtils
