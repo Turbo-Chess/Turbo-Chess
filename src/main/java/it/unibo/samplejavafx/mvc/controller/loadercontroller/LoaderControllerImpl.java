@@ -74,10 +74,15 @@ public class LoaderControllerImpl implements LoaderController {
                 }
             }
             if (Files.isDirectory(unifiedBasePath)) {
+                String resPackDirStr = "";
                 try {
-                    getDirs(unifiedBasePath).forEach(resPackDir -> loadResourcePack(unifiedBasePath, resPackDir));
+                    for (final var resPackDir : getDirs(unifiedBasePath)) {
+                        resPackDirStr = resPackDir.toString();
+                        loadResourcePack(unifiedBasePath, resPackDir);
+                    }
                 } catch (final IllegalStateException e) {
                     LOGGER.warn("Skipping loading from {}: {}", unifiedBasePath, e.getMessage());
+                    throw new IllegalStateException("Error while reading: " + unifiedBasePath + resPackDirStr, e);
                 }
             } else {
                 LOGGER.warn("Skipping non-existent or inaccessible directory: {}", unifiedBasePath);
