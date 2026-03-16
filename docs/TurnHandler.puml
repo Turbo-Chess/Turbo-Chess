@@ -4,7 +4,7 @@ skinparam classAttributeIconSize 0
 hide empty fields
 hide empty method
 
-interface TurnHandler {
+interface TurnHandler <<Interface>> {
     +thinking(pos : Point2D) : List<Point2D>
     +executeTurn(moveAction : MoveType, pos : Point2D) : boolean
     +setStartTurn(turn : int)
@@ -13,7 +13,7 @@ interface TurnHandler {
     +getPromotingPawnPos() : Point2D
 }
 
-interface TurnHandlerContext {
+interface TurnHandlerContext <<Interface>> {
     +thinking(pos : Point2D) : List<Point2D>
     +executeTurn() : boolean
     +transitionTo(newState : TurnState)
@@ -21,7 +21,7 @@ interface TurnHandlerContext {
     +unsetCurrentPiece()
 }
 
-interface TurnState {
+interface TurnState <<Interface>> {
     +thinking(pos : Point2D) : List<Point2D>
 }
 
@@ -37,16 +37,24 @@ enum GameState {
     CHECKMATE
     DRAW
     PROMOTION
+    TIMEOUT
 }
 TurnHandlerImpl o-- GameState
-abstract class AbstractTurnState {
+abstract class AbstractTurnState <<State>> {
     -context : TurnHandlerContext
+    +thinking(pos : Point2D) : List<Point2D>
 }
 TurnState <|.. AbstractTurnState
 
-class NormalTurnState
-class CheckTurnState
-class DoubleCheckTurnState
+class NormalTurnState {
+    +thinking(pos : Point2D) : List<Point2D>
+}
+class CheckTurnState {
+    +thinking(pos : Point2D) : List<Point2D>
+}
+class DoubleCheckTurnState {
+    +thinking(pos : Point2D) : List<Point2D>
+}
 AbstractTurnState <|-- NormalTurnState
 AbstractTurnState <|-- CheckTurnState
 AbstractTurnState <|-- DoubleCheckTurnState
