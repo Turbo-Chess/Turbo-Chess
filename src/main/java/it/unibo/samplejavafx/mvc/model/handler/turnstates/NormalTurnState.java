@@ -23,7 +23,6 @@ import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 public final class NormalTurnState extends AbstractTurnState {
     private static final Point2D CASTLE_POS = new Point2D(2, 6);
     private final ChessBoard board;
-    private final CastleCondition castlingOptions;
     private final PlayerColor currentColor;
 
     /**
@@ -34,7 +33,6 @@ public final class NormalTurnState extends AbstractTurnState {
     public NormalTurnState(final TurnHandlerContext context) {
         super(context);
         this.board = context.getBoard();
-        this.castlingOptions = context.getCastleCon();
         this.currentColor = context.getCurrentColor();
     }
 
@@ -58,21 +56,23 @@ public final class NormalTurnState extends AbstractTurnState {
                 && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
             getContext().setCurrentPiece(king);
-            getContext().setPieceMoves(RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king));
-            switch (castlingOptions) {
+            final List<Point2D> holder = RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king);
+            switch (getContext().getCastleCon()) {
                 case CASTLE_BOTH:
-                    getContext().getCurrentMoves().addAll(List.of(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()), 
-                                                   new Point2D(CASTLE_POS.y(), board.getPosByEntity(king).y())));
+                    holder.addAll(List.of(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()), 
+                                          new Point2D(CASTLE_POS.y(), board.getPosByEntity(king).y())));
                     break;
                 case CASTLE_LEFT:
-                    getContext().getCurrentMoves().add(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()));
+                    holder.add(new Point2D(CASTLE_POS.x(), board.getPosByEntity(king).y()));
                     break;
                 case CASTLE_RIGHT:
-                    getContext().getCurrentMoves().add(new Point2D(CASTLE_POS.y(), board.getPosByEntity(king).y()));
+                    holder.add(new Point2D(CASTLE_POS.y(), board.getPosByEntity(king).y()));
                     break;
                 case NO_CASTLE:
                     break;
             }
+            getContext().setPieceMoves(holder);
+            return getContext().getCurrentMoves();
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor) {
             final var newPiece = (Piece) board.getEntity(pos).get();
