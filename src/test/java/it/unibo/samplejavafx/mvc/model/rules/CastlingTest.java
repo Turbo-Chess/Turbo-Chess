@@ -16,7 +16,7 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
 class CastlingTest {
-private ChessBoard board;
+    private ChessBoard board;
     private Integer idCount;
 
     @BeforeEach
