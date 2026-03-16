@@ -71,6 +71,9 @@ public final class LoadoutEditor implements Initializable {
         this.y = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         final ObservableList<String> pieceNames = FXCollections.observableArrayList(entityCache.values().stream()
@@ -95,6 +98,11 @@ public final class LoadoutEditor implements Initializable {
         populateGridPane();
     }
 
+    /**
+     * Places a selected piece in the grid.
+     * 
+     * @param event the Click event of the button.
+     */
     private void placeOnClick(final ActionEvent event) {
         if (selectedPiece != null) {
             final Button btn = (Button) event.getSource();
@@ -103,6 +111,12 @@ public final class LoadoutEditor implements Initializable {
         }
     }
 
+    /**
+     * Given a pieceId, checks and returns the original pack from where it's from.
+     * 
+     * @param id the String of the pieceId.
+     * @return the String of the original pack.
+     */
     private String ofPack(final String id) {
         for (final var packEntry : entityCache.entrySet()) {
             if (entityCache.get(packEntry.getKey()).containsKey(id)) {
@@ -112,6 +126,9 @@ public final class LoadoutEditor implements Initializable {
         return null;
     }
 
+    /**
+     * Populates the grid pane with the buttons for the loadout.
+     */
     private void populateGridPane() {
         while (y != ROW) {
             final Button btn = new Button("");
