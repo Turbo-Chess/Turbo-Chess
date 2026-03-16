@@ -26,7 +26,13 @@ public final class App extends Application {
     // I'm catching all exception because I want this window to spawn an alert for different exceptions thrown
     // from different part of the program.
     public void start(final Stage stage) {
-
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            if (throwable instanceof Exception) {
+                showFatalStartupError((Exception) throwable);
+            } else {
+                showFatalStartupError(new Exception(throwable));
+            }
+        });
         stage.setMinHeight(WINDOW_HEIGHT);
         stage.setMinWidth(WINDOW_WIDTH);
 

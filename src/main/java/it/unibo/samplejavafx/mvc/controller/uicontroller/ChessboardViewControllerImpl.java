@@ -406,9 +406,13 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         final Button btn = cells.get(pos);
         if (btn != null) {
             btn.setText("");
-            final var imagePath = LoadingUtils.calculateImageColorPath(
-                    entity.getImagePath(), entity.getPlayerColor(), entity.getId());
-            btn.setGraphic(createResponsiveImageView(imagePath, btn));
+            try {
+                final var imagePath = LoadingUtils.calculateImageColorPath(
+                        entity.getImagePath(), entity.getPlayerColor(), entity.getId());
+                btn.setGraphic(createResponsiveImageView(imagePath, btn));
+            } catch (final IllegalStateException e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 

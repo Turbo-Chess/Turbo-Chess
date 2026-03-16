@@ -2,6 +2,7 @@ package it.unibo.samplejavafx.mvc.model.loader;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
@@ -62,6 +63,19 @@ public final class LoadingUtils {
      */
     public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
         final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
-        return FILE_PROTOCOL + getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
+        final String fileName = color + "_" + id + ".png";
+        if (imagePath.startsWith("classpath:")) {
+            final String resourcePath = imagePath.replace("classpath:", "") + fileName;
+            final var url = LoadingUtils.class.getResource(resourcePath);
+            if (url == null) {
+                throw new IllegalStateException("Image resource not found: " + resourcePath);
+            }
+            return url.toExternalForm();
+        }
+        final var finalPath = LoadingUtils.getCorrectPath(imagePath).resolve(fileName);
+        if (!Files.exists(finalPath)) {
+            throw new IllegalStateException("File: " + finalPath + " does not exists.");
+        }
+        return finalPath.toUri().toString();
     }
 }
