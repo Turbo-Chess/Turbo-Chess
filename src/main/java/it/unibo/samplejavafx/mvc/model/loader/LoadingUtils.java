@@ -112,7 +112,7 @@ public final class LoadingUtils {
             }
             return url.toExternalForm();
         }
-        final var finalPath = LoadingUtils.getCorrectPath(imagePath).resolve(fileName);
+        final var finalPath = getCorrectPath(imagePath).resolve(fileName);
         if (!Files.exists(finalPath)) {
             throw new IllegalStateException("File: " + finalPath + " does not exists.");
         }
