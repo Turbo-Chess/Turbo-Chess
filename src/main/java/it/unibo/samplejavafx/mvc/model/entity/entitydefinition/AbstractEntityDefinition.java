@@ -77,6 +77,13 @@ public abstract class AbstractEntityDefinition {
             throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.getImagePath());
         }
 
+        if (builder.getImagePath().startsWith("file:")) {
+            final Path p = Paths.get(builder.getImagePath().replace("file:", ""));
+            if (!Files.exists(p)) {
+                throw new IllegalArgumentException("Image file does not exist: " + builder.getImagePath());
+            }
+        }
+
         if (builder.getPieceType() == null) {
             throw new IllegalArgumentException("Missing required field: pieceType");
         }
