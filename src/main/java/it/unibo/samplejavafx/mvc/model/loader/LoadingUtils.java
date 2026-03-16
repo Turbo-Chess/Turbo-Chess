@@ -103,8 +103,8 @@ public final class LoadingUtils {
     public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
         final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
         final String fileName = color + "_" + id + ".png";
-        if (imagePath.startsWith("classpath:")) {
-            final String resourcePath = imagePath.replace("classpath:", "") + fileName;
+        if (imagePath.startsWith(CLASSPATH)) {
+            final String resourcePath = imagePath.replace(CLASSPATH, "") + fileName;
             final var url = LoadingUtils.class.getResource(resourcePath);
             if (url == null) {
                 throw new IllegalStateException("Image resource not found: " + resourcePath);

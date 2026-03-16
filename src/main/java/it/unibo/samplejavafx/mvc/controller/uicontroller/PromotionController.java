@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 
