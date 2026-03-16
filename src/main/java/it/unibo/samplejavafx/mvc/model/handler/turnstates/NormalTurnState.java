@@ -13,7 +13,6 @@ import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerContext;
 import it.unibo.samplejavafx.mvc.model.handler.TurnState;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import it.unibo.samplejavafx.mvc.model.rules.CastleCondition;
 import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 
 /**
