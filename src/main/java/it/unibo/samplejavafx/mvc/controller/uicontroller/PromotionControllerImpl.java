@@ -68,7 +68,7 @@ public final class PromotionControllerImpl {
      *
      * @param currentColor color of the player's promotion.
      */
-    public void populateGridPane(final PlayerColor currentColor) {
+    private void populateGridPane(final PlayerColor currentColor) {
         final Set<LoadoutEntry> set = new HashSet<>();
         switch (currentColor) {
             case WHITE:
