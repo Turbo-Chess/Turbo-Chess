@@ -11,6 +11,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -74,6 +76,13 @@ public abstract class AbstractEntityDefinition {
                 && !builder.getImagePath().startsWith("classpath:")
                 && !FileSystemUtils.pathContains(builder.getImagePath(), "/assets/images/")) {
             throw new IllegalArgumentException("Path does not start with the correct base path: " + builder.getImagePath());
+        }
+
+        if (builder.getImagePath().startsWith("file:")) {
+            final Path p = Paths.get(builder.getImagePath().replace("file:", ""));
+            if (!Files.exists(p)) {
+                throw new IllegalArgumentException("Image file does not exist: " + builder.getImagePath());
+            }
         }
 
         if (builder.getPieceType() == null) {
@@ -147,12 +156,22 @@ public abstract class AbstractEntityDefinition {
          */
         public X imagePath(final String newImagePath) {
             final String correctPath;
+            if ("".equals(newImagePath)) {
+                throw new IllegalStateException("Image Path cannot be null");
+            }
             if (newImagePath.startsWith("classpath:")
                     || newImagePath.startsWith("file:")
                     || Paths.get(newImagePath).isAbsolute()) {
                 correctPath = newImagePath;
             } else {
-                correctPath = Paths.get(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath(), newImagePath).toString();
+                final String basePath = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath();
+                if (basePath.startsWith("file:")) {
+                    // I need to strip the "file:" protocol so Paths.get() won't crash on Windows
+                    final String rawPath = basePath.replace("file:", "");
+                    correctPath = "file:" + Paths.get(rawPath, newImagePath);
+                } else {
+                    correctPath = Paths.get(basePath, newImagePath).toString();
+                }
             }
             this.imagePath = correctPath;
             return self();

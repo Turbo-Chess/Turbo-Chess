@@ -58,20 +58,32 @@ public final class LoaderControllerImpl implements LoaderController {
      */
     @Override
     public void load() {
+        try {
+            final Path assetsPath = LoadingUtils.getCorrectPath(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath());
+            FileSystemUtils.ensureDirectoryExists(assetsPath);
+        } catch (final IOException | IllegalStateException e) {
+            LOGGER.error("Cannot ensure Assets directory exists", e);
+        }
         // Get a path from URI
         for (final String basePathString : PATHS) {
             final Path unifiedBasePath = LoadingUtils.getCorrectPath(basePathString);
-            try {
-                FileSystemUtils.ensureDirectoryExists(unifiedBasePath);
-            } catch (final IOException e) {
-                LOGGER.error("Cannot ensure directory exists: " + unifiedBasePath);
-                // Continue even if directory creation fails, it might be read-only or handled elsewhere
+            if (basePathString.startsWith("file:")) {
+                try {
+                    FileSystemUtils.ensureDirectoryExists(unifiedBasePath);
+                } catch (final IOException e) {
+                    LOGGER.error("Cannot ensure directory exists: " + unifiedBasePath);
+                }
             }
             if (Files.isDirectory(unifiedBasePath)) {
+                String resPackDirStr = "";
                 try {
-                    getDirs(unifiedBasePath).forEach(resPackDir -> loadResourcePack(unifiedBasePath, resPackDir));
+                    for (final var resPackDir : getDirs(unifiedBasePath)) {
+                        resPackDirStr = resPackDir.toString();
+                        loadResourcePack(unifiedBasePath, resPackDir);
+                    }
                 } catch (final IllegalStateException e) {
                     LOGGER.warn("Skipping loading from {}: {}", unifiedBasePath, e.getMessage());
+                    throw new IllegalStateException("Error while reading: " + unifiedBasePath + resPackDirStr, e);
                 }
             } else {
                 LOGGER.warn("Skipping non-existent or inaccessible directory: {}", unifiedBasePath);
