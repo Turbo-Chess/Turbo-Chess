@@ -14,6 +14,7 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.application.Platform;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -72,10 +73,12 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  * real-time synchronization between the game state and the UI.
  * </p>
  */
-public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
+public final class ChessboardViewControllerImpl implements ChessboardViewController,
+        BoardObserver, ChessMatchObserver, BoardView {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;
+    private static final long SECONDS_IN_MINUTE = 60L;
 
     @FXML
     private GridPane chessboardGridPane;
@@ -142,8 +145,10 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * @param gameController The central {@link GameController} mediating game logic.
      * @param coordinator    The {@link GameCoordinator} managing high-level application flow.
      */
-    // This is intended to be a shared controller to make the MVC working.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "This is intended to be a shared controller to make the MVC working."
+    )
     public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
         this.gameController = gameController;
         this.coordinator = coordinator;
@@ -234,12 +239,13 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                 updateReplayScore(lastEvent.getWhiteScore(), lastEvent.getBlackScore());
             }
         });
-
+        onTimerUpdated(PlayerColor.WHITE, gameController.getMatch().getGameTimer().getTimeRemaining(PlayerColor.WHITE));
     }
 
     private void enableReplayMode() {
         isReplayMode = true;
         replayControlsBox.setDisable(false);
+        gameController.getMatch().getGameTimer().stop();
 
         final var history = gameController.getGameHistory();
         replayController.loadHistory(history);
@@ -259,6 +265,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private void disableReplayMode() {
         isReplayMode = false;
         replayControlsBox.setDisable(true);
+        final var match = gameController.getMatch();
+        if (match.getGameState() != GameState.CHECKMATE
+                && match.getGameState() != GameState.DRAW
+                && match.getGameState() != GameState.TIMEOUT) {
+            match.getGameTimer().start();
+        }
 
         // Restore Live Board View
         refreshBoardView(gameController.getLiveBoard());
@@ -288,7 +300,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
          final Button btn = cells.get(pos);
          if (btn != null) {
             btn.setText("");
-            btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(
+            btn.setGraphic(createResponsiveImageView(LoadingUtils.calculateImageColorPath(
                 entity.getImagePath(), entity.getPlayerColor(), entity.getId()), btn));
         }
     }
@@ -394,7 +406,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         final Button btn = cells.get(pos);
         if (btn != null) {
             btn.setText("");
-            final var imagePath = gameController.calculateImageColorPath(
+            final var imagePath = LoadingUtils.calculateImageColorPath(
                     entity.getImagePath(), entity.getPlayerColor(), entity.getId());
             btn.setGraphic(createResponsiveImageView(imagePath, btn));
         }
@@ -565,6 +577,8 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
             case PROMOTION -> {
                 coordinator.initPromotion();
             }
+
+            case TIMEOUT -> this.showEndingDialog("Time's up!", " has won!", Optional.of(playerColor));
         }
     }
 
@@ -584,6 +598,28 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                     blackScoreLabel.setText(PLUS_SIGN + Math.abs(diff));
                 }
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onTimerUpdated(final PlayerColor player, final long timeRemaining) {
+        Platform.runLater(() -> {
+            final var match = gameController.getMatch();
+            final var timer = match.getGameTimer();
+            final long whiteTime = timer.getTimeRemaining(PlayerColor.WHITE);
+            final long blackTime = timer.getTimeRemaining(PlayerColor.BLACK);
+
+            final String whiteStr = formatTime(whiteTime);
+            final String blackStr = formatTime(blackTime);
+
+            timeValueLabel.setText("White: " + whiteStr + " - Black: " + blackStr);
+        });
+    }
+
+    private String formatTime(final long seconds) {
+        return String.format("%d:%02d", seconds / SECONDS_IN_MINUTE, seconds % SECONDS_IN_MINUTE);
     }
 
     private void showEndingDialog(final String statusText, final String messageText, final Optional<PlayerColor> playerColor) {

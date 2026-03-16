@@ -55,7 +55,8 @@ public final class LoadoutSelector implements Initializable {
      * @param coordinator the {@link GameCoordinator} needed for this class to operate.
      * @param loadoutManager the manager to retrieve loadouts.
      */
-    @SuppressFBWarnings("EI_EXPOSE_REP2") // in a MVC-based structure you have to pass instances of controllers.
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "This controllers are meant to be shared objects to follow the MVC architecture")
     public LoadoutSelector(final GameController controller,
                            final GameCoordinator coordinator,
                            final LoadoutManager loadoutManager) {
@@ -90,6 +91,7 @@ public final class LoadoutSelector implements Initializable {
         });
 
         loadButton.setOnAction(event -> {
+            loadoutView.getItems().clear();
             final Set<String> holder = new HashSet<>();
             if (selectedLoadoutName != null
                 && loadoutManager.load(loadoutIds.get(selectedLoadoutName)).isPresent()) {
@@ -107,6 +109,7 @@ public final class LoadoutSelector implements Initializable {
                     }
                     loadoutView.getItems().add(count + "x " + entry.pieceId());
                 }
+                entries.clear();
             }
         });
     }

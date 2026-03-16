@@ -70,7 +70,7 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
                 .entityDefinition(this.getEntityDefinition())
                 .gameId(this.getGameId())
                 .playerColor(this.getPlayerColor())
-                .hasMoved(this.hasMoved)
+                .moved(this.hasMoved)
                 .build();
     }
 
@@ -127,7 +127,6 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
      */
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder extends AbstractEntity.AbstractBuilder<PieceDefinition, Builder> {
-        @JsonProperty("hasMoved")
         private boolean hasMoved;
 
         /**
@@ -137,7 +136,8 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
          * @param newHasMoved {@code true} if the piece has already moved, {@code false} otherwise.
          * @return this builder instance.
          */
-        public Builder hasMoved(final boolean newHasMoved) {
+        @JsonProperty("hasMoved")
+        public Builder moved(final boolean newHasMoved) {
             this.hasMoved = newHasMoved;
             return this;
         }

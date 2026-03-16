@@ -1,7 +1,5 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
-import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
-
 import java.nio.file.Path;
 
 /**
@@ -72,11 +70,6 @@ public interface GameCoordinator {
      * Used to return to the game from other menus without re-initialize the game.
      */
     void showGame();
-
-    /**
-     * Loads the pieces for the game.
-     */
-    void loadPieces();
 
     /**
      * Loads the last saved game. 

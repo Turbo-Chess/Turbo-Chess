@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.loading;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
@@ -23,7 +24,7 @@ class FirstLoadingTest {
         final PieceDefinition pawn = new PieceDefinition.Builder()
                 .name("Pawn")
                 .id("pawn")
-                .imagePath("classpath:/assets/images")
+                .imagePath("classpath:/assets/images/")
                 .weight(1)
                 .pieceType(PieceType.PAWN)
                 .moveRules(List.of(
@@ -36,7 +37,7 @@ class FirstLoadingTest {
         final PieceDefinition rook = new PieceDefinition.Builder()
                 .name("Rook")
                 .id("rook")
-                .imagePath("classpath:/assets/images")
+                .imagePath("classpath:/assets/images/")
                 .weight(5)
                 .pieceType(PieceType.TOWER)
                 .moveRules(List.of(
@@ -49,11 +50,10 @@ class FirstLoadingTest {
 
         final var loaderController = new LoaderControllerImpl();
         loaderController.load();
-        final Map<String, AbstractEntityDefinition> pieces = loaderController.getEntityCache().values().stream()
-                .flatMap(entry -> entry.entrySet().stream())
+        final Map<String, AbstractEntityDefinition> pieces = loaderController.getEntityDefinitionCacheEntries().stream()
                 .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
+                        DefinitionCacheEntry::pieceId,
+                        DefinitionCacheEntry::abstractEntityDefinition,
                         (existing, replacement) -> existing
                 ));
 

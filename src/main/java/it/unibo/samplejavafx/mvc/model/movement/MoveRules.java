@@ -14,7 +14,7 @@ public interface MoveRules {
      * The method that calculates all available cells a piece can move to by filtering the cells calculated
      * by {@link MovementStrategy}.
      *
-     * @param start         actual point of the piece.
+     * @param start         current position of the piece.
      * @param board         the {@link ChessBoard} of the match.
      * @param playerColor   the color of the player owning the piece.
      * @return              an immutable {@link List} containing all the available positions to move to.

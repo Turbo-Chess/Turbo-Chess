@@ -1,19 +1,16 @@
 package it.unibo.samplejavafx.mvc.model.loader;
 
-import java.net.URL;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystemAlreadyExistsException;
-import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.FileSystems;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
+import java.nio.file.*;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +20,7 @@ import org.slf4j.LoggerFactory;
 public final class LoadingUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadingUtils.class);
     private static final Map<URI, FileSystem> JAR_FILE_SYSTEMS = new ConcurrentHashMap<>();
+    private static final String FILE_PROTOCOL = "file:";
 
     private LoadingUtils() {
         // utility class
@@ -63,8 +61,8 @@ public final class LoadingUtils {
                 LOGGER.error("Cannot access classpath resource filesystem for {}", basePath, e);
             }
 
-        } else if (basePath.startsWith("file:")) {
-            return Path.of(basePath.replace("file:", ""));
+        } else if (basePath.startsWith(FILE_PROTOCOL)) {
+            return Path.of(basePath.replace(FILE_PROTOCOL, ""));
         } else {
             try {
                 final Path p = Path.of(basePath);
@@ -85,5 +83,31 @@ public final class LoadingUtils {
         final int sep = raw.indexOf("!/");
         final String jarRoot = sep >= 0 ? raw.substring(0, sep + 2) : raw;
         return URI.create(jarRoot);
+    }
+
+    /**
+     * Generates the correct file path for a piece's image based on its base path, player color, and ID.
+     *
+     * @param imagePath   The base directory or path for the image.
+     * @param playerColor The color of the player owning the piece (affects the image variant).
+     * @param id          The specific ID of the piece type.
+     * @return a {@link String} representing the full path to the image resource.
+     */
+    public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
+        final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
+        final String fileName = color + "_" + id + ".png";
+        if (imagePath.startsWith("classpath:")) {
+            final String resourcePath = imagePath.replace("classpath:", "") + fileName;
+            final var url = GameControllerImpl.class.getResource(resourcePath);
+            if (url == null) {
+                throw new IllegalStateException("Image resource not found: " + resourcePath);
+            }
+            return url.toExternalForm();
+        }
+        final var finalPath = LoadingUtils.getCorrectPath(imagePath).resolve(fileName);
+        if (!Files.exists(finalPath)) {
+            throw new IllegalStateException("File: " + finalPath + " does not exists.");
+        }
+        return finalPath.toUri().toString();
     }
 }

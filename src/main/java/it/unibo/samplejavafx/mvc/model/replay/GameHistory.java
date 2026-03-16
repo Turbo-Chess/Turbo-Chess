@@ -21,6 +21,13 @@ public class GameHistory {
     @Setter
     private Loadout blackLoadout;
 
+    @Getter
+    @Setter
+    private long whiteTimeRemaining;
+    @Getter
+    @Setter
+    private long blackTimeRemaining;
+
     /**
      * Adds an event to the history.
      *

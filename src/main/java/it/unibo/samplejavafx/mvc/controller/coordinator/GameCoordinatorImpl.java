@@ -1,28 +1,24 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
+import it.unibo.samplejavafx.mvc.view.ViewFactory;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -46,42 +42,30 @@ import org.slf4j.LoggerFactory;
  * </p>
  */
 public final class GameCoordinatorImpl implements GameCoordinator {
-    private static final int WINDOW_WIDTH = 800;
-    private static final int WINDOW_HEIGHT = 800;
-    private static final String MAIN_MENU_CSS = "/css/MainMenu.css";
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinatorImpl.class);
+    private static final long DEFAULT_TIME_SECONDS = 600;
 
-    private final Stage stage;
-    private Parent gameRoot;
-    private Scene gameScene;
-    private final ControllerContext controllerContext = ControllerContext.createDefaultContext();
-    private ChessboardViewControllerImpl chessboardViewController;
-    private final GameController gameController = new GameControllerImpl(this, controllerContext);
+    private final BoardFactory boardFactory;
+    private final LoadoutManager loadoutManager;
+    private final GameController gameController;
     private final ReplayManager replayManager = new ReplayManager();
     private Path currentSaveFile;
+    private final ViewFactory viewFactory;
 
     /**
      * Constructs a new {@code GameCoordinatorImpl}.
      *
-     * @param stage The primary {@link Stage} of the JavaFX application, used as the main window container.
+     * @param viewFactory The {@link ViewFactory} used to create view scenes.
      */
     // The stage is the main window passed from javafx library, and it's designed to be mutable
     // so it's correct in that case.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
-    public GameCoordinatorImpl(final Stage stage) {
-        this.stage = stage;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Delegates resource loading to the {@link GameController}'s loader.
-     * </p>
-     */
-    @Override
-    public void loadPieces() {
-        this.controllerContext.loaderController().load();
+    public GameCoordinatorImpl(final ViewFactory viewFactory) {
+        this.viewFactory = viewFactory;
+        final LoaderController loaderController = new LoaderControllerImpl();
+        loaderController.load();
+        this.boardFactory = new BoardFactoryImpl(loaderController.getEntityDefinitionCacheEntries());
+        this.loadoutManager = new LoadoutManager();
+        this.gameController = new GameControllerImpl(this, boardFactory, this.loadoutManager);
     }
 
     /**
@@ -93,21 +77,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initMainMenu() {
-        try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
-            loader.setControllerFactory(c -> new MainMenuController(this));
-            final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
-            if (cssLocation != null) {
-                scene.getStylesheets().add(cssLocation.toExternalForm());
-            }
-            stage.setTitle("TurboChess - Main Menu");
-            stage.setScene(scene);
-            stage.show();
-        } catch (final IOException e) {
-            LOGGER.error("Failed to load Main Menu", e);
-        }
+        shutdownCurrentTimer();
+        viewFactory.showMainMenu(this);
     }
 
     /**
@@ -119,21 +90,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initSettings() {
-        try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Settings.fxml"));
-            loader.setControllerFactory(c -> new SettingsController(this));
-            final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
-            if (cssLocation != null) {
-                scene.getStylesheets().add(cssLocation.toExternalForm());
-            }
-            stage.setTitle("TurboChess - Settings");
-            stage.setScene(scene);
-            stage.show();
-        } catch (final IOException e) {
-            LOGGER.error("Failed to load Settings", e);
-        }
+        shutdownCurrentTimer();
+        viewFactory.showSettings(this);
     }
 
     /**
@@ -145,21 +103,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initLoadout() {
-        try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutSelector.fxml"));
-            loader.setControllerFactory(c -> new LoadoutSelector(this.gameController, this, controllerContext.loadoutManager()));
-            final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
-            if (cssLocation != null) {
-                scene.getStylesheets().add(cssLocation.toExternalForm());
-            }*/
-            stage.setTitle("TurboChess - Loadout Selector");
-            stage.setScene(scene);
-            stage.show();
-        } catch (final IOException e) {
-            LOGGER.error("Failed to load Loadout Selector", e);
-        }
+        shutdownCurrentTimer();
+        viewFactory.showLoadout(this.gameController, this, loadoutManager);
     }
 
     /**
@@ -167,24 +112,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initLoadoutEditor() {
-        try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
-            loader.setControllerFactory(c -> new LoadoutEditor(
-                    this, controllerContext.loaderController(), controllerContext.loadoutManager()
-            ));
-
-            final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            /*final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
-            if (cssLocation != null) {
-                scene.getStylesheets().add(cssLocation.toExternalForm());
-            }*/
-            stage.setTitle("TurboChess - Loadout Editor");
-            stage.setScene(scene);
-            stage.show();
-        } catch (final IOException e) {
-            LOGGER.error("Failed to load Loadout Editor", e);
-        }
+        shutdownCurrentTimer();
+        viewFactory.showLoadoutEditor(this, (DefinitionRegistry) this.boardFactory, loadoutManager);
     }
 
     /**
@@ -197,25 +126,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initPromotion() {
-        try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
-            loader.setControllerFactory(c -> new PromotionController(
-                    this.gameController, controllerContext.loaderController()
-            ));
-
-            final Parent root = loader.load();
-            final PromotionController prom = loader.getController();
-            prom.init(gameController.getMatch().getCurrentPlayer());
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-            /*if (cssLocation != null) {
-                scene.getStylesheets().add(cssLocation.toExternalForm());
-            }*/
-            stage.setScene(scene);
-            stage.show();
-        } catch (final IOException e) {
-            LOGGER.error("Failed to load Promotion GUI", e);
-        }
+        viewFactory.initPromotion(this, this.gameController, (DefinitionRegistry) boardFactory);
     }
 
     /**
@@ -223,7 +134,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void quit() {
-        stage.close();
+        shutdownCurrentTimer();
+        viewFactory.quit();
     }
 
     /**
@@ -235,7 +147,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void resetGame() {
-        this.gameRoot = null;
+        shutdownCurrentTimer();
+        viewFactory.resetGame();
         initGame();
     }
 
@@ -248,8 +161,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initGame() {
+        createNewMatch(DEFAULT_TIME_SECONDS, DEFAULT_TIME_SECONDS);
         loadGameUI();
-        createNewMatch();
+        gameController.getMatch().getGameTimer().start();
         showGame();
     }
 
@@ -262,52 +176,22 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void showGame() {
-        stage.setTitle("TurboChess - Game");
-        stage.setScene(this.gameScene);
-        stage.show();
+        viewFactory.showGame();
     }
 
     private void loadGameUI() {
-        if (gameRoot != null) {
-            return;
-        }
-
-       try {
-           final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
-           loader.setControllerFactory(c -> new ChessboardViewControllerImpl(this.gameController, this));
-
-           this.gameRoot = loader.load();
-           this.chessboardViewController = loader.getController();
-
-           final var cssLocation = getClass().getResource("/css/GameLayout.css");
-            this.gameScene = new Scene(gameRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-           if (cssLocation != null) {
-               this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
-           }
-       } catch (final IOException e) {
-            LOGGER.error("Failed to load Game Layout", e);
-       }
+        viewFactory.initGameUI(this.gameController, this);
     }
 
-    private void createNewMatch() {
-        final ChessMatch match = new ChessMatchImpl();
-        match.getBoard().addObserver(this.chessboardViewController);
-
-        //controllerContext.loaderController().load();
-
-        controllerContext.boardFactory().populateChessboard(
+    private void createNewMatch(final long whiteTimeSeconds, final long blackTimeSeconds) {
+        final ChessMatch match = new ChessMatchImpl(whiteTimeSeconds, blackTimeSeconds);
+        this.gameController.setMatch(match);
+        boardFactory.populateChessboard(
                 gameController.getWhiteLoadout(),
                 gameController.getBlackLoadout(),
                 match.getBoard());
-        this.gameController.setMatch(match);
         match.getGameHistory().setWhiteLoadout(gameController.getWhiteLoadout());
         match.getGameHistory().setBlackLoadout(gameController.getBlackLoadout());
-
-        match.addObserver(this.chessboardViewController);
-        gameController.setChessboardViewController(this.chessboardViewController);
-
-        this.chessboardViewController.refreshBoardView(match.getBoard());
     }
 
     /**
@@ -315,21 +199,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initLoadGame() {
-        try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadGame.fxml"));
-            loader.setControllerFactory(c -> new LoadGameController(this));
-            final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
-            if (cssLocation != null) {
-                scene.getStylesheets().add(cssLocation.toExternalForm());
-            }
-            stage.setTitle("TurboChess - Load Game");
-            stage.setScene(scene);
-            stage.show();
-        } catch (final IOException e) {
-            LOGGER.error("Failed to load Load Game", e);
-        }
+        shutdownCurrentTimer();
+        viewFactory.initLoadGame(this);
     }
 
     /**
@@ -350,7 +221,14 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 gameController.setBlackLoadout(history.getBlackLoadout());
             }
 
-            initGame();
+            final long whiteTime = history.getWhiteTimeRemaining() > 0 ? history.getWhiteTimeRemaining() : DEFAULT_TIME_SECONDS;
+            final long blackTime = history.getBlackTimeRemaining() > 0 ? history.getBlackTimeRemaining() : DEFAULT_TIME_SECONDS;
+
+            shutdownCurrentTimer();
+            viewFactory.resetGame();
+            createNewMatch(whiteTime, blackTime);
+            loadGameUI();
+            showGame();
 
             final ChessMatch match = gameController.getMatch();
 
@@ -371,13 +249,13 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                          turn++;
                      }
                 } else {
-                    // TODO: Handle spawn/despawn events
                     LOGGER.debug("Skipping event {}", lastEvent);
                 }
 
                 match.setTurnNumber(turn);
                 match.setPlayerColor(player);
             }
+            match.getGameTimer().start();
         }
     }
 
@@ -392,6 +270,13 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         final GameHistory history = gameController.getGameHistory();
         history.setWhiteLoadout(gameController.getWhiteLoadout());
         history.setBlackLoadout(gameController.getBlackLoadout());
+
+        final ChessMatch match = gameController.getMatch();
+        if (match != null) {
+            final var timer = match.getGameTimer();
+            history.setWhiteTimeRemaining(timer.getTimeRemaining(PlayerColor.WHITE));
+            history.setBlackTimeRemaining(timer.getTimeRemaining(PlayerColor.BLACK));
+        }
 
         LOGGER.info("Saving game history with {} events", history.getEvents().size());
 
@@ -414,5 +299,12 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public Path getCurrentSaveFile() {
         return this.currentSaveFile;
+    }
+
+    private void shutdownCurrentTimer() {
+        final ChessMatch match = gameController.getMatch();
+        if (match != null) {
+            match.getGameTimer().shutdown();
+        }
     }
 }

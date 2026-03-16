@@ -13,6 +13,8 @@ import it.unibo.samplejavafx.mvc.model.replay.SpawnEvent;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.score.ScoreManager;
 import it.unibo.samplejavafx.mvc.model.score.ScoreManagerImpl;
+import it.unibo.samplejavafx.mvc.model.timer.GameTimer;
+import it.unibo.samplejavafx.mvc.model.timer.GameTimerImpl;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,6 +40,7 @@ import java.util.List;
 @ToString
 public final class ChessMatchImpl implements ChessMatch {
     private static final String SUPPRESS_STRING = "EI_EXPOSE_REP";
+    private static final long DEFAULT_TIME_SECONDS = 600;
     @Getter
     private GameState gameState;
     @Getter
@@ -45,18 +48,21 @@ public final class ChessMatchImpl implements ChessMatch {
     @Getter
     private int turnNumber;
     @Getter
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "Methods of turn handler are necessary outside")
     private final TurnHandler turnHandler;
     @Getter
     // The board needs to be modified by other methods during the game.
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "The chessboard is meant to be accessed and modified outside")
     private final ChessBoard board = new ChessBoardImpl();
     @Getter
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "The game history is meant to be accessed and read outside")
     private final GameHistory gameHistory;
     @Getter
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "The score manager is meant to be accessed and read outside")
     private final ScoreManager scoreManager;
+    @Getter
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "The game timer is meant to be accessed and read outside")
+    private final GameTimer gameTimer;
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 
     /**
@@ -69,6 +75,16 @@ public final class ChessMatchImpl implements ChessMatch {
      * </p>
      */
     public ChessMatchImpl() {
+        this(DEFAULT_TIME_SECONDS, DEFAULT_TIME_SECONDS);
+    }
+
+    /**
+     * Constructs a new chess match setting the initial time for each player.
+     *
+     * @param whiteTimeSeconds the initial time in seconds for white player.
+     * @param blackTimeSeconds the initial time in seconds for black player.
+     */
+    public ChessMatchImpl(final long whiteTimeSeconds, final long blackTimeSeconds) {
         this.gameState = GameState.NORMAL;
         this.turnNumber = 1;
         this.currentPlayer = PlayerColor.WHITE;
@@ -87,6 +103,12 @@ public final class ChessMatchImpl implements ChessMatch {
         this.board.addObserver(historyRecorder);
         this.board.addObserver(scoreManager);
         this.scoreManager.addObserver(this::notifyScoreUpdated);
+        this.gameTimer = new GameTimerImpl(
+            whiteTimeSeconds,
+            blackTimeSeconds,
+            this::notifyTimerUpdated,
+            this::onTimeOut
+        );
     }
 
     /**
@@ -97,7 +119,7 @@ public final class ChessMatchImpl implements ChessMatch {
     @Override
     public void setTurnNumber(final int turnNumber) {
         this.turnNumber = turnNumber;
-        this.turnHandler.setTurn(turnNumber);
+        this.turnHandler.setStartTurn(turnNumber);
         this.notifyTurnUpdated(this.turnNumber);
     }
 
@@ -109,7 +131,8 @@ public final class ChessMatchImpl implements ChessMatch {
     @Override
     public void setPlayerColor(final PlayerColor playerColor) {
         this.currentPlayer = playerColor;
-        this.turnHandler.setPlayerColor(playerColor);
+        this.turnHandler.setStartPlayerColor(playerColor);
+        this.gameTimer.setActivePlayer(this.currentPlayer);
         this.notifyPlayerColorUpdated(this.currentPlayer);
     }
 
@@ -160,6 +183,7 @@ public final class ChessMatchImpl implements ChessMatch {
     @Override
     public void updatePlayerColor(final PlayerColor currentColor) {
         this.currentPlayer = currentColor;
+        this.gameTimer.setActivePlayer(this.currentPlayer);
         this.notifyPlayerColorUpdated(this.currentPlayer);
     }
 
@@ -172,8 +196,13 @@ public final class ChessMatchImpl implements ChessMatch {
      */
     @Override
     public void updateGameState(final GameState state, final PlayerColor playerColor) {
-        this.gameState = state;
-        this.notifyGameStateUpdated(this.gameState, this.currentPlayer);
+        if (this.gameState != state) {
+            this.gameState = state;
+            if (state == GameState.CHECKMATE || state == GameState.DRAW || state == GameState.TIMEOUT) {
+                this.gameTimer.stop();
+            }
+            this.notifyGameStateUpdated(this.gameState, playerColor);
+        }
     }
 
     /**
@@ -183,7 +212,7 @@ public final class ChessMatchImpl implements ChessMatch {
      */
     @Override
     public Point2D getPromotionPos() {
-        return turnHandler.getCurrentPiecePos();
+        return turnHandler.getPromotingPawnPos();
     }
 
     @Override
@@ -191,4 +220,12 @@ public final class ChessMatchImpl implements ChessMatch {
         return this.scoreManager.getScore(player);
     }
 
+    private void notifyTimerUpdated(final PlayerColor player, final Long timeRemaining) {
+        subscribers.forEach(sub -> sub.onTimerUpdated(player, timeRemaining));
+    }
+
+    private void onTimeOut(final PlayerColor loser) {
+        final PlayerColor winner = (loser == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
+        this.updateGameState(GameState.TIMEOUT, winner);
+    }
 }
