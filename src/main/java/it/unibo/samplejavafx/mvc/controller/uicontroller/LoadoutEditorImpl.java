@@ -146,6 +146,7 @@ public final class LoadoutEditorImpl implements Initializable, LoadoutEditor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void backToLoadoutSelector(final ActionEvent e) {
         this.coordinator.initLoadout();
     }

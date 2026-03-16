@@ -126,6 +126,7 @@ public final class LoadoutSelectorImpl implements Initializable, LoadoutSelector
     /**
      * {@inheritDoc}
      */
+    @Override
     public void backToMenu(final ActionEvent e) {
         this.coordinator.initMainMenu();
     }
@@ -133,6 +134,7 @@ public final class LoadoutSelectorImpl implements Initializable, LoadoutSelector
     /**
      * {@inheritDoc}
      */
+    @Override
     public void backToLoadoutEditor(final ActionEvent e) {
         this.coordinator.initLoadoutEditor();
     }

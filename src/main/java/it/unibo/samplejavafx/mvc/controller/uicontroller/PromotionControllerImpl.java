@@ -59,6 +59,7 @@ public final class PromotionControllerImpl implements PromotionController {
      *
      * @param currentColor color of the player's promotion.
      */
+    @Override
     public void init(final PlayerColor currentColor) {
         populateGridPane(currentColor);
     }
