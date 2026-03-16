@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
@@ -54,7 +53,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     // The stage is the main window passed from javafx library, and it's designed to be mutable
     // so it's correct in that case.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public GameCoordinatorImpl(final ViewFactory viewFactory) {
         this.viewFactory = viewFactory;
     }

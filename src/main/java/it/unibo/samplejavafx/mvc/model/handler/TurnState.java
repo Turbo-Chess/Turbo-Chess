@@ -8,6 +8,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * The {@link TurnState} interface expresses the methods that are essential for a TurnState, which is how
  * the {@link TurnHandler} should behave according to the current {@link GameState}.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface") // interface isn't meant to be used as a functional interface
 public interface TurnState {
 
     /**

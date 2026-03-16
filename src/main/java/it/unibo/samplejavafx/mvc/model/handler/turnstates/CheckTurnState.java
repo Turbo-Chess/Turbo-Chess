@@ -10,15 +10,25 @@ import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerContext;
+import it.unibo.samplejavafx.mvc.model.handler.TurnState;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 
+/**
+ * {@inheritDoc}
+ * Implementation of {@link TurnState} for the {@code CHECK} {@link GameState}.
+ */
 public final class CheckTurnState extends AbstractTurnState {
     private final ChessBoard board;
     private final Map<Piece, List<Point2D>> interposingPieces = new HashMap<>();
-    private PlayerColor currentColor;
+    private final PlayerColor currentColor;
 
+    /**
+     * Constructor for the CheckTurnState.
+     * 
+     * @param context the current {@link TurnHandlerContext}.
+     */
     public CheckTurnState(final TurnHandlerContext context) {
         super(context);
         this.board = context.getBoard();
@@ -36,32 +46,32 @@ public final class CheckTurnState extends AbstractTurnState {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
-        if (board.isFree(pos) && context.getCurrentPiece().isEmpty()) {
+        if (board.isFree(pos) && getContext().getCurrentPiece().isEmpty()) {
             return Collections.emptyList();
         }
-        if (board.isFree(pos) && context.getCurrentMoves().contains(pos)) {
-            return context.executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
+        if (board.isFree(pos) && getContext().getCurrentMoves().contains(pos)) {
+            return getContext().executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
             && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
-            context.setCurrentPiece(king);
-            context.setPieceMoves(RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king));
-            return context.getCurrentMoves();
+            getContext().setCurrentPiece(king);
+            getContext().setPieceMoves(RulesUtils.kingPossibleMoves(king.getValidMoves(pos, board), board, currentColor, king));
+            return getContext().getCurrentMoves();
         }
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
             && interposingPieces.keySet().contains(board.getEntity(pos).get())) {
             final var piece = (Piece) board.getEntity(pos).get();
-            context.setCurrentPiece(piece);
-            context.setPieceMoves(RulesUtils.kingPossibleMoves(piece.getValidMoves(pos, board), board, currentColor, piece));
-            return context.getCurrentMoves();
+            getContext().setCurrentPiece(piece);
+            getContext().setPieceMoves(RulesUtils.kingPossibleMoves(piece.getValidMoves(pos, board), board, currentColor, piece));
+            return getContext().getCurrentMoves();
         }
         if (!board.isFree(pos)
             && board.getEntity(pos).get().getPlayerColor() == RulesUtils.swapColor(currentColor)
-            && context.getCurrentPiece().isPresent() && context.getCurrentMoves().contains(pos)) {
-            return context.executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
+            && getContext().getCurrentPiece().isPresent() && getContext().getCurrentMoves().contains(pos)) {
+            return getContext().executeTurn(MoveType.MOVE_AND_EAT, pos) ? List.of(pos) : Collections.emptyList();
         }
-        context.unsetCurrentPiece();
-        return context.getCurrentMoves();
+        getContext().unsetCurrentPiece();
+        return getContext().getCurrentMoves();
     }
 }

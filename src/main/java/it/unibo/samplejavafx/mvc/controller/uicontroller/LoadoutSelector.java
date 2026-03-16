@@ -81,7 +81,7 @@ public final class LoadoutSelector implements Initializable {
             }
         });
 
-        /**
+        /*
          * When a loadout is selected and loaded, sets it as the actual loadout for the chosen color.
          */
         useButton.setOnAction(event -> {
@@ -95,7 +95,7 @@ public final class LoadoutSelector implements Initializable {
             }
         });
 
-        /**
+        /*
          * When a loadout is selected, views its pieces.
          */
         loadButton.setOnAction(event -> {

@@ -65,8 +65,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
-        final List<Point2D> results = this.turnState.thinking(pos);
-        return results;
+        return this.turnState.thinking(pos);
     }
 
     /**
@@ -226,7 +225,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         this.pieceMoves = Collections.emptyList();
     }
 
-// - - - Helper methods for TurnState implementations - - -
+    // - - - Helper methods for TurnState implementations - - -
 
     /**
      * {@inheritDoc}
@@ -248,6 +247,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      * {@inheritDoc}
      */
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "this field is part of the State Pattern structure")
     public List<Point2D> getCurrentMoves() {
         return this.pieceMoves;
     }
@@ -272,6 +272,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      * {@inheritDoc}
      */
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "this field is part of the State Pattern structure")
     public ChessBoard getBoard() {
         return this.board;
     }
@@ -280,6 +281,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      * {@inheritDoc}
      */
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "this field is part of the State Pattern structure")
     public Map<Piece, List<Point2D>> getInterposing() {
         return this.interposingPieces;
     }
@@ -311,17 +313,18 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     /**
      * Setter for the promotionHolder of the TurnHandler.
      * 
-     * @return the {@link Optional} where we want to save a promoting piece.
+     * @param pawn the Optional containing the {@link Piece} pawn.
      */
+    @Override
     public void passOnPromotion(final Optional<Piece> pawn) {
         this.promotionHolder = pawn;
     }
 
-// - - - Helper methods for Replay and LoadGame related features - - -
+    // - - - Helper methods for Replay and LoadGame related features - - -
 
     @Override
-    public void setStartTurn(final int turn) {
-        this.turn = turn;
+    public void setStartTurn(final int newTurn) {
+        this.turn = newTurn;
     }
 
     @Override
