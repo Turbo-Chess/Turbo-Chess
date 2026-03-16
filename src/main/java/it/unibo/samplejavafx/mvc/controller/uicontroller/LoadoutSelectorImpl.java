@@ -28,9 +28,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
 /**
- * Controller for the LoadoutSelector UI.
+ * Implementation of {@link LoadoutSelector}, enables to load, see and use loadouts. 
  */
-public final class LoadoutSelectorImpl implements Initializable {
+public final class LoadoutSelectorImpl implements Initializable, LoadoutSelector {
     @FXML
     private ListView<String> loadoutListView;
     @FXML
@@ -124,18 +124,14 @@ public final class LoadoutSelectorImpl implements Initializable {
     }
 
     /**
-     * Handles the "Back" button action.
-     *
-     * @param e the {@link ActionEvent} linked to the button.
+     * {@inheritDoc}
      */
     public void backToMenu(final ActionEvent e) {
         this.coordinator.initMainMenu();
     }
 
     /**
-     * Handles the "Loadout Editor" button action.
-     *
-     * @param e the {@link ActionEvent} linked to the button.
+     * {@inheritDoc}
      */
     public void backToLoadoutEditor(final ActionEvent e) {
         this.coordinator.initLoadoutEditor();
