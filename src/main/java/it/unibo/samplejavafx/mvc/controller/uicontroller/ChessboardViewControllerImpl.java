@@ -424,6 +424,17 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * {@inheritDoc}
      */
     @Override
+    public void onEntityEat(final Point2D from, final Point2D to) {
+        if (isReplayMode) {
+            return;
+        }
+        highlightEat(from, to);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void onEntityRemoved(final Point2D pos, final Entity entity) {
         if (isReplayMode) {
             return;
