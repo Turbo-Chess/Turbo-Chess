@@ -24,7 +24,8 @@ import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
 import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 
 /**
- * Placeholder.
+ * Implementation of {@link TurnHandler} and {@link TurnHandlerContext} interfaces, the TurnHandler finalizes the moves done
+ * by players, changes GameStates accordingly and enforces the advanced rules such as Promotion, Checkmate, Draw and Castling.
  */
 public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     private static final Point2D CASTLE_POS = new Point2D(2, 6);
@@ -43,9 +44,9 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     private Optional<Piece> promotionHolder = Optional.empty();
 
     /**
-     * placeholder.
+     * Constructor for the TurnHandler.
      *
-     * @param match placeholder.
+     * @param match the {@link Match} that needs to be associated with the TurnHandler.
      */
     @SuppressFBWarnings(
         value = "EI_EXPOSE_REP2",
