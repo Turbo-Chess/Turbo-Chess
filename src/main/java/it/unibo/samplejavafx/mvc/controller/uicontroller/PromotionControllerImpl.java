@@ -18,9 +18,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 /**
- * Controller that handles the GUI for promotion.
+ * Implementation of {@link PromotionController}, handles the GUI for the promotion.
  */
-public final class PromotionControllerImpl {
+public final class PromotionControllerImpl implements PromotionController {
     private static final int DEFAULT_VALUE = 0;
     @FXML
     private GridPane promotionPane;
