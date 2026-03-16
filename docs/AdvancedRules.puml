@@ -34,10 +34,10 @@ enum CastleCondition {
     CASTLE_BOTH
 }
 class TurnHandlerImpl
-TurnHandlerImpl .. AdvancedRules
-TurnHandlerImpl .. RulesUtils
-AdvancedRules .. CheckCalculator
-AdvancedRules .. CastleCondition
-AdvancedRules .. RulesUtils
+TurnHandlerImpl ..> AdvancedRules
+TurnHandlerImpl ..> RulesUtils
+AdvancedRules ..> CheckCalculator
+AdvancedRules o-- CastleCondition
+AdvancedRules ..> RulesUtils
 
 @enduml
