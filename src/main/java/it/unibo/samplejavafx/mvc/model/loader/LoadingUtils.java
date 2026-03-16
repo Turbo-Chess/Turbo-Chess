@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class LoadingUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadingUtils.class);
+    private static final String FILE_PROTOCOL = "file:";
 
     private LoadingUtils() {
         // utility class
@@ -33,8 +35,8 @@ public final class LoadingUtils {
                 LOGGER.error(e.getMessage(), e);
             }
 
-        } else if (basePath.startsWith("file:")) {
-            return Path.of(basePath.replace("file:", ""));
+        } else if (basePath.startsWith(FILE_PROTOCOL)) {
+            return Path.of(basePath.replace(FILE_PROTOCOL, ""));
         } else {
             try {
                 final Path p = Path.of(basePath);
@@ -48,5 +50,18 @@ public final class LoadingUtils {
         }
 
         throw new IllegalStateException("Path does not start with the right prefix: " + basePath);
+    }
+
+    /**
+     * Generates the correct file path for a piece's image based on its base path, player color, and ID.
+     *
+     * @param imagePath   The base directory or path for the image.
+     * @param playerColor The color of the player owning the piece (affects the image variant).
+     * @param id          The specific ID of the piece type.
+     * @return a {@link String} representing the full path to the image resource.
+     */
+    public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
+        final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
+        return FILE_PROTOCOL + getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
     }
 }

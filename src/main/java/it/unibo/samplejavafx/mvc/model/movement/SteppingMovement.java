@@ -12,6 +12,10 @@ import java.util.List;
  */
 
 public final class SteppingMovement implements MovementStrategy {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Point2D> calculateMoves(final Point2D start, final Point2D direction, final ChessBoard board) {
         // Extract the "atomic" movement to perform at each step

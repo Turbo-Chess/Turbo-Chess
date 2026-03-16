@@ -12,7 +12,7 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 public interface TurnState {
 
     /**
-     * The behaviour of the TurnHandler during a player's own turn.
+     * The behavior of the TurnHandler during a player's own turn.
      * 
      * @param pos the {@link Point2D} of the clicked cell.
      * @return a List of {@link Point2D} of all possible moves.

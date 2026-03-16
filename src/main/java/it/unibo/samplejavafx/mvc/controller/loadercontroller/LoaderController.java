@@ -1,7 +1,9 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +27,7 @@ public interface LoaderController {
     void load();
 
     /**
-     * Retrieves the cache of loaded entity definitions.
+     * Retrieves the cache of loaded entity definitions entries.
      *
      * <p>
      * The structure is a nested Map where the outer key is the resource pack name (e.g., "standard-chess")
@@ -34,5 +36,5 @@ public interface LoaderController {
      *
      * @return a {@link Map} providing read access to all loaded {@link AbstractEntityDefinition} objects.
      */
-    Map<String, Map<String, AbstractEntityDefinition>> getEntityCache();
+    List<DefinitionCacheEntry> getEntityDefinitionCacheEntries();
 }

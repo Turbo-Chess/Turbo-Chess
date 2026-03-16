@@ -1,10 +1,9 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -44,19 +43,9 @@ public interface GameController {
      * Links the UI view controller to this game controller.
      * This allows the game controller to trigger UI updates (e.g., highlighting cells).
      *
-     * @param chessboardViewController The {@link ChessboardViewController} to associate.
+     * @param boardView The {@link BoardView} to manage showing of specific cells.
      */
-    void setChessboardViewController(ChessboardViewController chessboardViewController);
-
-    /**
-     * Generates the correct file path for a piece's image based on its base path, player color, and ID.
-     *
-     * @param imagePath   The base directory or path for the image.
-     * @param playerColor The color of the player owning the piece (affects the image variant).
-     * @param id          The specific ID of the piece type.
-     * @return a {@link String} representing the full path to the image resource.
-     */
-    String calculateImageColorPath(String imagePath, PlayerColor playerColor, String id);
+    void setBoardView(BoardView boardView);
 
     /**
      * Triggers the surrender action for the current player, typically ending the match.
@@ -107,7 +96,6 @@ public interface GameController {
      */
     Loadout getBlackLoadout();
 
-    // TODO: check removal FOR LUCA (see if getting and setting game history can be moved into the game context)
     /**
      * @return the game history.
      */
@@ -117,11 +105,6 @@ public interface GameController {
      * @return the live chessboard.
      */
     ChessBoard getLiveBoard();
-
-    /**
-     * Requests the UI to display the main game view.
-     */
-    void showGame();
 
     /**
      * Retrieves the current active match reference.

@@ -116,7 +116,7 @@ public interface TurnHandlerContext {
     /**
      * Setter for the promotionHolder of the TurnHandler.
      * 
-     * @param pawn the Optional containing the {@link Piece} pawn.
+     * @param pawn the {@link Optional} where we want to save a promoting piece.
      */
     void passOnPromotion(Optional<Piece> pawn);
 

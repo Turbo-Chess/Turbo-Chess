@@ -33,7 +33,10 @@ public final class GameHistoryRecorder implements BoardObserver {
     /**
      * @return the recorded history.
      */
-    @SuppressFBWarnings("EI_EXPOSE_REP")
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP",
+        justification = "The history is exposed to allow replay functionality to access the recorded events."
+    )
     public GameHistory getHistory() {
         return history;
     }

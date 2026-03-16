@@ -25,15 +25,36 @@ public final class App extends Application {
         stage.setMinHeight(WINDOW_HEIGHT);
         stage.setMinWidth(WINDOW_WIDTH);
 
-        final ViewFactory viewFactory = new JafaFXViewFactory(stage);
-        final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
+        try {
+            final ViewFactory viewFactory = new JafaFXViewFactory(stage);
+            final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
 
-        // Load game resources
-        coordinator.loadPieces();
+            // Start with Main Menu
+            coordinator.initMainMenu();
+        } catch (final Exception e) { // CHECKSTYLE:OFF: IllegalCatch
+            showFatalStartupError(e);
+        } // CHECKSTYLE:ON: IllegalCatch
 
-        // Start with Main Menu
-        coordinator.initMainMenu();
+    }
 
+    private void showFatalStartupError(final Exception e) {
+        Platform.runLater(() -> {
+            final Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Configuration Error");
+            alert.setHeaderText("Invalid JSON Configuration");
+
+            // Unwrap the exception to find the root cause (Jackson wrap the ex into another one)
+            Throwable rootCause = e;
+            while (rootCause.getCause() != null && !rootCause.getCause().equals(rootCause)) {
+                rootCause = rootCause.getCause();
+            }
+
+            final String errorMsg = rootCause.getMessage() != null
+                    ? e.getMessage() + " \nReason: " + rootCause.getMessage()
+                    : "Unknown error";
+            alert.setContentText(errorMsg);
+            alert.showAndWait();
+        });
     }
 
     /**
