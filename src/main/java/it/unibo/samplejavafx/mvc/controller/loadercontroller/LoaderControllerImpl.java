@@ -63,6 +63,12 @@ public class LoaderControllerImpl implements LoaderController {
      */
     @Override
     public void load() {
+        try {
+            final Path assetsPath = LoadingUtils.getCorrectPath(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath());
+            FileSystemUtils.ensureDirectoryExists(assetsPath);
+        } catch (final IOException | IllegalStateException e) {
+            LOGGER.error("Cannot ensure Assets directory exists", e);
+        }
         // Get a path from URI
         for (final String basePathString : PATHS) {
             final Path unifiedBasePath = LoadingUtils.getCorrectPath(basePathString);
