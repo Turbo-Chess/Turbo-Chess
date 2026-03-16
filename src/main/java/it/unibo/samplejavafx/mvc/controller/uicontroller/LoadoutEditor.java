@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.event.ActionEvent;
 
 /**
