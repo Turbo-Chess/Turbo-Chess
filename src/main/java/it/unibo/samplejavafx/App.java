@@ -5,6 +5,8 @@ import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinatorImpl;
 import it.unibo.samplejavafx.mvc.view.JafaFXViewFactory;
 import it.unibo.samplejavafx.mvc.view.ViewFactory;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 /**
