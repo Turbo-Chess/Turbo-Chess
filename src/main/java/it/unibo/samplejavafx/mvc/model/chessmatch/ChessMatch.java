@@ -14,7 +14,7 @@ import it.unibo.samplejavafx.mvc.model.timer.GameTimer;
  *
  * <p>
  * It acts as the central source of truth for the game state, maintaining the flow of turns, player progression,
- * and the overall status of the match (e.g., normal, checkmate, draw).
+ * and the overall status of the match.
  * It aggregates key components such as the {@link ChessBoard}, {@link TurnHandler}, and {@link GameHistory}.
  * </p>
  */
@@ -92,23 +92,31 @@ public interface ChessMatch {
     void updateGameState(GameState state, PlayerColor playerColor);
 
     /**
-     * placeholder.
+     * Sets the turn number of the match.
      *
-     * @param turnNumber placeholder.
+     * <p>
+     * This method is used to manually set the turn number, for example when loading a saved game.
+     * </p>
+     *
+     * @param turnNumber the turn number to set.
      */
     void setTurnNumber(int turnNumber);
 
     /**
-     * placeholder.
+     * Sets the current player color.
      *
-     * @param playerColor placeholder.
+     * <p>
+     * This method is used to manually set the current player, for example when loading a saved game.
+     * </p>
+     *
+     * @param playerColor the {@link PlayerColor} to set.
      */
     void setPlayerColor(PlayerColor playerColor);
 
     /**
-     * placeholder.
+     * Retrieves the history of the game.
      *
-     * @return placeholder.
+     * @return the {@link GameHistory} instance containing the list of moves and events.
      */
     GameHistory getGameHistory();
 
@@ -128,9 +136,9 @@ public interface ChessMatch {
     GameTimer getGameTimer();
 
     /**
-     * placeholder.
+     * Retrieves the position of the pawn currently eligible for promotion, if any.
      *
-     * @return placeholder.
+     * @return the {@link Point2D} coordinate of the pawn promoting, or {@code null} if no promotion is pending.
      */
     Point2D getPromotionPos();
 }

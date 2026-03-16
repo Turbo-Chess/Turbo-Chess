@@ -111,11 +111,12 @@ public final class ChessMatchImpl implements ChessMatch {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      *
-     * @param turnNumber placeholder.
+     * <p>
+     * Sets the turn number and re-initializes the turn handler and notifies observers.
+     * </p>
      */
-    // TODO: Missing Javadocs FOR LUCA
     @Override
     public void setTurnNumber(final int turnNumber) {
         this.turnNumber = turnNumber;
@@ -124,11 +125,12 @@ public final class ChessMatchImpl implements ChessMatch {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      *
-     * @param playerColor placeholder.
+     * <p>
+     * Sets the player color and re-initializes the turn handler and notifies observers.
+     * </p>
      */
-    // TODO: Missing Javadocs FOR LUCA
     @Override
     public void setPlayerColor(final PlayerColor playerColor) {
         this.currentPlayer = playerColor;

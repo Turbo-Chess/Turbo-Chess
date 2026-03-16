@@ -57,5 +57,5 @@ public interface ChessMatchObserver {
      * @param player        the player whose timer updated.
      * @param timeRemaining the time remaining for the player in seconds.
      */
-    void onTimerUpdated(PlayerColor player, long timeRemaining);
+    void onTimerUpdated(PlayerColor player, Long timeRemaining);
 }

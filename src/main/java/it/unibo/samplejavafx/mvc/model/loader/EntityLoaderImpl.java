@@ -15,7 +15,12 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * placeholder.
+ * A concrete implementation of the {@link EntityLoader} interface.
+ *
+ * <p>
+ * This class uses the Jackson library to deserialize JSON files into entity definition objects.
+ * It traverses a directory structure to find and load all matching configuration files.
+ * </p>
  */
 public class EntityLoaderImpl implements EntityLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityLoaderImpl.class);

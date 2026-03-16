@@ -29,7 +29,7 @@ public final class BoardFactoryImpl implements BoardFactory, DefinitionRegistry 
     /**
      * Constructs a new {@code BoardFactoryImpl}.
      *
-     * @param definitions the list of pre-loaded entity definitions to cache.
+     * @param definitions the list of preloaded entity definitions to cache.
      */
     public BoardFactoryImpl(final List<DefinitionCacheEntry> definitions) {
         for (final var definitionEntry : definitions) {
@@ -42,7 +42,8 @@ public final class BoardFactoryImpl implements BoardFactory, DefinitionRegistry 
      * {@inheritDoc}
      *
      * <p>
-     * Iterates through the entries in the provided loadouts and places corresponding pieces onto a new board instance.
+     * Iterates through the entries in the provided loadouts and places corresponding pieces onto a new board instance
+     * and incrementing the gameId counter to not make duplicates.
      * </p>
      */
     @Override
@@ -92,16 +93,25 @@ public final class BoardFactoryImpl implements BoardFactory, DefinitionRegistry 
         this.gameId++;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getResPackIds() {
         return List.copyOf(entityCache.keySet());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, AbstractEntityDefinition> getPackData(final String packId) {
         return Map.copyOf(entityCache.get(packId));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AbstractEntityDefinition> getAllDefinitions() {
         return entityCache.values().stream()
@@ -109,11 +119,17 @@ public final class BoardFactoryImpl implements BoardFactory, DefinitionRegistry 
                 .toList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractEntityDefinition getDefinition(final String packId, final String pieceId) {
         return entityCache.get(packId).get(pieceId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getAllIds() {
         return List.copyOf(entityCache.values().stream()

@@ -15,11 +15,8 @@ import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
  * the data model (match, board, loadouts) and the user interface.
  *
  * <p>
- * It provides methods for:
- * - Managing game entities and resources via the {@link LoaderController}.
- * - Handling user interactions such as clicking on the board to move pieces.
- * - Controlling game state transitions like surrender or promotion.
- * - Caching valid moves to optimize performance.
+ * It provides methods for things like handling user interactions such as clicking on the board to move pieces and
+ * controlling the game state transitions like surrender or promotion.
  * </p>
  */
 public interface GameController {
@@ -41,8 +38,8 @@ public interface GameController {
     void handleClick(Point2D pointClicked);
 
     /**
-     * Links the UI view controller to this game controller.
-     * This allows the game controller to trigger UI updates (e.g., highlighting cells).
+     * Link the controller to a specific subset of decoupled view functions
+     * to trigger specific UI updates (e.g., highlighting cells).
      *
      * @param boardView The {@link BoardView} to manage showing of specific cells.
      */
@@ -79,7 +76,7 @@ public interface GameController {
     /**
      * Sets the white player's loadout.
      *
-     * @param loadout the loadout to set.
+     * @param loadout the {@link Loadout} to set.
      */
     void setWhiteLoadout(Loadout loadout);
 

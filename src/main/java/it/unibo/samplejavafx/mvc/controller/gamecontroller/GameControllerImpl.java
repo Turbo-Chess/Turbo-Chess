@@ -39,7 +39,6 @@ import java.util.Set;
  * </p>
  */
 public final class GameControllerImpl implements GameController {
-    // Will the taken from the selected loadout
     private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
     private final PieceCreator pieceCreator;
     @SuppressFBWarnings(
@@ -64,9 +63,9 @@ public final class GameControllerImpl implements GameController {
     /**
      * Constructs a new {@code GameControllerImpl}.
      *
-     * @param gameCoordinator The {@link GameCoordinator} that manages the overall application lifecycle.
-     * @param pieceCreator the {@link PieceCreator} used to create new pieces.
-     * @param loadoutManager the {@link LoadoutManager} used to load the standard loadout.
+     * @param gameCoordinator   The {@link GameCoordinator} that manages the overall application lifecycle.
+     * @param pieceCreator      the {@link PieceCreator} used to create new pieces.
+     * @param loadoutManager    the {@link LoadoutManager} used to load the standard loadout.
      */
     public GameControllerImpl(
             final GameCoordinator gameCoordinator,
@@ -84,7 +83,7 @@ public final class GameControllerImpl implements GameController {
      * <p>
      * Processes a click event on the board.
      * It interacts with the {@link it.unibo.samplejavafx.mvc.model.handler.TurnHandler} to determine valid actions
-     * (move selection or piece movement) and updates the {@link ChessboardViewController} to show/hide move highlights.
+     * (move selection or piece movement) and updates the {@link BoardView} to show/hide move highlights.
      * </p>
      */
     @Override
@@ -92,14 +91,11 @@ public final class GameControllerImpl implements GameController {
         if (this.match == null) {
             throw new IllegalStateException("Board should be initialized before using it");
         }
-
-        // final Set<Point2D> moves = new HashSet<>(match.getBoard().getEntity(pointClicked).get()
-        //     .asMoveable().get().getValidMoves(pointClicked, match.getBoard()));
         final Set<Point2D> result = new HashSet<>(match.getTurnHandler().thinking(pointClicked));
 
-        // Added this check to silence the spot bugs error
-        // The view is created and injected after the controller instantiation
-        // so it needs to be injected by a setter later
+        /* Added this check to silence the spot bugs error
+         The view is created and injected after the controller instantiation
+         so it needs to be injected by a setter later */
         if (boardView != null) {
             if (result.isEmpty()) {
                 boardView.hideMovementCells(lastPossibleMoves);
@@ -137,7 +133,7 @@ public final class GameControllerImpl implements GameController {
      *
      * <p>
      * Handles the pawn promotion process.
-     * Identifies the promotion position, removes the pawn, and uses the {@link BoardFactory} to place the new piece.
+     * Identifies the promotion position, removes the pawn, and uses the {@link PieceCreator} to place the new piece.
      * </p>
      */
     @Override
@@ -155,10 +151,7 @@ public final class GameControllerImpl implements GameController {
     /**
      * {@inheritDoc}
      *
-     * <p>
-     * Scans the board to find the King of the opponent of the current player.
-     * </p>
-     *
+     * Returns the position of the opponent's king.
      */
     @Override
     public Point2D getKingPos(final PlayerColor color) {
@@ -169,6 +162,9 @@ public final class GameControllerImpl implements GameController {
             .getKing(this.match.getBoard(), RulesUtils.swapColor(color)).get());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setMatch(final ChessMatch match) {
         if (this.match != null) {
@@ -187,6 +183,9 @@ public final class GameControllerImpl implements GameController {
         this.match.getBoard().addObserver(this.historyRecorder);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GameHistory getGameHistory() {
         if (this.match == null) {
@@ -195,6 +194,9 @@ public final class GameControllerImpl implements GameController {
         return this.match.getGameHistory();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChessBoard getLiveBoard() {
         if (this.match == null) {

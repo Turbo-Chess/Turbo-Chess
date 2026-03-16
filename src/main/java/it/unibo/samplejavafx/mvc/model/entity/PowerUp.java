@@ -48,9 +48,7 @@ public class PowerUp extends AbstractEntity<PowerUpDefinition> {
     }
 
     /**
-     * Returns a new instance of itself.
-     * 
-     * @return the cloned {@link PowerUp}.
+     * {@inheritDoc}
      */
     @Override
     public final PowerUp cloneEntity() {

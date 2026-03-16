@@ -20,9 +20,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * placeholder.
+ * Utility class for handling file loading and path resolution.
+ *
+ * <p>
+ * It supports loading resources from both the classpath (including inside JARs) and the local file system.
+ * This class ensures uniform path handling across different operating systems.
+ * </p>
  */
-//TODO: Missing javadoc for LUCA and GIACOMO
 public final class LoadingUtils {
     private static final String CLASSPATH = "classpath:";
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadingUtils.class);
@@ -34,10 +38,16 @@ public final class LoadingUtils {
     }
 
     /**
-     * placeholder.
+     * Resolves a string path into a valid {@link Path} object.
      *
-     * @param basePath placeholder.
-     * @return placeholder.
+     * <p>
+     * It handles different prefixes like "classpath:" and "file:".
+     * If the path serves a resource inside a JAR file, it handles the creation of the necessary FileSystem.
+     * </p>
+     *
+     * @param basePath The path string to resolve. It can typically start with "classpath:" or "file:".
+     * @return The resolved {@link Path} object.
+     * @throws IllegalStateException if the path cannot be resolved or the resource is not found.
      */
     public static Path getCorrectPath(final String basePath) {
         if (basePath.startsWith(CLASSPATH)) {
@@ -99,6 +109,7 @@ public final class LoadingUtils {
      * @param playerColor The color of the player owning the piece (affects the image variant).
      * @param id          The specific ID of the piece type.
      * @return a {@link String} representing the full path to the image resource.
+     * @throws IllegalStateException if the specified image does not exists in the file system.
      */
     public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
         final String color = playerColor == PlayerColor.WHITE ? "white" : "black";

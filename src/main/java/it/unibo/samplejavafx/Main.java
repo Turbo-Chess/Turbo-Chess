@@ -1,7 +1,11 @@
 package it.unibo.samplejavafx;
 
 /**
- * placeholder.
+ * Application entry point wrapper.
+ * <p>
+ * This class serves as the launcher for the application, delegating execution to
+ * the JavaFX {@link App} class. This structure is required to correctly load
+ * JavaFX runtime components in certain packaging configurations to avoid module path issues.
  */
 public final class Main {
 
@@ -9,9 +13,9 @@ public final class Main {
     }
 
     /**
-     * placeholder.
+     * Main program entry point.
      *
-     * @param args placeholder.
+     * @param args command line arguments.
      */
     public static void main(final String[] args) {
         App.main(args);

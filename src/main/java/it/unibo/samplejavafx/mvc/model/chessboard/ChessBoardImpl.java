@@ -24,8 +24,6 @@ import java.util.Optional;
  */
 public class ChessBoardImpl implements ChessBoard {
     private static final int CHESSBOARD_SIZE = 8;
-    //private static final int BOARD_HEIGHT = 8;
-    //private static final int BOARD_WIDTH = 8;
 
     private final BiMap<Point2D, Entity> cells;
     /**
@@ -71,10 +69,6 @@ public class ChessBoardImpl implements ChessBoard {
 
     /**
      * {@inheritDoc}
-     *
-     * <p>
-     * Leverages the bidirectional nature of the map to perform a reverse lookup.
-     * </p>
      */
     @Override
     public Point2D getPosByEntity(final Entity entity) {

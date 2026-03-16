@@ -28,17 +28,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A concrete implementation of the {@link GameCoordinator} interface.
+ * Concrete implementation of the {@link GameCoordinator} interface.
  *
  * <p>
- * This class uses JavaFX's {@link FXMLLoader} to dynamically load FXML layouts and instantiate their respective
- * controllers. It holds a reference to the main application {@link Stage} and manages scene transitions,
- * as well as the game creation with all its other components.
- * </p>
- *
- * <p>
- * It acts as the central router for the application, ensuring that the correct view is displayed and
- * properly initialized with necessary dependencies.
+ * This class acts as the central hub for the program. It holds a reference to the {@link ViewFactory} to manage the
+ * scene switching. It also contains other components crucial to the overall
+ * game lifecycle like the {@link GameController} and the {@link BoardFactory}.
+ * It basically makes every component "handshake" correctly, ensuring that every component is properly initialized
+ * with necessary dependencies.
  * </p>
  */
 public final class GameCoordinatorImpl implements GameCoordinator {
@@ -57,8 +54,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      *
      * @param viewFactory The {@link ViewFactory} used to create view scenes.
      */
-    // The stage is the main window passed from javafx library, and it's designed to be mutable
-    // so it's correct in that case.
     public GameCoordinatorImpl(final ViewFactory viewFactory) {
         this.viewFactory = viewFactory;
         final LoaderController loaderController = new LoaderControllerImpl();
@@ -70,11 +65,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
-     *
-     * <p>
-     * Initializes the Main Menu view, loading the "MainMenu.fxml" layout and applying the corresponding stylesheet.
-     * </p>
-     */
+    */
     @Override
     public void initMainMenu() {
         shutdownCurrentTimer();
@@ -83,10 +74,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
-     *
-     * <p>
-     * Initializes the Settings view, loading the "Settings.fxml" layout.
-     * </p>
      */
     @Override
     public void initSettings() {
@@ -96,10 +83,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
-     *
-     * <p>
-     * Initializes the Loadout configuration view.
-     * </p>
      */
     @Override
     public void initLoadout() {
@@ -108,7 +91,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * Initializes the loadout editor scene.
+     * {@inheritDoc}
      */
     @Override
     public void initLoadoutEditor() {
@@ -119,10 +102,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * {@inheritDoc}
      *
-     * <p>
-     * Loads the "Promotion.fxml" layout and initializes its controller with the current player's context.
      * This prepares the UI for a pawn promotion event.
-     * </p>
      */
     @Override
     public void initPromotion() {
@@ -140,10 +120,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
-     *
-     * <p>
-     * Invalidates the current game root and re-initializes the game, effectively resetting the match.
-     * </p>
      */
     @Override
     public void resetGame() {
@@ -154,10 +130,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
-     *
-     * <p>
-     * Creates a new chess game recreating all the components needed for it.
-     * </p>
      */
     @Override
     public void initGame() {
@@ -169,10 +141,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
-     *
-     * <p>
-     * Sets the scene of the primary stage to the game scene and shows it, without creating a new match.
-     * </p>
      */
     @Override
     public void showGame() {
@@ -195,7 +163,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      */
     @Override
     public void initLoadGame() {
@@ -204,9 +172,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
-     *
-     * @param path placeholder.
+     * {@inheritDoc}
      */
     @Override
     public void loadGame(final Path path) {
@@ -260,10 +226,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
-     *
-     * @param fileToSave placeholder.
-     * @return placeholder.
+     * {@inheritDoc}
      */
     @Override
     public boolean saveGame(final Path fileToSave) {
@@ -292,9 +255,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
-     *
-     * @return placeholder.
+     * {@inheritDoc}
      */
     @Override
     public Path getCurrentSaveFile() {
