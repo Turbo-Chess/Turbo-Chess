@@ -148,6 +148,9 @@ public abstract class AbstractEntityDefinition {
          */
         public X imagePath(final String newImagePath) {
             final String correctPath;
+            if ("".equals(newImagePath)) {
+                throw new IllegalStateException("Image Path cannot be null");
+            }
             if (newImagePath.startsWith("classpath:")
                     || newImagePath.startsWith("file:")
                     || Paths.get(newImagePath).isAbsolute()) {
@@ -155,7 +158,7 @@ public abstract class AbstractEntityDefinition {
             } else {
                 final String basePath = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath();
                 if (basePath.startsWith("file:")) {
-                    // Strip the "file:" protocol so Paths.get() won't crash on Windows
+                    // I need to strip the "file:" protocol so Paths.get() won't crash on Windows
                     final String rawPath = basePath.replace("file:", "");
                     correctPath = "file:" + Paths.get(rawPath, newImagePath);
                 } else {
