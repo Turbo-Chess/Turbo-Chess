@@ -12,12 +12,12 @@ public interface LoadoutSelector {
      *
      * @param e the {@link ActionEvent} linked to the button.
      */
-    void backToMenu(final ActionEvent e);
+    void backToMenu(ActionEvent e);
 
     /**
      * Handles the "Loadout Editor" button action.
      *
      * @param e the {@link ActionEvent} linked to the button.
      */
-    void backToLoadoutEditor(final ActionEvent e);
+    void backToLoadoutEditor(ActionEvent e);
 }

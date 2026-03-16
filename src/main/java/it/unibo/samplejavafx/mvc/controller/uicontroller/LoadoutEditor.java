@@ -1,10 +1,12 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.event.ActionEvent;
 
 /**
  * The {@link LoadoutEditor} interface handles the UI needed to create custom loadouts.
  */
+@SuppressFBWarnings("PMD.ImplicitFunctionalInterface") // this interface is not meant to be used ad a functional interface.
 public interface LoadoutEditor {
 
     /**
@@ -12,5 +14,5 @@ public interface LoadoutEditor {
      * 
      * @param e the {@link ActionEvent} linked to the button.
      */
-    void backToLoadoutSelector(final ActionEvent e);
+    void backToLoadoutSelector(ActionEvent e);
 }
