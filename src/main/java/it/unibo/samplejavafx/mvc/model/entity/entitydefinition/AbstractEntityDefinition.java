@@ -156,10 +156,10 @@ public abstract class AbstractEntityDefinition {
          * @return this builder concrete instance for method chaining.
          */
         public X imagePath(final String newImagePath) {
-            final String correctPath;
             if ("".equals(newImagePath)) {
                 throw new IllegalStateException("Image Path cannot be null");
             }
+            final String correctPath;
             if (newImagePath.startsWith("classpath:")
                     || newImagePath.startsWith(FILE)
                     || Paths.get(newImagePath).isAbsolute()) {
