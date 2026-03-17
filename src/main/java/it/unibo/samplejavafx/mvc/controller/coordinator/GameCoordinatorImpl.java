@@ -252,12 +252,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 PlayerColor player = PlayerColor.WHITE;
 
                 if (lastEvent instanceof MoveEvent move) {
-                     player = move.entityColor() == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
-                     if (move.entityColor() == PlayerColor.BLACK) {
-                         turn++;
-                     }
-                } else {
-                    LOGGER.debug("Skipping event {}", lastEvent);
+                    turn = move.turn() + 1;
+                    player = (move.entityColor() == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
                 }
 
                 match.setTurnNumber(turn);

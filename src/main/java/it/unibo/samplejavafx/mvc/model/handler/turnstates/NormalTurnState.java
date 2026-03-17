@@ -22,7 +22,6 @@ import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 public final class NormalTurnState extends AbstractTurnState {
     private static final Point2D CASTLE_POS = new Point2D(2, 6);
     private final ChessBoard board;
-    private final PlayerColor currentColor;
 
     /**
      * Constructor for the NormalTurnState.
@@ -32,7 +31,6 @@ public final class NormalTurnState extends AbstractTurnState {
     public NormalTurnState(final TurnHandlerContext context) {
         super(context);
         this.board = context.getBoard();
-        this.currentColor = context.getCurrentColor();
     }
 
     /**
@@ -45,6 +43,7 @@ public final class NormalTurnState extends AbstractTurnState {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
+        final PlayerColor currentColor = getContext().getCurrentColor();
         if (board.isFree(pos) && getContext().getCurrentPiece().isEmpty()) {
             return Collections.emptyList();
         }
