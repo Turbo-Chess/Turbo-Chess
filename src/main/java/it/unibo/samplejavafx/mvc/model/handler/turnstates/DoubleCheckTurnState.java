@@ -39,13 +39,13 @@ public final class DoubleCheckTurnState extends AbstractTurnState {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
-        final PlayerColor currentColor = getContext().getCurrentColor();
         if (board.isFree(pos) && getContext().getCurrentPiece().isEmpty()) {
             return Collections.emptyList();
         }
         if (board.isFree(pos) && getContext().getCurrentMoves().contains(pos)) {
             return getContext().executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
         }
+        final PlayerColor currentColor = getContext().getCurrentColor();
         if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
             && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
