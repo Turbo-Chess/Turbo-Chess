@@ -20,9 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * placeholder.
+ * Utility methods for resolving resource paths and computing asset locations.
+ *
+ * <p>
+ * This class supports both filesystem paths and classpath resources (including resources packaged in jars).
+ * </p>
  */
-//TODO: Missing javadoc for LUCA and GIACOMO
 public final class LoadingUtils {
     private static final String CLASSPATH = "classpath:";
     private static final Logger LOGGER = LoggerFactory.getLogger(LoadingUtils.class);
@@ -34,10 +37,20 @@ public final class LoadingUtils {
     }
 
     /**
-     * placeholder.
+     * Resolves a path string into a {@link Path}, handling classpath and file prefixes.
      *
-     * @param basePath placeholder.
-     * @return placeholder.
+     * <p>
+     * Supported formats:
+     * </p>
+     * <ul>
+     *     <li>{@code classpath:/...} for resources shipped with the application (including inside jars)</li>
+     *     <li>{@code file:/...} for absolute filesystem paths</li>
+     *     <li>plain absolute filesystem paths</li>
+     * </ul>
+     *
+     * @param basePath the path string to resolve
+     * @return the resolved {@link Path}
+     * @throws IllegalStateException if the resource cannot be resolved or the prefix is not supported
      */
     public static Path getCorrectPath(final String basePath) {
         if (basePath.startsWith(CLASSPATH)) {

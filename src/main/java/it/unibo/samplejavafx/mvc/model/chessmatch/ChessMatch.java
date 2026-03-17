@@ -92,23 +92,31 @@ public interface ChessMatch {
     void updateGameState(GameState state, PlayerColor playerColor);
 
     /**
-     * placeholder.
+     * Sets the current turn number for the match.
      *
-     * @param turnNumber placeholder.
+     * <p>
+     * This is primarily used when loading a saved match or restoring a previous state.
+     * </p>
+     *
+     * @param turnNumber the turn number to set
      */
     void setTurnNumber(int turnNumber);
 
     /**
-     * placeholder.
+     * Sets the current active player for the match.
      *
-     * @param playerColor placeholder.
+     * <p>
+     * This is primarily used when loading a saved match or restoring a previous state.
+     * </p>
+     *
+     * @param playerColor the player who should be marked as active
      */
     void setPlayerColor(PlayerColor playerColor);
 
     /**
-     * placeholder.
+     * Accesses the game history for this match.
      *
-     * @return placeholder.
+     * @return the {@link GameHistory} instance associated with this match
      */
     GameHistory getGameHistory();
 

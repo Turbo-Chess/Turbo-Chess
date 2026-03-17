@@ -15,7 +15,12 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * placeholder.
+ * Default implementation of {@link EntityLoader} based on Jackson JSON deserialization.
+ *
+ * <p>
+ * The loader walks the provided directory tree, reads all {@code .json} files and maps them to the requested
+ * {@link AbstractEntityDefinition} subtype.
+ * </p>
  */
 public class EntityLoaderImpl implements EntityLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityLoaderImpl.class);

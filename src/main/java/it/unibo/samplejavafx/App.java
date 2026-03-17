@@ -9,16 +9,20 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 /**
- * placeholder.
+ * JavaFX application entry point.
+ *
+ * <p>
+ * Initializes the UI layer and wires the main {@link GameCoordinator} implementation.
+ * </p>
  */
 public final class App extends Application {
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 800;
 
     /**
-     * placeholder.
+     * Starts the JavaFX application.
      *
-     * @param stage placeholder.
+     * @param stage the primary stage created by JavaFX
      */
     @Override
     public void start(final Stage stage) {
@@ -59,9 +63,9 @@ public final class App extends Application {
     }
 
     /**
-     * placeholder.
+     * Launches the JavaFX application.
      *
-     * @param args placeholder.
+     * @param args command-line arguments passed to the application
      */
     public static void main(final String[] args) {
         launch(args);

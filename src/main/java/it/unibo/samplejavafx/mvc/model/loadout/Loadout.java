@@ -17,7 +17,12 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * placeHolder.
+ * Immutable description of a player's initial board configuration.
+ *
+ * <p>
+ * A {@code Loadout} contains metadata (id, name, timestamps) and a list of {@link LoadoutEntry entries}
+ * describing which pieces should spawn, and where.
+ * </p>
  */
 @Getter
 @ToString
@@ -29,13 +34,19 @@ public class Loadout {
     private final List<LoadoutEntry> entries;
 
     /**
-     * placeholder.
+     * Creates a loadout instance.
      *
-     * @param id placeholder.
-     * @param name placeholder.
-     * @param createdAt placeholder.
-     * @param updatedAt placeholder.
-     * @param entries placeholder.
+     * <p>
+     * This constructor is primarily used by JSON deserialization. The entries are defensively copied to
+     * preserve immutability.
+     * </p>
+     *
+     * @param id the unique identifier of the loadout
+     * @param name the display name of the loadout
+     * @param createdAt the creation timestamp (epoch millis)
+     * @param updatedAt the last update timestamp (epoch millis)
+     * @param entries the list of entries composing the loadout
+     * @throws NullPointerException if {@code entries} is {@code null}
      */
     @JsonCreator
     public Loadout(
@@ -52,10 +63,10 @@ public class Loadout {
     }
 
     /**
-     * rename the loadout.
+     * Returns a copy of this loadout with a different name.
      *
-     * @param newName placeholder.
-     * @return placeholder.
+     * @param newName the new loadout name
+     * @return a new {@link Loadout} instance with the updated name and refreshed {@code updatedAt}
      */
     public Loadout withName(final String newName) {
         return new Loadout(
@@ -68,10 +79,11 @@ public class Loadout {
     }
 
     /**
-     * update the loadout entries.
+     * Returns a copy of this loadout with different entries.
      *
-     * @param newEntries placeholder.
-     * @return placeholder.
+     * @param newEntries the new entries to use
+     * @return a new {@link Loadout} instance with the updated entries and refreshed {@code updatedAt}
+     * @throws NullPointerException if {@code newEntries} is {@code null}
      */
     public Loadout withEntries(final List<LoadoutEntry> newEntries) {
         return new Loadout(
@@ -84,10 +96,10 @@ public class Loadout {
     }
 
     /**
-     * duplicate the loadout with a new name.
+     * Duplicates this loadout into a new one, generating a new id and timestamps.
      *
-     * @param newName placeholder.
-     * @return placeholder.
+     * @param newName the name of the duplicated loadout
+     * @return a new {@link Loadout} with the same entries as this one
      */
     public Loadout duplicate(final String newName) {
         return new Loadout(
@@ -99,6 +111,17 @@ public class Loadout {
         );
     }
 
+    /**
+     * Computes the total weight of the given entries using the provided piece definitions.
+     *
+     * <p>
+     * Entries whose piece id is not present in {@code definitions} are ignored.
+     * </p>
+     *
+     * @param entries the entries whose weight should be computed
+     * @param definitions the available piece definitions keyed by piece id
+     * @return the total weight of all entries that are present in {@code definitions}
+     */
     private static int calculateWeight(final List<LoadoutEntry> entries, final Map<String, PieceDefinition> definitions) {
         return entries.stream()
                 .filter(e -> definitions.containsKey(e.pieceId()))
@@ -108,9 +131,14 @@ public class Loadout {
     }
 
     /**
-     * create the loadout version for the black player.
+     * Creates a mirrored version of this loadout for the opposite side of the board.
      *
-     * @return placeholder.
+     * <p>
+     * Each entry position is flipped along the Y axis so that the same formation can be used for the
+     * other player.
+     * </p>
+     *
+     * @return a new {@link Loadout} containing mirrored entries
      */
     public Loadout mirrored() {
         final int boardHeight = 8;
@@ -122,9 +150,9 @@ public class Loadout {
     }
 
     /**
-     * Placeholder.
+     * Returns the entries of this loadout.
      *
-     * @return Placeholder.
+     * @return an immutable copy of the entries
      */
     public List<LoadoutEntry> getEntries() {
         return List.copyOf(this.entries);
@@ -160,9 +188,9 @@ public class Loadout {
     /**
      * validate the loadout against game rules.
      *
-     * @param definitions placeholder.
-     * @param standardLoadout placeholder.
-     * @return placeholder.
+     * @param definitions the definitions of the pieces
+     * @param standardLoadout the standard loadout to compare against
+     * @return {@code true} if the loadout is valid with respect to the standard configuration
      */
     @JsonIgnore
     public boolean isValid(final Map<String, PieceDefinition> definitions, final Loadout standardLoadout) {
@@ -171,11 +199,11 @@ public class Loadout {
     }
 
     /**
-     * Factory method to create a new Loadout.
+     * Factory method that creates a new loadout with a generated id and timestamps.
      *
-     * @param name placeholder.
-     * @param entries placeholder.
-     * @return placeholder.
+     * @param name the name of the loadout
+     * @param entries the entries composing the loadout
+     * @return a new {@link Loadout} instance
      */
     public static Loadout create(final String name, final List<LoadoutEntry> entries) {
         return new Loadout(
@@ -190,8 +218,8 @@ public class Loadout {
     /**
      * validate the weight of the loadout matches the expected weight.
      *
-     * @param ctx placeholder.
-     * @return placeholder.
+     * @param ctx the validation context
+     * @return {@code true} if the loadout total weight equals the expected one
      */
     private static boolean validateWeight(final ValidationContext ctx) {
         final int currentWeight = calculateWeight(ctx.getEntries(), ctx.getDefinitions());
@@ -201,8 +229,8 @@ public class Loadout {
     /**
      * validate the number of entries matches the standard loadout.
      *
-     * @param ctx placeholder.
-     * @return placeholder.
+     * @param ctx the validation context
+     * @return {@code true} if the number of entries matches the standard loadout
      */
     private static boolean validateEntryCount(final ValidationContext ctx) {
         return ctx.getEntries().size() == ctx.getStandardLoadout().getEntries().size();
@@ -211,8 +239,8 @@ public class Loadout {
     /**
      * validate there is exactly one king in the loadout.
      *
-     * @param ctx placeholder.
-     * @return placeholder.
+     * @param ctx the validation context
+     * @return {@code true} if exactly one king is present among the defined pieces
      */
     private static boolean validateKingCount(final ValidationContext ctx) {
         final long kingCount = ctx.getEntries().stream()
@@ -225,8 +253,8 @@ public class Loadout {
     /**
      * validate all positions are distinct.
      *
-     * @param ctx placeholder.
-     * @return placeholder.
+     * @param ctx the validation context
+     * @return {@code true} if no two entries share the same position
      */
     private static boolean validateDistinctPositions(final ValidationContext ctx) {
         final long distinctPositions = ctx.getEntries().stream()
@@ -239,8 +267,8 @@ public class Loadout {
     /**
      * validate all pieces exist in the definitions.
      *
-     * @param ctx placeholder.
-     * @return placeholder.
+     * @param ctx the validation context
+     * @return {@code true} if each entry refers to an existing definition
      */
     private static boolean validateAllExist(final ValidationContext ctx) {
         return ctx.getEntries().stream()
@@ -250,8 +278,8 @@ public class Loadout {
     /**
      * validate the positions of the entries match the standard loadout.
      *
-     * @param ctx placeholder.
-     * @return placeholder.
+     * @param ctx the validation context
+     * @return {@code true} if every entry position is present in the standard loadout
      */
     private static boolean validatePositionsMatch(final ValidationContext ctx) {
         final List<Point2D> standardPositions = ctx.getStandardLoadout().getEntries().stream()
@@ -265,8 +293,9 @@ public class Loadout {
     /**
      * validate the weights of the entries match the standard loadout.
      *
-     * @param ctx placeholder.
-     * @return placeholder.
+     * @param ctx the validation context
+     * @return {@code true} if each entry at a given position has the same weight as the standard one
+     * @throws java.util.NoSuchElementException if a position in this loadout is not present in the standard loadout
      */
     private static boolean validateWeightMatch(final ValidationContext ctx) {
         return ctx.getEntries().stream()
@@ -290,6 +319,14 @@ public class Loadout {
         private final int expectedWeight;
         private final Loadout standardLoadout;
 
+        /**
+         * Creates a validation context for a loadout validation run.
+         *
+         * @param entries the loadout entries being validated
+         * @param definitions the piece definitions used during validation
+         * @param expectedWeight the expected total weight of the loadout
+         * @param standardLoadout the standard loadout used as reference
+         */
         ValidationContext(
             final List<LoadoutEntry> entries,
             final Map<String, PieceDefinition> definitions,

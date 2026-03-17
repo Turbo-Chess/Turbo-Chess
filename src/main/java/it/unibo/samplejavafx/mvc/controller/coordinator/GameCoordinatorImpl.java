@@ -202,7 +202,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      */
     @Override
     public void initLoadGame() {
@@ -211,9 +211,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      *
-     * @param path placeholder.
+     * @param path the save file to load
      */
     @Override
     public void loadGame(final Path path) {
@@ -264,10 +264,10 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      *
-     * @param fileToSave placeholder.
-     * @return placeholder.
+     * @param fileToSave the destination file path
+     * @return {@code true} if the save succeeds, {@code false} otherwise
      */
     @Override
     public boolean saveGame(final Path fileToSave) {
@@ -296,9 +296,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     }
 
     /**
-     * placeholder.
+     * {@inheritDoc}
      *
-     * @return placeholder.
+     * @return the currently associated save file path, or {@code null} if none has been loaded/saved yet
      */
     @Override
     public Path getCurrentSaveFile() {

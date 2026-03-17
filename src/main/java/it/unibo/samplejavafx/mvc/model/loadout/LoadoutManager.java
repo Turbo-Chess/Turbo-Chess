@@ -11,9 +11,14 @@ import java.util.Optional;
  */
 public interface LoadoutManager {
     /**
-     * placeholder.
+     * Persists a loadout to disk.
      *
-     * @param loadout placeholder.
+     * <p>
+     * For non-standard loadouts, the loadout is validated before being saved. Invalid loadouts are silently
+     * ignored.
+     * </p>
+     *
+     * @param loadout the loadout to save.
      */
     void save(Loadout loadout);
 
@@ -26,24 +31,24 @@ public interface LoadoutManager {
     void saveValid(Loadout loadout, Map<String, PieceDefinition> definitions);
 
     /**
-     * placeholder.
+     * Loads a loadout by its identifier.
      *
-     * @param id placeholder.
-     * @return placeholder.
+     * @param id the loadout identifier (file name without extension).
+     * @return the loaded {@link Loadout}, or {@link Optional#empty()} if not found or unreadable.
      */
     Optional<Loadout> load(String id);
 
     /**
-     * placeholder.
+     * Loads all available loadouts from the configured loadout directory.
      *
-     * @return placeholder.
+     * @return the list of successfully parsed {@link Loadout}s. Returns an empty list if none are found.
      */
     List<Loadout> getAll();
 
     /**
-     * placeholder.
+     * Deletes the loadout with the given identifier from disk.
      *
-     * @param id placeholder.
+     * @param id the loadout identifier (file name without extension).
      */
     void delete(String id);
 }
