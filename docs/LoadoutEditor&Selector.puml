@@ -34,7 +34,7 @@ class LoadoutEditor <<View>> {
   + save(...)
 }
 
-interface LoaderController <<Controller>> {
+interface LoaderController <<Interface>> {
   + getEntityCache() : Map<...>
 }
 
