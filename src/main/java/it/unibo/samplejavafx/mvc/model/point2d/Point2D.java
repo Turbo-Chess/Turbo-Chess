@@ -67,6 +67,11 @@ public record Point2D(@JsonProperty("x") int x, @JsonProperty("y") int y) {
         return new Point2D(this.x(), boardHeight - 1 - this.y());
     }
 
+    /**
+     * Returns a string representation of the point.
+     *
+     * @return a string in the format "(x, y)".
+     */
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";

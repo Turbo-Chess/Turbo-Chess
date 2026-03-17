@@ -24,7 +24,8 @@ import it.unibo.samplejavafx.mvc.model.rules.CheckCalculator;
 import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 
 /**
- * Placeholder.
+ * Implementation of {@link TurnHandler} and {@link TurnHandlerContext} interfaces, the TurnHandler finalizes the moves done
+ * by players, changes GameStates accordingly and enforces the advanced rules such as Promotion, Checkmate, Draw and Castling.
  */
 public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     private static final Point2D CASTLE_POS = new Point2D(2, 6);
@@ -43,13 +44,15 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     private Optional<Piece> promotionHolder = Optional.empty();
 
     /**
-     * placeholder.
+     * Constructor for the TurnHandler.
      *
-     * @param match placeholder.
+     * @param match the {@link ChessMatch} that needs to be associated with the TurnHandler.
      */
-    // The TurnHandler needs to manage the state of the match, so passing a mutable reference to it
-    // is appropriate in this case.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "The TurnHandler needs to manage the state of the match,"
+                + " so passing a mutable reference to it is appropriate."
+    )
     public TurnHandlerImpl(final ChessMatch match) {
         this.match = match;
         this.turn = match.getTurnNumber();
@@ -65,8 +68,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
-        final List<Point2D> results = this.turnState.thinking(pos);
-        return results;
+        return this.turnState.thinking(pos);
     }
 
     /**
@@ -77,6 +79,9 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         this.turnState = newState;
     }
 
+    /**
+     * Chooses the new TurnState by looking at the current GameState.
+     */
     private void choosingTurnState() {
         switch (state) {
             case NORMAL -> transitionTo(new NormalTurnState(this));
@@ -226,7 +231,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         this.pieceMoves = Collections.emptyList();
     }
 
-// - - - Helper methods for TurnState implementations - - -
+    // - - - Helper methods for TurnState implementations - - -
 
     /**
      * {@inheritDoc}
@@ -248,6 +253,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      * {@inheritDoc}
      */
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "this field is part of the State Pattern structure")
     public List<Point2D> getCurrentMoves() {
         return this.pieceMoves;
     }
@@ -272,6 +278,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      * {@inheritDoc}
      */
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "this field is part of the State Pattern structure")
     public ChessBoard getBoard() {
         return this.board;
     }
@@ -280,6 +287,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
      * {@inheritDoc}
      */
     @Override
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "this field is part of the State Pattern structure")
     public Map<Piece, List<Point2D>> getInterposing() {
         return this.interposingPieces;
     }
@@ -311,17 +319,18 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
     /**
      * Setter for the promotionHolder of the TurnHandler.
      * 
-     * @return the {@link Optional} where we want to save a promoting piece.
+     * @param pawn the Optional containing the {@link Piece} pawn.
      */
+    @Override
     public void passOnPromotion(final Optional<Piece> pawn) {
         this.promotionHolder = pawn;
     }
 
-// - - - Helper methods for Replay and LoadGame related features - - -
+    // - - - Helper methods for Replay and LoadGame related features - - -
 
     @Override
-    public void setStartTurn(final int turn) {
-        this.turn = turn;
+    public void setStartTurn(final int newTurn) {
+        this.turn = newTurn;
     }
 
     @Override

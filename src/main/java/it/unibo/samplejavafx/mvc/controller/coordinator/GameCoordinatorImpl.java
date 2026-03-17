@@ -1,16 +1,25 @@
 package it.unibo.samplejavafx.mvc.controller.coordinator;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameController;
 import it.unibo.samplejavafx.mvc.controller.gamecontroller.GameControllerImpl;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
+import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactoryImpl;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManagerImpl;
 import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
+import it.unibo.samplejavafx.mvc.model.replay.ReplayManagerImpl;
+import it.unibo.samplejavafx.mvc.model.settings.GameSettings;
+import it.unibo.samplejavafx.mvc.model.settings.GameSettingsManager;
+import it.unibo.samplejavafx.mvc.model.settings.GameSettingsManagerImpl;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import it.unibo.samplejavafx.mvc.view.ViewFactory;
@@ -39,11 +48,13 @@ import org.slf4j.LoggerFactory;
  */
 public final class GameCoordinatorImpl implements GameCoordinator {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinatorImpl.class);
-    private static final long DEFAULT_TIME_SECONDS = 600;
 
-    private final ControllerContext controllerContext = ControllerContext.createDefaultContext();
-    private final GameController gameController = new GameControllerImpl(this, controllerContext);
-    private final ReplayManager replayManager = new ReplayManager();
+    private final BoardFactory boardFactory;
+    private final LoadoutManager loadoutManager;
+    private final GameController gameController;
+    private final ReplayManager replayManager = new ReplayManagerImpl();
+    private final GameSettingsManager settingsManager = new GameSettingsManagerImpl();
+    private volatile long initialTimeSeconds = GameSettings.DEFAULT_INITIAL_TIME_SECONDS;
     private Path currentSaveFile;
     private final ViewFactory viewFactory;
 
@@ -54,21 +65,13 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     // The stage is the main window passed from javafx library, and it's designed to be mutable
     // so it's correct in that case.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public GameCoordinatorImpl(final ViewFactory viewFactory) {
         this.viewFactory = viewFactory;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Delegates resource loading to the {@link GameController}'s loader.
-     * </p>
-     */
-    @Override
-    public void loadPieces() {
-        this.controllerContext.loaderController().load();
+        final LoaderController loaderController = new LoaderControllerImpl();
+        loaderController.load();
+        this.boardFactory = new BoardFactoryImpl(loaderController.getEntityDefinitionCacheEntries());
+        this.loadoutManager = new LoadoutManagerImpl();
+        this.gameController = new GameControllerImpl(this, boardFactory, this.loadoutManager);
     }
 
     /**
@@ -107,7 +110,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public void initLoadout() {
         shutdownCurrentTimer();
-        viewFactory.showLoadout(this.gameController, this, controllerContext.loadoutManager());
+        viewFactory.showLoadout(this.gameController, this, loadoutManager);
     }
 
     /**
@@ -116,7 +119,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public void initLoadoutEditor() {
         shutdownCurrentTimer();
-        viewFactory.showLoadoutEditor(this, controllerContext.loaderController(), controllerContext.loadoutManager());
+        viewFactory.showLoadoutEditor(this, (DefinitionRegistry) this.boardFactory, loadoutManager);
     }
 
     /**
@@ -129,7 +132,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initPromotion() {
-        viewFactory.initPromotion(this.gameController, controllerContext.loaderController());
+        viewFactory.initPromotion(this, this.gameController, (DefinitionRegistry) boardFactory);
     }
 
     /**
@@ -164,7 +167,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initGame() {
-        createNewMatch(DEFAULT_TIME_SECONDS, DEFAULT_TIME_SECONDS);
+        final long timeSeconds = this.initialTimeSeconds;
+        createNewMatch(timeSeconds, timeSeconds);
         loadGameUI();
         gameController.getMatch().getGameTimer().start();
         showGame();
@@ -189,13 +193,12 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private void createNewMatch(final long whiteTimeSeconds, final long blackTimeSeconds) {
         final ChessMatch match = new ChessMatchImpl(whiteTimeSeconds, blackTimeSeconds);
         this.gameController.setMatch(match);
-        controllerContext.boardFactory().populateChessboard(
+        boardFactory.populateChessboard(
                 gameController.getWhiteLoadout(),
                 gameController.getBlackLoadout(),
                 match.getBoard());
         match.getGameHistory().setWhiteLoadout(gameController.getWhiteLoadout());
         match.getGameHistory().setBlackLoadout(gameController.getBlackLoadout());
-        //TODO: refreshBoardView
     }
 
     /**
@@ -225,8 +228,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 gameController.setBlackLoadout(history.getBlackLoadout());
             }
 
-            final long whiteTime = history.getWhiteTimeRemaining() > 0 ? history.getWhiteTimeRemaining() : DEFAULT_TIME_SECONDS;
-            final long blackTime = history.getBlackTimeRemaining() > 0 ? history.getBlackTimeRemaining() : DEFAULT_TIME_SECONDS;
+            final long defaultTimeSeconds = this.initialTimeSeconds;
+            final long whiteTime = history.getWhiteTimeRemaining() > 0 ? history.getWhiteTimeRemaining() : defaultTimeSeconds;
+            final long blackTime = history.getBlackTimeRemaining() > 0 ? history.getBlackTimeRemaining() : defaultTimeSeconds;
 
             shutdownCurrentTimer();
             viewFactory.resetGame();
@@ -253,7 +257,6 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                          turn++;
                      }
                 } else {
-                    // TODO: Handle spawn/despawn events
                     LOGGER.debug("Skipping event {}", lastEvent);
                 }
 
@@ -304,6 +307,33 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public Path getCurrentSaveFile() {
         return this.currentSaveFile;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getInitialTimeSeconds() {
+        return this.initialTimeSeconds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setInitialTimeSeconds(final long seconds) {
+        final long sanitized = GameSettings.sanitizeInitialTimeSeconds(seconds);
+        this.initialTimeSeconds = sanitized;
+        settingsManager.save(new GameSettings(sanitized));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void resetInitialTimeSeconds() {
+        this.initialTimeSeconds = GameSettings.DEFAULT_INITIAL_TIME_SECONDS;
+        settingsManager.save(GameSettings.defaultSettings());
     }
 
     private void shutdownCurrentTimer() {

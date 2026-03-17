@@ -14,6 +14,7 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchObserver;
 import it.unibo.samplejavafx.mvc.model.entity.Entity;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.handler.GameState;
+import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import javafx.application.Platform;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
@@ -72,7 +73,8 @@ import static it.unibo.samplejavafx.mvc.view.ChessboardViewPseudoClasses.VALID_M
  * real-time synchronization between the game state and the UI.
  * </p>
  */
-public final class ChessboardViewControllerImpl implements ChessboardViewController, BoardObserver, ChessMatchObserver {
+public final class ChessboardViewControllerImpl implements ChessboardViewController,
+        BoardObserver, ChessMatchObserver, BoardView {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;
@@ -143,8 +145,10 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * @param gameController The central {@link GameController} mediating game logic.
      * @param coordinator    The {@link GameCoordinator} managing high-level application flow.
      */
-    // This is intended to be a shared controller to make the MVC working.
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "This is intended to be a shared controller to make the MVC working."
+    )
     public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
         this.gameController = gameController;
         this.coordinator = coordinator;
@@ -296,7 +300,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
          final Button btn = cells.get(pos);
          if (btn != null) {
             btn.setText("");
-            btn.setGraphic(createResponsiveImageView(gameController.calculateImageColorPath(
+            btn.setGraphic(createResponsiveImageView(LoadingUtils.calculateImageColorPath(
                 entity.getImagePath(), entity.getPlayerColor(), entity.getId()), btn));
         }
     }
@@ -382,7 +386,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      */
     private ImageView createResponsiveImageView(final String imagePath, final Button button) {
         final ImageView imageView = new ImageView(new Image(imagePath));
-        //TODO: add exception if file doesn't exist
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
         imageView.fitHeightProperty().bind(button.heightProperty().multiply(IMAGE_SCALE));
@@ -402,7 +405,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         final Button btn = cells.get(pos);
         if (btn != null) {
             btn.setText("");
-            final var imagePath = gameController.calculateImageColorPath(
+            final var imagePath = LoadingUtils.calculateImageColorPath(
                     entity.getImagePath(), entity.getPlayerColor(), entity.getId());
             btn.setGraphic(createResponsiveImageView(imagePath, btn));
         }
@@ -555,7 +558,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
         switch (gameState) {
             case CHECK, DOUBLE_CHECK -> {
-                cells.get(gameController.getKingPos()).pseudoClassStateChanged(CHECK_KING, true);
+                cells.get(gameController.getKingPos(playerColor)).pseudoClassStateChanged(CHECK_KING, true);
             }
 
             case NORMAL -> {

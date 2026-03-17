@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoader;
 import it.unibo.samplejavafx.mvc.model.loader.EntityLoaderImpl;
@@ -13,9 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -32,22 +31,18 @@ import java.util.stream.Stream;
  * It is robust against missing directories or malformed files, logging errors rather than crashing the application.
  * </p>
  */
-public class LoaderControllerImpl implements LoaderController {
+public final class LoaderControllerImpl implements LoaderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoaderControllerImpl.class);
-    // TODO: maybe move outside
+
     private static final List<String> PATHS = List.of(
             GameProperties.INTERNAL_ENTITIES_FOLDER.getPath(),
             GameProperties.EXTERNAL_MOD_FOLDER.getPath());
 
-    private final Map<String, Map<String, AbstractEntityDefinition>> entityCache = new HashMap<>();
+    private final List<DefinitionCacheEntry> entityDefinitionCache = new ArrayList<>();
     private final EntityLoader entityLoader = new EntityLoaderImpl();
 
     /**
      * Constructs a new {@code LoaderControllerImpl}.
-     *
-     * <p>
-     * Default constructor
-     * </p>
      */
     public LoaderControllerImpl() {
         // Default constructor
@@ -63,25 +58,45 @@ public class LoaderControllerImpl implements LoaderController {
      */
     @Override
     public void load() {
+        try {
+            final Path assetsPath = LoadingUtils.getCorrectPath(GameProperties.EXTERNAL_ASSETS_FOLDER.getPath());
+            FileSystemUtils.ensureDirectoryExists(assetsPath);
+        } catch (final IOException | IllegalStateException e) {
+            LOGGER.error("Cannot ensure Assets directory exists", e);
+        }
         // Get a path from URI
         for (final String basePathString : PATHS) {
             final Path unifiedBasePath = LoadingUtils.getCorrectPath(basePathString);
-            try {
-                FileSystemUtils.ensureDirectoryExists(unifiedBasePath);
-            } catch (final IOException e) {
-                LOGGER.error("Cannot ensure directory exists: " + unifiedBasePath);
-                // Continue even if directory creation fails, it might be read-only or handled elsewhere
+            if (basePathString.startsWith("file:")) {
+                try {
+                    FileSystemUtils.ensureDirectoryExists(unifiedBasePath);
+                } catch (final IOException e) {
+                    LOGGER.error("Cannot ensure directory exists: " + unifiedBasePath);
+                }
             }
             if (Files.isDirectory(unifiedBasePath)) {
+                String resPackDirStr = "";
                 try {
-                    getDirs(unifiedBasePath).forEach(resPackDir -> loadResourcePack(unifiedBasePath, resPackDir));
+                    for (final var resPackDir : getDirs(unifiedBasePath)) {
+                        resPackDirStr = resPackDir.toString();
+                        loadResourcePack(unifiedBasePath, resPackDir);
+                    }
                 } catch (final IllegalStateException e) {
                     LOGGER.warn("Skipping loading from {}: {}", unifiedBasePath, e.getMessage());
+                    throw new IllegalStateException("Error while reading: " + unifiedBasePath + resPackDirStr, e);
                 }
             } else {
                 LOGGER.warn("Skipping non-existent or inaccessible directory: {}", unifiedBasePath);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DefinitionCacheEntry> getEntityDefinitionCacheEntries() {
+        return Collections.unmodifiableList(entityDefinitionCache);
     }
 
     private List<Path> getDirs(final Path rootResDir) {
@@ -98,7 +113,6 @@ public class LoaderControllerImpl implements LoaderController {
 
     private void loadResourcePack(final Path basePath, final Path resPackDir) {
         final Path resPackPath = basePath.resolve(resPackDir);
-        entityCache.computeIfAbsent(resPackDir.toString(), map -> new HashMap<>());
         try {
             final List<AbstractEntityDefinition> loadedEntities =
                     entityLoader.loadEntityFile(resPackPath, AbstractEntityDefinition.class);
@@ -111,19 +125,7 @@ public class LoaderControllerImpl implements LoaderController {
 
     private void loadIntoCache(final List<AbstractEntityDefinition> entitiesToLoad, final String packName) {
         for (final var entity : entitiesToLoad) {
-            entityCache.get(packName).put(entity.getId(), entity);
+            entityDefinitionCache.add(new DefinitionCacheEntry(packName, entity.getId(), entity));
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Returns an unmodifiable view of the internal cache to prevent external modification.
-     * </p>
-     */
-    @Override
-    public Map<String, Map<String, AbstractEntityDefinition>> getEntityCache() {
-        return Collections.unmodifiableMap(entityCache);
     }
 }

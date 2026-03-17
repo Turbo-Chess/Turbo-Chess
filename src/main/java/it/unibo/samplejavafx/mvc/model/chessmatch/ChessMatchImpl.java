@@ -15,7 +15,6 @@ import it.unibo.samplejavafx.mvc.model.score.ScoreManager;
 import it.unibo.samplejavafx.mvc.model.score.ScoreManagerImpl;
 import it.unibo.samplejavafx.mvc.model.timer.GameTimer;
 import it.unibo.samplejavafx.mvc.model.timer.GameTimerImpl;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -48,20 +47,20 @@ public final class ChessMatchImpl implements ChessMatch {
     @Getter
     private int turnNumber;
     @Getter
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "Methods of turn handler are necessary outside")
     private final TurnHandler turnHandler;
     @Getter
     // The board needs to be modified by other methods during the game.
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "The chessboard is meant to be accessed and modified outside")
     private final ChessBoard board = new ChessBoardImpl();
     @Getter
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "The game history is meant to be accessed and read outside")
     private final GameHistory gameHistory;
     @Getter
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "The score manager is meant to be accessed and read outside")
     private final ScoreManager scoreManager;
     @Getter
-    @SuppressFBWarnings(SUPPRESS_STRING)
+    @SuppressFBWarnings(value = SUPPRESS_STRING, justification = "The game timer is meant to be accessed and read outside")
     private final GameTimer gameTimer;
     private final List<ChessMatchObserver> subscribers = new ArrayList<>();
 
@@ -116,6 +115,7 @@ public final class ChessMatchImpl implements ChessMatch {
      *
      * @param turnNumber placeholder.
      */
+    // TODO: Missing Javadocs FOR LUCA
     @Override
     public void setTurnNumber(final int turnNumber) {
         this.turnNumber = turnNumber;
@@ -128,6 +128,7 @@ public final class ChessMatchImpl implements ChessMatch {
      *
      * @param playerColor placeholder.
      */
+    // TODO: Missing Javadocs FOR LUCA
     @Override
     public void setPlayerColor(final PlayerColor playerColor) {
         this.currentPlayer = playerColor;

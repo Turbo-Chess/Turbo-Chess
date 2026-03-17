@@ -1,20 +1,22 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import it.unibo.samplejavafx.mvc.ControllerContext;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
+import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.PieceCreator;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-import it.unibo.samplejavafx.mvc.model.loader.LoadingUtils;
+import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
+import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,23 +43,21 @@ import java.util.Set;
 public final class GameControllerImpl implements GameController {
     // Will the taken from the selected loadout
     private static final String STANDARD_LOADOUT_ID = "standard-chess-loadout";
-
-    private final ControllerContext controllerContext;
-
-    // The match is intended to be accessed from the game controller to give data to classes
-    // that modifies it to play the game correctly.
-    @SuppressFBWarnings("EI_EXPOSE_REP")
+    private final PieceCreator pieceCreator;
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "The match is intended to be accessed from the game controller to give data "
+                    + "to classes that modifies it to play the game correctly.")
     @Getter
     private ChessMatch match;
     @Setter
-    private ChessboardViewController chessboardViewController;
+    private BoardView boardView;
     @Getter
     @Setter
     private Loadout whiteLoadout;
     @Getter
-    //@Setter
+    @Setter
     private Loadout blackLoadout;
-    private final GameCoordinator gameCoordinator;
 
     private Point2D lastPointClicked;
     private final Set<Point2D> lastPossibleMoves = new HashSet<>();
@@ -67,13 +67,17 @@ public final class GameControllerImpl implements GameController {
      * Constructs a new {@code GameControllerImpl}.
      *
      * @param gameCoordinator The {@link GameCoordinator} that manages the overall application lifecycle.
-     * @param controllerContext The context containing shared dependencies.
+     * @param pieceCreator the {@link PieceCreator} used to create new pieces.
+     * @param loadoutManager the {@link LoadoutManager} used to load the standard loadout.
      */
-    public GameControllerImpl(final GameCoordinator gameCoordinator, final ControllerContext controllerContext) {
-        this.gameCoordinator = gameCoordinator;
-        this.controllerContext = controllerContext;
-        this.whiteLoadout = controllerContext.loadoutManager().load(STANDARD_LOADOUT_ID).get();
-        this.blackLoadout = controllerContext.loadoutManager().load(STANDARD_LOADOUT_ID).get().mirrored();
+    public GameControllerImpl(
+            final GameCoordinator gameCoordinator,
+            final PieceCreator pieceCreator,
+            final LoadoutManager loadoutManager
+    ) {
+        this.pieceCreator = pieceCreator;
+        this.whiteLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get();
+        this.blackLoadout = loadoutManager.load(STANDARD_LOADOUT_ID).get().mirrored();
     }
 
     /**
@@ -98,35 +102,22 @@ public final class GameControllerImpl implements GameController {
         // Added this check to silence the spot bugs error
         // The view is created and injected after the controller instantiation
         // so it needs to be injected by a setter later
-        if (chessboardViewController != null) {
+        if (boardView != null) {
             if (result.isEmpty()) {
-                chessboardViewController.hideMovementCells(lastPossibleMoves);
+                boardView.hideMovementCells(lastPossibleMoves);
             } else if (result.size() == 1 && pointClicked.equals(lastPointClicked)) {
-                chessboardViewController.hideMovementCells(lastPossibleMoves);
+                boardView.hideMovementCells(lastPossibleMoves);
             } else {
-                chessboardViewController.hideMovementCells(lastPossibleMoves);
-                chessboardViewController.showMovementCells(result);
+                boardView.hideMovementCells(lastPossibleMoves);
+                boardView.showMovementCells(result);
             }
 
-            chessboardViewController.hideMovementCells(Set.of(pointClicked));
+            boardView.hideMovementCells(Set.of(pointClicked));
         }
 
         lastPointClicked = pointClicked;
         lastPossibleMoves.clear();
         lastPossibleMoves.addAll(result);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Helper method to construct asset paths for different colored variants of a piece.
-     * </p>
-     */
-    @Override
-    public String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
-        final String color = playerColor == PlayerColor.WHITE ? "white" : "black";
-        return "file:" + LoadingUtils.getCorrectPath(imagePath) + "/" + color + "_" + id + ".png";
     }
 
     /**
@@ -153,26 +144,19 @@ public final class GameControllerImpl implements GameController {
      */
     @Override
     public void promote(final LoadoutEntry pieceEntry) {
+        if (match == null) {
+            throw new IllegalStateException("Chess Match can't be null in this state");
+        }
         final Point2D pos = match.getPromotionPos();
         match.getBoard().removeEntity(pos);
-        controllerContext.boardFactory().createNewPiece(pos, match.getBoard(),
-                (PieceDefinition) controllerContext.loaderController()
-                        .getEntityCache()
-                        .get(pieceEntry.packId())
-                        .get(pieceEntry.pieceId()),
+        pieceCreator.createNewPiece(pos, match.getBoard(),
+                pieceEntry.packId(), pieceEntry.pieceId(),
                 RulesUtils.swapColor(match.getCurrentPlayer()));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Delegates to the coordinator to switch the scene to the main game view.
-     * </p>
-     */
-    @Override
-    public void showGame() {
-        this.gameCoordinator.showGame();
+        final GameState newState = AdvancedRules.check(match.getBoard(), match.getCurrentPlayer());
+        if (newState == GameState.CHECK
+            || newState == GameState.DOUBLE_CHECK) {
+            match.updateGameState(newState, RulesUtils.swapColor(match.getCurrentPlayer()));
+        }
     }
 
     /**
@@ -184,12 +168,12 @@ public final class GameControllerImpl implements GameController {
      *
      */
     @Override
-    public Point2D getKingPos() {
+    public Point2D getKingPos(final PlayerColor color) {
         if (this.match == null) {
             throw new IllegalStateException("Match should be initialized before using it");
         }
         return this.match.getBoard().getPosByEntity(RulesUtils
-            .getKing(this.match.getBoard(), RulesUtils.swapColor(this.match.getCurrentPlayer())).get());
+            .getKing(this.match.getBoard(), RulesUtils.swapColor(color)).get());
     }
 
     @Override
@@ -198,15 +182,18 @@ public final class GameControllerImpl implements GameController {
             this.match.getGameTimer().shutdown();
         }
         this.match = match;
+
         this.historyRecorder = new GameHistoryRecorder(match::getTurnNumber, match::getScoreManager);
         // Record initial state
         this.match.getBoard().getBoard().forEach((pos, entity) -> {
-             this.historyRecorder.onEntityAdded(pos, entity);
+            if (this.historyRecorder == null) {
+                throw new IllegalStateException("Replay controller should be instantiated at this time");
+            }
+            this.historyRecorder.onEntityAdded(pos, entity);
         });
         this.match.getBoard().addObserver(this.historyRecorder);
     }
 
-    // TODO: See if is removable for LUCA
     @Override
     public GameHistory getGameHistory() {
         if (this.match == null) {
@@ -221,10 +208,5 @@ public final class GameControllerImpl implements GameController {
             throw new IllegalStateException("Match not initialized");
         }
         return this.match.getBoard();
-    }
-
-    @Override
-    public void setBlackLoadout(final Loadout loadout) {
-        this.blackLoadout = loadout;
     }
 }
