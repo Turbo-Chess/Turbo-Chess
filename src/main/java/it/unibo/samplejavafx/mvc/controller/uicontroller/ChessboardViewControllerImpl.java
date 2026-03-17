@@ -28,9 +28,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
@@ -167,6 +169,27 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         initChessboardPane();
         menuButton.setText("Surrender");
         menuButton.setOnAction(e -> gameController.surrender());
+
+        historyListView.setCellFactory(lv -> new ListCell<>() {
+            private final Label wrapLabel = new Label();
+
+            {
+                wrapLabel.setWrapText(true);
+                wrapLabel.maxWidthProperty().bind(lv.widthProperty().subtract(24));
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            }
+
+            @Override
+            protected void updateItem(final String item, final boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    wrapLabel.setText(item);
+                    setGraphic(wrapLabel);
+                }
+            }
+        });
 
         saveButton.setText("Save Game");
         saveButton.setOnAction(e -> {
