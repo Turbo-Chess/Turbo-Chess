@@ -9,12 +9,14 @@ import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.PieceCreator;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutEntry;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistoryRecorder;
+import it.unibo.samplejavafx.mvc.model.rules.AdvancedRules;
 import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -146,6 +148,11 @@ public final class GameControllerImpl implements GameController {
         pieceCreator.createNewPiece(pos, match.getBoard(),
                 pieceEntry.packId(), pieceEntry.pieceId(),
                 RulesUtils.swapColor(match.getCurrentPlayer()));
+        final GameState newState = AdvancedRules.check(match.getBoard(), match.getCurrentPlayer());
+        if (newState == GameState.CHECK
+            || newState == GameState.DOUBLE_CHECK) {
+            match.updateGameState(newState, RulesUtils.swapColor(match.getCurrentPlayer()));
+        }
     }
 
     /**

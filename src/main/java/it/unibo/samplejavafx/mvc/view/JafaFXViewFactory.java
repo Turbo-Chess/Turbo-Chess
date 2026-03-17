@@ -7,10 +7,10 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditor;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelector;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditorImpl;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelectorImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionRegistry;
@@ -104,7 +104,7 @@ public final class JafaFXViewFactory implements ViewFactory {
             final LoadoutManager loadoutManager) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutSelector.fxml"));
-            loader.setControllerFactory(c -> new LoadoutSelector(
+            loader.setControllerFactory(c -> new LoadoutSelectorImpl(
                     gameController,
                     gameCoordinator,
                     loadoutManager
@@ -129,7 +129,7 @@ public final class JafaFXViewFactory implements ViewFactory {
             final LoadoutManager loadoutManager) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
-            loader.setControllerFactory(c -> new LoadoutEditor(
+            loader.setControllerFactory(c -> new LoadoutEditorImpl(
                     gameCoordinator,
                     entityCache,
                     loadoutManager
@@ -155,10 +155,10 @@ public final class JafaFXViewFactory implements ViewFactory {
             final DefinitionRegistry entityCache) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
-            loader.setControllerFactory(c -> new PromotionController(gameCoordinator, gameController, entityCache));
+            loader.setControllerFactory(c -> new PromotionControllerImpl(gameCoordinator, gameController, entityCache));
 
             final Parent root = loader.load();
-            final PromotionController prom = loader.getController();
+            final PromotionControllerImpl prom = loader.getController();
             prom.init(gameController.getMatch().getCurrentPlayer());
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 

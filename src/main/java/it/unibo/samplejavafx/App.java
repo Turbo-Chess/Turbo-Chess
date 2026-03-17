@@ -40,15 +40,11 @@ public final class App extends Application {
         stage.setMinHeight(WINDOW_HEIGHT);
         stage.setMinWidth(WINDOW_WIDTH);
 
-        try {
-            final ViewFactory viewFactory = new JafaFXViewFactory(stage);
-            final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
+        final ViewFactory viewFactory = new JafaFXViewFactory(stage);
+        final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
 
-            // Start with Main Menu
-            coordinator.initMainMenu();
-        } catch (final Exception e) { // CHECKSTYLE:OFF: IllegalCatch
-            showFatalStartupError(e);
-        } // CHECKSTYLE:ON: IllegalCatch
+        // Start with Main Menu
+        coordinator.initMainMenu();
 
     }
 

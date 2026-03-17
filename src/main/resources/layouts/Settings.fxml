@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox id="SettingsBox" fx:id="SettingsBox" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="32.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController">
    <children>
       <Label id="TitleLabel" fx:id="TitleLabel" text="Settings" />
+      <VBox alignment="CENTER" spacing="12.0">
+         <children>
+            <Label text="Tempo di gioco" />
+            <HBox alignment="CENTER" spacing="12.0">
+               <children>
+                  <Spinner fx:id="timeValueSpinner" editable="true" prefWidth="160.0" />
+                  <ChoiceBox fx:id="timeUnitChoice" prefWidth="160.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="12.0">
+               <children>
+                  <Button fx:id="SaveTimeButton" mnemonicParsing="false" onAction="#onSaveTime" text="Salva" />
+                  <Button fx:id="ResetTimeButton" mnemonicParsing="false" onAction="#onResetTime" text="Ripristina predefinito" />
+               </children>
+            </HBox>
+            <Label fx:id="statusLabel" textFill="#ffffff" wrapText="true" />
+         </children>
+      </VBox>
       <Button id="BackButton" fx:id="BackButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#backToMenu" text="Back" VBox.vgrow="NEVER" />
    </children>
 </VBox>

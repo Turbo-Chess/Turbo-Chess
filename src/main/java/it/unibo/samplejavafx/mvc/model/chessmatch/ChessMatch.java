@@ -136,9 +136,9 @@ public interface ChessMatch {
     GameTimer getGameTimer();
 
     /**
-     * Retrieves the position of the pawn currently eligible for promotion, if any.
+     * Getter for the position of the promoting pawn.
      *
-     * @return the {@link Point2D} coordinate of the pawn promoting, or {@code null} if no promotion is pending.
+     * @return a {@link Point2D} position of the pawn.
      */
     Point2D getPromotionPos();
 }

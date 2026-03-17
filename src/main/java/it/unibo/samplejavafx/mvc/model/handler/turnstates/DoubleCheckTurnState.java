@@ -18,7 +18,6 @@ import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
  */
 public final class DoubleCheckTurnState extends AbstractTurnState {
     private final ChessBoard board;
-    private final PlayerColor currentColor;
 
     /**
      * Contructor for the DoubleCheckTurnState.
@@ -28,7 +27,6 @@ public final class DoubleCheckTurnState extends AbstractTurnState {
     public DoubleCheckTurnState(final TurnHandlerContext context) {
         super(context);
         this.board = context.getBoard();
-        this.currentColor = context.getCurrentColor();
     }
 
     /**
@@ -41,6 +39,7 @@ public final class DoubleCheckTurnState extends AbstractTurnState {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
+        final PlayerColor currentColor = getContext().getCurrentColor();
         if (board.isFree(pos) && getContext().getCurrentPiece().isEmpty()) {
             return Collections.emptyList();
         }

@@ -1,0 +1,60 @@
+@startuml TurnHandler
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+' --- Core responsibilities (keep) ---
+interface TurnHandler <<Interface>> {
+  + getPromotingPawnPos() : Point2D
+}
+
+interface TurnHandlerContext <<Interface>> {
+  + passOnPromotion(pawn : Optional<Piece>)
+}
+
+interface ChessMatch <<Interface>> {
+  + getPromotionPos() : Point2D
+  + updateGameState(state : GameState, playerColor : PlayerColor)
+}
+
+interface ChessMatchObserver <<Observer>> {
+  + onGameStateUpdated(...)
+}
+
+interface GameController <<Controller>> {
+  + promote(pieceEntry : LoadoutEntry)
+}
+
+interface PromotionController <<Interface>> {
+  + init(currentColor : PlayerColor)
+}
+
+' --- Key concrete classes (keep only the meaningful ones) ---
+class ChessMatchImpl {
+  - subscribers : List<ChessMatchObserver>
+}
+
+class TurnHandlerImpl
+
+class GameControllerImpl
+
+class ChessboardViewControllerImpl <<View>>
+
+class PromotionControllerImpl <<View>>
+
+' --- Realizations ---
+PromotionController <|.. PromotionControllerImpl
+ChessMatch <|.. ChessMatchImpl
+TurnHandler <|.. TurnHandlerImpl
+TurnHandlerContext <|.. TurnHandlerImpl
+GameController <|.. GameControllerImpl
+ChessMatchObserver <|.. ChessboardViewControllerImpl
+
+' --- Associations (simplified and corrected) ---
+ChessMatchImpl o-- "1" TurnHandler : uses >
+ChessMatchImpl o-- "*" ChessMatchObserver : notifies >
+GameControllerImpl o-- "1" ChessMatch : uses >
+PromotionControllerImpl o-- "1" GameController : calls promote() >
+
+@enduml

@@ -22,7 +22,6 @@ import it.unibo.samplejavafx.mvc.model.utils.RulesUtils;
 public final class CheckTurnState extends AbstractTurnState {
     private final ChessBoard board;
     private final Map<Piece, List<Point2D>> interposingPieces = new HashMap<>();
-    private final PlayerColor currentColor;
 
     /**
      * Constructor for the CheckTurnState.
@@ -32,7 +31,6 @@ public final class CheckTurnState extends AbstractTurnState {
     public CheckTurnState(final TurnHandlerContext context) {
         super(context);
         this.board = context.getBoard();
-        this.currentColor = context.getCurrentColor();
         this.interposingPieces.putAll(context.getInterposing());
     }
 
@@ -46,6 +44,7 @@ public final class CheckTurnState extends AbstractTurnState {
      */
     @Override
     public List<Point2D> thinking(final Point2D pos) {
+        final PlayerColor currentColor = getContext().getCurrentColor();
         if (board.isFree(pos) && getContext().getCurrentPiece().isEmpty()) {
             return Collections.emptyList();
         }

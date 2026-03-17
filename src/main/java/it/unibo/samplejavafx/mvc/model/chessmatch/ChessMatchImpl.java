@@ -209,9 +209,7 @@ public final class ChessMatchImpl implements ChessMatch {
     }
 
     /**
-     * Getter for the position of the promoting pawn.
-     *
-     * @return a {@link Point2D} position of the pawn.
+     * {@inheritDoc}
      */
     @Override
     public Point2D getPromotionPos() {

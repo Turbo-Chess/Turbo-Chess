@@ -28,7 +28,7 @@ public final class AdvancedRules {
     private static final int DOUBLE_CHECK = 2;
 
     private AdvancedRules() {
-
+        // Utility class.
     }
 
     /**
