@@ -6,7 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 /**
- * placeholder.
+ * JavaFX controller for the game over dialog/window.
+ *
+ * <p>
+ * Displays the final match status and allows the user to restart the match or go back to the main menu.
+ * </p>
  */
 public final class GameOverController {
 
@@ -28,16 +32,16 @@ public final class GameOverController {
     private final GameCoordinator gameCoordinator;
 
     /**
-     * placeholder.
+     * Creates a controller instance.
      *
-     * @param coordinator the game coordinator.
+     * @param coordinator the application coordinator used to restart the match or navigate to the main menu
      */
     public GameOverController(final GameCoordinator coordinator) {
         this.gameCoordinator = coordinator;
     }
 
     /**
-     * placeholder.
+     * Initializes the controller by wiring UI actions to the coordinator.
      */
     @FXML
     public void initialize() {
@@ -54,11 +58,11 @@ public final class GameOverController {
     }
 
     /**
-     * placeholder.
+     * Updates the displayed labels.
      *
-     * @param statusText  placeholder.
-     * @param messageText placeholder.
-     * @param scoreText   placeholder.
+     * @param statusText the main status text (e.g., "Checkmate", "Draw")
+     * @param messageText the detailed message for the player
+     * @param scoreText the final score summary
      */
     public void setTextLabel(final String statusText, final String messageText, final String scoreText) {
         this.statusLabel.setText(statusText);

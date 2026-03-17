@@ -26,8 +26,8 @@ import java.util.List;
  * The {@code ChessMatchImpl} class is the concrete implementation of the {@link ChessMatch} interface.
  *
  * <p>
- * It server as the primary source ot truth of the game, storing data such as the current turn, the current player
- * the current game state and a reference to all the components used to manage the advancement of the game.
+ * It serves as the primary source of truth for the game, storing data such as the current turn, the current player,
+ * the current game state and references to the components used to manage the advancement of the match.
  * </p>
  *
  * <p>
@@ -111,11 +111,14 @@ public final class ChessMatchImpl implements ChessMatch {
     }
 
     /**
-     * placeholder.
+     * Sets the current turn number and synchronizes dependent components.
      *
-     * @param turnNumber placeholder.
+     * <p>
+     * This method also updates the {@link TurnHandler} starting turn and notifies observers.
+     * </p>
+     *
+     * @param turnNumber the new turn number
      */
-    // TODO: Missing Javadocs FOR LUCA
     @Override
     public void setTurnNumber(final int turnNumber) {
         this.turnNumber = turnNumber;
@@ -124,11 +127,15 @@ public final class ChessMatchImpl implements ChessMatch {
     }
 
     /**
-     * placeholder.
+     * Sets the current active player and synchronizes dependent components.
      *
-     * @param playerColor placeholder.
+     * <p>
+     * This method also updates the {@link TurnHandler} starting player, updates the active player of the
+     * {@link GameTimer} and notifies observers.
+     * </p>
+     *
+     * @param playerColor the new active player
      */
-    // TODO: Missing Javadocs FOR LUCA
     @Override
     public void setPlayerColor(final PlayerColor playerColor) {
         this.currentPlayer = playerColor;

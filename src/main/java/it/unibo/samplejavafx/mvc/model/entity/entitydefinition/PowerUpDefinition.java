@@ -13,6 +13,7 @@ import lombok.Getter;
  * Power-up definitions are typically instantiated from configuration files and used to generate
  * power-up entities on the board.
  * </p>
+ *
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)
@@ -29,7 +30,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
      * </p>
      *
      * @param builder The builder containing the initialization parameters.
-     * @throws IllegalArgumentException if the duration is negative.
+     * @throws IllegalArgumentException if the duration is not strictly positive.
      */
     public PowerUpDefinition(final Builder builder) {
         super(builder);
@@ -42,9 +43,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
     }
 
     /**
-     * A concrete builder for creating {@link PowerUpDefinition} instances.
-     *
-     * @return Placeholder.
+     * {@inheritDoc}
      */
     @Override
     public String getDescription() {
@@ -52,7 +51,7 @@ public class PowerUpDefinition extends AbstractEntityDefinition {
     }
 
     /**
-     * Placeholder.
+     * Builder for creating {@link PowerUpDefinition} instances.
      *
      * <p>
      * Allows for setting the duration before building the immutable definition object.

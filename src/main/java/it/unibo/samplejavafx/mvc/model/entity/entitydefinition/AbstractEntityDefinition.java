@@ -190,15 +190,15 @@ public abstract class AbstractEntityDefinition {
         }
 
         /**
-         * Returns the builder instance itself.
+         * Sets the weight of the entity.
          *
          * <p>
-         * Designed to be implemented by subclasses to return {@code this}, ensuring the correct return type
-         * for fluent method chaining (otherwise the abstract type would be returned and method chaining will break).
+         * Weight is used by game rules (e.g., loadout validation and scoring) to represent the relative
+         * value/cost of the entity.
          * </p>
          *
-         * @param newWeight Placeholder.
-         * @return Placeholder.
+         * @param newWeight the weight value to assign
+         * @return this builder instance for method chaining
          */
         public X weight(final int newWeight) {
             this.weight = newWeight;
@@ -206,9 +206,9 @@ public abstract class AbstractEntityDefinition {
         }
 
         /**
-         * Placeholder.
+         * Returns the builder instance itself.
          *
-         * @return the builder instance of type {@code X}.
+         * @return the builder instance of type {@code X}
          */
         protected abstract X self();
 

@@ -120,7 +120,6 @@ public abstract class AbstractEntity<T extends AbstractEntityDefinition> impleme
     }
 
     /**
-     * Placeholder.
      * A generic builder for constructing {@link AbstractEntity} instances.
      * This class implements the Builder design pattern to facilitate the creation of
      * entity objects with multiple parameters.

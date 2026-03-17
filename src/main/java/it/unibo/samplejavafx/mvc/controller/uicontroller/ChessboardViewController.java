@@ -16,9 +16,9 @@ import java.util.Set;
  */
 public interface ChessboardViewController {
     /**
-     * placeholder.
+     * Rebuilds or refreshes the chessboard UI to reflect the current state of the model.
      *
-     * @param board placeholder.
+     * @param board the {@link ChessBoard} model to render
      */
     void refreshBoardView(ChessBoard board);
 
