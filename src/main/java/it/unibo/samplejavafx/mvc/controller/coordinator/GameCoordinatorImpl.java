@@ -15,6 +15,8 @@ import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
+import it.unibo.samplejavafx.mvc.model.settings.GameSettings;
+import it.unibo.samplejavafx.mvc.model.settings.GameSettingsManager;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import it.unibo.samplejavafx.mvc.view.ViewFactory;
@@ -43,12 +45,13 @@ import org.slf4j.LoggerFactory;
  */
 public final class GameCoordinatorImpl implements GameCoordinator {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameCoordinatorImpl.class);
-    private static final long DEFAULT_TIME_SECONDS = 600;
 
     private final BoardFactory boardFactory;
     private final LoadoutManager loadoutManager;
     private final GameController gameController;
     private final ReplayManager replayManager = new ReplayManager();
+    private final GameSettingsManager settingsManager = new GameSettingsManager();
+    private volatile long initialTimeSeconds = GameSettings.DEFAULT_INITIAL_TIME_SECONDS;
     private Path currentSaveFile;
     private final ViewFactory viewFactory;
 
@@ -161,7 +164,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
      */
     @Override
     public void initGame() {
-        createNewMatch(DEFAULT_TIME_SECONDS, DEFAULT_TIME_SECONDS);
+        final long timeSeconds = this.initialTimeSeconds;
+        createNewMatch(timeSeconds, timeSeconds);
         loadGameUI();
         gameController.getMatch().getGameTimer().start();
         showGame();
@@ -221,8 +225,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
                 gameController.setBlackLoadout(history.getBlackLoadout());
             }
 
-            final long whiteTime = history.getWhiteTimeRemaining() > 0 ? history.getWhiteTimeRemaining() : DEFAULT_TIME_SECONDS;
-            final long blackTime = history.getBlackTimeRemaining() > 0 ? history.getBlackTimeRemaining() : DEFAULT_TIME_SECONDS;
+            final long defaultTimeSeconds = this.initialTimeSeconds;
+            final long whiteTime = history.getWhiteTimeRemaining() > 0 ? history.getWhiteTimeRemaining() : defaultTimeSeconds;
+            final long blackTime = history.getBlackTimeRemaining() > 0 ? history.getBlackTimeRemaining() : defaultTimeSeconds;
 
             shutdownCurrentTimer();
             viewFactory.resetGame();
@@ -299,6 +304,33 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     @Override
     public Path getCurrentSaveFile() {
         return this.currentSaveFile;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getInitialTimeSeconds() {
+        return this.initialTimeSeconds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setInitialTimeSeconds(final long seconds) {
+        final long sanitized = GameSettings.sanitizeInitialTimeSeconds(seconds);
+        this.initialTimeSeconds = sanitized;
+        settingsManager.save(new GameSettings(sanitized));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void resetInitialTimeSeconds() {
+        this.initialTimeSeconds = GameSettings.DEFAULT_INITIAL_TIME_SECONDS;
+        settingsManager.save(GameSettings.defaultSettings());
     }
 
     private void shutdownCurrentTimer() {
