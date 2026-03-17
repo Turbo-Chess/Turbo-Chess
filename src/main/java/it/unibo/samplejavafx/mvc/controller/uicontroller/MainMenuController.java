@@ -1,68 +1,33 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
-
-import javafx.event.ActionEvent;
-import java.io.IOException;
-
 /**
- * placeholder.
+ * Interface for the Main Menu controller.
  */
-public final class MainMenuController {
-    private final GameCoordinator coordinator;
+public interface MainMenuController {
 
     /**
-     * placeholder.
-     *
-     * @param coordinator placeholder.
+     * Starts a new game by resetting the game state.
      */
-    public MainMenuController(final GameCoordinator coordinator) {
-        this.coordinator = coordinator;
-    }
-
-    /**
-     * placeholder.
-     *
-     * @param e placeholder.
-     * @throws IOException placeholder.
-     */
-    public void startNewGame(final ActionEvent e) throws IOException {
-        this.coordinator.resetGame();
-    }
+    void startNewGame();
 
     /**
      * Opens the load game menu.
-     *
-     * @param e the action event.
      */
-    public void loadGame(final ActionEvent e) {
-        this.coordinator.initLoadGame();
-    }
+    void loadGame();
 
     /**
      * Opens the loadout menu.
-     *
-     * @param e the action event
      */
-    public void openLoadout(final ActionEvent e) {
-        this.coordinator.initLoadout();
-    }
+    void openLoadout();
 
     /**
      * Opens the settings menu.
-     *
-     * @param e the action event
      */
-    public void openSettings(final ActionEvent e) {
-        this.coordinator.initSettings();
-    }
+    void openSettings();
 
     /**
      * Quits the application.
-     *
-     * @param e the action event
      */
-    public void quit(final ActionEvent e) {
-        this.coordinator.quit();
-    }
+    void quit();
 }
+

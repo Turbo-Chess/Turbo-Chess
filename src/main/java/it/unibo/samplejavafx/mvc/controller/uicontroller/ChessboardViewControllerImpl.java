@@ -81,6 +81,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;
     private static final long SECONDS_IN_MINUTE = 60L;
+    private static final int SCROLLBAR_PADDING = 24;
 
     @FXML
     private GridPane chessboardGridPane;
@@ -175,7 +176,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
             {
                 wrapLabel.setWrapText(true);
-                wrapLabel.maxWidthProperty().bind(lv.widthProperty().subtract(24));
+                wrapLabel.maxWidthProperty().bind(lv.widthProperty().subtract(SCROLLBAR_PADDING));
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             }
 
@@ -657,7 +658,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     private void showEndingDialog(final String statusText, final String messageText, final Optional<PlayerColor> playerColor) {
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameOver.fxml"));
-        loader.setControllerFactory(c -> new GameOverController(coordinator));
+        loader.setControllerFactory(c -> new GameOverControllerImpl(coordinator));
         DialogPane root = new DialogPane();
         try {
             root = loader.load();

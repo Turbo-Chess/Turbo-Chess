@@ -1,10 +1,8 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The {@code LoaderController} interface manages the loading and caching of game resources,

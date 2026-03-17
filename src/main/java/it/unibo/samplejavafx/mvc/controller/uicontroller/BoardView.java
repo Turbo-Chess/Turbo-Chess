@@ -10,7 +10,6 @@ import java.util.Set;
  */
 public interface BoardView {
 
-
     /**
      * Highlights a set of cells on the board to indicate valid movement destinations or other special zones.
      *

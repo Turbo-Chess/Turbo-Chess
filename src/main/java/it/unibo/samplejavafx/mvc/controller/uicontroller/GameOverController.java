@@ -1,68 +1,17 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
-import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-
 /**
- * placeholder.
+ * Interface for the Game Over screen controller.
  */
-public final class GameOverController {
-
-    @FXML
-    private Label statusLabel;
-
-    @FXML
-    private Label messageLabel;
-
-    @FXML
-    private Label scoreLabel;
-
-    @FXML
-    private Button restartButton;
-
-    @FXML
-    private Button mainMenuButton;
-
-    private final GameCoordinator gameCoordinator;
+@FunctionalInterface
+public interface GameOverController {
 
     /**
-     * placeholder.
+     * Sets the text for the status, message, and score labels.
      *
-     * @param coordinator the game coordinator.
+     * @param statusText  the text for the status label.
+     * @param messageText the text for the message label.
+     * @param scoreText   the text for the score label.
      */
-    public GameOverController(final GameCoordinator coordinator) {
-        this.gameCoordinator = coordinator;
-    }
-
-    /**
-     * placeholder.
-     */
-    @FXML
-    public void initialize() {
-        this.restartButton.setOnAction(e -> {
-            this.restartButton.getScene().getWindow().hide();
-
-            this.gameCoordinator.resetGame();
-        });
-
-        this.mainMenuButton.setOnAction(e -> {
-            this.restartButton.getScene().getWindow().hide();
-            this.gameCoordinator.initMainMenu();
-        });
-    }
-
-    /**
-     * placeholder.
-     *
-     * @param statusText  placeholder.
-     * @param messageText placeholder.
-     * @param scoreText   placeholder.
-     */
-    public void setTextLabel(final String statusText, final String messageText, final String scoreText) {
-        this.statusLabel.setText(statusText);
-        this.messageLabel.setText(messageText);
-        this.scoreLabel.setText(scoreText);
-    }
+    void setTextLabel(String statusText, String messageText, String scoreText);
 }

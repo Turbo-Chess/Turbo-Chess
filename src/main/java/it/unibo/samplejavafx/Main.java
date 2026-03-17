@@ -2,6 +2,7 @@ package it.unibo.samplejavafx;
 
 /**
  * Application entry point wrapper.
+ *
  * <p>
  * This class serves as the launcher for the application, delegating execution to
  * the JavaFX {@link App} class. This structure is required to correctly load

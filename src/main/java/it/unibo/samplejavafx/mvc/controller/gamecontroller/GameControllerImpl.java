@@ -3,9 +3,7 @@ package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewController;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
-import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.BoardFactory;
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.PieceCreator;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
@@ -157,7 +155,6 @@ public final class GameControllerImpl implements GameController {
 
     /**
      * {@inheritDoc}
-     *
      * Returns the position of the opponent's king.
      */
     @Override

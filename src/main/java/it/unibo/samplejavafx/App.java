@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 /**
  * The main JavaFX {@link Application} class.
+ *
  * <p>
  * This class is responsible for configuring the primary stage, initializing the
  * application architecture (Coordinator and View), and handling global exceptions
@@ -21,6 +22,7 @@ public final class App extends Application {
 
     /**
      * Starts the JavaFX application.
+     *
      * <p>
      * It configures the stage size, sets up global error handling, initializes
      * the {@link GameCoordinator}, and launches the main menu.

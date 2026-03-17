@@ -3,8 +3,6 @@ package it.unibo.samplejavafx.mvc.controller.uicontroller;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 
-import java.util.Set;
-
 /**
  * The {@code ChessboardViewController} interface defines the contact for the UI controller responsible for
  * managing the visual representation of the chess board.
@@ -21,7 +19,6 @@ public interface ChessboardViewController {
      * @param board placeholder.
      */
     void refreshBoardView(ChessBoard board);
-
 
     /**
      * Visually indicates a piece movement from a starting cell to an ending cell.

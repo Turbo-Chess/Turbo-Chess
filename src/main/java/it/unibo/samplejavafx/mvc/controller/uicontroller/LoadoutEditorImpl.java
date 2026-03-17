@@ -60,6 +60,8 @@ public final class LoadoutEditorImpl implements Initializable, LoadoutEditor {
      * @param entityCache the {@link DefinitionRegistry} needed for this class to operate.
      * @param loadoutManager the {@link LoadoutManager} needed to access the methods to manipulate loadouts.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Game Coordinator is meant to be a shared dependency"
+            + "for the MVC pattern")
     public LoadoutEditorImpl(
             final GameCoordinator coordinator,
             final DefinitionRegistry entityCache,

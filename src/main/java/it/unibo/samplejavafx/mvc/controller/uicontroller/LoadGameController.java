@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import javafx.fxml.FXML;
@@ -29,6 +30,8 @@ public final class LoadGameController {
      *
      * @param coordinator the game coordinator.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Game Coordinator is meant to be a shared dependency"
+            + "for the MVC pattern")
     public LoadGameController(final GameCoordinator coordinator) {
         this.coordinator = coordinator;
     }

@@ -9,7 +9,7 @@ import it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControlle
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutEditorImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.LoadoutSelectorImpl;
-import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController;
+import it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.PromotionControllerImpl;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController;
 import it.unibo.samplejavafx.mvc.model.chessboard.BoardObserver;
@@ -57,7 +57,7 @@ public final class JafaFXViewFactory implements ViewFactory {
     public void showMainMenu(final GameCoordinator gameCoordinator) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
-            loader.setControllerFactory(c -> new MainMenuController(gameCoordinator));
+            loader.setControllerFactory(c -> new MainMenuControllerImpl(gameCoordinator));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);

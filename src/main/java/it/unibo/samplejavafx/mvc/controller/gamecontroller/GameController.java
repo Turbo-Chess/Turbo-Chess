@@ -1,6 +1,5 @@
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
-import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderController;
 import it.unibo.samplejavafx.mvc.controller.uicontroller.BoardView;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;

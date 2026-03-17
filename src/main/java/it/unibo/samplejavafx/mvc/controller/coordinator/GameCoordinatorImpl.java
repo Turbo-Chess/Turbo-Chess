@@ -23,8 +23,6 @@ import it.unibo.samplejavafx.mvc.model.settings.GameSettingsManagerImpl;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import it.unibo.samplejavafx.mvc.view.ViewFactory;
-import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -71,7 +69,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
 
     /**
      * {@inheritDoc}
-    */
+     */
     @Override
     public void initMainMenu() {
         shutdownCurrentTimer();
@@ -108,7 +106,9 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     /**
      * {@inheritDoc}
      *
+     * <p>
      * This prepares the UI for a pawn promotion event.
+     * </p>
      */
     @Override
     public void initPromotion() {
