@@ -1,3 +1,4 @@
+// CHECKSTYLE: MagicNumber OFF
 package it.unibo.samplejavafx.mvc.model.loading;
 
 import it.unibo.samplejavafx.mvc.controller.loadercontroller.LoaderControllerImpl;
@@ -48,10 +49,14 @@ class FirstLoadingTest {
                 .weight(5)
                 .pieceType(PieceType.TOWER)
                 .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false)
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false)
                 ))
                 .build();
 
@@ -68,3 +73,5 @@ class FirstLoadingTest {
         assertEquals(rook, pieces.get("rook"));
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

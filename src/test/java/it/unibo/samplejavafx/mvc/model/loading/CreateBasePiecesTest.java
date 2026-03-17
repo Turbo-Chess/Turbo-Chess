@@ -1,3 +1,4 @@
+// CHECKSTYLE: MagicNumber OFF
 package it.unibo.samplejavafx.mvc.model.loading;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * and test that the loading for that is also correct.
  */
 class CreateBasePiecesTest {
-    private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
+    private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     /**
      * Tests the loading of the Pawn piece definition from JSON.
@@ -112,8 +113,10 @@ class CreateBasePiecesTest {
      * Tests the loading of the King piece definition from JSON.
      *
      * <p>
-     * Verifies that the loaded object is not null and that its properties (ID, name, weight, move rules) match selected expected values.
+     * Verifies that the loaded object is not null and that its properties
+     * (ID, name, weight, move rules) match selected expected values.
      * </p>
+     *
      * @throws IOException if the file cannot be read.
      */
     @Test
@@ -126,3 +129,5 @@ class CreateBasePiecesTest {
         assertEquals(8, king.getMoveRules().size());
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

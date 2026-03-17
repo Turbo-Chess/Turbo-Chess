@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.rules;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -122,3 +124,5 @@ class DrawTest {
         this.idCount += 1;
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

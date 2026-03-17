@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.replay;
 
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -70,8 +72,8 @@ class ReplayTest {
         // Add spawn event
         history.addEvent(
             new SpawnEvent(
-                2, 
-                TEST_PIECE, 
+                2,
+                TEST_PIECE,
                 new Point2D(4, 4),
                 0,
                 0
@@ -81,7 +83,7 @@ class ReplayTest {
         // Add despawn event
         history.addEvent(
             new DespawnEvent(
-                3, 
+                3,
                 TEST_PIECE,
                 new Point2D(5, 5),
                 0,
@@ -93,12 +95,12 @@ class ReplayTest {
         if (!Files.exists(debugDir)) {
             Files.createDirectories(debugDir);
         }
-        
+
         final File file = debugDir.resolve("replay.json").toFile();
         if (file.exists()) {
             file.delete();
         }
-        
+
         final boolean saved = manager.saveGame(history, file.toPath());
 
         assertTrue(saved);
@@ -107,7 +109,7 @@ class ReplayTest {
         final GameHistory loaded = manager.loadGame(file.toPath());
 
         assertEquals(3, loaded.getEvents().size());
-        
+
         // Check types
         assertTrue(loaded.getEvents().get(0) instanceof MoveEvent);
         assertTrue(loaded.getEvents().get(1) instanceof SpawnEvent);
@@ -123,7 +125,7 @@ class ReplayTest {
         assertEquals(2, se.getTurn());
         assertTrue(se.entity() instanceof Piece);
         assertEquals(PIECE_NAME, se.entity().getName());
-        
+
         final DespawnEvent de = (DespawnEvent) loaded.getEvents().get(2);
         assertEquals(3, de.getTurn());
         assertEquals(PIECE_NAME, de.entity().getName());
@@ -153,13 +155,13 @@ class ReplayTest {
         });
 
         final GameHistory history = new GameHistory();
-    
+
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0), 0, 0));
         history.addEvent(new MoveEvent(1, PIECE_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null, 0, 0));
-        
+
         controller.loadHistory(history);
         assertTrue(events.isEmpty());
-        
+
         assertTrue(controller.next().isPresent());
         assertEquals(1, events.size());
         assertEquals("ADDED: (0, 0) Pawn", events.get(0));
@@ -167,7 +169,7 @@ class ReplayTest {
 
 
         assertTrue(controller.next().isPresent());
-        
+
         assertEquals(2, events.size());
         assertEquals("REMOVED: (0, 0) Pawn", events.get(0));
         assertEquals("ADDED: (0, 1) Pawn", events.get(1));
@@ -176,9 +178,11 @@ class ReplayTest {
 
         // Step 2: Revert MoveEvent
         assertTrue(controller.prev().isPresent());
-        
+
         assertEquals(2, events.size());
         assertEquals("REMOVED: (0, 1) Pawn", events.get(0));
         assertEquals("ADDED: (0, 0) Pawn", events.get(1));
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

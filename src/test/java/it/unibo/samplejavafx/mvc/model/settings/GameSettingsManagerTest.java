@@ -1,3 +1,4 @@
+// CHECKSTYLE: MagicNumber OFF
 package it.unibo.samplejavafx.mvc.model.settings;
 
 import org.junit.jupiter.api.Test;
@@ -45,3 +46,5 @@ final class GameSettingsManagerTest {
         assertEquals(GameSettings.DEFAULT_INITIAL_TIME_SECONDS, loaded.initialTimeSeconds());
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

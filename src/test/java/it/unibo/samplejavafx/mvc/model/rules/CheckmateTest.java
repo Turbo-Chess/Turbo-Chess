@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.rules;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,7 +68,8 @@ class CheckmateTest {
         countInc();
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
-        assertEquals(GameState.CHECK, AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
+        assertEquals(GameState.CHECK,
+                AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.CHECK, intPieces));
         assertTrue(intPieces.keySet().isEmpty());
     }
 
@@ -152,3 +155,5 @@ class CheckmateTest {
         this.idCount += 1;
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

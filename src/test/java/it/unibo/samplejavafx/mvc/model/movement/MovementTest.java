@@ -154,7 +154,11 @@ class MovementTest {
         assertEquals(Set.of(new Point2D(1, 1), new Point2D(1, 0), new Point2D(1, 3), new Point2D(1, 4), new Point2D(1, 5), new Point2D(1, 6), new Point2D(1, 7), new Point2D(0, 2), new Point2D(2, 2), new Point2D(3, 2), new Point2D(4, 2), new Point2D(5, 2), new Point2D(6, 2), new Point2D(7, 2)), new HashSet<>(blackSlidingPiece.getValidMoves(new Point2D(1, 2), board)));
 
         board.setEntity(new Point2D(5, 6), whiteSlidingPiece);
-        assertEquals(Set.of(new Point2D(5, 5), new Point2D(5, 4), new Point2D(5, 3), new Point2D(5, 2), new Point2D(5, 1), new Point2D(5, 0), new Point2D(5, 7), new Point2D(6, 6), new Point2D(7, 6), new Point2D(4, 6), new Point2D(3, 6), new Point2D(2, 6), new Point2D(1, 6), new Point2D(0, 6)), new HashSet<>(whiteSlidingPiece.getValidMoves(new Point2D(5, 6), board)));
+        assertEquals(Set.of(new Point2D(5, 5), new Point2D(5, 4), new Point2D(5, 3), new Point2D(5, 2),
+                        new Point2D(5, 1), new Point2D(5, 0), new Point2D(5, 7), new Point2D(6, 6),
+                        new Point2D(7, 6), new Point2D(4, 6), new Point2D(3, 6), new Point2D(2, 6),
+                        new Point2D(1, 6), new Point2D(0, 6)),
+                new HashSet<>(whiteSlidingPiece.getValidMoves(new Point2D(5, 6), board)));
     }
 
     /**
@@ -189,7 +193,9 @@ class MovementTest {
         board.setEntity(new Point2D(1, 4), whiteDummyPiece);
 
         board.setEntity(new Point2D(1, 2), blackSlidingPiece);
-        assertEquals(Set.of(new Point2D(1, 1), new Point2D(1, 0), new Point2D(0, 2), new Point2D(2, 2), new Point2D(1, 3)), new HashSet<>(blackSlidingPiece.getValidMoves(new Point2D(1, 2), board)));
+        assertEquals(Set.of(new Point2D(1, 1), new Point2D(1, 0), new Point2D(0, 2),
+                        new Point2D(2, 2), new Point2D(1, 3)),
+                new HashSet<>(blackSlidingPiece.getValidMoves(new Point2D(1, 2), board)));
 
         // Change dummy positions
         board.removeEntity(new Point2D(3, 2));

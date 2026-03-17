@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,3 +84,4 @@ class GameControllerCacheTest {
         assertTrue(movesAfterClear.isEmpty(), "Cache should be empty after clear");
     }
 }
+// CHECKSTYLE: MagicNumber ON

@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.chessboard;
 
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
@@ -10,7 +12,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Test class to verify the functionality of the {@link it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard} implementation.
@@ -28,7 +33,8 @@ class ChessboardTest {
                 .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
-                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false)))
+                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1),
+                        MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false)))
                 .build();
         return new Piece.Builder()
                 .moved(false)
@@ -131,7 +137,8 @@ class ChessboardTest {
         // Verify the end position contains the piece
         assertFalse(board.isFree(endPos), "End position should be occupied after move");
         assertTrue(board.getEntity(endPos).isPresent(), "End position should contain the piece");
-        assertEquals(piece, board.getEntity(endPos).get(), "The piece at end position should be the same piece that was moved");
+        assertEquals(piece, board.getEntity(endPos).get(),
+                "The piece at end position should be the same piece that was moved");
 
         // Verify the piece position can be retrieved correctly
         assertEquals(endPos, board.getPosByEntity(piece), "The position of the moved piece should be the end position");
@@ -141,7 +148,8 @@ class ChessboardTest {
      * Tests the {@link it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard#eat(Point2D, Point2D)} function.
      *
      * <p>
-     * Verifies that a piece correctly captures another piece, resulting in the target cell being occupied by the attacker and the captured piece being removed.
+     * Verifies that a piece correctly captures another piece,
+     * resulting in the target cell being occupied by the attacker and the captured piece being removed.
      * </p>
      */
     @Test
@@ -181,3 +189,4 @@ class ChessboardTest {
         assertNull(board.getPosByEntity(targetPiece), "Captured piece should not have a position on the board");
     }
 }
+// CHECKSTYLE: MagicNumber ON

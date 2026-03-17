@@ -21,6 +21,7 @@ class NewLoadingTest {
      * <p>
      * Logs the URI and Path of the `/EntityResources` directory to verify correct resource location.
      * </p>
+     *
      * @throws URISyntaxException if the resource URL cannot be converted to a URI.
      */
     @Test

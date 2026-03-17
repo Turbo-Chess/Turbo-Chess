@@ -1,3 +1,4 @@
+// CHECKSTYLE: MagicNumber OFF
 package it.unibo.samplejavafx.mvc.model.movement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -204,7 +205,8 @@ class ChessPieceMovementTest {
                 new Point2D(1, 1), new Point2D(2, 2), new Point2D(3, 3),
                 new Point2D(4, 4), new Point2D(5, 5), new Point2D(6, 6), new Point2D(7, 7)
         );
-        assertEquals(expectedMoves, new HashSet<>(whiteBishop.getValidMoves(new Point2D(0, 0), board)), "Corner: 7 diagonal moves");
+        assertEquals(expectedMoves,
+                new HashSet<>(whiteBishop.getValidMoves(new Point2D(0, 0), board)), "Corner: 7 diagonal moves");
     }
 
     /**
@@ -413,6 +415,7 @@ class ChessPieceMovementTest {
      * <p>
      * Verifies that a Pawn can move two squares forward on its first move unless blocked, and only one square afterward.
      * </p>
+     *
      * @throws IOException if there is an error loading the piece definition.
      */
     @Test
@@ -447,3 +450,5 @@ class ChessPieceMovementTest {
         assertFalse(moves.contains(new Point2D(4, 4)), "Cannot move 2 steps after having moved");
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

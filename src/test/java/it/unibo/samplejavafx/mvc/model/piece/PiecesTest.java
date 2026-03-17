@@ -75,10 +75,12 @@ class PiecesTest {
 
     /**
      * Test initialization from resource JSON file.
+     *
      * <p>
      * Verifies that a {@link PieceDefinition} can be correctly deserialized from a standard JSON resource file,
      * and then used to create a valid {@link Piece} instance.
      * </p>
+     *
      * @throws IOException if there is an error reading the JSON file.
      */
     @Test

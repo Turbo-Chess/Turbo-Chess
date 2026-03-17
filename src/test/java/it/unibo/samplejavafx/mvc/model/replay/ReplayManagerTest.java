@@ -20,7 +20,7 @@ class ReplayManagerTest {
     @Test
     void testSaveGame(@TempDir final Path tempDir) throws IOException {
         final GameHistory history = new GameHistory();
-        
+
         final PieceDefinition pawnDef = new PieceDefinition.Builder()
                 .name("Pawn")
                 .id("pawn")
@@ -28,7 +28,8 @@ class ReplayManagerTest {
                 .weight(1)
                 .pieceType(PieceType.PAWN)
                 .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.JUMPING, false)
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false)
                 ))
                 .build();
 
@@ -47,7 +48,7 @@ class ReplayManagerTest {
 
         final ReplayManager manager = new ReplayManagerImpl();
         final Path saveFile = tempDir.resolve("save_test.json");
-        
+
         final boolean result = manager.saveGame(history, saveFile);
         assertTrue(result, "Save should succeed");
     }

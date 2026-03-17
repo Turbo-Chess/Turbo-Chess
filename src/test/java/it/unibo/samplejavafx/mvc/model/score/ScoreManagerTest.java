@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.score;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,14 +21,45 @@ class ScoreManagerTest {
 
     private Entity createMockEntity(final PlayerColor color, final int weight) {
         return new Entity() {
-            @Override public String getId() { return "test"; }
-            @Override public int getGameId() { return 0; }
-            @Override public String getName() { return "test"; }
-            @Override public String getImagePath() { return "test"; }
-            @Override public PieceType getType() { return PieceType.PAWN; }
-            @Override public PlayerColor getPlayerColor() { return color; }
-            @Override public int getWeight() { return weight; }
-            @Override public Optional<Moveable> asMoveable() { return Optional.empty(); }
+            @Override
+            public String getId() {
+                return "test";
+            }
+
+            @Override
+            public int getGameId() {
+                return 0;
+            }
+
+            @Override
+            public String getName() {
+                return "test";
+            }
+
+            @Override
+            public String getImagePath() {
+                return "test";
+            }
+
+            @Override
+            public PieceType getType() {
+                return PieceType.PAWN;
+            }
+
+            @Override
+            public PlayerColor getPlayerColor() {
+                return color;
+            }
+
+            @Override
+            public int getWeight() {
+                return weight;
+            }
+
+            @Override
+            public Optional<Moveable> asMoveable() {
+                return Optional.empty();
+            }
         };
     }
 
@@ -45,7 +78,7 @@ class ScoreManagerTest {
     void testAddPoints() {
         scoreManager.onEntityAdded(new Point2D(0, 0), createMockEntity(PlayerColor.WHITE, 100));
         assertEquals(100, scoreManager.getScore(PlayerColor.WHITE));
-        
+
         scoreManager.onEntityAdded(new Point2D(0, 1), createMockEntity(PlayerColor.WHITE, 900));
         assertEquals(1000, scoreManager.getScore(PlayerColor.WHITE));
     }
@@ -72,8 +105,10 @@ class ScoreManagerTest {
                 lastScore[0] = newScore;
             }
         });
-        
+
         scoreManager.onEntityAdded(new Point2D(0, 0), createMockEntity(PlayerColor.WHITE, 150));
         assertEquals(150, lastScore[0]);
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

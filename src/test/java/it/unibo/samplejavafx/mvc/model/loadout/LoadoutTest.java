@@ -1,3 +1,4 @@
+// CHECKSTYLE: MagicNumber OFF
 package it.unibo.samplejavafx.mvc.model.loadout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,7 +53,7 @@ class LoadoutTest {
     void testInvalidWhenSameTotalWeightButDifferentIndividualWeights() {
         final Point2D rookPos = new Point2D(0, 7);
         final Point2D pawnPos = new Point2D(0, 6);
-        
+
         final List<LoadoutEntry> modifiedEntries = standardLoadout.getEntries().stream()
                 .map(e -> {
                     if (e.position().equals(rookPos)) {
@@ -64,21 +65,21 @@ class LoadoutTest {
                     }
                 })
                 .toList();
-        
+
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
         assertFalse(modified.isValid(standardDefinitions, standardLoadout));
     }
 
     @Test
-    void testValidSwapWithSameWeight() {        
+    void testValidSwapWithSameWeight() {
         final Point2D knightPos = new Point2D(1, 7);
-        
+
         final List<LoadoutEntry> modifiedEntries = standardLoadout.getEntries().stream()
                 .map(e -> e.position().equals(knightPos)
                         ? new LoadoutEntry(e.position(), e.packId(), "bishop")
                         : e)
                 .toList();
-        
+
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
         assertTrue(modified.isValid(standardDefinitions, standardLoadout));
     }
@@ -92,7 +93,7 @@ class LoadoutTest {
     void testInvalidWhenWeightDifferent() {
         final List<LoadoutEntry> modifiedEntries = standardLoadout.getEntries().stream()
                 .map(e -> e.position().equals(new Point2D(0, 6))
-                        ? new LoadoutEntry(e.position(), e.packId(), "queen") 
+                        ? new LoadoutEntry(e.position(), e.packId(), "queen")
                         : e)
                 .toList();
         final Loadout modified = standardLoadout.withEntries(modifiedEntries);
@@ -121,24 +122,26 @@ class LoadoutTest {
 
     @Test
     void testMirroredLoadout() {
-        final Loadout mirrored = standardLoadout.mirrored();            
+        final Loadout mirrored = standardLoadout.mirrored();
         final List<LoadoutEntry> mirroredEntries = mirrored.getEntries();
-        
+
         assertEquals(standardLoadout.getEntries().size(), mirroredEntries.size());
-        
+
         // Check if positions are correctly flipped
         // Example: White Rook at (0, 7) should become Black Rook at (0, 0)
         final Point2D whiteRookPos = new Point2D(0, 7);
         final Point2D blackRookPos = new Point2D(0, 0);
-        
+
         final boolean hasWhiteRook = standardLoadout.getEntries().stream()
                 .anyMatch(e -> e.position().equals(whiteRookPos) && "rook".equals(e.pieceId()));
-        
+
         final boolean hasBlackRook = mirroredEntries.stream()
                 .anyMatch(e -> e.position().equals(blackRookPos) && "rook".equals(e.pieceId()));
-                
+
         assertTrue(hasWhiteRook);
         assertTrue(hasBlackRook);
     }
 
 }
+
+// CHECKSTYLE: MagicNumber ON

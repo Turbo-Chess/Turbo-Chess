@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.rules;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
@@ -9,7 +11,6 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import java.io.IOException;
 import java.util.List;
@@ -109,7 +110,8 @@ class CheckCalculatorTest {
         countInc();
         board.setEntity(new Point2D(5, 5), TestUtilities.createRook(PlayerColor.WHITE, idCount));
 
-        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
+        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE)
+                .keySet().stream().toList();
         assertTrue(blockers.isEmpty());
     }
 
@@ -125,7 +127,7 @@ class CheckCalculatorTest {
         countInc();
         board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.BLACK, idCount)); // Pins the white rook
         countInc();
-        
+
         board = new ChessBoardImpl(); // Reset
         board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
         countInc();
@@ -134,13 +136,14 @@ class CheckCalculatorTest {
         board.setEntity(new Point2D(7, 7), TestUtilities.createBishop(PlayerColor.BLACK, idCount));
         countInc();
         board.setEntity(new Point2D(3, 3), TestUtilities.createQueen(PlayerColor.WHITE, idCount));
-        
-        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
+
+        final List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE)
+                .keySet().stream().toList();
         // The queen at 3,3 cannot move to 3,0 because it would expose the king to the bishop.
         assertTrue(blockers.isEmpty());
     }
 
-    /*  
+    /*
     void testPrioritization() throws StreamReadException, DatabindException, IOException {
         board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE));
         board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.BLACK));
@@ -149,9 +152,9 @@ class CheckCalculatorTest {
         board.setEntity(new Point2D(2, 5), TestUtilities.createQueen(PlayerColor.WHITE));
 
         List<Piece> blockers = CheckCalculator.getInterposingPieces(board, PlayerColor.WHITE).keySet().stream().toList();
-        
+
         assertEquals(3, blockers.size());
-        
+
         assertEquals(PieceType.INFERIOR, blockers.stream()
                                                 .filter(piece -> piece.getType() == PieceType.INFERIOR).findFirst().get().getType());
         assertEquals(PieceType.TOWER, blockers.stream()
@@ -165,3 +168,5 @@ class CheckCalculatorTest {
         this.idCount += 1;
     }
 }
+
+// CHECKSTYLE: MagicNumber ON
