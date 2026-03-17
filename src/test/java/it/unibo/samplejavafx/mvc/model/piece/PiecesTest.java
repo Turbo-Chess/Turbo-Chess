@@ -20,6 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * from a JSON file.
  */
 class PiecesTest {
+    /**
+     * Tests the manual initialization of a {@link PieceDefinition}.
+     *
+     * <p>
+     * Verifies that building a definition with valid data (name, ID, image path, weight, rules)
+     * results in a correctly populated object.
+     * </p>
+     */
     @Test
     void testPieceDefinitionInitialization() {
         final PieceDefinition p = new PieceDefinition.Builder()
@@ -37,6 +45,14 @@ class PiecesTest {
         assertEquals(1, p.getMoveRules().size());
     }
 
+    /**
+     * Tests the creation of a full {@link Piece} entity from a {@link PieceDefinition}.
+     *
+     * <p>
+     * Verifies that a {@link Piece} can be built using a definition and game-specific data (gameId, color),
+     * and that it inherits the definition's properties correctly.
+     * </p>
+     */
     @Test
     void testFullPieceCreation() {
         final PieceDefinition p = new PieceDefinition.Builder()
@@ -59,8 +75,11 @@ class PiecesTest {
 
     /**
      * Test initialization from resource JSON file.
-     *
-     * @throws IOException if there is an error reading the JSON file
+     * <p>
+     * Verifies that a {@link PieceDefinition} can be correctly deserialized from a standard JSON resource file,
+     * and then used to create a valid {@link Piece} instance.
+     * </p>
+     * @throws IOException if there is an error reading the JSON file.
      */
     @Test
     void testInitializationFromResourceJson() throws IOException {

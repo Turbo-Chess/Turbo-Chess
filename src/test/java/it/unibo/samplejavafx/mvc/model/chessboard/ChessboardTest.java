@@ -13,7 +13,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * Test class to verify the functionality of the {@link it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard} implementation.
  *
+ * <p>
+ * Specifically, it tests basic board operations like entity placement, removal, bounds checking, and piece movement/capture.
+ * </p>
  */
 class ChessboardTest {
 
@@ -35,7 +39,7 @@ class ChessboardTest {
     }
 
     /**
-     *
+     * Tests the initialization of the board and verifies that cells can be correctly occupied and freed.
      */
     @Test
    void initTest() {
@@ -56,7 +60,11 @@ class ChessboardTest {
     }
 
     /**
+     * Tests the boundary checking logic of the chessboard.
      *
+     * <p>
+     * Verifies that valid coordinates return true and invalid ones false.
+     * </p>
      */
     @Test
     void checkBoardLimits() {
@@ -68,6 +76,9 @@ class ChessboardTest {
         assertFalse(board.checkBounds(new Point2D(8, 8)));
     }
 
+    /**
+     * Tests the retrieval of a piece's position.
+     */
     @Test
     void checkGetPos() {
         final ChessBoard board = new ChessBoardImpl();
@@ -81,6 +92,9 @@ class ChessboardTest {
        assertEquals(new Point2D(3, 3), board.getPosByEntity(p2));
     }
 
+    /**
+     * Tests that removing a null entity works correctly does not throw exception.
+     */
     @Test
     void removeNull() {
         final ChessBoard board = new ChessBoardImpl();
@@ -89,7 +103,11 @@ class ChessboardTest {
     }
 
     /**
-     * Test the move function to verify that a piece is correctly moved from one position to another.
+     * Tests the {@link it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard#move(Point2D, Point2D)} function.
+     *
+     * <p>
+     * Verifies that a piece is correctly moved from one position to another, freeing the start position and occupying the end position.
+     * </p>
      */
     @Test
     void testMove() {
@@ -120,7 +138,11 @@ class ChessboardTest {
     }
 
     /**
-     * Test the eat function to verify that a piece correctly captures another piece.
+     * Tests the {@link it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard#eat(Point2D, Point2D)} function.
+     *
+     * <p>
+     * Verifies that a piece correctly captures another piece, resulting in the target cell being occupied by the attacker and the captured piece being removed.
+     * </p>
      */
     @Test
     void testEat() {

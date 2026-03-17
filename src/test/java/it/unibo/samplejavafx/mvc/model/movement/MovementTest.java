@@ -1,3 +1,4 @@
+// CHECKSTYLE: MagicNumber OFF
 package it.unibo.samplejavafx.mvc.model.movement;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
@@ -24,7 +25,6 @@ class MovementTest {
     private static final String PIECE_ID = "test";
     private static final String PIECE_NAME = "test-piece";
     private static final String IMAGE_PATH = "classpath:/assets/images/white_pawn.png";
-
     ChessBoard board = new ChessBoardImpl();
     int counter;
 
@@ -53,6 +53,13 @@ class MovementTest {
             .build();
     }
 
+    /**
+     * Tests that white and black pieces move in opposite vertical directions as intended.
+     *
+     * <p>
+     * Verifies that a white piece's (0, 1) rule moves it to (x, y-1) and a black piece's (0, 1) rule moves it to (x, y+1).
+     * </p>
+     */
     @Test
     void testWhiteBlackMovement() {
         // This test wants to prove that the white piece moves in the reversed y direction compared to the black
@@ -70,6 +77,13 @@ class MovementTest {
         assertEquals(List.of(new Point2D(2, 3)), blackPiece.getValidMoves(new Point2D(2, 2), board));
     }
 
+    /**
+     * Tests the jumping movement strategy.
+     *
+     * <p>
+     * Verifies that pieces with jumping strategy can calculate valid moves correctly, both within and at the boundaries of the board.
+     * </p>
+     */
     @Test
     void testJumping() {
         final Piece blackJumpingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
@@ -110,6 +124,13 @@ class MovementTest {
         assertEquals(Set.of(new Point2D(7,6), new Point2D(6, 7)), new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(7, 7), board)));
     }
 
+    /**
+     * Tests the sliding movement strategy.
+     *
+     * <p>
+     * Verifies that pieces with sliding strategy generate all valid path coordinates until the board edge or an obstruction.
+     * </p>
+     */
     @Test
     void testSliding() {
         final Piece blackSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
@@ -136,6 +157,13 @@ class MovementTest {
         assertEquals(Set.of(new Point2D(5, 5), new Point2D(5, 4), new Point2D(5, 3), new Point2D(5, 2), new Point2D(5, 1), new Point2D(5, 0), new Point2D(5, 7), new Point2D(6, 6), new Point2D(7, 6), new Point2D(4, 6), new Point2D(3, 6), new Point2D(2, 6), new Point2D(1, 6), new Point2D(0, 6)), new HashSet<>(whiteSlidingPiece.getValidMoves(new Point2D(5, 6), board)));
     }
 
+    /**
+     * Tests the "Move Only" movement type rule.
+     *
+     * <p>
+     * Verifies that pieces with this rule can only move to empty squares and cannot capture enemy pieces.
+     * </p>
+     */
     @Test
     void testMoveOnlyRule() {
         final Piece blackSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
@@ -173,6 +201,14 @@ class MovementTest {
         assertEquals(Set.of(new Point2D(7,4), new Point2D(3, 6)), new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(5, 5), board)));
     }
 
+    /**
+     * Tests the "Eat Only" movement type rule.
+     *
+     * <p>
+     * Verifies that pieces with this rule can only move to squares occupied by enemy pieces (capturing them)
+     * and cannot move to empty squares.
+     * </p>
+     */
     @Test
     void testEatOnlyRule() {
         final Piece blackSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
@@ -211,6 +247,13 @@ class MovementTest {
         assertEquals(Set.of(new Point2D(7,6)), new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(5, 5), board)));
     }
 
+    /**
+     * Tests the "Move and Eat" movement type rule (default behavior).
+     *
+     * <p>
+     * Verifies that pieces with this rule can both move to empty squares and capture enemy pieces.
+     * </p>
+     */
     @Test
      void testBothRules() {
         final Piece blackSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
@@ -249,6 +292,15 @@ class MovementTest {
         assertEquals(Set.of(new Point2D(7,6), new Point2D(3, 6), new Point2D(7, 4)), new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(5, 5), board)));
     }
 
+    /**
+     * Tests the stepping movement strategy.
+     *
+     * <p>
+     * Verifies that pieces with stepping strategy can move to the target square if the path is clear (no pieces in between).
+     * This is distinct from jumping (ignores intermediate squares) and sliding (stops at intermediate squares).
+     * Stepping requires the intermediate path to be clear to reach the destination.
+     * </p>
+     */
     @Test
     void testSteppingMovement() {
         final Piece blackSteppingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
@@ -290,3 +342,4 @@ class MovementTest {
         assertEquals(Set.of(new Point2D(0, 2)), new HashSet<>(blackSteppingPiece.getValidMoves(new Point2D(0, 0), board)));
     }
 }
+// CHECKSTYLE: MagicNumber ON

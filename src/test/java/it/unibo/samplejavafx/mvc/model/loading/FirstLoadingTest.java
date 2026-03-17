@@ -19,6 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Test class made to verify that the loading controller and caching system works correctly.
  */
 class FirstLoadingTest {
+    /**
+     * Tests the first step of loading a piece into the cache.
+     *
+     * <p>
+     * Creates expected piece definitions (pawn, rook) manually and asserts they match the ones loaded by the {@link LoaderControllerImpl}.
+     * </p>
+     */
     @Test
     void testFirstLoadingPiece() {
         final PieceDefinition pawn = new PieceDefinition.Builder()
