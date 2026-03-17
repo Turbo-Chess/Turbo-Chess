@@ -1,0 +1,45 @@
+@startuml LoadoutUI
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+class LoadoutSelector <<View>> {
+  + selectLoadout(...)
+  + startMatch(...)
+}
+
+interface GameController <<Controller>> {
+  + setWhiteLoadout(loadout : Loadout)
+  + setBlackLoadout(loadout : Loadout)
+}
+
+interface GameCoordinator <<Controller>> {
+  + initGame()
+  + showMainMenu()
+}
+
+class LoadoutManager <<Model>> {
+  + getAvailableLoadouts() : Set<Loadout>
+  + saveLoadout(loadout : Loadout)
+}
+
+LoadoutSelector o-- GameController
+LoadoutSelector o-- GameCoordinator
+LoadoutSelector o-- LoadoutManager : reads >
+
+class LoadoutEditor <<View>> {
+  + createLoadout(...)
+  + editLoadout(...)
+  + save(...)
+}
+
+interface LoaderController <<Controller>> {
+  + getEntityCache() : Map<...>
+}
+
+LoadoutEditor o-- GameCoordinator
+LoadoutEditor o-- LoaderController : reads definitions >
+LoadoutEditor o-- LoadoutManager : saves/loads >
+
+@enduml
