@@ -15,7 +15,7 @@ final class GameSettingsManagerTest {
     @Test
     void loadReturnsDefaultWhenMissing(@TempDir final Path tempDir) {
         final Path settingsFile = tempDir.resolve("settings.json");
-        final GameSettingsManager manager = new GameSettingsManager(settingsFile);
+        final GameSettingsManager manager = new GameSettingsManagerImpl(settingsFile);
 
         final GameSettings settings = manager.load();
 
@@ -25,7 +25,7 @@ final class GameSettingsManagerTest {
     @Test
     void saveAndLoadRoundTrip(@TempDir final Path tempDir) {
         final Path settingsFile = tempDir.resolve("settings.json");
-        final GameSettingsManager manager = new GameSettingsManager(settingsFile);
+        final GameSettingsManager manager = new GameSettingsManagerImpl(settingsFile);
 
         final boolean saved = manager.save(new GameSettings(300));
         final GameSettings loaded = manager.load();
@@ -39,7 +39,7 @@ final class GameSettingsManagerTest {
         final Path settingsFile = tempDir.resolve("settings.json");
         Files.writeString(settingsFile, "{\"initialTimeSeconds\":-5}");
 
-        final GameSettingsManager manager = new GameSettingsManager(settingsFile);
+        final GameSettingsManager manager = new GameSettingsManagerImpl(settingsFile);
         final GameSettings loaded = manager.load();
 
         assertEquals(GameSettings.DEFAULT_INITIAL_TIME_SECONDS, loaded.initialTimeSeconds());

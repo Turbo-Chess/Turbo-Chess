@@ -11,12 +11,15 @@ import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatch;
 import it.unibo.samplejavafx.mvc.model.chessmatch.ChessMatchImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManager;
+import it.unibo.samplejavafx.mvc.model.loadout.LoadoutManagerImpl;
 import it.unibo.samplejavafx.mvc.model.replay.GameEvent;
 import it.unibo.samplejavafx.mvc.model.replay.GameHistory;
 import it.unibo.samplejavafx.mvc.model.replay.MoveEvent;
 import it.unibo.samplejavafx.mvc.model.replay.ReplayManager;
+import it.unibo.samplejavafx.mvc.model.replay.ReplayManagerImpl;
 import it.unibo.samplejavafx.mvc.model.settings.GameSettings;
 import it.unibo.samplejavafx.mvc.model.settings.GameSettingsManager;
+import it.unibo.samplejavafx.mvc.model.settings.GameSettingsManagerImpl;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayController;
 import it.unibo.samplejavafx.mvc.controller.replay.ReplayControllerImpl;
 import it.unibo.samplejavafx.mvc.view.ViewFactory;
@@ -49,8 +52,8 @@ public final class GameCoordinatorImpl implements GameCoordinator {
     private final BoardFactory boardFactory;
     private final LoadoutManager loadoutManager;
     private final GameController gameController;
-    private final ReplayManager replayManager = new ReplayManager();
-    private final GameSettingsManager settingsManager = new GameSettingsManager();
+    private final ReplayManager replayManager = new ReplayManagerImpl();
+    private final GameSettingsManager settingsManager = new GameSettingsManagerImpl();
     private volatile long initialTimeSeconds = GameSettings.DEFAULT_INITIAL_TIME_SECONDS;
     private Path currentSaveFile;
     private final ViewFactory viewFactory;
@@ -67,7 +70,7 @@ public final class GameCoordinatorImpl implements GameCoordinator {
         final LoaderController loaderController = new LoaderControllerImpl();
         loaderController.load();
         this.boardFactory = new BoardFactoryImpl(loaderController.getEntityDefinitionCacheEntries());
-        this.loadoutManager = new LoadoutManager();
+        this.loadoutManager = new LoadoutManagerImpl();
         this.gameController = new GameControllerImpl(this, boardFactory, this.loadoutManager);
     }
 

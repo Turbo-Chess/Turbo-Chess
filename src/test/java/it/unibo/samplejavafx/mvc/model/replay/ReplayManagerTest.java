@@ -45,7 +45,7 @@ class ReplayManagerTest {
         history.setWhiteLoadout(it.unibo.samplejavafx.mvc.model.loadout.Loadout.create("White", List.of()));
         history.setBlackLoadout(it.unibo.samplejavafx.mvc.model.loadout.Loadout.create("Black", List.of()));
 
-        final ReplayManager manager = new ReplayManager();
+        final ReplayManager manager = new ReplayManagerImpl();
         final Path saveFile = tempDir.resolve("save_test.json");
         
         final boolean result = manager.saveGame(history, saveFile);

@@ -50,7 +50,7 @@ class ReplayTest {
 
     @Test
     void testSaveAndLoad() throws IOException {
-        final ReplayManager manager = new ReplayManager();
+        final ReplayManager manager = new ReplayManagerImpl();
         final GameHistory history = new GameHistory();
 
         // Add move event

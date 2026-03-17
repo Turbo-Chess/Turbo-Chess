@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.controller.uicontroller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.samplejavafx.mvc.controller.coordinator.GameCoordinator;
 import it.unibo.samplejavafx.mvc.model.settings.GameSettings;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import java.util.function.UnaryOperator;
 public final class SettingsController {
     private static final String UNIT_MINUTES = "Minuti";
     private static final String UNIT_SECONDS = "Secondi";
+    private static final long SECONDS_PER_MINUTE = 60L;
 
     private final GameCoordinator coordinator;
 
@@ -36,10 +38,17 @@ public final class SettingsController {
      *
      * @param coordinator the game coordinator
      */
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "The coordinator is a shared service used across controllers in the MVC architecture."
+    )
     public SettingsController(final GameCoordinator coordinator) {
         this.coordinator = coordinator;
     }
 
+    /**
+     * Initializes the settings UI components after FXML injection.
+     */
     @FXML
     public void initialize() {
         timeUnitChoice.getItems().setAll(UNIT_MINUTES, UNIT_SECONDS);
@@ -63,6 +72,11 @@ public final class SettingsController {
         this.coordinator.initMainMenu();
     }
 
+    /**
+     * Saves the selected time control into the {@link GameCoordinator}.
+     *
+     * @param e the action event
+     */
     @FXML
     public void onSaveTime(final ActionEvent e) {
         statusLabel.setText("");
@@ -74,7 +88,7 @@ public final class SettingsController {
             return;
         }
 
-        final long seconds = UNIT_MINUTES.equals(unit) ? value.longValue() * 60L : value.longValue();
+        final long seconds = UNIT_MINUTES.equals(unit) ? value * SECONDS_PER_MINUTE : value;
         if (seconds < GameSettings.MIN_INITIAL_TIME_SECONDS || seconds > GameSettings.MAX_INITIAL_TIME_SECONDS) {
             statusLabel.setText("Inserisci un valore tra "
                     + formatSeconds(GameSettings.MIN_INITIAL_TIME_SECONDS) + " e "
@@ -86,6 +100,11 @@ public final class SettingsController {
         statusLabel.setText("Tempo salvato: " + formatSeconds(seconds) + ".");
     }
 
+    /**
+     * Resets the time control to the default value and updates the UI.
+     *
+     * @param e the action event
+     */
     @FXML
     public void onResetTime(final ActionEvent e) {
         coordinator.resetInitialTimeSeconds();
@@ -95,7 +114,7 @@ public final class SettingsController {
 
     private void loadFromCoordinator() {
         final long seconds = coordinator.getInitialTimeSeconds();
-        final String unit = seconds % 60 == 0 ? UNIT_MINUTES : UNIT_SECONDS;
+        final String unit = seconds % SECONDS_PER_MINUTE == 0 ? UNIT_MINUTES : UNIT_SECONDS;
         timeUnitChoice.setValue(unit);
         configureSpinner(unit, seconds);
         statusLabel.setText("");
@@ -120,7 +139,7 @@ public final class SettingsController {
         if (unit == null || value == null) {
             return coordinator.getInitialTimeSeconds();
         }
-        return UNIT_MINUTES.equals(unit) ? value.longValue() * 60L : value.longValue();
+        return UNIT_MINUTES.equals(unit) ? value * SECONDS_PER_MINUTE : value;
     }
 
     private Integer readSpinnerValue() {
@@ -164,8 +183,8 @@ public final class SettingsController {
     }
 
     private static String formatSeconds(final long seconds) {
-        final long min = seconds / 60;
-        final long sec = seconds % 60;
+        final long min = seconds / SECONDS_PER_MINUTE;
+        final long sec = seconds % SECONDS_PER_MINUTE;
         return String.format("%d:%02d", min, sec);
     }
 }

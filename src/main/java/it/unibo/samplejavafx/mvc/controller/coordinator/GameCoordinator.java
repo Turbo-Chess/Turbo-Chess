@@ -92,7 +92,7 @@ public interface GameCoordinator {
      * @return the {@link Path} of the save file. 
      */
     Path getCurrentSaveFile();
-    
+
     /**
      * Returns the initial time (in seconds) allocated to each player for the entire game.
      *
