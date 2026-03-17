@@ -2,59 +2,59 @@
 
 skinparam classAttributeIconSize 0
 hide empty fields
-hide empty method
+hide empty methods
 
+' --- Core responsibilities (keep) ---
 interface TurnHandler <<Interface>> {
-    +getPromotingPawnPos() : Point2D
+  + getPromotingPawnPos() : Point2D
 }
 
 interface TurnHandlerContext <<Interface>> {
-    +passOnPromotion(pawn : Optional<Piece>)
+  + passOnPromotion(pawn : Optional<Piece>)
+}
+
+interface ChessMatch <<Interface>> {
+  + getPromotionPos() : Point2D
+  + updateGameState(state : GameState, playerColor : PlayerColor)
+}
+
+interface ChessMatchObserver <<Observer>> {
+  + onGameStateUpdated(...)
+}
+
+interface GameController <<Controller>> {
+  + promote(pieceEntry : LoadoutEntry)
+}
+
+interface PromotionController <<Interface>> {
+  + init(currentColor : PlayerColor)
+}
+
+' --- Key concrete classes (keep only the meaningful ones) ---
+class ChessMatchImpl {
+  - subscribers : List<ChessMatchObserver>
 }
 
 class TurnHandlerImpl
 
-interface ChessMatch <<Interface>> {
-    +getPromotionPos() : Point2D
-    +updateGameState(state : GameState, playerColor : PlayerColor)
-}
-
-interface ChessMatchObserver <<Observer>> {
-    +onGameStateUpdated( . . . )
-}
-
-class ChessMatchImpl {
-    -subscribers : List<ChessMatchObserver>
-}
-
-interface GameController <<Controller>> {
-    +promote(pieceEntry : LoadoutEntry)
-}
-
-class GameControllerImpl 
-
-interface ChessboardViewController <<Interface>> {
-    +onGameStateUpdated( . . . )
-}
+class GameControllerImpl
 
 class ChessboardViewControllerImpl <<View>>
 
+class PromotionControllerImpl <<View>>
 
-interface PromotionController <<View>> {
-    +init(currentColor : PlayerColor)
-}
-
-class PromotionControllerImpl
-
+' --- Realizations ---
 PromotionController <|.. PromotionControllerImpl
-PromotionControllerImpl o-- GameController
-ChessMatchObserver <|.. ChessboardViewControllerImpl
-ChessboardViewController <|.. ChessboardViewControllerImpl
-ChessMatchImpl *-- ChessMatchObserver : observes <
-GameController <|.. GameControllerImpl
-GameControllerImpl o-- ChessMatch
 ChessMatch <|.. ChessMatchImpl
-ChessMatchImpl o-- TurnHandler
 TurnHandler <|.. TurnHandlerImpl
 TurnHandlerContext <|.. TurnHandlerImpl
+GameController <|.. GameControllerImpl
+ChessMatchObserver <|.. ChessboardViewControllerImpl
+
+' --- Associations (simplified and corrected) ---
+ChessMatchImpl o-- "1" TurnHandler : uses >
+ChessMatchImpl o-- "*" ChessMatchObserver : notifies >
+GameControllerImpl o-- "1" ChessMatch : uses >
+PromotionControllerImpl o-- "1" GameController : calls promote() >
+
 @enduml
