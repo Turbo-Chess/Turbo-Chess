@@ -128,9 +128,9 @@ public interface ChessMatch {
     GameTimer getGameTimer();
 
     /**
-     * placeholder.
+     * Getter for the position of the promoting pawn.
      *
-     * @return placeholder.
+     * @return a {@link Point2D} position of the pawn.
      */
     Point2D getPromotionPos();
 }

@@ -1,0 +1,60 @@
+@startuml TurnHandler
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty method
+
+interface TurnHandler <<Interface>> {
+    +getPromotingPawnPos() : Point2D
+}
+
+interface TurnHandlerContext <<Interface>> {
+    +passOnPromotion(pawn : Optional<Piece>)
+}
+
+class TurnHandlerImpl
+
+interface ChessMatch <<Interface>> {
+    +getPromotionPos() : Point2D
+    +updateGameState(state : GameState, playerColor : PlayerColor)
+}
+
+interface ChessMatchObserver <<Observer>> {
+    +onGameStateUpdated( . . . )
+}
+
+class ChessMatchImpl {
+    -subscribers : List<ChessMatchObserver>
+}
+
+interface GameController <<Controller>> {
+    +promote(pieceEntry : LoadoutEntry)
+}
+
+class GameControllerImpl 
+
+interface ChessboardViewController <<Interface>> {
+    +onGameStateUpdated( . . . )
+}
+
+class ChessboardViewControllerImpl <<View>>
+
+
+interface PromotionController <<View>> {
+    +init(currentColor : PlayerColor)
+}
+
+class PromotionControllerImpl
+
+PromotionController <|.. PromotionControllerImpl
+PromotionControllerImpl o-- GameController
+ChessMatchObserver <|.. ChessboardViewControllerImpl
+ChessboardViewController <|.. ChessboardViewControllerImpl
+ChessMatchImpl *-- ChessMatchObserver : observes <
+GameController <|.. GameControllerImpl
+GameControllerImpl o-- ChessMatch
+ChessMatch <|.. ChessMatchImpl
+ChessMatchImpl o-- TurnHandler
+TurnHandler <|.. TurnHandlerImpl
+TurnHandlerContext <|.. TurnHandlerImpl
+@enduml
