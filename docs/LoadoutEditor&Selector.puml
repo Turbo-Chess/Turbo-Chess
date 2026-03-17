@@ -5,8 +5,8 @@ hide empty fields
 hide empty methods
 
 class LoadoutSelector <<View>> {
-  + selectLoadout(...)
-  + startMatch(...)
+  + initialize( . . . )
+
 }
 
 interface GameController <<Controller>> {
@@ -29,9 +29,7 @@ LoadoutSelector o-- GameCoordinator
 LoadoutSelector o-- LoadoutManager : reads >
 
 class LoadoutEditor <<View>> {
-  + createLoadout(...)
-  + editLoadout(...)
-  + save(...)
+  + initialize( . . . )
 }
 
 interface LoaderController <<Interface>> {
