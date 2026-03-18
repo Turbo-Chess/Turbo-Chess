@@ -82,7 +82,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private static final double IMAGE_SCALE = 0.8;
     private static final double HISTORY_CELL_WIDTH_OFFSET = 24.0;
     private static final long SECONDS_IN_MINUTE = 60L;
-    private static final int SCROLLBAR_PADDING = 24;
 
     @FXML
     private GridPane chessboardGridPane;
