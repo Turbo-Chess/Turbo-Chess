@@ -2,7 +2,7 @@
 
 skinparam classAttributeIconSize 0
 hide empty fields
-hide empty method
+hide empty methods
 
 class AdvancedRules {
     +{static}check( . . . ) : GameState
