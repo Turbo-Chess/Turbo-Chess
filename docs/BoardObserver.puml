@@ -1,0 +1,13 @@
+@startuml BoardObserver
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+interface BoardObserver {
+    +onEntityAdded(pos : Point2D, entity : Entity) : void
+    +onEntityRemoved(pos : Point2D, entity : Entity) : void
+    +onEntityMoved(from : Point2D, to : Point2D, entity : Entity) : void
+}
+
+@enduml
