@@ -23,7 +23,7 @@ import java.util.Optional;
  * </p>
  */
 public class ChessBoardImpl implements ChessBoard {
-    private static final int CHESSBOARD_SIZE = 8;
+    public static final int CHESSBOARD_SIZE = 8;
     //private static final int BOARD_HEIGHT = 8;
     //private static final int BOARD_WIDTH = 8;
 

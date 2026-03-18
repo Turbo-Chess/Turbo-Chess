@@ -3,6 +3,8 @@ package it.unibo.samplejavafx.mvc.model.loadout;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
@@ -12,8 +14,12 @@ import lombok.ToString;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -112,25 +118,6 @@ public class Loadout {
     }
 
     /**
-     * Computes the total weight of the given entries using the provided piece definitions.
-     *
-     * <p>
-     * Entries whose piece id is not present in {@code definitions} are ignored.
-     * </p>
-     *
-     * @param entries the entries whose weight should be computed
-     * @param definitions the available piece definitions keyed by piece id
-     * @return the total weight of all entries that are present in {@code definitions}
-     */
-    private static int calculateWeight(final List<LoadoutEntry> entries, final Map<String, PieceDefinition> definitions) {
-        return entries.stream()
-                .filter(e -> definitions.containsKey(e.pieceId()))
-                // filter for pieces not defined i.e. mod does not install
-                .mapToInt(e -> definitions.get(e.pieceId()).getWeight())
-                .sum();
-    }
-
-    /**
      * Creates a mirrored version of this loadout for the opposite side of the board.
      *
      * <p>
@@ -141,10 +128,8 @@ public class Loadout {
      * @return a new {@link Loadout} containing mirrored entries
      */
     public Loadout mirrored() {
-        final int boardHeight = 8;
         final List<LoadoutEntry> mirroredEntries = getEntries().stream()
-                .map(e -> new LoadoutEntry(e.position(), e.packId(), e.pieceId()))
-                .map(e -> new LoadoutEntry(e.position().flipY(boardHeight), e.packId(), e.pieceId()))
+                .map(e -> new LoadoutEntry(e.position().flipY(ChessBoardImpl.CHESSBOARD_SIZE), e.packId(), e.pieceId()))
                 .toList();
         return create(this.name + " (Mirrored)", mirroredEntries);
     }
@@ -162,18 +147,21 @@ public class Loadout {
      * validate the loadout against game rules.
      *
      * @param definitions the definitions of the pieces
-     * @param expectedWeight the expected weight of the loadout
      * @param standardLoadout the standard loadout to compare against
-     * @return true if the loadout is valid
+     * @return {@code true} if the loadout is valid with respect to the standard configuration
      */
     @JsonIgnore
-    public boolean isValid(
+    public boolean isValid(final Map<String, PieceDefinition> definitions, final Loadout standardLoadout) {
+        final int expected = calculateWeight(standardLoadout.getEntries(), definitions);
+        return isValid(definitions, expected, standardLoadout);
+    }
+
+    private boolean isValid(
         final Map<String, PieceDefinition> definitions,
         final int expectedWeight,
         final Loadout standardLoadout
     ) {
         final ValidationContext context = new ValidationContext(this.entries, definitions, expectedWeight, standardLoadout);
-
         return Stream.<Predicate<ValidationContext>>of(
                 Loadout::validateWeight,
                 Loadout::validateEntryCount,
@@ -182,20 +170,7 @@ public class Loadout {
                 Loadout::validateAllExist,
                 Loadout::validatePositionsMatch,
                 Loadout::validateWeightMatch
-        ).allMatch(validator -> validator.test(context));
-    }
-
-    /**
-     * validate the loadout against game rules.
-     *
-     * @param definitions the definitions of the pieces
-     * @param standardLoadout the standard loadout to compare against
-     * @return {@code true} if the loadout is valid with respect to the standard configuration
-     */
-    @JsonIgnore
-    public boolean isValid(final Map<String, PieceDefinition> definitions, final Loadout standardLoadout) {
-        final int expected = calculateWeight(standardLoadout.getEntries(), definitions);
-        return isValid(definitions, expected, standardLoadout);
+        ).allMatch(validation -> validation.test(context));
     }
 
     /**
@@ -213,6 +188,25 @@ public class Loadout {
             Instant.now().toEpochMilli(),
             entries
         );
+    }
+
+    /**
+     * Computes the total weight of the given entries using the provided piece definitions.
+     *
+     * <p>
+     * Entries whose piece id is not present in {@code definitions} are ignored.
+     * </p>
+     *
+     * @param entries the entries whose weight should be computed
+     * @param definitions the available piece definitions keyed by piece id
+     * @return the total weight of all entries that are present in {@code definitions}
+     */
+    private static int calculateWeight(final List<LoadoutEntry> entries, final Map<String, PieceDefinition> definitions) {
+        return entries.stream()
+                .map(entry -> definitions.get(entry.pieceId()))
+                .filter(Objects::nonNull)
+                .mapToInt(PieceDefinition::getWeight)
+                .sum();
     }
 
     /**
@@ -244,8 +238,9 @@ public class Loadout {
      */
     private static boolean validateKingCount(final ValidationContext ctx) {
         final long kingCount = ctx.getEntries().stream()
-                .filter(e -> ctx.getDefinitions().containsKey(e.pieceId()))
-                .filter(e -> ctx.getDefinitions().get(e.pieceId()).getPieceType().equals(PieceType.KING))
+                .map(entry -> ctx.getDefinitions().get(entry.pieceId()))
+                .filter(Objects::nonNull)
+                .filter(definition -> definition.getPieceType().equals(PieceType.KING))
                 .count();
         return kingCount == 1;
     }
@@ -272,7 +267,8 @@ public class Loadout {
      */
     private static boolean validateAllExist(final ValidationContext ctx) {
         return ctx.getEntries().stream()
-                .allMatch(e -> ctx.getDefinitions().containsKey(e.pieceId()));
+                .map(entry -> ctx.getDefinitions().get(entry.pieceId()))
+                .allMatch(Objects::nonNull);
     }
 
     /**
@@ -282,9 +278,9 @@ public class Loadout {
      * @return {@code true} if every entry position is present in the standard loadout
      */
     private static boolean validatePositionsMatch(final ValidationContext ctx) {
-        final List<Point2D> standardPositions = ctx.getStandardLoadout().getEntries().stream()
+        final Set<Point2D> standardPositions = ctx.getStandardLoadout().getEntries().stream()
                 .map(LoadoutEntry::position)
-                .toList();
+                .collect(Collectors.toUnmodifiableSet());
         return ctx.getEntries().stream()
                 .map(LoadoutEntry::position)
                 .allMatch(standardPositions::contains);
@@ -295,18 +291,26 @@ public class Loadout {
      *
      * @param ctx the validation context
      * @return {@code true} if each entry at a given position has the same weight as the standard one
-     * @throws java.util.NoSuchElementException if a position in this loadout is not present in the standard loadout
      */
     private static boolean validateWeightMatch(final ValidationContext ctx) {
+        final Map<Point2D, LoadoutEntry> standardByPosition = ctx.getStandardLoadout().getEntries().stream()
+                .collect(Collectors.toUnmodifiableMap(LoadoutEntry::position, Function.identity()));
         return ctx.getEntries().stream()
                 .allMatch(entry -> {
                     final Point2D pos = entry.position();
-                    final LoadoutEntry standardEntry = ctx.getStandardLoadout().getEntries().stream()
-                            .filter(e -> e.position().equals(pos))
-                            .findFirst().orElseThrow();
+                    final LoadoutEntry standardEntry = standardByPosition.get(pos);
+                    if (standardEntry == null) {
+                        return false;
+                    }
 
-                    final int entryWeight = ctx.getDefinitions().get(entry.pieceId()).getWeight();
-                    final int standardWeightVal = ctx.getDefinitions().get(standardEntry.pieceId()).getWeight();
+                    final PieceDefinition entryDefinition = ctx.getDefinitions().get(entry.pieceId());
+                    final PieceDefinition standardDefinition = ctx.getDefinitions().get(standardEntry.pieceId());
+                    if (entryDefinition == null || standardDefinition == null) {
+                        return false;
+                    }
+
+                    final int entryWeight = entryDefinition.getWeight();
+                    final int standardWeightVal = standardDefinition.getWeight();
 
                     return entryWeight == standardWeightVal;
                 });

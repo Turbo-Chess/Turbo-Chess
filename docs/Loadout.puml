@@ -1,4 +1,5 @@
-@startuml
+@startuml Loadout
+
 skinparam classAttributeIconSize 0
 hide empty fields
 hide empty methods
@@ -15,25 +16,37 @@ class Loadout {
     - createdAt : long
     - updatedAt : long
     - entries : List<LoadoutEntry>
-    
-    + create(name : String, entries : List<LoadoutEntry>) : Loadout
-    + withName(newName : String) : Loadout
-    + withEntries(newEntries : List<LoadoutEntry>) : Loadout
-    + duplicate(newName : String) : Loadout
-    + isValid(definitions : Map<String, PieceDefinition>, expectedWeight : int, standardLoadout : Loadout) : boolean
+
+    +withName(newName : String) : Loadout
+    +withEntries(newEntries : List<LoadoutEntry>) : Loadout
+    +duplicate(newName : String) : Loadout
+    +mirrored() : Loadout
+    +getEntries() : List<LoadoutEntry>
+    +isValid(definitions : Map<String, PieceDefinition>, standardLoadout : Loadout) : boolean
+    +{static} create(name : String, entries : List<LoadoutEntry>) : Loadout
+
+    -isValid(definitions : Map<String, PieceDefinition>, expectedWeight : int, standardLoadout : Loadout) : boolean
+    -{static} calculateWeight(entries : List<LoadoutEntry>, definitions : Map<String, PieceDefinition>) : int
+    -{static} validateWeight(ctx : ValidationContext) : boolean
+    -{static} validateEntryCount(ctx : ValidationContext) : boolean
+    -{static} validateKingCount(ctx : ValidationContext) : boolean
+    -{static} validateDistinctPositions(ctx : ValidationContext) : boolean
+    -{static} validateAllExist(ctx : ValidationContext) : boolean
+    -{static} validatePositionsMatch(ctx : ValidationContext) : boolean
+    -{static} validateWeightMatch(ctx : ValidationContext) : boolean
 }
-@
-class LoadoutManager {
-    - loadoutDir : Path
-    - mapper : ObjectMapper
-    
-    + save(loadout : Loadout) : void
-    + load(id : String) : Optional<Loadout>
-    + getAll() : List<Loadout>
-    + delete(id : String) : void
+
+Loadout "1" *-- "*" LoadoutEntry : entries
+
+class ValidationContext {
+    - entries : List<LoadoutEntry>
+    - definitions : Map<String, PieceDefinition>
+    - expectedWeight : int
+    - standardLoadout : Loadout
 }
-@
-LoadoutManager "1" ..> "*" Loadout : manages
-Loadout "1" *-- "*" LoadoutEntry : contains
+
+Loadout ..> ValidationContext
+ValidationContext --> Loadout : standardLoadout
+Loadout ..> ChessBoardImpl : uses CHESSBOARD_SIZE
 
 @enduml
