@@ -39,7 +39,6 @@ class ReplayManagerTest {
                 .playerColor(PlayerColor.WHITE)
                 .build();
 
-
         history.addEvent(new SpawnEvent(1, pawn, new Point2D(0, 1), 0, 0));
         history.addEvent(new MoveEvent(2, "Pawn", PlayerColor.WHITE, new Point2D(0, 1), new Point2D(0, 2), null, 0, 0));
 

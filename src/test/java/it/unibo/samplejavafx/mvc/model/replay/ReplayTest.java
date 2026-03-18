@@ -167,7 +167,6 @@ class ReplayTest {
         assertEquals("ADDED: (0, 0) Pawn", events.get(0));
         events.clear();
 
-
         assertTrue(controller.next().isPresent());
 
         assertEquals(2, events.size());
