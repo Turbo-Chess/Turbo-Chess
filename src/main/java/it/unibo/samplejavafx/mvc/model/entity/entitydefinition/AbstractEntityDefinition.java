@@ -202,11 +202,11 @@ public abstract class AbstractEntityDefinition {
         }
 
         /**
-         * Returns the builder instance itself.
+         * Sets the weight of the entity.
          *
          * <p>
-         * Designed to be implemented by subclasses to return {@code this}, ensuring the correct return type
-         * for fluent method chaining (otherwise the abstract type would be returned and method chaining will break).
+         * Weight is used by game rules (e.g., loadout validation and scoring) to represent the relative
+         * value/cost of the entity.
          * </p>
          *
          * @return the builder instance of type {@code X}.

@@ -3,58 +3,65 @@ package it.unibo.samplejavafx.mvc.model.point2d;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents a 2D point with integer coordinates.
- * This class is a record, so it's immutable, because it only carries data.
+ * Immutable 2D point expressed with integer coordinates.
  *
- * @param x the x coordinate of the point.
- * @param y the y coordinate of the point.
+ * <p>
+ * Used throughout the model to represent board coordinates. Coordinates are 0-based, where {@code x}
+ * typically represents the file (column) and {@code y} the rank (row).
+ * </p>
+ *
+ * @param x the horizontal coordinate.
+ * @param y the vertical coordinate.
  */
 public record Point2D(@JsonProperty("x") int x, @JsonProperty("y") int y) {
 
     /**
-     * Sums this point with another point.
+     * Returns the component-wise sum of this point and the given one.
      *
-     * @param p the point to add to this one.
-     * @return a new Point2D representing the sum of the two points.
+     * @param p the point to add.
+     * @return a new {@link Point2D} equal to {@code this + p}.
      */
     public Point2D sum(final Point2D p) {
         return new Point2D(this.x() + p.x(), this.y() + p.y());
     }
 
     /**
-     * Multiplies the coordinates of this point by a scalar.
+     * Returns this point scaled by the given scalar.
      *
-     * @param n the scalar value to multiply with.
-     * @return a new Point2D with coordinates multiplied by n.
+     * @param n the scalar multiplier.
+     * @return a new {@link Point2D} equal to {@code this * n}.
      */
     public Point2D multiply(final int n) {
         return new Point2D(this.x() * n, this.y() * n);
     }
 
     /**
-     * Inverts the x coordinate of this point.
+     * Returns a new point with the {@code x} component negated.
      *
-     * @return a new Point2D with the x coordinate negated.
+     * @return a new {@link Point2D} with {@code x} inverted.
      */
     public Point2D invertX() {
         return new Point2D(-this.x(), this.y());
     }
 
     /**
-     * Inverts the y coordinate of this point.
+     * Returns a new point with the {@code y} component negated.
      *
-     * @return a new Point2D with the y coordinate negated.
+     * @return a new {@link Point2D} with {@code y} inverted.
      */
     public Point2D invertY() {
         return new Point2D(this.x(), -this.y());
     }
 
     /**
-     * Flips the y coordinate based on the board height.
-     * Useful for converting between coordinate systems where the origin might be different (e.g., top-left vs bottom-left).
+     * Flips the {@code y} coordinate within a board of the given height.
      *
-     * @param boardHeight the height of the board.
-     * @return a new Point2D with the y coordinate flipped.
+     * <p>
+     * This maps {@code y} to {@code (boardHeight - 1 - y)}.
+     * </p>
+     *
+     * @param boardHeight the total height of the board.
+     * @return a new {@link Point2D} with {@code y} flipped.
      */
     public Point2D flipY(final int boardHeight) {
         return new Point2D(this.x(), boardHeight - 1 - this.y());

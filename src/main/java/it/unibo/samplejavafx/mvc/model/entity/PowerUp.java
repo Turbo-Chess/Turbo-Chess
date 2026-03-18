@@ -39,8 +39,8 @@ public class PowerUp extends AbstractEntity<PowerUpDefinition> {
      * Triggers and applies the specific effect associated with this PowerUp on the game board.
      *
      * <p>
-     * Note: The implementation of specific effects is pending (Currently a placeholder).
-     * Future implementations should utilize the duration and definition properties to alter game state.
+     * Note: the implementation of specific effects is currently pending.
+     * Future implementations should utilize the duration and definition properties to alter the game state.
      * </p>
      */
     public void applyEffect() {

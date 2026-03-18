@@ -39,7 +39,7 @@ public final class CheckCalculator {
      * 
      * @param cb the current chessboard.
      * @param kingColor the color of the king under check.
-     * @return a list of pieces that can block the check, sorted by weight (ascending).
+     * @return a list of pieces that can block the check.
      */
     public static Map<Piece, List<Point2D>> getInterposingPieces(final ChessBoard cb, final PlayerColor kingColor) {
         LOGGER.debug("Calculating interposing pieces for King: {}", kingColor);

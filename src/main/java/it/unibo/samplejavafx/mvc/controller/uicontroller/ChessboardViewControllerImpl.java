@@ -80,6 +80,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
     private static final String PLUS_SIGN = "+";
     private static final double IMAGE_SCALE = 0.8;
+    private static final double HISTORY_CELL_WIDTH_OFFSET = 24.0;
     private static final long SECONDS_IN_MINUTE = 60L;
     private static final int SCROLLBAR_PADDING = 24;
 
@@ -176,7 +177,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
             {
                 wrapLabel.setWrapText(true);
-                wrapLabel.maxWidthProperty().bind(lv.widthProperty().subtract(SCROLLBAR_PADDING));
+                wrapLabel.maxWidthProperty().bind(lv.widthProperty().subtract(HISTORY_CELL_WIDTH_OFFSET));
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             }
 
