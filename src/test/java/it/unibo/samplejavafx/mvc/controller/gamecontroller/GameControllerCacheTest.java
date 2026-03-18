@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.controller.gamecontroller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,14 +24,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Test class to verify the GameController's movementCache functionality.
+ *
+ * <p>
  * Tests that pieces loaded from JSON correctly return move lists and that the cache can store, retrieve and clear data.
+ * </p>
  */
 class GameControllerCacheTest {
 
     /**
      * Comprehensive test that loads a piece from JSON, calculates moves, and tests cache store/retrieve/clear.
      *
-     * @throws IOException if there is an error reading the JSON file
+     * @throws IOException if there is an error reading the JSON file.
      */
     @Test
     void testMovementCache() throws IOException {
@@ -79,3 +84,4 @@ class GameControllerCacheTest {
         assertTrue(movesAfterClear.isEmpty(), "Cache should be empty after clear");
     }
 }
+// CHECKSTYLE: MagicNumber ON

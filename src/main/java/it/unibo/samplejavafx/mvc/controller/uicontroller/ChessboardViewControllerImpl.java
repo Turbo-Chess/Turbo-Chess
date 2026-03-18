@@ -443,6 +443,17 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * {@inheritDoc}
      */
     @Override
+    public void onEntityEat(final Point2D from, final Point2D to) {
+        if (isReplayMode) {
+            return;
+        }
+        highlightEat(from, to);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void onEntityRemoved(final Point2D pos, final Entity entity) {
         if (isReplayMode) {
             return;
@@ -627,7 +638,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
      * {@inheritDoc}
      */
     @Override
-    public void onTimerUpdated(final PlayerColor player, final long timeRemaining) {
+    public void onTimerUpdated(final PlayerColor player, final Long timeRemaining) {
         Platform.runLater(() -> {
             final var match = gameController.getMatch();
             final var timer = match.getGameTimer();
@@ -647,7 +658,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
     private void showEndingDialog(final String statusText, final String messageText, final Optional<PlayerColor> playerColor) {
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameOver.fxml"));
-        loader.setControllerFactory(c -> new GameOverController(coordinator));
+        loader.setControllerFactory(c -> new GameOverControllerImpl(coordinator));
         DialogPane root = new DialogPane();
         try {
             root = loader.load();

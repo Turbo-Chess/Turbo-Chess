@@ -6,20 +6,21 @@ import java.util.Set;
 
 /**
  * Interface defining the view for the chessboard.
+ * Useful to decouple only the minimal subset of functions to gave access to other objects.
  */
 public interface BoardView {
 
     /**
-     * Shows the cells where a piece can verify a move.
+     * Highlights a set of cells on the board to indicate valid movement destinations or other special zones.
      *
-     * @param cellsToShow the {@link Set} of cells to highlight.
+     * @param cellsToShow A {@link Set} of {@link Point2D} coordinates to highlight.
      */
     void showMovementCells(Set<Point2D> cellsToShow);
 
-   /**
-    * Hides the cells where a piece can verify a move.
-    *
-    * @param cellsToHide the {@link Set} of cells to hide.
-    */
-   void hideMovementCells(Set<Point2D> cellsToHide);
+    /**
+     * Removes the highlight from a set of cells, typically called when deselecting a piece or completing a move.
+     *
+     * @param cellsToHide A {@link Set} of {@link Point2D} coordinates to un-highlight.
+     */
+    void hideMovementCells(Set<Point2D> cellsToHide);
 }

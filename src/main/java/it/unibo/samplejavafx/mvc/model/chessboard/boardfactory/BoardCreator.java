@@ -9,16 +9,11 @@ import it.unibo.samplejavafx.mvc.model.loadout.Loadout;
 @FunctionalInterface
 public interface BoardCreator {
     /**
-     * Creates a new {@link ChessBoard} populated with pieces according to the specified loadouts for both players.
+     * Populates a chessboard with pieces according to the provided loadouts.
      *
-     * <p>
-     * This method initializes the board state, places pieces in their starting positions, and attaches
-     * the provided observer to monitor subsequent board events.
-     * </p>
-     *
-     * @param whiteLoadout  The {@link Loadout} configuration for the White player.
-     * @param blackLoadout  The {@link Loadout} configuration for the Black player.
-     * @param board The {@link ChessBoard} instance to populate.
+     * @param whiteLoadout the loadout configuration for white pieces
+     * @param blackLoadout the loadout configuration for black pieces
+     * @param board the chessboard to populate
      */
     void populateChessboard(Loadout whiteLoadout, Loadout blackLoadout, ChessBoard board);
 }

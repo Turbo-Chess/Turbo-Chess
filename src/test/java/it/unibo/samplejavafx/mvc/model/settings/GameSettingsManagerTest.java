@@ -1,5 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.settings;
 
+// CHECKSTYLE: MagicNumber OFF
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -11,10 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class GameSettingsManagerTest {
+    private static final String SETTINGS_JSON = "settings.json";
 
     @Test
     void loadReturnsDefaultWhenMissing(@TempDir final Path tempDir) {
-        final Path settingsFile = tempDir.resolve("settings.json");
+        final Path settingsFile = tempDir.resolve(SETTINGS_JSON);
         final GameSettingsManager manager = new GameSettingsManagerImpl(settingsFile);
 
         final GameSettings settings = manager.load();
@@ -24,7 +27,7 @@ final class GameSettingsManagerTest {
 
     @Test
     void saveAndLoadRoundTrip(@TempDir final Path tempDir) {
-        final Path settingsFile = tempDir.resolve("settings.json");
+        final Path settingsFile = tempDir.resolve(SETTINGS_JSON);
         final GameSettingsManager manager = new GameSettingsManagerImpl(settingsFile);
 
         final boolean saved = manager.save(new GameSettings(300));
@@ -36,7 +39,7 @@ final class GameSettingsManagerTest {
 
     @Test
     void loadSanitizesInvalidValue(@TempDir final Path tempDir) throws IOException {
-        final Path settingsFile = tempDir.resolve("settings.json");
+        final Path settingsFile = tempDir.resolve(SETTINGS_JSON);
         Files.writeString(settingsFile, "{\"initialTimeSeconds\":-5}");
 
         final GameSettingsManager manager = new GameSettingsManagerImpl(settingsFile);
@@ -45,3 +48,5 @@ final class GameSettingsManagerTest {
         assertEquals(GameSettings.DEFAULT_INITIAL_TIME_SECONDS, loaded.initialTimeSeconds());
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="MainMenuBox" fx:id="MainMenuBox" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="32.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuController">
+<VBox id="MainMenuBox" fx:id="MainMenuBox" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="32.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.MainMenuControllerImpl">
    <children>
       <Label id="TitleLabel" fx:id="TitleLabel" text="Turbo Chess" />
       <Button id="NewGameButton" fx:id="NewGameButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#startNewGame" text="New Game" VBox.vgrow="NEVER" />

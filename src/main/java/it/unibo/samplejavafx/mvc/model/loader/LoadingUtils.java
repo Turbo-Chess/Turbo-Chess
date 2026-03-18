@@ -20,10 +20,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Utility methods for resolving resource paths and computing asset locations.
+ * Utility class for handling file loading and path resolution.
  *
  * <p>
- * This class supports both filesystem paths and classpath resources (including resources packaged in jars).
+ * It supports loading resources from both the classpath (including inside JARs) and the local file system.
+ * This class ensures uniform path handling across different operating systems.
  * </p>
  */
 public final class LoadingUtils {
@@ -37,20 +38,16 @@ public final class LoadingUtils {
     }
 
     /**
-     * Resolves a path string into a {@link Path}, handling classpath and file prefixes.
+     * Resolves a string path into a valid {@link Path} object.
      *
      * <p>
-     * Supported formats:
+     * It handles different prefixes like "classpath:" and "file:".
+     * If the path serves a resource inside a JAR file, it handles the creation of the necessary FileSystem.
      * </p>
-     * <ul>
-     *     <li>{@code classpath:/...} for resources shipped with the application (including inside jars)</li>
-     *     <li>{@code file:/...} for absolute filesystem paths</li>
-     *     <li>plain absolute filesystem paths</li>
-     * </ul>
      *
-     * @param basePath the path string to resolve
-     * @return the resolved {@link Path}
-     * @throws IllegalStateException if the resource cannot be resolved or the prefix is not supported
+     * @param basePath The path string to resolve. It can typically start with "classpath:" or "file:".
+     * @return The resolved {@link Path} object.
+     * @throws IllegalStateException if the path cannot be resolved or the resource is not found.
      */
     public static Path getCorrectPath(final String basePath) {
         if (basePath.startsWith(CLASSPATH)) {
@@ -112,6 +109,7 @@ public final class LoadingUtils {
      * @param playerColor The color of the player owning the piece (affects the image variant).
      * @param id          The specific ID of the piece type.
      * @return a {@link String} representing the full path to the image resource.
+     * @throws IllegalStateException if the specified image does not exists in the file system.
      */
     public static String calculateImageColorPath(final String imagePath, final PlayerColor playerColor, final String id) {
         final String color = playerColor == PlayerColor.WHITE ? "white" : "black";

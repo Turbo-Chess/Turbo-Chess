@@ -42,7 +42,7 @@ class GameHistoryRecorderTest {
         .gameId(0)
         .playerColor(PlayerColor.WHITE)
         .build();
-    
+
     private Entity createTestPiece(final String name, final PlayerColor color) {
         return new Piece.Builder()
             .moved(false)
@@ -95,7 +95,7 @@ class GameHistoryRecorderTest {
 
         final List<GameEvent> events = recorder.getHistory().getEvents();
         assertEquals(1, events.size());
-        assertTrue(events.get(0) instanceof MoveEvent); 
+        assertTrue(events.get(0) instanceof MoveEvent);
 
         assertEquals(from, ((MoveEvent) events.get(0)).from());
         assertEquals(to, ((MoveEvent) events.get(0)).to());

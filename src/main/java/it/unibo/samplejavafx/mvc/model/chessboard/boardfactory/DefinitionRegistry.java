@@ -10,30 +10,40 @@ import java.util.Map;
  */
 public interface DefinitionRegistry {
     /**
-     * @return a {@link List} of resource pack identifiers.
+     * Retrieves a list of all available resource pack identifiers.
+     *
+     * @return a {@link List} of strings representing the IDs of the resource packs.
      */
     List<String> getResPackIds();
 
     /**
+     * Retrieves all piece definitions contained within a specific resource pack.
+     *
      * @param packId the identifier of the resource pack.
-     * @return a {@link Map} of piece identifiers to their definitions.
+     * @return a {@link Map} where the keys are piece identifiers and the values are their corresponding definitions.
      */
     Map<String, AbstractEntityDefinition> getPackData(String packId);
 
     /**
-     * @return a {@link List} of all entity definitions.
+     * Retrieves a complete list of all entity definitions across all registered resource packs.
+     *
+     * @return a {@link List} containing every {@link AbstractEntityDefinition} available in the registry.
      */
     List<AbstractEntityDefinition> getAllDefinitions();
 
     /**
-     * @param packId the identifier of the resource pack.
-     * @param pieceId the identifier of the piece.
-     * @return the {@link AbstractEntityDefinition} for the specified piece.
+     * Retrieves the definition for a specific entity based on its pack and piece identifiers.
+     *
+     * @param packId the identifier of the resource pack containing the entity.
+     * @param pieceId the identifier of the piece within the pack.
+     * @return the {@link AbstractEntityDefinition} corresponding to the specified IDs.
      */
     AbstractEntityDefinition getDefinition(String packId, String pieceId);
 
     /**
-     * @return a {@link List} of all piece identifiers.
+     * Retrieves a list of all unique piece identifiers available in the registry, across all packs.
+     *
+     * @return a {@link List} of strings representing the unique IDs of all pieces.
      */
     List<String> getAllIds();
 }

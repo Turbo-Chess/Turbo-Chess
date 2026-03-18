@@ -4,7 +4,7 @@ import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDef
 
 /**
  * Represents a cached entry for an entity definition.
- * This is a pure DTO to pass to the {@link BoardFactory} that manages the cached entity definitions.
+ * This is a pure DTO passed to the {@link BoardFactory} that manages the cached entity definitions.
  *
  * @param packId the identifier of the resource pack.
  * @param pieceId the identifier of the piece.

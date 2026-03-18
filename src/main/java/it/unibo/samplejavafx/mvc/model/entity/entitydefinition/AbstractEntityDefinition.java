@@ -28,6 +28,7 @@ import java.nio.file.Paths;
  * <p>
  * It utilizes the Builder pattern for object construction and includes JSON annotations
  * provided by the Jackson library to support polymorphic deserialization of different entity definition types.
+ * It is also very handful to check that the received parameters are coherent, throwing an exception otherwise.
  * </p>
  */
 @Getter
@@ -190,15 +191,10 @@ public abstract class AbstractEntityDefinition {
         }
 
         /**
-         * Sets the weight of the entity.
+         * Sets the weight of the entity for scoring purposes.
          *
-         * <p>
-         * Weight is used by game rules (e.g., loadout validation and scoring) to represent the relative
-         * value/cost of the entity.
-         * </p>
-         *
-         * @param newWeight the weight value to assign
-         * @return this builder instance for method chaining
+         * @param newWeight The integer weight value.
+         * @return this builder concrete instance for method chaining.
          */
         public X weight(final int newWeight) {
             this.weight = newWeight;
@@ -206,9 +202,14 @@ public abstract class AbstractEntityDefinition {
         }
 
         /**
-         * Returns the builder instance itself.
+         * Sets the weight of the entity.
          *
-         * @return the builder instance of type {@code X}
+         * <p>
+         * Weight is used by game rules (e.g., loadout validation and scoring) to represent the relative
+         * value/cost of the entity.
+         * </p>
+         *
+         * @return the builder instance of type {@code X}.
          */
         protected abstract X self();
 

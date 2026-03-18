@@ -7,13 +7,6 @@ import lombok.Getter;
 
 /**
  * Represents the definition for a game power-up, separate from standard pieces.
- *
- * <p>
- * This class defines the attributes of a power-up, specifically its duration in game turns.
- * Power-up definitions are typically instantiated from configuration files and used to generate
- * power-up entities on the board.
- * </p>
- *
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)

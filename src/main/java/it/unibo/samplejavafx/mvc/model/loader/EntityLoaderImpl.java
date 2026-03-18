@@ -15,11 +15,11 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * Default implementation of {@link EntityLoader} based on Jackson JSON deserialization.
+ * A concrete implementation of the {@link EntityLoader} interface.
  *
  * <p>
- * The loader walks the provided directory tree, reads all {@code .json} files and maps them to the requested
- * {@link AbstractEntityDefinition} subtype.
+ * This class uses the Jackson library to deserialize JSON files into entity definition objects.
+ * It traverses a directory structure to find and load all matching configuration files.
  * </p>
  */
 public class EntityLoaderImpl implements EntityLoader {

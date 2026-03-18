@@ -27,7 +27,7 @@ public interface Moveable {
      *
      * @param board  the current state of the {@link ChessBoard}, providing context for the next move validation.
      * @param start  the {@link Point2D} representing the current position of the entity.
-     * @return a non-null, unmodifiable {@link List} of {@link Point2D} coordinates representing valid moves.
+     * @return a {@link List} of {@link Point2D} coordinates representing valid moves.
      *         The list is empty if no legal moves are available.
      */
     List<Point2D> getValidMoves(Point2D start, ChessBoard board);

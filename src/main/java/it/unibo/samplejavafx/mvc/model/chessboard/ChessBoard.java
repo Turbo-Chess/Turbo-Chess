@@ -29,11 +29,6 @@ public interface ChessBoard {
     /**
      * Places or updates an entity at a specific position on the board.
      *
-     * <p>
-     * If the position is already occupied, the existing entity is typically replaced or removed
-     * depending on game rules.
-     * </p>
-     *
      * @param pos       The target {@link Point2D} coordinate.
      * @param newEntity The {@link Entity} to place at the location.
      */
