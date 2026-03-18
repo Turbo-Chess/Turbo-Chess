@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.movement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * New test class made to test all the possible movements of the real chess pieces
@@ -30,6 +34,7 @@ class ChessPieceMovementTest {
     private static final String ROOK_JSON = "Rook.json";
     private static final String QUEEN_JSON = "Queen.json";
     private static final String KING_JSON = "King.json";
+    private static final String CAN_CAPTURE_ENEMY = "Can capture enemy";
     private final ObjectMapper mapper = new ObjectMapper();
     private ChessBoard board;
     private int gameIdCounter;
@@ -51,6 +56,16 @@ class ChessPieceMovementTest {
             .build();
     }
 
+    /**
+     * Tests the movement and capture logic for the Pawn piece.
+     *
+     * <p>
+     * Verifies forward movement, diagonal captures, blocking behavior, and that friendly pieces cannot be captured.
+     * Also checks behavior at board edges.
+     * </p>
+     *
+     * @throws IOException if there is an error loading the piece definition.
+     */
     @Test
     void testPawnMovementAndCapture() throws IOException {
         final Piece whitePawn = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
@@ -100,10 +115,20 @@ class ChessPieceMovementTest {
         // Test y edge - no moves available
         board.removeEntity(new Point2D(0, 4));
         board.setEntity(new Point2D(3, 0), whitePawn);
-        assertFalse(whitePawn.getValidMoves(new Point2D(3, 0), board).contains(new Point2D(3,  -1)), "No moves at board edge");
+        assertFalse(whitePawn.getValidMoves(new Point2D(3, 0), board).contains(new Point2D(3, -1)), "No moves at board edge");
 
     }
 
+    /**
+     * Tests the movement logic for the Knight piece.
+     *
+     * <p>
+     * Verifies L-shaped moves, jumping over pieces, capturing enemies, and avoiding friendly fire.
+     * Also checks movement from corner and edge positions.
+     * </p>
+     *
+     * @throws IOException if there is an error loading the piece definition.
+     */
     @Test
     void testKnightMovement() throws IOException {
         final Piece whiteKnight = loadPieceFromJson(KNIGHT_JSON, PlayerColor.WHITE);
@@ -119,7 +144,7 @@ class ChessPieceMovementTest {
 
         // Test jumping, capturing and can't land on friendly
         List<Point2D> moves = whiteKnight.getValidMoves(new Point2D(4, 4), board);
-        assertTrue(moves.contains(new Point2D(6, 5)), "Can capture enemy");
+        assertTrue(moves.contains(new Point2D(6, 5)), CAN_CAPTURE_ENEMY);
         assertFalse(moves.contains(new Point2D(2, 3)), "Can't land on friendly");
         board.removeEntity(new Point2D(2, 3));
 
@@ -146,6 +171,16 @@ class ChessPieceMovementTest {
         assertEquals(expectedMoves, new HashSet<>(whiteKnight.getValidMoves(new Point2D(7, 4), board)), "Edge: 4 moves");
     }
 
+    /**
+     * Tests the movement logic for the Bishop piece.
+     *
+     * <p>
+     * Verifies diagonal sliding movement in all four directions, blocking by friendly pieces, and capturing enemies.
+     * Also checks movement from corner positions.
+     * </p>
+     *
+     * @throws IOException if there is an error loading the piece definition.
+     */
     @Test
     void testBishopDiagonalMovement() throws IOException {
         final Piece whiteBishop = loadPieceFromJson(BISHOP_JSON, PlayerColor.WHITE);
@@ -166,7 +201,7 @@ class ChessPieceMovementTest {
         );
 
         assertEquals(expectedMoves, new HashSet<>(moves));
-        assertTrue(moves.contains(new Point2D(2, 2)), "Can capture enemy");
+        assertTrue(moves.contains(new Point2D(2, 2)), CAN_CAPTURE_ENEMY);
         assertFalse(moves.contains(new Point2D(6, 6)), "Blocked by friendly");
         assertFalse(moves.contains(new Point2D(1, 1)), "Can't go beyond capture");
 
@@ -177,9 +212,19 @@ class ChessPieceMovementTest {
                 new Point2D(1, 1), new Point2D(2, 2), new Point2D(3, 3),
                 new Point2D(4, 4), new Point2D(5, 5), new Point2D(6, 6), new Point2D(7, 7)
         );
-        assertEquals(expectedMoves, new HashSet<>(whiteBishop.getValidMoves(new Point2D(0, 0), board)), "Corner: 7 diagonal moves");
+        assertEquals(expectedMoves,
+                new HashSet<>(whiteBishop.getValidMoves(new Point2D(0, 0), board)), "Corner: 7 diagonal moves");
     }
 
+    /**
+     * Tests the movement logic for the Rook piece.
+     *
+     * <p>
+     * Verifies straight sliding movement (horizontal and vertical), blocking by friendly pieces, and capturing enemies.
+     * </p>
+     *
+     * @throws IOException if there is an error loading the piece definition.
+     */
     @Test
     void testRookStraightMovement() throws IOException {
         final Piece whiteRook = loadPieceFromJson(ROOK_JSON, PlayerColor.WHITE);
@@ -212,14 +257,30 @@ class ChessPieceMovementTest {
         board.setEntity(new Point2D(0, 0), whiteRook);
         assertEquals(
             Set.of(
-                new Point2D(0, 1), new Point2D(0, 2), new Point2D(0, 3), new Point2D(0, 4), new Point2D(0, 5), new Point2D(0, 6), new Point2D(0, 7), // right
-                new Point2D(1, 0), new Point2D(2, 0), new Point2D(3, 0), new Point2D(4, 0), new Point2D(5, 0), new Point2D(6, 0), new Point2D(7, 0)  // up
+                new Point2D(0, 1), new Point2D(0, 2),
+                new Point2D(0, 3), new Point2D(0, 4),
+                new Point2D(0, 5), new Point2D(0, 6),
+                new Point2D(0, 7), new Point2D(1, 0),
+                new Point2D(2, 0), new Point2D(3, 0),
+                new Point2D(4, 0), new Point2D(5, 0),
+                new Point2D(6, 0), new Point2D(7, 0)
             ),
             new HashSet<>(whiteRook.getValidMoves(new Point2D(0, 0), board)),
             "Corner: 14 straight moves"
         );
     }
 
+    /**
+     * Tests the combined movement logic for the Queen piece.
+     *
+     * <p>
+     * Verifies that the Queen can move like both a Rook and a Bishop (straight and diagonal),
+     * handling capturing and blocking correctly.
+     * Also tests edge case scenarios.
+     * </p>
+     *
+     * @throws IOException if there is an error loading the piece definition.
+     */
     @Test
     void testQueenCombinedMovement() throws IOException {
         final Piece whiteQueen = loadPieceFromJson(QUEEN_JSON, PlayerColor.WHITE);
@@ -267,7 +328,8 @@ class ChessPieceMovementTest {
             Set.of(
                 new Point2D(0, 5), new Point2D(0, 6), new Point2D(0, 7), // bottom
                 new Point2D(0, 3), new Point2D(0, 2), new Point2D(0, 1), new Point2D(0, 0), // up
-                new Point2D(1, 4), new Point2D(2, 4), new Point2D(3, 4), new Point2D(4, 4), new Point2D(5, 4), new Point2D(6, 4), new Point2D(7, 4), // right
+                new Point2D(1, 4), new Point2D(2, 4), new Point2D(3, 4), new Point2D(4, 4), new Point2D(5, 4),
+                        new Point2D(6, 4), new Point2D(7, 4), // right
                 new Point2D(1, 5), new Point2D(2, 6), new Point2D(3, 7), // bottom-left diagonal
                 new Point2D(1, 3), new Point2D(2, 2), new Point2D(3, 1), new Point2D(4, 0) // up-right diagonal
             ),
@@ -276,6 +338,16 @@ class ChessPieceMovementTest {
         );
     }
 
+    /**
+     * Tests the movement logic for the King piece.
+     *
+     * <p>
+     * Verifies that the King moves exactly one square in any direction, and handles capturing and blocking correctly.
+     * Also tests movement from corner and edge positions.
+     * </p>
+     *
+     * @throws IOException if there is an error loading the piece definition.
+     */
     @Test
     void testKingMovement() throws IOException {
         final Piece whiteKing = loadPieceFromJson(KING_JSON, PlayerColor.WHITE);
@@ -298,7 +370,7 @@ class ChessPieceMovementTest {
 
         final List<Point2D> moves = whiteKing.getValidMoves(new Point2D(4, 4), board);
         assertFalse(moves.contains(new Point2D(5, 5)), "Can't land on friendly");
-        assertTrue(moves.contains(new Point2D(3, 3)), "Can capture enemy");
+        assertTrue(moves.contains(new Point2D(3, 3)), CAN_CAPTURE_ENEMY);
         assertEquals(
             Set.of(
                 new Point2D(4, 3), new Point2D(4, 5),
@@ -324,6 +396,15 @@ class ChessPieceMovementTest {
         assertEquals(expectedMoves, new HashSet<>(whiteKing.getValidMoves(new Point2D(4, 0), board)), "Edge: 5 moves");
     }
 
+    /**
+     * Tests interaction between multiple pieces on the board.
+     *
+     * <p>
+     * Verifies that pieces block each other correctly and that captures are properly identified in a multi-piece scenario.
+     * </p>
+     *
+     * @throws IOException if there is an error loading the piece definition.
+     */
     @Test
     void testMultiplePiecesInteraction() throws IOException {
         final Piece whiteKnight = loadPieceFromJson(KNIGHT_JSON, PlayerColor.WHITE);
@@ -346,6 +427,15 @@ class ChessPieceMovementTest {
         assertTrue(bishopMoves.contains(new Point2D(4, 4)), "Bishop can capture knight");
     }
 
+    /**
+     * Tests the double-step movement logic for the Pawn piece.
+     *
+     * <p>
+     * Verifies that a Pawn can move two squares forward on its first move unless blocked, and only one square afterward.
+     * </p>
+     *
+     * @throws IOException if there is an error loading the piece definition.
+     */
     @Test
     void testPawnDoubleStep() throws IOException {
         final Piece whitePawn = loadPieceFromJson(PAWN_JSON, PlayerColor.WHITE);
@@ -378,3 +468,5 @@ class ChessPieceMovementTest {
         assertFalse(moves.contains(new Point2D(4, 4)), "Cannot move 2 steps after having moved");
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

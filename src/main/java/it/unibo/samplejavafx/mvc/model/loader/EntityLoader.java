@@ -6,17 +6,22 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * The interface that models the loader class of the various entities.
+ * The interface that models the loader class' contract for the entity definitions.
  */
 @FunctionalInterface
 public interface EntityLoader {
     /**
-     * Loads all JSON files found under {@code filesPath} and deserializes them into entity definitions.
+     * Loads entity definitions from a specified file path.
      *
-     * @param filesPath the base directory to traverse looking for JSON definition files
-     * @param classToLoad the concrete definition class used for deserialization
-     * @return a list of loaded {@link AbstractEntityDefinition} instances
-     * @throws IllegalStateException if directory traversal or JSON parsing fails
+     * <p>
+     * This method reads and parses configuration files (e.g., JSON) to create runtime instances
+     * of {@link AbstractEntityDefinition}. It supports polymorphic loading based on the
+     * provided class type.
+     * </p>
+     *
+     * @param filesPath   The {@link Path} to the directory or file containing entity definitions.
+     * @param classToLoad The concrete subclass of {@link AbstractEntityDefinition} to instantiate.
+     * @return a {@link List} containing the loaded entity definitions.
      */
     List<AbstractEntityDefinition> loadEntityFile(Path filesPath, Class<? extends AbstractEntityDefinition> classToLoad);
 }

@@ -52,25 +52,23 @@ class ReplayBugTest {
 
         // --- SESSION 1 ---
         controller.loadHistory(history);
-        
+
         assertTrue(controller.next().isPresent());
         assertTrue(board.getEntity(new Point2D(0, 0)).isPresent());
 
         assertTrue(controller.next().isPresent());
         assertTrue(board.getEntity(new Point2D(0, 1)).isPresent());
         assertTrue(board.getEntity(new Point2D(0, 0)).isEmpty());
-        
+
         assertTrue(controller.prev().isPresent());
         assertTrue(board.getEntity(new Point2D(0, 0)).isPresent(), "After undo, piece should be at (0,0)");
         assertTrue(board.getEntity(new Point2D(0, 1)).isEmpty(), "After undo, piece should NOT be at (0,1)");
 
         // --- SESSION 2 ---.
         controller.loadHistory(history);
-        
+
         controller.jumpToEnd();
-        
-     
-        
+
         assertTrue(board.getEntity(new Point2D(0, 1)).isPresent(), "After reload and jumpToEnd, piece should be at (0,1)");
         assertTrue(board.getEntity(new Point2D(0, 0)).isEmpty(), "After reload and jumpToEnd, piece should NOT be at (0,0)");
     }
@@ -80,20 +78,20 @@ class ReplayBugTest {
         final ChessBoardImpl board = new ChessBoardImpl();
         final ReplayController controller = new ReplayControllerImpl(board);
         final GameHistory history = new GameHistory();
-        
+
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0), 0, 0));
         history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null, 0, 0));
         history.addEvent(new MoveEvent(2, PAWN_NAME, PlayerColor.BLACK, new Point2D(0, 1), new Point2D(0, 2), null, 0, 0));
-        
+
         controller.loadHistory(history);
         controller.next();
         controller.next();
-        
+
         assertTrue(board.getEntity(new Point2D(0, 1)).isPresent());
-        
+
         controller.loadHistory(history);
-        controller.next(); 
-        
+        controller.next();
+
         assertTrue(board.getEntity(new Point2D(0, 0)).isPresent(), "Spawn should place piece at (0,0)");
         assertTrue(board.getEntity(new Point2D(0, 1)).isEmpty(), "Board should have been cleared, so (0,1) should be empty");
     }

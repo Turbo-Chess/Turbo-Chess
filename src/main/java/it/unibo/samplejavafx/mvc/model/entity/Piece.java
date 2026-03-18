@@ -60,9 +60,9 @@ public class Piece extends AbstractEntity<PieceDefinition> implements Moveable {
     }
 
     /**
-     * Returns a new instance of itself.
+     * {@inheritDoc}
      *
-     * @return the cloned {@link Piece}.
+     * @return a new instance of itself.
      */
     @Override
     public final Piece cloneEntity() {

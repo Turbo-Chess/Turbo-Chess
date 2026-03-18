@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.rules;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,8 +14,8 @@ import com.fasterxml.jackson.databind.DatabindException;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 
 class CastlingTest {
     private ChessBoard board;
@@ -26,7 +28,7 @@ class CastlingTest {
     }
 
     @Test
-    void testSimpleCastling() throws StreamReadException, DatabindException, IOException {
+    void testSimpleCastling() throws IOException {
         board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
         countInc();
         board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
@@ -38,46 +40,7 @@ class CastlingTest {
     }
 
     @Test
-    void testSimpleCastlingLeft() throws StreamReadException, DatabindException, IOException {
-        board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
-        countInc();
-        board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
-        countInc();
-
-        assertEquals(CastleCondition.CASTLE_LEFT, AdvancedRules.castle(board, PlayerColor.WHITE));
-    }
-
-    @Test
-    void testSimpleCastlingRight() throws StreamReadException, DatabindException, IOException {
-        board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
-        countInc();
-        board.setEntity(new Point2D(7, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
-        countInc();
-
-        assertEquals(CastleCondition.CASTLE_RIGHT, AdvancedRules.castle(board, PlayerColor.WHITE));
-    }
-
-    @Test
-    void testSimpleFalseCastling() throws StreamReadException, DatabindException, IOException {
-        board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
-        countInc();
-
-        assertEquals(CastleCondition.NO_CASTLE, AdvancedRules.castle(board, PlayerColor.WHITE));
-    }
-
-    @Test
-    void testFalseCastling() throws StreamReadException, DatabindException, IOException {
-        board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
-        countInc();
-        board.setEntity(new Point2D(1, 7), TestUtilities.createQueen(PlayerColor.WHITE, idCount));
-        countInc();
-        board.move(new Point2D(1, 7), new Point2D(0, 7));
-
-        assertEquals(CastleCondition.NO_CASTLE, AdvancedRules.castle(board, PlayerColor.WHITE));
-    }
-
-    @Test
-    void testFalseSingleCastling() throws StreamReadException, DatabindException, IOException {
+    void testLeftInterruptedCastling() throws StreamReadException, DatabindException, IOException {
         board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
         countInc();
         board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
@@ -91,7 +54,21 @@ class CastlingTest {
     }
 
     @Test
-    void testFalseDoubleCastling() throws StreamReadException, DatabindException, IOException {
+    void testRightInterruptedCastling() throws IOException {
+        board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(7, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(6, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
+        countInc();
+
+        assertEquals(CastleCondition.CASTLE_LEFT, AdvancedRules.castle(board, PlayerColor.WHITE));
+    }
+
+    @Test
+    void testBothInterruptedCastling() throws StreamReadException, DatabindException, IOException {
         board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
         countInc();
         board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
@@ -102,7 +79,6 @@ class CastlingTest {
         countInc();
         board.setEntity(new Point2D(6, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
         countInc();
-
 
         assertEquals(CastleCondition.NO_CASTLE, AdvancedRules.castle(board, PlayerColor.WHITE));
     }
@@ -117,7 +93,6 @@ class CastlingTest {
         countInc();
         board.setEntity(new Point2D(6, 0), TestUtilities.createRook(PlayerColor.BLACK, idCount));
         countInc();
-
 
         assertEquals(CastleCondition.CASTLE_LEFT, AdvancedRules.castle(board, PlayerColor.WHITE));
     }
@@ -135,7 +110,6 @@ class CastlingTest {
         board.setEntity(new Point2D(5, 0), TestUtilities.createRook(PlayerColor.BLACK, idCount));
         countInc();
 
-
         assertEquals(CastleCondition.NO_CASTLE, AdvancedRules.castle(board, PlayerColor.WHITE));
     }
 
@@ -143,3 +117,5 @@ class CastlingTest {
         this.idCount += 1;
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

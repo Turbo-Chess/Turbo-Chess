@@ -14,7 +14,7 @@ import it.unibo.samplejavafx.mvc.model.timer.GameTimer;
  *
  * <p>
  * It acts as the central source of truth for the game state, maintaining the flow of turns, player progression,
- * and the overall status of the match (e.g., normal, checkmate, draw).
+ * and the overall status of the match.
  * It aggregates key components such as the {@link ChessBoard}, {@link TurnHandler}, and {@link GameHistory}.
  * </p>
  */

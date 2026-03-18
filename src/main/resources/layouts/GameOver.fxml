@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 
 <DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.GameOverController"
+            fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.GameOverControllerImpl"
             prefWidth="300" prefHeight="200" styleClass="game-dialog">
     <content>
         <VBox alignment="CENTER" spacing="20">

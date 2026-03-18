@@ -8,7 +8,6 @@ package it.unibo.samplejavafx.mvc.model.entity;
 public enum PieceType {
     /**
      * Represents the standard Pawn piece.
-     * Characterized by forward movement and specific capture rules.
      */
     PAWN,
 

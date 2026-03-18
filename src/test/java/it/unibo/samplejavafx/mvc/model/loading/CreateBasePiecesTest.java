@@ -1,3 +1,5 @@
+// CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.loading;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,138 +10,32 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test class made to be able to create the JSON files for the basic chess pieces implementation
  * and test that the loading for that is also correct.
  */
 class CreateBasePiecesTest {
-    private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String PIECES_PATH = "src/main/resources/EntityResources/StandardChessPieces/pieces/";
+    private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-    /*@Test
-    void createPawn() throws IOException {
-        final PieceDefinition pawn = new PieceDefinition.Builder()
-                .name("Pawn")
-                .id("pawn")
-                .imagePath(IMAGES_PATH + "white_pawn.png")
-                .weight(1)
-                .pieceType(PieceType.PAWN)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.EAT_ONLY, MoveRulesImpl.MoveStrategy.JUMPING, false)
-                ))
-                .build();
-        mapper.writeValue(new File(PIECES_PATH + "Pawn.json"), pawn);
-    }
-
-    @Test
-    void createKnight() throws IOException {
-        final PieceDefinition knight = new PieceDefinition.Builder()
-                .name("Knight")
-                .id("knight")
-                .imagePath(IMAGES_PATH + "white_knight.png")
-                .weight(3)
-                .pieceType(PieceType.INFERIOR)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(1, 2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(1, -2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(-1, 2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(-1, -2), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false)
-                ))
-                .build();
-        mapper.writeValue(new File(PIECES_PATH + "Knight.json"), knight);
-    }
-
-    @Test
-    void createBishop() throws IOException {
-        final PieceDefinition bishop = new PieceDefinition.Builder()
-                .name("Bishop")
-                .id("bishop")
-                .imagePath(IMAGES_PATH + "white_bishop.png")
-                .weight(3)
-                .pieceType(PieceType.INFERIOR)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false)
-                ))
-                .build();
-        mapper.writeValue(new File(PIECES_PATH + "Bishop.json"), bishop);
-    }
-
-    @Test
-    void createRook() throws IOException {
-        final PieceDefinition rook = new PieceDefinition.Builder()
-                .name("Rook")
-                .id("rook")
-                .imagePath(IMAGES_PATH + "black_rook.png")
-                .weight(5)
-                .pieceType(PieceType.TOWER)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false)
-                ))
-                .build();
-        mapper.writeValue(new File(PIECES_PATH + "Rook.json"), rook);
-    }
-
-    @Test
-    void createQueen() throws IOException {
-        final PieceDefinition queen = new PieceDefinition.Builder()
-                .name("Queen")
-                .id("queen")
-                .imagePath(IMAGES_PATH + "white_queen.png")
-                .weight(9)
-                .pieceType(PieceType.SUPERIOR)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false),
-                        new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.SLIDING, false)
-                ))
-                .build();
-        mapper.writeValue(new File(PIECES_PATH + "Queen.json"), queen);
-    }
-
-    @Test
-    void createKing() throws IOException {
-        final PieceDefinition king = new PieceDefinition.Builder()
-                .name("King")
-                .id("king")
-                .imagePath(IMAGES_PATH + "white_king.png")
-                .weight(100)
-                .pieceType(PieceType.KING)
-                .moveRules(List.of(
-                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(-1, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false),
-                        new MoveRulesImpl(new Point2D(-1, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false)
-                ))
-                .build();
-        mapper.writeValue(new File(PIECES_PATH + "King.json"), king);
-    }
-*/
+    /**
+     * Tests the loading of the Pawn piece definition from JSON.
+     *
+     * <p>
+     * Verifies that the loaded object is not null and that its properties 
+     * (ID, name, weight, move rules) match selected expected values.
+     * </p>
+     *
+     * @throws IOException if the file cannot be read.
+     */
     @Test
     void testLoadPawnFromJson() throws IOException {
-        final PieceDefinition pawn = mapper.readValue(new File(PIECES_PATH + "Pawn.json"), PieceDefinition.class);
+        final PieceDefinition pawn = mapper.readValue(
+                new File(PIECES_PATH + "Pawn.json"), 
+                PieceDefinition.class);
         assertNotNull(pawn);
         assertEquals("pawn", pawn.getId());
         assertEquals("Pawn", pawn.getName());
@@ -147,9 +43,21 @@ class CreateBasePiecesTest {
         assertEquals(4, pawn.getMoveRules().size());
     }
 
+    /**
+     * Tests the loading of the Knight piece definition from JSON.
+     *
+     * <p>
+     * Verifies that the loaded object is not null and that its properties (ID,
+     * name, weight, move rules) match selected expected values.
+     * </p>
+     *
+     * @throws IOException if the file cannot be read.
+     */
     @Test
     void testLoadKnightFromJson() throws IOException {
-        final PieceDefinition knight = mapper.readValue(new File(PIECES_PATH + "Knight.json"), PieceDefinition.class);
+        final PieceDefinition knight = mapper.readValue(
+                new File(PIECES_PATH + "Knight.json"),
+                PieceDefinition.class);
         assertNotNull(knight);
         assertEquals("knight", knight.getId());
         assertEquals("Knight", knight.getName());
@@ -157,9 +65,21 @@ class CreateBasePiecesTest {
         assertEquals(8, knight.getMoveRules().size());
     }
 
+    /**
+     * Tests the loading of the Bishop piece definition from JSON.
+     *
+     * <p>
+     * Verifies that the loaded object is not null and that its properties (ID,
+     * name, weight, move rules) match selected expected values.
+     * </p>
+     *
+     * @throws IOException if the file cannot be read.
+     */
     @Test
     void testLoadBishopFromJson() throws IOException {
-        final PieceDefinition bishop = mapper.readValue(new File(PIECES_PATH + "Bishop.json"), PieceDefinition.class);
+        final PieceDefinition bishop = mapper.readValue(
+                new File(PIECES_PATH + "Bishop.json"), 
+                PieceDefinition.class);
         assertNotNull(bishop);
         assertEquals("bishop", bishop.getId());
         assertEquals("Bishop", bishop.getName());
@@ -167,9 +87,21 @@ class CreateBasePiecesTest {
         assertEquals(4, bishop.getMoveRules().size());
     }
 
+    /**
+     * Tests the loading of the Rook piece definition from JSON.
+     *
+     * <p>
+     * Verifies that the loaded object is not null and that its properties (ID,
+     * name, weight, move rules) match selected expected values.
+     * </p>
+     *
+     * @throws IOException if the file cannot be read.
+     */
     @Test
     void testLoadRookFromJson() throws IOException {
-        final PieceDefinition rook = mapper.readValue(new File(PIECES_PATH + "Rook.json"), PieceDefinition.class);
+        final PieceDefinition rook = mapper.readValue(
+                new File(PIECES_PATH + "Rook.json"), 
+                PieceDefinition.class);
         assertNotNull(rook);
         assertEquals("rook", rook.getId());
         assertEquals("Rook", rook.getName());
@@ -177,9 +109,21 @@ class CreateBasePiecesTest {
         assertEquals(4, rook.getMoveRules().size());
     }
 
+    /**
+     * Tests the loading of the Queen piece definition from JSON.
+     *
+     * <p>
+     * Verifies that the loaded object is not null and that its properties (ID,
+     * name, weight, move rules) match selected expected values.
+     * </p>
+     *
+     * @throws IOException if the file cannot be read.
+     */
     @Test
     void testLoadQueenFromJson() throws IOException {
-        final PieceDefinition queen = mapper.readValue(new File(PIECES_PATH + "Queen.json"), PieceDefinition.class);
+        final PieceDefinition queen = mapper.readValue(
+                new File(PIECES_PATH + "Queen.json"),
+                PieceDefinition.class);
         assertNotNull(queen);
         assertEquals("queen", queen.getId());
         assertEquals("Queen", queen.getName());
@@ -187,9 +131,21 @@ class CreateBasePiecesTest {
         assertEquals(8, queen.getMoveRules().size());
     }
 
+    /**
+     * Tests the loading of the King piece definition from JSON.
+     *
+     * <p>
+     * Verifies that the loaded object is not null and that its properties
+     * (ID, name, weight, move rules) match selected expected values.
+     * </p>
+     *
+     * @throws IOException if the file cannot be read.
+     */
     @Test
     void testLoadKingFromJson() throws IOException {
-        final PieceDefinition king = mapper.readValue(new File(PIECES_PATH + "King.json"), PieceDefinition.class);
+        final PieceDefinition king = mapper.readValue(new File(
+                    PIECES_PATH + "King.json"),
+                PieceDefinition.class);
         assertNotNull(king);
         assertEquals("king", king.getId());
         assertEquals("King", king.getName());
@@ -197,3 +153,5 @@ class CreateBasePiecesTest {
         assertEquals(8, king.getMoveRules().size());
     }
 }
+
+// CHECKSTYLE: MagicNumber ON

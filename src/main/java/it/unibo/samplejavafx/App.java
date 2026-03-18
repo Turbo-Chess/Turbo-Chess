@@ -9,11 +9,12 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 /**
- * JavaFX application entry point.
+ * The main JavaFX {@link Application} class.
  *
  * <p>
- * Initializes the UI layer and wires the main {@link GameCoordinator} implementation.
- * </p>
+ * This class is responsible for configuring the primary stage, initializing the
+ * application architecture (Coordinator and View), and handling global exceptions
+ * during startup.
  */
 public final class App extends Application {
     private static final int WINDOW_WIDTH = 800;
@@ -22,7 +23,12 @@ public final class App extends Application {
     /**
      * Starts the JavaFX application.
      *
-     * @param stage the primary stage created by JavaFX
+     * <p>
+     * It configures the stage size, sets up global error handling, initializes
+     * the {@link GameCoordinator}, and launches the main menu.
+     *
+     * @param stage the primary stage for this application, onto which
+     *              the application scene can be set.
      */
     @Override
     public void start(final Stage stage) {
@@ -63,9 +69,9 @@ public final class App extends Application {
     }
 
     /**
-     * Launches the JavaFX application.
+     * The main entry point for the JavaFX application.
      *
-     * @param args command-line arguments passed to the application
+     * @param args command line arguments passed to the application.
      */
     public static void main(final String[] args) {
         launch(args);

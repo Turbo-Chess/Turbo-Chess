@@ -3,12 +3,12 @@ package it.unibo.samplejavafx.mvc.controller.coordinator;
 import java.nio.file.Path;
 
 /**
- * The {@code GameCoordinator} interface acts as the high-level application controller, managing the
+ * The {@code GameCoordinator} acts as the high-level application controller, managing the
  * navigation between different screens (scenes) and the overall lifecycle of the game application.
  *
  * <p>
  * It provides methods to initialize and switch between the Main Menu, Settings, Loadout configuration,
- * and the active Game view. It also handles application-wide actions like quitting or resetting the game.
+ * and the active Game view.
  * </p>
  */
 public interface GameCoordinator {
@@ -42,20 +42,18 @@ public interface GameCoordinator {
     void initPromotion();
 
     /**
-     * Initializes the load game menu.
+     * Initializes the menu to load a saved game.
      */
     void initLoadGame();
 
     /**
-     * Quits the application.
-     * Terminates the application gracefully.
-     * Closes the main stage and releases resources.
+     * Quits the application terminating the main stage.
      */
     void quit();
 
     /**
      * Resets the current game session.
-     * Clears the game state and re-initializes the game view, effectively restarting the match.
+     * Clears the game state and re-initializes the game, effectively restarting the match.
      */
     void resetGame();
 

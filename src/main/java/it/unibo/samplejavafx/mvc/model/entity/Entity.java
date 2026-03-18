@@ -7,9 +7,8 @@ import java.util.Optional;
 
 /**
  * The {@link Entity} interface represents any distinct object that can exist on the game board.
- * This abstraction serves as the root for various game elements such as pieces, power-ups, or obstacles.
- * Implementing classes must define core characteristics including identification, visual representation,
- * and ownership information.
+ * This abstraction serves as the root for various game elements such as pieces, power-ups and, in general, any possible
+ * object that have sense to put on a chessboard.
  *
  * <p>
  * This interface works in conjunction with the JSON serialization mechanism to allow polymorphic
@@ -44,8 +43,6 @@ public interface Entity {
 
     /**
      * Retrieves the file path or resource location for the image representing this entity.
-     * The path should point to a folder when the images for the specific entity are stored.
-     * The image for the specific color will be calculated at runtime.
      *
      * @return a {@link String} representing the image path.
      */
@@ -53,8 +50,7 @@ public interface Entity {
 
     /**
      * Retrieves the categorical type of the entity.
-     * The type classifies the entity into broader categories defined by {@link PieceType},
-     * such as PAWN, KING, or POWERUP.
+     * The type classifies the entity into broader categories defined by {@link PieceType}.
      *
      * @return the {@link PieceType} associated with this entity.
      */

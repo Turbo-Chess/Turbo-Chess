@@ -1,12 +1,12 @@
 package it.unibo.samplejavafx;
 
 /**
- * Alternative entry point used to launch the JavaFX {@link App}.
+ * Application entry point wrapper.
  *
  * <p>
- * Some build tools and IDEs prefer a plain {@code public static void main} method in a dedicated class.
- * </p>
- *
+ * This class serves as the launcher for the application, delegating execution to
+ * the JavaFX {@link App} class. This structure is required to correctly load
+ * JavaFX runtime components in certain packaging configurations to avoid module path issues.
  */
 public final class Main {
 
@@ -14,9 +14,9 @@ public final class Main {
     }
 
     /**
-     * Delegates to {@link App#main(String[])}.
+     * Main program entry point.
      *
-     * @param args command-line arguments
+     * @param args command line arguments.
      */
     public static void main(final String[] args) {
         App.main(args);

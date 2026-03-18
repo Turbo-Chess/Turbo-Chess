@@ -40,4 +40,13 @@ public interface BoardObserver {
     default void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
     }
 
+    /**
+     * Triggered when an entity eats another entity on the board.
+     *
+     * @param from The starting {@link Point2D} coordinate.
+     * @param to   The destination {@link Point2D} coordinate.
+     */
+    default void onEntityEat(final Point2D from, final Point2D to) {
+        onEntityMoved(from, to);
+    }
 }

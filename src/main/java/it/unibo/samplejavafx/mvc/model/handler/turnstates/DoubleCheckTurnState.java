@@ -46,7 +46,8 @@ public final class DoubleCheckTurnState extends AbstractTurnState {
             return getContext().executeTurn(MoveType.MOVE_ONLY, pos) ? List.of(pos) : Collections.emptyList();
         }
         final PlayerColor currentColor = getContext().getCurrentColor();
-        if (!board.isFree(pos) && board.getEntity(pos).get().getPlayerColor() == currentColor
+        if (!board.isFree(pos)
+            && board.getEntity(pos).get().getPlayerColor() == currentColor
             && board.getEntity(pos).get().getType() == PieceType.KING) {
             final var king = (Piece) board.getEntity(pos).get();
             getContext().setCurrentPiece(king);

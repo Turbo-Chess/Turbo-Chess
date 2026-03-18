@@ -1,17 +1,15 @@
 package it.unibo.samplejavafx.mvc.controller.loadercontroller;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.boardfactory.DefinitionCacheEntry;
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.AbstractEntityDefinition;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The {@code LoaderController} interface manages the loading and caching of game resources,
- * specifically entity definitions such as pieces and power-ups.
+ * specifically entity definitions such as pieces.
  *
  * <p>
- * It acts as a central repository for these definitions, allowing other components (like factories)
+ * It acts as a central loader for these definitions, allowing other components (like factories)
  * to retrieve entity blueprints by their pack and ID without needing to access the filesystem directly.
  * </p>
  */
@@ -30,11 +28,11 @@ public interface LoaderController {
      * Retrieves the cache of loaded entity definitions entries.
      *
      * <p>
-     * The structure is a nested Map where the outer key is the resource pack name (e.g., "standard-chess")
-     * and the inner key is the specific entity ID (e.g., "pawn") that is associated with the entity definition.
+     * The structure is a list of {@link DefinitionCacheEntry}. In that way other classes can get those data
+     * and store them as they want.
      * </p>
      *
-     * @return a {@link Map} providing read access to all loaded {@link AbstractEntityDefinition} objects.
+     * @return a {@link List} providing access to all loaded {@link DefinitionCacheEntry} objects.
      */
     List<DefinitionCacheEntry> getEntityDefinitionCacheEntries();
 }
