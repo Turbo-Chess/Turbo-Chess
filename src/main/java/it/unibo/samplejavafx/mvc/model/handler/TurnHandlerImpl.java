@@ -61,6 +61,7 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
         this.state = match.getGameState();
         this.turnState = new NormalTurnState(this);
         this.interposingPieces = new HashMap<>();
+        this.castlingOptions = CastleCondition.NO_CASTLE;
     }
 
     /**
