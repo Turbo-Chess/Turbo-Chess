@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class LoadoutManagerImplTest {
 
     private static final String STANDARD_ID = "standard-chess-loadout";
+    private static final String CUSTOM_ID = "custom";
+    private static final String CUSTOM_NAME = "Custom";
 
     @Test
     void constructorEnsuresStandardLoadoutExists(@TempDir final Path tmp) {
@@ -28,27 +30,27 @@ class LoadoutManagerImplTest {
 
         final var standard = manager.load(STANDARD_ID).orElseThrow();
         final var custom = new Loadout(
-            "custom",
-            "Custom",
+            CUSTOM_ID,
+            CUSTOM_NAME,
             Instant.now().toEpochMilli(),
             Instant.now().toEpochMilli(),
             standard.getEntries()
         );
 
         manager.save(custom);
-        assertTrue(Files.exists(tmp.resolve("custom.json")));
+        assertTrue(Files.exists(tmp.resolve(CUSTOM_ID + ".json")));
 
-        final var loaded = manager.load("custom").orElseThrow();
-        assertEquals("custom", loaded.getId());
+        final var loaded = manager.load(CUSTOM_ID).orElseThrow();
+        assertEquals(CUSTOM_ID, loaded.getId());
         assertEquals(standard.getEntries(), loaded.getEntries());
 
         final var all = manager.getAll();
         assertTrue(all.stream().anyMatch(l -> STANDARD_ID.equals(l.getId())));
-        assertTrue(all.stream().anyMatch(l -> "custom".equals(l.getId())));
+        assertTrue(all.stream().anyMatch(l -> CUSTOM_ID.equals(l.getId())));
 
-        manager.delete("custom");
-        assertFalse(Files.exists(tmp.resolve("custom.json")));
-        assertTrue(manager.load("custom").isEmpty());
+        manager.delete(CUSTOM_ID);
+        assertFalse(Files.exists(tmp.resolve(CUSTOM_ID + ".json")));
+        assertTrue(manager.load(CUSTOM_ID).isEmpty());
     }
 
     @Test
@@ -75,4 +77,3 @@ class LoadoutManagerImplTest {
         assertFalse(manager.getAll().stream().anyMatch(l -> "corrupt".equals(l.getId())));
     }
 }
-

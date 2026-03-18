@@ -42,6 +42,11 @@ public final class LoadoutManagerImpl implements LoadoutManager {
         this(Paths.get(GameProperties.LOADOUTS_FOLDER.getPath()));
     }
 
+    /**
+     * Creates a manager using the specified loadout directory.
+     *
+     * @param loadoutDir the loadout directory
+     */
     public LoadoutManagerImpl(final Path loadoutDir) {
         this.loadoutDir = loadoutDir;
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);

@@ -23,19 +23,18 @@ class StandardLoadoutFactoryTest {
 
         assertTrue(loadout.getEntries().stream().allMatch(e -> "StandardChessPieces".equals(e.packId())));
 
-        assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("king") && e.position().equals(new Point2D(4, 7))));
-        assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("queen") && e.position().equals(new Point2D(3, 7))));
-        assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("rook") && e.position().equals(new Point2D(0, 7))));
-        assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("rook") && e.position().equals(new Point2D(7, 7))));
-        assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("knight") && e.position().equals(new Point2D(1, 7))));
-        assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("knight") && e.position().equals(new Point2D(6, 7))));
-        assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("bishop") && e.position().equals(new Point2D(2, 7))));
-        assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("bishop") && e.position().equals(new Point2D(5, 7))));
+        assertTrue(loadout.getEntries().stream().anyMatch(e -> "king".equals(e.pieceId()) && new Point2D(4, 7).equals(e.position())));
+        assertTrue(loadout.getEntries().stream().anyMatch(e -> "queen".equals(e.pieceId()) && new Point2D(3, 7).equals(e.position())));
+        assertTrue(loadout.getEntries().stream().anyMatch(e -> "rook".equals(e.pieceId()) && new Point2D(0, 7).equals(e.position())));
+        assertTrue(loadout.getEntries().stream().anyMatch(e -> "rook".equals(e.pieceId()) && new Point2D(7, 7).equals(e.position())));
+        assertTrue(loadout.getEntries().stream().anyMatch(e -> "knight".equals(e.pieceId()) && new Point2D(1, 7).equals(e.position())));
+        assertTrue(loadout.getEntries().stream().anyMatch(e -> "knight".equals(e.pieceId()) && new Point2D(6, 7).equals(e.position())));
+        assertTrue(loadout.getEntries().stream().anyMatch(e -> "bishop".equals(e.pieceId()) && new Point2D(2, 7).equals(e.position())));
+        assertTrue(loadout.getEntries().stream().anyMatch(e -> "bishop".equals(e.pieceId()) && new Point2D(5, 7).equals(e.position())));
 
         for (int x = 0; x < 8; x++) {
             final var pos = new Point2D(x, 6);
-            assertTrue(loadout.getEntries().stream().anyMatch(e -> e.pieceId().equals("pawn") && e.position().equals(pos)));
+            assertTrue(loadout.getEntries().stream().anyMatch(e -> "pawn".equals(e.pieceId()) && pos.equals(e.position())));
         }
     }
 }
-

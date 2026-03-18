@@ -17,6 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RulesUtilsTest {
 
+    private static final String PAWN_NAME = "Pawn";
+    private static final String PAWN_ID = "pawn";
+    private static final String KING_NAME = "King";
+    private static final String KING_ID = "king";
+
     private static PieceDefinition def(final String name, final String id, final PieceType type, final int weight) {
         return new PieceDefinition.Builder()
             .name(name)
@@ -49,10 +54,10 @@ class RulesUtilsTest {
     }
 
     @Test
-    void getKingFindsCorrectKing() {
+    void kingFindsCorrectKing() {
         final var board = new ChessBoardImpl();
-        final var whiteKing = piece(def("King", "king", PieceType.KING, 100), PlayerColor.WHITE, 1, false);
-        final var blackPawn = piece(def("Pawn", "pawn", PieceType.PAWN, 1), PlayerColor.BLACK, 2, false);
+        final var whiteKing = piece(def(KING_NAME, KING_ID, PieceType.KING, 100), PlayerColor.WHITE, 1, false);
+        final var blackPawn = piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.BLACK, 2, false);
 
         board.setEntity(new Point2D(4, 7), whiteKing);
         board.setEntity(new Point2D(0, 1), blackPawn);
@@ -63,11 +68,11 @@ class RulesUtilsTest {
     }
 
     @Test
-    void getPiecesOfColorReturnsOnlyThatColor() {
+    void piecesOfColorReturnsOnlyThatColor() {
         final var board = new ChessBoardImpl();
-        board.setEntity(new Point2D(0, 0), piece(def("Pawn", "pawn", PieceType.PAWN, 1), PlayerColor.WHITE, 1, false));
-        board.setEntity(new Point2D(1, 0), piece(def("Pawn", "pawn", PieceType.PAWN, 1), PlayerColor.WHITE, 2, false));
-        board.setEntity(new Point2D(0, 7), piece(def("King", "king", PieceType.KING, 100), PlayerColor.BLACK, 3, false));
+        board.setEntity(new Point2D(0, 0), piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.WHITE, 1, false));
+        board.setEntity(new Point2D(1, 0), piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.WHITE, 2, false));
+        board.setEntity(new Point2D(0, 7), piece(def(KING_NAME, KING_ID, PieceType.KING, 100), PlayerColor.BLACK, 3, false));
 
         assertEquals(2, RulesUtils.getPiecesOfColor(board, PlayerColor.WHITE).size());
         assertEquals(1, RulesUtils.getPiecesOfColor(board, PlayerColor.BLACK).size());
@@ -76,7 +81,7 @@ class RulesUtilsTest {
     @Test
     void hasNotMovedTracksMovementState() {
         final var board = new ChessBoardImpl();
-        final var pawn = piece(def("Pawn", "pawn", PieceType.PAWN, 1), PlayerColor.WHITE, 1, false);
+        final var pawn = piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.WHITE, 1, false);
         final var from = new Point2D(0, 6);
         final var to = new Point2D(0, 5);
 
@@ -87,4 +92,3 @@ class RulesUtilsTest {
         assertFalse(RulesUtils.hasNotMoved(board, to));
     }
 }
-
