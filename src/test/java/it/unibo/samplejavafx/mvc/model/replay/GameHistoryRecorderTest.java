@@ -7,7 +7,6 @@ import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
-import it.unibo.samplejavafx.mvc.model.properties.GameProperties;
 import it.unibo.samplejavafx.mvc.model.score.ScoreManagerImpl;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameHistoryRecorderTest {
 
-    private static final String IMAGE_PATH = GameProperties.EXTERNAL_ASSETS_FOLDER.getPath();
+    private static final String IMAGE_PATH = "classpath:/assets/images/";
 
     private static final Piece TEST_PIECE = new Piece.Builder()
         .moved(false)
