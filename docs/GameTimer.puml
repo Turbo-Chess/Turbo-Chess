@@ -2,10 +2,15 @@
 
 skinparam classAttributeIconSize 0
 hide empty fields
-hide empty method
+hide empty methods
 
 interface GameTimer {
-
-    +runTimer()
+    +start() : void
+    +stop() : void
+    +switchTurn() : void
+    +getTimeRemaining(player : PlayerColor) : long
+    +setActivePlayer(player : PlayerColor) : void
+    +shutdown() : void
 }
+
 @enduml

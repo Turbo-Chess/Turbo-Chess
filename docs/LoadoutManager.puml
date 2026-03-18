@@ -1,0 +1,24 @@
+@startuml LoadoutManager
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+interface LoadoutManager {
+    +save(loadout : Loadout) : void
+    +load(id : String) : Optional<Loadout>
+    +getAll() : List<Loadout>
+    +delete(id : String) : void
+}
+
+class LoadoutManagerImpl {
+    +LoadoutManagerImpl()
+    +save(loadout : Loadout) : void
+    +load(id : String) : Optional<Loadout>
+    +getAll() : List<Loadout>
+    +delete(id : String) : void
+}
+
+LoadoutManager <|.. LoadoutManagerImpl
+
+@enduml

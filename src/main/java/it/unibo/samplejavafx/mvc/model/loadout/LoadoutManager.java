@@ -1,34 +1,19 @@
 package it.unibo.samplejavafx.mvc.model.loadout;
 
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
  * Loadout manager.
  */
 public interface LoadoutManager {
-    /**
-     * Persists a loadout to disk.
-     *
-     * <p>
-     * For non-standard loadouts, the loadout is validated before being saved. Invalid loadouts are silently
-     * ignored.
-     * </p>
-     *
-     * @param loadout the loadout to save.
-     */
-    void save(Loadout loadout);
 
     /**
-     * Saves a loadout if valid.
+     * Saves a loadout, validating it against the current piece definitions and the standard loadout.
      *
-     * @param loadout     the loadout to save
-     * @param definitions the piece definitions to validate against
+     * @param loadout the loadout to save
      */
-    void saveValid(Loadout loadout, Map<String, PieceDefinition> definitions);
+    void save(Loadout loadout);
 
     /**
      * Loads a loadout by its identifier.
