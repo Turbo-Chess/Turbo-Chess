@@ -17,13 +17,14 @@ import it.unibo.samplejavafx.mvc.model.entity.Moveable;
 
 class ScoreManagerTest {
 
+    private static final String TEST_STRING = "test";
     private ScoreManager scoreManager;
 
     private Entity createMockEntity(final PlayerColor color, final int weight) {
         return new Entity() {
             @Override
             public String getId() {
-                return "test";
+                return TEST_STRING;
             }
 
             @Override
@@ -33,12 +34,12 @@ class ScoreManagerTest {
 
             @Override
             public String getName() {
-                return "test";
+                return TEST_STRING;
             }
 
             @Override
             public String getImagePath() {
-                return "test";
+                return TEST_STRING;
             }
 
             @Override

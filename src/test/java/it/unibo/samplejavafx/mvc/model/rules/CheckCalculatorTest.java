@@ -156,11 +156,11 @@ class CheckCalculatorTest {
         assertEquals(3, blockers.size());
 
         assertEquals(PieceType.INFERIOR, blockers.stream()
-                                                .filter(piece -> piece.getType() == PieceType.INFERIOR).findFirst().get().getType());
+                .filter(piece -> piece.getType() == PieceType.INFERIOR).findFirst().get().getType());
         assertEquals(PieceType.TOWER, blockers.stream()
-                                                .filter(piece -> piece.getType() == PieceType.TOWER).findFirst().get().getType());
+                .filter(piece -> piece.getType() == PieceType.TOWER).findFirst().get().getType());
         assertEquals(PieceType.SUPERIOR, blockers.stream()
-                                                .filter(piece -> piece.getType() == PieceType.SUPERIOR).findFirst().get().getType());
+                .filter(piece -> piece.getType() == PieceType.SUPERIOR).findFirst().get().getType());
     }
     */
 

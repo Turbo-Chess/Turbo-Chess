@@ -1,4 +1,5 @@
 // CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.loading;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test class made to be able to create the JSON files for the basic chess pieces implementation
@@ -23,13 +25,17 @@ class CreateBasePiecesTest {
      * Tests the loading of the Pawn piece definition from JSON.
      *
      * <p>
-     * Verifies that the loaded object is not null and that its properties (ID, name, weight, move rules) match selected expected values.
+     * Verifies that the loaded object is not null and that its properties 
+     * (ID, name, weight, move rules) match selected expected values.
      * </p>
+     *
      * @throws IOException if the file cannot be read.
      */
     @Test
     void testLoadPawnFromJson() throws IOException {
-        final PieceDefinition pawn = mapper.readValue(new File(PIECES_PATH + "Pawn.json"), PieceDefinition.class);
+        final PieceDefinition pawn = mapper.readValue(
+                new File(PIECES_PATH + "Pawn.json"), 
+                PieceDefinition.class);
         assertNotNull(pawn);
         assertEquals("pawn", pawn.getId());
         assertEquals("Pawn", pawn.getName());
@@ -41,13 +47,17 @@ class CreateBasePiecesTest {
      * Tests the loading of the Knight piece definition from JSON.
      *
      * <p>
-     * Verifies that the loaded object is not null and that its properties (ID, name, weight, move rules) match selected expected values.
+     * Verifies that the loaded object is not null and that its properties (ID,
+     * name, weight, move rules) match selected expected values.
      * </p>
+     *
      * @throws IOException if the file cannot be read.
      */
     @Test
     void testLoadKnightFromJson() throws IOException {
-        final PieceDefinition knight = mapper.readValue(new File(PIECES_PATH + "Knight.json"), PieceDefinition.class);
+        final PieceDefinition knight = mapper.readValue(
+                new File(PIECES_PATH + "Knight.json"),
+                PieceDefinition.class);
         assertNotNull(knight);
         assertEquals("knight", knight.getId());
         assertEquals("Knight", knight.getName());
@@ -59,13 +69,17 @@ class CreateBasePiecesTest {
      * Tests the loading of the Bishop piece definition from JSON.
      *
      * <p>
-     * Verifies that the loaded object is not null and that its properties (ID, name, weight, move rules) match selected expected values.
+     * Verifies that the loaded object is not null and that its properties (ID,
+     * name, weight, move rules) match selected expected values.
      * </p>
+     *
      * @throws IOException if the file cannot be read.
      */
     @Test
     void testLoadBishopFromJson() throws IOException {
-        final PieceDefinition bishop = mapper.readValue(new File(PIECES_PATH + "Bishop.json"), PieceDefinition.class);
+        final PieceDefinition bishop = mapper.readValue(
+                new File(PIECES_PATH + "Bishop.json"), 
+                PieceDefinition.class);
         assertNotNull(bishop);
         assertEquals("bishop", bishop.getId());
         assertEquals("Bishop", bishop.getName());
@@ -77,13 +91,17 @@ class CreateBasePiecesTest {
      * Tests the loading of the Rook piece definition from JSON.
      *
      * <p>
-     * Verifies that the loaded object is not null and that its properties (ID, name, weight, move rules) match selected expected values.
+     * Verifies that the loaded object is not null and that its properties (ID,
+     * name, weight, move rules) match selected expected values.
      * </p>
+     *
      * @throws IOException if the file cannot be read.
      */
     @Test
     void testLoadRookFromJson() throws IOException {
-        final PieceDefinition rook = mapper.readValue(new File(PIECES_PATH + "Rook.json"), PieceDefinition.class);
+        final PieceDefinition rook = mapper.readValue(
+                new File(PIECES_PATH + "Rook.json"), 
+                PieceDefinition.class);
         assertNotNull(rook);
         assertEquals("rook", rook.getId());
         assertEquals("Rook", rook.getName());
@@ -95,13 +113,17 @@ class CreateBasePiecesTest {
      * Tests the loading of the Queen piece definition from JSON.
      *
      * <p>
-     * Verifies that the loaded object is not null and that its properties (ID, name, weight, move rules) match selected expected values.
+     * Verifies that the loaded object is not null and that its properties (ID,
+     * name, weight, move rules) match selected expected values.
      * </p>
+     *
      * @throws IOException if the file cannot be read.
      */
     @Test
     void testLoadQueenFromJson() throws IOException {
-        final PieceDefinition queen = mapper.readValue(new File(PIECES_PATH + "Queen.json"), PieceDefinition.class);
+        final PieceDefinition queen = mapper.readValue(
+                new File(PIECES_PATH + "Queen.json"),
+                PieceDefinition.class);
         assertNotNull(queen);
         assertEquals("queen", queen.getId());
         assertEquals("Queen", queen.getName());
@@ -121,7 +143,9 @@ class CreateBasePiecesTest {
      */
     @Test
     void testLoadKingFromJson() throws IOException {
-        final PieceDefinition king = mapper.readValue(new File(PIECES_PATH + "King.json"), PieceDefinition.class);
+        final PieceDefinition king = mapper.readValue(new File(
+                    PIECES_PATH + "King.json"),
+                PieceDefinition.class);
         assertNotNull(king);
         assertEquals("king", king.getId());
         assertEquals("King", king.getName());

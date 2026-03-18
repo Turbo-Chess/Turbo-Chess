@@ -148,7 +148,8 @@ class CheckmateTest {
         countInc();
 
         final Map<Piece, List<Point2D>> intPieces = new HashMap<>();
-        assertEquals(GameState.DOUBLE_CHECK, AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.DOUBLE_CHECK, intPieces));
+        assertEquals(GameState.DOUBLE_CHECK,
+                AdvancedRules.checkmate(board, PlayerColor.WHITE, GameState.DOUBLE_CHECK, intPieces));
     }
 
     private void countInc() {

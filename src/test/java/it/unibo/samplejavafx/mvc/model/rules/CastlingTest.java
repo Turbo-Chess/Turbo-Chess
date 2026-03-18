@@ -14,9 +14,8 @@ import com.fasterxml.jackson.databind.DatabindException;
 
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.handler.CastleCondition;
 import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
 
 class CastlingTest {
     private ChessBoard board;
@@ -29,7 +28,7 @@ class CastlingTest {
     }
 
     @Test
-    void testSimpleCastling() throws StreamReadException, DatabindException, IOException {
+    void testSimpleCastling() throws IOException {
         board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
         countInc();
         board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
@@ -37,7 +36,7 @@ class CastlingTest {
         board.setEntity(new Point2D(7, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));
         countInc();
 
-        assertEquals(CastleCondition.BOTH_CASTLE, AdvancedRules.castle(board, PlayerColor.WHITE));
+        assertEquals(CastleCondition.CASTLE_BOTH, AdvancedRules.castle(board, PlayerColor.WHITE));
     }
 
     @Test
@@ -55,7 +54,7 @@ class CastlingTest {
     }
 
     @Test
-    void testRightInterruptedCastling() throws StreamReadException, DatabindException, IOException {
+    void testRightInterruptedCastling() throws IOException {
         board.setEntity(new Point2D(4, 7), TestUtilities.createKing(PlayerColor.WHITE, idCount));
         countInc();
         board.setEntity(new Point2D(0, 7), TestUtilities.createRook(PlayerColor.WHITE, idCount));

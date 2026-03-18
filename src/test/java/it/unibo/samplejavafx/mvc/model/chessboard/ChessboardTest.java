@@ -112,7 +112,8 @@ class ChessboardTest {
      * Tests the {@link it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard#move(Point2D, Point2D)} function.
      *
      * <p>
-     * Verifies that a piece is correctly moved from one position to another, freeing the start position and occupying the end position.
+     * Verifies that a piece is correctly moved from one position to another 
+     * freeing the start position and occupying the end position.
      * </p>
      */
     @Test

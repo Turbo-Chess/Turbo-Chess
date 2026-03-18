@@ -20,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * from a JSON file.
  */
 class PiecesTest {
+    private static final String PIECE_NAME = "test-piece";
+    private static final String PIECE_ID = "test";
+
     /**
      * Tests the manual initialization of a {@link PieceDefinition}.
      *
@@ -31,16 +34,17 @@ class PiecesTest {
     @Test
     void testPieceDefinitionInitialization() {
         final PieceDefinition p = new PieceDefinition.Builder()
-                .name("test-piece")
-                .id("test")
+                .name(PIECE_NAME)
+                .id(PIECE_ID)
                 .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
-                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false)))
+                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                        MoveRulesImpl.MoveStrategy.JUMPING, false)))
                 .build();
 
-        assertEquals("test", p.getId());
-        assertEquals("test-piece", p.getName());
+        assertEquals(PIECE_ID, p.getId());
+        assertEquals(PIECE_NAME, p.getName());
         assertEquals(3, p.getWeight());
         assertEquals(1, p.getMoveRules().size());
     }
@@ -56,12 +60,13 @@ class PiecesTest {
     @Test
     void testFullPieceCreation() {
         final PieceDefinition p = new PieceDefinition.Builder()
-                .name("test-piece")
-                .id("test")
+                .name(PIECE_NAME)
+                .id(PIECE_ID)
                 .imagePath("classpath:/assets/images/white_pawn.png")
                 .weight(3)
                 .pieceType(PieceType.INFERIOR)
-                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT, MoveRulesImpl.MoveStrategy.JUMPING, false)))
+                .moveRules(List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                        MoveRulesImpl.MoveStrategy.JUMPING, false)))
                 .build();
         final Piece piece = new Piece.Builder()
                 .entityDefinition(p)

@@ -1,4 +1,5 @@
 // CHECKSTYLE: MagicNumber OFF
+
 package it.unibo.samplejavafx.mvc.model.loadout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,7 +27,6 @@ import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
  * Tests for Loadout and LoadoutEntry.
  */
 class LoadoutTest {
-
 
     private static final String STANDARD_LOADOUT_PATH = "src/main/resources/Loadouts/Standard.json";
     private static Map<String, PieceDefinition> standardDefinitions;
