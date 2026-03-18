@@ -40,6 +40,14 @@
     -fx-cursor: hand;
 }
 
+#chessboardGridPane .button.light-square {
+    -fx-background-color: #757575;
+}
+
+#chessboardGridPane .button.dark-square {
+    -fx-background-color: #424242;
+}
+
 #chessboardGridPane .button:hover {
     -fx-background-color: #3a3f4b;
     -fx-border-color: #f1c40f;
@@ -49,44 +57,86 @@
     -fx-background-color: #444a54;
 }
 
-#chessboardGridPane .button:check-king {
-    -fx-background-color: rgba(255, 140, 0, 0.5); /* Orange highlight for check */
+#chessboardGridPane .button:check-king,
+#chessboardGridPane .button.light-square:check-king {
+    -fx-background-color: #757575, rgba(255, 140, 0, 0.5);
+    -fx-border-color: orange;
+    -fx-border-width: 2;
+}
+#chessboardGridPane .button.dark-square:check-king {
+    -fx-background-color: #424242, rgba(255, 140, 0, 0.5);
     -fx-border-color: orange;
     -fx-border-width: 2;
 }
 
-#chessboardGridPane .button:checkmate-king {
-    -fx-background-color: rgba(220, 20, 60, 0.7); /* Crimson for checkmate */
+#chessboardGridPane .button:checkmate-king,
+#chessboardGridPane .button.light-square:checkmate-king {
+    -fx-background-color: #757575, rgba(220, 20, 60, 0.7);
+    -fx-border-color: crimson;
+    -fx-border-width: 2;
+}
+#chessboardGridPane .button.dark-square:checkmate-king {
+    -fx-background-color: #424242, rgba(220, 20, 60, 0.7);
     -fx-border-color: crimson;
     -fx-border-width: 2;
 }
 
-#chessboardGridPane .button:move-cell {
-    -fx-background-color: rgba(30, 144, 255, 0.4); /* Dodger blue for moved cell */
+#chessboardGridPane .button:move-cell,
+#chessboardGridPane .button.light-square:move-cell {
+    -fx-background-color: #757575, rgba(30, 144, 255, 0.4);
+    -fx-border-color: #1e90ff;
+    -fx-border-width: 2;
+}
+#chessboardGridPane .button.dark-square:move-cell {
+    -fx-background-color: #424242, rgba(30, 144, 255, 0.4);
     -fx-border-color: #1e90ff;
     -fx-border-width: 2;
 }
 
-#chessboardGridPane .button:eat-cell {
-    -fx-background-color: rgba(186, 85, 211, 0.5); /* Medium orchid for capture */
+#chessboardGridPane .button:eat-cell,
+#chessboardGridPane .button.light-square:eat-cell {
+    -fx-background-color: #757575, rgba(186, 85, 211, 0.5);
+    -fx-border-color: #ba55d3;
+    -fx-border-width: 2;
+}
+#chessboardGridPane .button.dark-square:eat-cell {
+    -fx-background-color: #424242, rgba(186, 85, 211, 0.5);
     -fx-border-color: #ba55d3;
     -fx-border-width: 2;
 }
 
-#chessboardGridPane .button:start-cell {
-    -fx-background-color: rgba(30, 144, 255, 0.4); /* Dodger blue for start cell (same as move) */
+#chessboardGridPane .button:start-cell,
+#chessboardGridPane .button.light-square:start-cell {
+    -fx-background-color: #757575, rgba(30, 144, 255, 0.4);
+    -fx-border-color: #1e90ff;
+    -fx-border-width: 2;
+}
+#chessboardGridPane .button.dark-square:start-cell {
+    -fx-background-color: #424242, rgba(30, 144, 255, 0.4);
     -fx-border-color: #1e90ff;
     -fx-border-width: 2;
 }
 
-#chessboardGridPane .button:valid-movement {
-    -fx-background-color: rgba(255, 255, 0, 0.5); /* Semi-transparent yellow highlight */
+#chessboardGridPane .button:valid-movement,
+#chessboardGridPane .button.light-square:valid-movement {
+    -fx-background-color: #757575, rgba(255, 255, 0, 0.5);
+    -fx-border-color: gold;
+    -fx-border-width: 2;
+}
+#chessboardGridPane .button.dark-square:valid-movement {
+    -fx-background-color: #424242, rgba(255, 255, 0, 0.5);
     -fx-border-color: gold;
     -fx-border-width: 2;
 }
 
-#chessboardGridPane .button:valid-capture {
-    -fx-background-color: rgba(255, 69, 0, 0.6); /* Red-Orange for valid capture */
+#chessboardGridPane .button:valid-capture,
+#chessboardGridPane .button.light-square:valid-capture {
+    -fx-background-color: #757575, rgba(255, 69, 0, 0.6);
+    -fx-border-color: orangered;
+    -fx-border-width: 2;
+}
+#chessboardGridPane .button.dark-square:valid-capture {
+    -fx-background-color: #424242, rgba(255, 69, 0, 0.6);
     -fx-border-color: orangered;
     -fx-border-width: 2;
 }
@@ -161,4 +211,121 @@
 
 #menuButton:pressed {
     -fx-background-color: #0d47a1;
+}
+
+/* --- Move History & Replay Log Styles --- */
+
+/* ListView */
+.list-view {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: #181a1b; /* Dark background */
+    -fx-border-color: #444a54;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
+
+.list-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-background-color: transparent;
+    -fx-padding: 4px 8px;
+    -fx-font-family: "Consolas", "Courier New", monospace;
+    -fx-font-size: 14px;
+}
+
+.list-cell:filled:odd {
+    -fx-background-color: #23272e;
+}
+.list-cell:filled:even {
+    -fx-background-color: #181a1b;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:focused {
+    -fx-background-color: #3a3f4b;
+    -fx-text-fill: white;
+}
+
+/* Replay Toggle Button */
+#toggleReplayBtn {
+    -fx-background-color: #2c2c2c;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #444a54;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-padding: 6px 12px;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+#toggleReplayBtn:selected {
+    -fx-background-color: #1e88e5; /* Primary color */
+    -fx-text-fill: white;
+    -fx-border-color: #1565c0;
+}
+
+#toggleReplayBtn:hover {
+    -fx-background-color: #3a3f4b;
+}
+
+/* Replay Control Buttons */
+#replayControlsBox .button {
+    -fx-background-color: #2c2c2c;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #444a54;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-padding: 6px 12px;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-min-width: 32px;
+}
+
+#replayControlsBox .button:hover {
+    -fx-background-color: #3a3f4b;
+    -fx-border-color: #f1c40f;
+}
+
+#replayControlsBox .button:pressed {
+    -fx-background-color: #1a1e26;
+}
+
+#replayControlsBox .button:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+}
+
+/* Save Button */
+#saveButton {
+    -fx-background-color: #424242; /* Grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 24px;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+    -fx-border-color: #555555;
+    -fx-border-width: 1px;
+}
+
+#saveButton:hover {
+    -fx-background-color: #5e5e5e;
+}
+
+#saveButton:pressed {
+    -fx-background-color: #2c2c2c;
+}
+
+/* General Labels in VBox */
+.label {
+    -fx-text-fill: #e0e0e0;
+}
+
+/* SplitPane styling to match dark theme */
+.split-pane {
+    -fx-background-color: transparent;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: #2c2c2c;
+    -fx-border-color: #444a54;
+    -fx-border-width: 0 1px 0 1px;
 }

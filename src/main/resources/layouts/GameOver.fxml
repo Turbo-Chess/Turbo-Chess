@@ -4,7 +4,7 @@
 
 <DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.GameOverControllerImpl"
-            prefWidth="300" prefHeight="200" styleClass="game-dialog">
+            prefWidth="300" prefHeight="200" styleClass="game-dialog" stylesheets="@../css/GameOver.css">
     <content>
         <VBox alignment="CENTER" spacing="20">
             <Label fx:id="statusLabel" style="-fx-font-size: 24px;"/>

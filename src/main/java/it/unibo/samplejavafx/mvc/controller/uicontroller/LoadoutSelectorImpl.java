@@ -26,11 +26,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 
 /**
  * Implementation of {@link LoadoutSelector}, enables to load, see and use loadouts. 
  */
 public final class LoadoutSelectorImpl implements Initializable, LoadoutSelector {
+    @FXML
+    private BorderPane BorderPain;
     @FXML
     private ListView<String> loadoutListView;
     @FXML
@@ -79,6 +82,20 @@ public final class LoadoutSelectorImpl implements Initializable, LoadoutSelector
             public void changed(final ObservableValue<? extends String> observable, 
                                 final String oldValue, final String newValue) {
                 selectedLoadoutName = loadoutListView.getSelectionModel().getSelectedItem();
+            }
+        });
+
+        forBlack.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            final URL cssResource = getClass().getResource("/css/LoadoutSelector.css");
+            if (cssResource != null) {
+                final String css = cssResource.toExternalForm();
+                if (newValue) {
+                    if (!BorderPain.getStylesheets().contains(css)) {
+                        BorderPain.getStylesheets().add(css);
+                    }
+                } else {
+                    BorderPain.getStylesheets().remove(css);
+                }
             }
         });
 
