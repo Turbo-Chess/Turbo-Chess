@@ -98,7 +98,7 @@ class ReplayTest {
 
         final File file = debugDir.resolve("replay.json").toFile();
         if (file.exists()) {
-            file.delete();
+            assertTrue(file.delete(), "Failed to delete existing replay.json file");
         }
 
         final boolean saved = manager.saveGame(history, file.toPath());
