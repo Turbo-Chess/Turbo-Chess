@@ -39,7 +39,11 @@ public final class LoadoutManagerImpl implements LoadoutManager {
      * Creates a manager using the default loadout directory defined in {@link GameProperties}.
      */
     public LoadoutManagerImpl() {
-        this.loadoutDir = Paths.get(GameProperties.LOADOUTS_FOLDER.getPath());
+        this(Paths.get(GameProperties.LOADOUTS_FOLDER.getPath()));
+    }
+
+    public LoadoutManagerImpl(final Path loadoutDir) {
+        this.loadoutDir = loadoutDir;
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         createDirIfNotExists();
         ensureStandardLoadoutExists();
@@ -132,13 +136,7 @@ public final class LoadoutManagerImpl implements LoadoutManager {
                 LOGGER.warn("Failed to resolve entity root path: {}", basePathString, e);
                 continue;
             }
-            try {
-                FileSystemUtils.ensureDirectoryExists(basePath);
-            } catch (final IOException e) {
-                LOGGER.warn("Cannot access entity root path: {}", basePath, e);
-                continue;
-            }
-            if (!Files.isDirectory(basePath)) {
+            if (!Files.exists(basePath) || !Files.isDirectory(basePath)) {
                 continue;
             }
             try (Stream<Path> packs = Files.list(basePath)) {
