@@ -24,7 +24,6 @@ import javafx.scene.layout.GridPane;
  */
 public final class PromotionControllerImpl implements PromotionController {
     private static final int DEFAULT_VALUE = 0;
-    private static final double IMAGE_SCALE = 0.8;
     private static final int IMAGE_BOX_SIZE = 64; // Standard chess piece size in px
     @FXML
     private GridPane promotionPane;
