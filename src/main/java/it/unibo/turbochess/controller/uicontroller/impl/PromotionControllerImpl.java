@@ -8,6 +8,7 @@ import it.unibo.turbochess.controller.coordinator.api.GameCoordinator;
 import it.unibo.turbochess.controller.gamecontroller.api.GameController;
 import it.unibo.turbochess.controller.uicontroller.api.PromotionController;
 import it.unibo.turbochess.model.chessboard.boardfactory.api.DefinitionRegistry;
+import it.unibo.turbochess.model.entity.impl.PieceType;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.utils.LoadingUtils;
 import it.unibo.turbochess.model.utils.RulesUtils;
@@ -118,7 +119,8 @@ public final class PromotionControllerImpl implements PromotionController {
         final Set<LoadoutEntry> set = new HashSet<>();
         final Set<String> ids = new HashSet<>();
         for (final var entry : load.getEntries()) {
-            if (!"pawn".equals(entry.pieceId()) && !"king".equals(entry.pieceId()) && !ids.contains(entry.pieceId())) {
+            final PieceType type = entityCache.getDefinition(entry.packId(), entry.pieceId()).getPieceType();
+            if (type != PieceType.KING && type != PieceType.PAWN && !ids.contains(entry.pieceId())) {
                 ids.add(entry.pieceId());
                 set.add(entry);
             }
