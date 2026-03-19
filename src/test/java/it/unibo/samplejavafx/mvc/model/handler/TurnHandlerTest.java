@@ -357,6 +357,83 @@ class TurnHandlerTest {
         }
 
         @Test
+        void duringCheckPawnCanInterposeOnAttackedSquareAndResolveCheck() {
+            final var match = new ChessMatchImpl();
+            try {
+                final var handler = (TurnHandlerImpl) match.getTurnHandler();
+                final var kingDef = def(
+                    MKING,
+                    KING,
+                    PieceType.KING,
+                    100,
+                    List.of(
+                        new MoveRulesImpl(new Point2D(1, 0), MOVE_AND_EAT, STEPPING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MOVE_AND_EAT, STEPPING, false),
+                        new MoveRulesImpl(new Point2D(0, 1), MOVE_AND_EAT, STEPPING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MOVE_AND_EAT, STEPPING, false),
+                        new MoveRulesImpl(new Point2D(1, 1), MOVE_AND_EAT, STEPPING, false),
+                        new MoveRulesImpl(new Point2D(1, -1), MOVE_AND_EAT, STEPPING, false),
+                        new MoveRulesImpl(new Point2D(-1, 1), MOVE_AND_EAT, STEPPING, false),
+                        new MoveRulesImpl(new Point2D(-1, -1), MOVE_AND_EAT, STEPPING, false)
+                    )
+                );
+                final var bishopDef = def(
+                    "Bishop",
+                    "bishop",
+                    PieceType.INFERIOR,
+                    3,
+                    List.of(
+                        new MoveRulesImpl(new Point2D(1, 1), MOVE_AND_EAT, SLIDING, false),
+                        new MoveRulesImpl(new Point2D(-1, 1), MOVE_AND_EAT, SLIDING, false),
+                        new MoveRulesImpl(new Point2D(1, -1), MOVE_AND_EAT, SLIDING, false),
+                        new MoveRulesImpl(new Point2D(-1, -1), MOVE_AND_EAT, SLIDING, false)
+                    )
+                );
+                final var pawnDef = def(
+                    MPAWN,
+                    PAWN,
+                    PieceType.PAWN,
+                    1,
+                    List.of(new MoveRulesImpl(new Point2D(0, 1), MOVE_ONLY, STEPPING, false))
+                );
+
+                final var whiteKing = piece(kingDef, PlayerColor.WHITE, 1, false);
+                final var blackKing = piece(kingDef, PlayerColor.BLACK, 2, false);
+                final var whiteBishop = piece(bishopDef, PlayerColor.WHITE, 3, false);
+                final var blackPawn = piece(pawnDef, PlayerColor.BLACK, 4, false);
+
+                final var whiteKingPos = new Point2D(4, 7);
+                final var blackKingPos = new Point2D(4, 0);
+                final var bishopFrom = new Point2D(2, 4);
+                final var bishopTo = new Point2D(1, 3);
+                final var blackPawnPos = new Point2D(2, 1);
+                final var interposeSquare = new Point2D(2, 2);
+
+                match.getBoard().setEntity(whiteKingPos, whiteKing);
+                match.getBoard().setEntity(blackKingPos, blackKing);
+                match.getBoard().setEntity(bishopFrom, whiteBishop);
+                match.getBoard().setEntity(blackPawnPos, blackPawn);
+
+                assertEquals(PlayerColor.WHITE, match.getCurrentPlayer());
+                final var bishopMoves = handler.thinking(bishopFrom);
+                assertTrue(bishopMoves.contains(bishopTo));
+                assertEquals(List.of(bishopTo), handler.thinking(bishopTo));
+
+                assertEquals(PlayerColor.BLACK, match.getCurrentPlayer());
+                assertEquals(GameState.CHECK, match.getGameState());
+
+                final var pawnMoves = handler.thinking(blackPawnPos);
+                assertTrue(pawnMoves.contains(interposeSquare));
+                assertEquals(List.of(interposeSquare), handler.thinking(interposeSquare));
+
+                assertEquals(PlayerColor.WHITE, match.getCurrentPlayer());
+                assertEquals(GameState.NORMAL, match.getGameState());
+            } finally {
+                match.getGameTimer().shutdown();
+            }
+        }
+
+        @Test
         void afterMoveCausingDoubleCheckOnlyKingCanBeSelected() {
             final var match = new ChessMatchImpl();
             try {
@@ -447,4 +524,3 @@ class TurnHandlerTest {
         }
     }
 }
-

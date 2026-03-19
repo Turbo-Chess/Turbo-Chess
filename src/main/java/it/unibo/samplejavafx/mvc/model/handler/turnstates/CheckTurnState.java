@@ -9,6 +9,7 @@ import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoard;
 import it.unibo.samplejavafx.mvc.model.entity.Piece;
 import it.unibo.samplejavafx.mvc.model.entity.PieceType;
 import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.samplejavafx.mvc.model.handler.GameState;
 import it.unibo.samplejavafx.mvc.model.handler.TurnHandlerContext;
 import it.unibo.samplejavafx.mvc.model.handler.TurnState;
 import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl.MoveType;
@@ -62,7 +63,7 @@ public final class CheckTurnState extends AbstractTurnState {
             && interposingPieces.keySet().contains(board.getEntity(pos).get())) {
             final var piece = (Piece) board.getEntity(pos).get();
             getContext().setCurrentPiece(piece);
-            getContext().setPieceMoves(RulesUtils.kingPossibleMoves(piece.getValidMoves(pos, board), board, currentColor, piece));
+            getContext().setPieceMoves(interposingPieces.getOrDefault(piece, Collections.emptyList()));
             return getContext().getCurrentMoves();
         }
         if (!board.isFree(pos)
