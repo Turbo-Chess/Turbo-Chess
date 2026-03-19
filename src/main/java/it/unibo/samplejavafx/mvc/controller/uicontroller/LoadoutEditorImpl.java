@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -132,6 +133,12 @@ public final class LoadoutEditorImpl implements Initializable, LoadoutEditor {
     private void populateGridPane() {
         while (y != ROW) {
             final Button btn = new Button("");
+            if ((x + y) % 2 == 0) {
+                btn.getStyleClass().add("light-square");
+            } else {
+                btn.getStyleClass().add("dark-square");
+            }
+            btn.getStyleClass().add("material-surface");
             btn.setOnAction(event -> {
                 placeOnClick(event);
             });

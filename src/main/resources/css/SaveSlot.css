@@ -1,0 +1,36 @@
+.root {
+    -fx-background-color: #424242;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 20px;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000088, 2, 0.2, 0, 1);
+}
+
+.load-button {
+    -fx-background-color: #1e88e5;
+}
+.load-button:hover {
+    -fx-background-color: #1565c0;
+}
+
+.delete-button {
+    -fx-background-color: #cf6679;
+}
+.delete-button:hover {
+    -fx-background-color: #b00020;
+}
+

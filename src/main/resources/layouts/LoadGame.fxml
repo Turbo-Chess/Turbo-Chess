@@ -6,7 +6,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController">
+<VBox alignment="CENTER" spacing="20.0" minHeight="0.0" minWidth="0.0" stylesheets="@../css/LoadGame.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.LoadGameController">
    <children>
       <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Load Game" wrapText="true" minWidth="0.0" />
       <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" minHeight="0.0" minWidth="0.0">

@@ -391,6 +391,11 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
                 });
 
                 button.getStyleClass().add("material-surface");
+                if ((row + col) % 2 == 0) {
+                    button.getStyleClass().add("light-square");
+                } else {
+                    button.getStyleClass().add("dark-square");
+                }
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 cells.put(new Point2D(col, row), button);
                 chessboardGridPane.add(button, col, row);
