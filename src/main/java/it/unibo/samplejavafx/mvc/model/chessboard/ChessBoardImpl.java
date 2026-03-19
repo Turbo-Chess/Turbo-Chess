@@ -23,7 +23,7 @@ import java.util.Optional;
  * </p>
  */
 public class ChessBoardImpl implements ChessBoard {
-    private static final int CHESSBOARD_SIZE = 8;
+    public static final int CHESSBOARD_SIZE = 8;
 
     private final BiMap<Point2D, Entity> cells;
     /**

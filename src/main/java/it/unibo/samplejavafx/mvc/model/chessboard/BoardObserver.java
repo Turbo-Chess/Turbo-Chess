@@ -29,6 +29,15 @@ public interface BoardObserver {
      */
     void onEntityRemoved(Point2D pos, Entity entity);
 
+
+    /**
+     * Triggered when an entity moves from one position to another on the board.
+     *
+     * @param from The starting {@link Point2D} coordinate.
+     * @param to   The destination {@link Point2D} coordinate.
+     */
+    default void onEntityMoved(final Point2D from, final Point2D to) { }
+
     /**
      * Triggered when a specific entity moves from one position to another on the board.
      * Use this if the entity instance itself is needed by the observer.
@@ -38,7 +47,9 @@ public interface BoardObserver {
      * @param entity The {@link Entity} that has moved.
      */
     default void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
+        onEntityMoved(from, to);
     }
+
 
     /**
      * Triggered when an entity eats another entity on the board.
