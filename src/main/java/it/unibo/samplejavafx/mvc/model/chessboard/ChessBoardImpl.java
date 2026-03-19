@@ -135,12 +135,6 @@ public class ChessBoardImpl implements ChessBoard {
         }
     }
 
-    private void notifyEntityMoved(final Point2D from, final Point2D to) {
-        for (final BoardObserver observer : observers) {
-            observer.onEntityMoved(from, to);
-        }
-    }
-
     private void notifyEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
         for (final BoardObserver observer : observers) {
             observer.onEntityMoved(from, to, entity);
@@ -220,7 +214,6 @@ public class ChessBoardImpl implements ChessBoard {
         this.removeEntity(start);
         this.setEntity(end, temp);
         notifyEntityMoved(start, end, temp);
-        notifyEntityMoved(start, end);
     }
 
     /**

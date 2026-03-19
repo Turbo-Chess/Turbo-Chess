@@ -1,23 +1,42 @@
-@startuml
+@startuml ChessBoard
 skinparam classAttributeIconSize 0
 hide empty fields
 hide empty methods
 
-class DefinitionCacheEntry <<DTO>> {
-    + getPackId() : String
-    + getPieceId() : String
-    + getDefinition() : AbstractEntityDefinition
+interface ChessBoard {
+    +isFree(pos : Point2D) : boolean
+    +setEntity(pos : Point2D, newEntity : Entity) : void
+    +removeEntity(pos : Point2D) : void
+    +getEntity(pos : Point2D) : Optional<Entity>
+    +getPosByEntity(entity : Entity) : Point2D
+    +checkBounds(pos : Point2D) : boolean
+    +getBoard() : BiMap<Point2D, Entity>
+    +copyCells() : BiMap<Point2D, Entity>
+    +addObserver(observer : BoardObserver) : void
+    +removeObserver(observer : BoardObserver) : void
+    +move(start : Point2D, end : Point2D) : void
+    +eat(start : Point2D, end : Point2D) : void
 }
 
-interface DefinitionRegistry <<Registry>> {
-    + getDefinition(packId: String, pieceId: String) : DefinitionCacheEntry
-    + registerDefinition(...) : void
+class ChessBoardImpl {
+    + {static} CHESSBOARD_SIZE : int
+
+    + isFree(pos : Point2D) : boolean
+    + setEntity(pos : Point2D, newEntity : Entity) : void
+    + removeEntity(pos : Point2D) : void
+    + getEntity(pos : Point2D) : Optional<Entity>
+    + getPosByEntity(entity : Entity) : Point2D
+    + checkBounds(pos : Point2D) : boolean
+    + getBoard() : BiMap<Point2D, Entity>
+    + copyCells() : BiMap<Point2D, Entity>
+    + addObserver(observer : BoardObserver) : void
+    + removeObserver(observer : BoardObserver) : void
+    + move(start : Point2D, end : Point2D) : void
+    + eat(start : Point2D, end : Point2D) : void
 }
 
-interface BoardFactory <<Factory>> {
-    + populateChessboard(whiteLoadout: Loadout, blackLoadout: Loadout, board: ChessBoard) : void
-    + createNewPiece(pos: Point2D, board: ChessBoard, pieceDef: PieceDefinition, color: PlayerColor) : void
-}
+ChessBoard <|.. ChessBoardImpl
+ChessBoardImpl o-- "*" BoardObserver
 
 class BoardFactoryImpl {
     + populateChessboard(...) : void

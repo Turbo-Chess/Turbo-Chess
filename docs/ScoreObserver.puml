@@ -1,0 +1,11 @@
+@startuml ScoreObserver
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+interface ScoreObserver <<@FunctionalInterface>> {
+    +onScoreChanged(player : PlayerColor, newScore : int) : void
+}
+
+@enduml

@@ -1,0 +1,91 @@
+@startuml Replay
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+interface GameEvent <<Interface>> {
+    +getTurn() : int
+    +getEventDescription() : String
+    +getWhiteScore() : int
+    +getBlackScore() : int
+}
+
+class MoveEvent {
+    +getTurn() : int
+    +getEventDescription() : String
+    +getWhiteScore() : int
+    +getBlackScore() : int
+}
+
+class SpawnEvent {
+    +getTurn() : int
+    +getEventDescription() : String
+    +getWhiteScore() : int
+    +getBlackScore() : int
+}
+
+class DespawnEvent {
+    +getTurn() : int
+    +getEventDescription() : String
+    +getWhiteScore() : int
+    +getBlackScore() : int
+}
+
+class GameHistory {
+    +addEvent(event : GameEvent) : void
+    +removeLastEvent() : void
+    +getLastEvent() : GameEvent
+    +getEvents() : List<GameEvent>
+    +setEvents(events : List<GameEvent>) : void
+}
+
+interface ReplayManager {
+    +saveGame(history : GameHistory, path : Path) : boolean throws IOException
+    +loadGame(path : Path) : GameHistory
+}
+
+class ReplayManagerImpl {
+    +saveGame(history : GameHistory, path : Path) : boolean throws IOException
+    +loadGame(path : Path) : GameHistory
+}
+
+interface ReplayController {
+    +loadHistory(history : GameHistory) : void
+    +next() : Optional<GameEvent>
+    +prev() : Optional<GameEvent>
+    +jumpToStart() : void
+    +jumpToEnd() : void
+    +getCurrentIndex() : int
+    +getTotalEvents() : int
+    +setMinIndex(minIndex : int) : void
+}
+
+class ReplayControllerImpl {
+    +ReplayControllerImpl(board : ChessBoard)
+    +loadHistory(history : GameHistory) : void
+    +next() : Optional<GameEvent>
+    +prev() : Optional<GameEvent>
+    +jumpToStart() : void
+    +jumpToEnd() : void
+    +getCurrentIndex() : int
+    +getTotalEvents() : int
+    +setMinIndex(minIndex : int) : void
+}
+
+GameEvent <|.. MoveEvent
+GameEvent <|.. SpawnEvent
+GameEvent <|.. DespawnEvent
+
+GameHistory "1" o-- "*" GameEvent : contains
+GameHistory --> Loadout : whiteLoadout
+GameHistory --> Loadout : blackLoadout
+
+ReplayManager <|.. ReplayManagerImpl
+ReplayManagerImpl --> GameHistory : manages
+
+ReplayController <|.. ReplayControllerImpl
+ReplayControllerImpl --> GameHistory : plays
+ReplayControllerImpl --> ChessBoard : modifies
+
+@enduml

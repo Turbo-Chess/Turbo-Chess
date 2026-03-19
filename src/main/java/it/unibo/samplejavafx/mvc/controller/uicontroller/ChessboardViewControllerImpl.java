@@ -503,13 +503,6 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     public void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
         onEntityRemoved(from, entity);
         onEntityAdded(to, entity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onEntityMoved(final Point2D from, final Point2D to) {
         if (isReplayMode) {
             return;
         }
