@@ -113,13 +113,17 @@ public final class TurnHandlerImpl implements TurnHandler, TurnHandlerContext {
             case MOVE_ONLY:
                 if (currentPiece.get().getType() == PieceType.KING) {
                     if (target.equals(new Point2D(CASTLE_POS.x(), board.getPosByEntity(currentPiece.get()).y()))
-                            && pieceMoves.contains(target)) {
+                            && pieceMoves.contains(target)
+                            && (castlingOptions == CastleCondition.CASTLE_LEFT 
+                                || castlingOptions == CastleCondition.CASTLE_BOTH)) {
                         board.move(board.getPosByEntity(currentPiece.get()), target);
                         board.move(new Point2D(BOUNDARIES.x(), target.y()), new Point2D(ROOK_CASTLE_POS.x(), target.y()));
                         break;
                     }
                     if (target.equals(new Point2D(CASTLE_POS.y(), board.getPosByEntity(currentPiece.get()).y()))
-                            && pieceMoves.contains(target)) {
+                            && pieceMoves.contains(target)
+                            && (castlingOptions == CastleCondition.CASTLE_RIGHT 
+                                || castlingOptions == CastleCondition.CASTLE_BOTH)) {
                         board.move(board.getPosByEntity(currentPiece.get()), target);
                         board.move(new Point2D(BOUNDARIES.y(), target.y()), new Point2D(ROOK_CASTLE_POS.y(), target.y()));
                         break;

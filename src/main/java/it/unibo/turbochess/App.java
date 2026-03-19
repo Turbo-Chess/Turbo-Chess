@@ -2,8 +2,8 @@ package it.unibo.turbochess;
 
 import it.unibo.turbochess.controller.coordinator.api.GameCoordinator;
 import it.unibo.turbochess.controller.coordinator.impl.GameCoordinatorImpl;
-import it.unibo.turbochess.view.impl.JafaFXViewFactory;
 import it.unibo.turbochess.view.api.ViewFactory;
+import it.unibo.turbochess.view.impl.JafaFXViewFactory;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
