@@ -29,7 +29,6 @@ public interface BoardObserver {
      */
     void onEntityRemoved(Point2D pos, Entity entity);
 
-
     /**
      * Triggered when an entity moves from one position to another on the board.
      *
@@ -49,7 +48,6 @@ public interface BoardObserver {
     default void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
         onEntityMoved(from, to);
     }
-
 
     /**
      * Triggered when an entity eats another entity on the board.

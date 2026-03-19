@@ -14,7 +14,12 @@ import it.unibo.turbochess.model.chessboard.board.api.BoardObserver;
 import it.unibo.turbochess.model.chessboard.board.impl.ChessBoardImpl;
 import it.unibo.turbochess.model.entity.api.Entity;
 import it.unibo.turbochess.model.replay.api.ReplayManager;
-import it.unibo.turbochess.model.replay.impl.*;
+import it.unibo.turbochess.model.replay.impl.DespawnEvent;
+import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.impl.MoveEvent;
+import it.unibo.turbochess.model.replay.impl.ReplayManagerImpl;
+import it.unibo.turbochess.model.replay.impl.SpawnEvent;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
