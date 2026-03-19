@@ -33,7 +33,7 @@ import javafx.scene.layout.BorderPane;
  */
 public final class LoadoutSelectorImpl implements Initializable, LoadoutSelector {
     @FXML
-    private BorderPane BorderPain;
+    private BorderPane borderPain;
     @FXML
     private ListView<String> loadoutListView;
     @FXML
@@ -90,11 +90,11 @@ public final class LoadoutSelectorImpl implements Initializable, LoadoutSelector
             if (cssResource != null) {
                 final String css = cssResource.toExternalForm();
                 if (newValue) {
-                    if (!BorderPain.getStylesheets().contains(css)) {
-                        BorderPain.getStylesheets().add(css);
+                    if (!borderPain.getStylesheets().contains(css)) {
+                        borderPain.getStylesheets().add(css);
                     }
                 } else {
-                    BorderPain.getStylesheets().remove(css);
+                    borderPain.getStylesheets().remove(css);
                 }
             }
         });
