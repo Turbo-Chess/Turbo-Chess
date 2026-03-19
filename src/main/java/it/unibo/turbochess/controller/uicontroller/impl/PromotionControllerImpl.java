@@ -24,6 +24,8 @@ import javafx.scene.layout.GridPane;
  */
 public final class PromotionControllerImpl implements PromotionController {
     private static final int DEFAULT_VALUE = 0;
+    private static final double IMAGE_SCALE = 0.8;
+    private static final int IMAGE_BOX_SIZE = 64; // Standard chess piece size in px
     @FXML
     private GridPane promotionPane;
     private final Loadout white;
@@ -87,11 +89,21 @@ public final class PromotionControllerImpl implements PromotionController {
             final String imageColorPath = LoadingUtils.calculateImageColorPath(imagePath, RulesUtils.swapColor(currentColor), entry.pieceId());
             final Button btn = new Button("");
             final ImageView imageView = new ImageView(new Image(imageColorPath));
+            imageView.setPreserveRatio(true);
+            imageView.setSmooth(true);
+            imageView.setFitWidth(IMAGE_BOX_SIZE);
+            imageView.setFitHeight(IMAGE_BOX_SIZE);
 
-            btn.setGraphic(imageView);
-            btn.setOnAction(event -> {
-                isFinished(entry);
-            });
+            final javafx.scene.layout.StackPane imageBox = new javafx.scene.layout.StackPane(imageView);
+            imageBox.setPrefSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);
+            imageBox.setMinSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);
+            imageBox.setMaxSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);
+
+            btn.setGraphic(imageBox);
+            btn.setPrefSize(IMAGE_BOX_SIZE + 16, IMAGE_BOX_SIZE + 16); // Add some padding
+            btn.setMinSize(IMAGE_BOX_SIZE + 16, IMAGE_BOX_SIZE + 16);
+            btn.setMaxSize(IMAGE_BOX_SIZE + 16, IMAGE_BOX_SIZE + 16);
+            btn.setOnAction(event -> isFinished(entry));
             promotionPane.add(btn, x, y);
             increment();
         }
