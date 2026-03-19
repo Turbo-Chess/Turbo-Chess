@@ -169,7 +169,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     public void initialize() {
         initChessboardPane();
         menuButton.setText("Surrender");
-        menuButton.setOnAction(e -> gameController.surrender());
+        menuButton.setOnAction(e -> {
+            if (isReplayMode) {
+                return;
+            }
+            gameController.surrender();
+        });
 
         historyListView.setCellFactory(lv -> new ListCell<>() {
             private final Label wrapLabel = new Label();
@@ -231,21 +236,12 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         btnStart.setOnAction(e -> {
             replayController.jumpToStart();
             syncReplayView();
-            updateReplayScore(0, 0); // At start, score is always 0
+            updateReplayScoreFromCurrentIndex();
         });
         btnPrev.setOnAction(e -> {
             replayController.prev().ifPresent(event -> {
                 syncReplayView();
-                // When going back, we want the score of the event *before* the one we just reverted.
-                // Or if we are at the beginning (index 0), score is 0.
-                // Wait, if we revert the event at index i, we are now at state after event i-1.
-                final int idx = replayController.getCurrentIndex();
-                if (idx == 0) {
-                    updateReplayScore(0, 0);
-                } else {
-                    final var prevEvent = gameController.getGameHistory().getEvents().get(idx - 1);
-                    updateReplayScore(prevEvent.getWhiteScore(), prevEvent.getBlackScore());
-                }
+                updateReplayScoreFromCurrentIndex();
             });
         });
         btnNext.setOnAction(e -> {
@@ -257,11 +253,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         btnEnd.setOnAction(e -> {
             replayController.jumpToEnd();
             syncReplayView();
-            final var events = gameController.getGameHistory().getEvents();
-            if (!events.isEmpty()) {
-                final var lastEvent = events.get(events.size() - 1);
-                updateReplayScore(lastEvent.getWhiteScore(), lastEvent.getBlackScore());
-            }
+            updateReplayScoreFromCurrentIndex();
         });
         onTimerUpdated(PlayerColor.WHITE, gameController.getMatch().getGameTimer().getTimeRemaining(PlayerColor.WHITE));
     }
@@ -269,6 +261,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     private void enableReplayMode() {
         isReplayMode = true;
         replayControlsBox.setDisable(false);
+        menuButton.setDisable(true);
         gameController.getMatch().getGameTimer().stop();
 
         final var history = gameController.getGameHistory();
@@ -284,11 +277,13 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         refreshBoardView(replayBoard);
 
         updateHistoryList();
+        updateReplayScoreFromCurrentIndex();
     }
 
     private void disableReplayMode() {
         isReplayMode = false;
         replayControlsBox.setDisable(true);
+        menuButton.setDisable(false);
         final var match = gameController.getMatch();
         if (match.getGameState() != GameState.CHECKMATE
                 && match.getGameState() != GameState.DRAW
@@ -298,6 +293,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
 
         // Restore Live Board View
         refreshBoardView(gameController.getLiveBoard());
+        updateLiveScore();
     }
 
     /**
@@ -347,14 +343,45 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     }
 
     private void updateReplayScore(final int whiteScore, final int blackScore) {
-        final int diff = whiteScore - blackScore;
-        if (diff >= 0) {
-            whiteScoreLabel.setText(PLUS_SIGN + diff);
-            blackScoreLabel.setText(String.valueOf(-diff));
-        } else {
-            whiteScoreLabel.setText(String.valueOf(diff));
-            blackScoreLabel.setText(PLUS_SIGN + Math.abs(diff));
+        updateDeltaScoreLabels(whiteScore, blackScore);
+    }
+
+    private void updateReplayScoreFromCurrentIndex() {
+        final int idx = replayController.getCurrentIndex();
+        if (idx <= 0) {
+            updateReplayScore(0, 0);
+            return;
         }
+
+        final var events = gameController.getGameHistory().getEvents();
+        if (idx > events.size()) {
+            updateReplayScore(0, 0);
+            return;
+        }
+
+        final var lastAppliedEvent = events.get(idx - 1);
+        updateReplayScore(lastAppliedEvent.getWhiteScore(), lastAppliedEvent.getBlackScore());
+    }
+
+    private void updateLiveScore() {
+        final var match = gameController.getMatch();
+        updateDeltaScoreLabels(
+            match.getScore(PlayerColor.WHITE),
+            match.getScore(PlayerColor.BLACK)
+        );
+    }
+
+    private void updateDeltaScoreLabels(final int whiteScore, final int blackScore) {
+        final int diff = whiteScore - blackScore;
+        whiteScoreLabel.setText(formatSignedDelta(diff));
+        blackScoreLabel.setText(formatSignedDelta(-diff));
+    }
+
+    private String formatSignedDelta(final int value) {
+        if (value > 0) {
+            return PLUS_SIGN + value;
+        }
+        return String.valueOf(value);
     }
 
     /**
@@ -624,18 +651,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
     @Override
     public void onScoreChanged(final PlayerColor player, final int newScore) {
         Platform.runLater(() -> {
-            final var match = gameController.getMatch();
-            final int whiteTotal = match.getScore(PlayerColor.WHITE);
-            final int blackTotal = match.getScore(PlayerColor.BLACK);
-            final int diff = whiteTotal - blackTotal;
-
-            if (diff >= 0) {
-                    whiteScoreLabel.setText(PLUS_SIGN + diff);
-                    blackScoreLabel.setText(String.valueOf(-diff));
-                } else {
-                    whiteScoreLabel.setText(String.valueOf(diff));
-                    blackScoreLabel.setText(PLUS_SIGN + Math.abs(diff));
-                }
+            updateLiveScore();
         });
     }
 
