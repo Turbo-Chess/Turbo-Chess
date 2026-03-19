@@ -75,7 +75,7 @@ public final class PromotionControllerImpl implements PromotionController {
      */
     private void populateGridPane(final PlayerColor currentColor) {
         final Set<LoadoutEntry> set = new HashSet<>();
-        switch (currentColor) {
+        switch (RulesUtils.swapColor(currentColor)) {
             case WHITE:
                 set.addAll(getPromotionPieces(white));
                 break;
