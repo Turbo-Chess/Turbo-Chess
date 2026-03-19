@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" spacing="20.0" stylesheets="@../css/SaveSlot.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.SaveSlotController">
+<HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" spacing="20.0" stylesheets="@../css/SaveSlot.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.turbochess.controller.uicontroller.impl.SaveSlotController">
    <children>
       <Label fx:id="saveNameLabel" maxWidth="Infinity" minWidth="0.0" wrapText="true" text="Save Name" textFill="WHITE" HBox.hgrow="ALWAYS">
          <font>

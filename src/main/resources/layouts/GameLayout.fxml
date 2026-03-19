@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@../css/GameLayout.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.ChessboardViewControllerImpl">
+<BorderPane stylesheets="@../css/GameLayout.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.turbochess.controller.uicontroller.impl.ChessboardViewControllerImpl">
    <center>
       <SplitPane dividerPositions="0.8">
          <items>
