@@ -30,24 +30,36 @@ import java.io.IOException;
  * Manages the creation and display of JavaFX scenes for the application.
  */
 public final class JafaFXViewFactory implements ViewFactory {
-    private static final int WINDOW_WIDTH = 800;
-    private static final int WINDOW_HEIGHT = 800;
     private static final String MAIN_MENU_CSS = "/css/MainMenu.css";
     private static final Logger LOGGER = LoggerFactory.getLogger(JafaFXViewFactory.class);
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "The stage is a mutable object by javafx"
             + "and it can't be defensive copied")
     private final Stage stage;
+    private final int windowWidth;
+    private final int windowHeight;
     private Scene gameScene;
     private Parent gameRoot;
 
     /**
      * Constructs a new {@code JafaFXViewFactory}.
      *
-     * @param stage The primary JavaFX {@link Stage} for the application.
+     * @param stage       The primary JavaFX {@link Stage} for the application.
+     * @param windowWidth  The width of the application window.
+     * @param windowHeight The height of the application window.
      */
-    public JafaFXViewFactory(final Stage stage) {
+    public JafaFXViewFactory(final Stage stage, final int windowWidth, final int windowHeight) {
         this.stage = stage;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
+    }
+
+    /**
+     * Sets the minimum window size so that the stage cannot be resized below the specified values.
+     */
+    public void setMinimumWindowSize() {
+        stage.setMinWidth(windowWidth);
+        stage.setMinHeight(windowHeight);
     }
 
     /**
@@ -55,11 +67,12 @@ public final class JafaFXViewFactory implements ViewFactory {
      */
     @Override
     public void showMainMenu(final GameCoordinator gameCoordinator) {
+        setMinimumWindowSize();
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/MainMenu.fxml"));
             loader.setControllerFactory(c -> new MainMenuControllerImpl(gameCoordinator));
             final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final Scene scene = new Scene(root, windowWidth, windowHeight);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
             if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
@@ -77,11 +90,12 @@ public final class JafaFXViewFactory implements ViewFactory {
      */
     @Override
     public void showSettings(final GameCoordinator gameCoordinator) {
+        setMinimumWindowSize();
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Settings.fxml"));
             loader.setControllerFactory(c -> new SettingsController(gameCoordinator));
             final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final Scene scene = new Scene(root, windowWidth, windowHeight);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
             if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
@@ -102,6 +116,7 @@ public final class JafaFXViewFactory implements ViewFactory {
             final GameController gameController,
             final GameCoordinator gameCoordinator,
             final LoadoutManager loadoutManager) {
+        setMinimumWindowSize();
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutSelector.fxml"));
             loader.setControllerFactory(c -> new LoadoutSelectorImpl(
@@ -110,7 +125,7 @@ public final class JafaFXViewFactory implements ViewFactory {
                     loadoutManager
             ));
             final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final Scene scene = new Scene(root, windowWidth, windowHeight);
             stage.setTitle("TurboChess - Loadout Selector");
             stage.setScene(scene);
             stage.show();
@@ -127,6 +142,7 @@ public final class JafaFXViewFactory implements ViewFactory {
             final GameCoordinator gameCoordinator,
             final DefinitionRegistry entityCache,
             final LoadoutManager loadoutManager) {
+        setMinimumWindowSize();
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadoutEditor.fxml"));
             loader.setControllerFactory(c -> new LoadoutEditorImpl(
@@ -136,7 +152,7 @@ public final class JafaFXViewFactory implements ViewFactory {
             ));
 
             final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final Scene scene = new Scene(root, windowWidth, windowHeight);
             stage.setTitle("TurboChess - Loadout Editor");
             stage.setScene(scene);
             stage.show();
@@ -153,6 +169,7 @@ public final class JafaFXViewFactory implements ViewFactory {
             final GameCoordinator gameCoordinator,
             final GameController gameController,
             final DefinitionRegistry entityCache) {
+        setMinimumWindowSize();
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/Promotion.fxml"));
             loader.setControllerFactory(c -> new PromotionControllerImpl(gameCoordinator, gameController, entityCache));
@@ -160,7 +177,7 @@ public final class JafaFXViewFactory implements ViewFactory {
             final Parent root = loader.load();
             final PromotionControllerImpl prom = loader.getController();
             prom.init(gameController.getMatch().getCurrentPlayer());
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final Scene scene = new Scene(root, windowWidth, windowHeight);
 
             stage.setScene(scene);
             stage.show();
@@ -174,11 +191,12 @@ public final class JafaFXViewFactory implements ViewFactory {
      */
     @Override
     public void initLoadGame(final GameCoordinator gameCoordinator) {
+        setMinimumWindowSize();
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/LoadGame.fxml"));
             loader.setControllerFactory(c -> new LoadGameController(gameCoordinator));
             final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final Scene scene = new Scene(root, windowWidth, windowHeight);
             final var cssLocation = getClass().getResource(MAIN_MENU_CSS);
             if (cssLocation != null) {
                 scene.getStylesheets().add(cssLocation.toExternalForm());
@@ -196,30 +214,31 @@ public final class JafaFXViewFactory implements ViewFactory {
      */
     @Override
     public void initGameUI(final GameController gameController, final GameCoordinator gameCoordinator) {
+        setMinimumWindowSize();
         if (this.gameRoot != null) {
             return;
         }
 
         try {
-           final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
-           loader.setControllerFactory(c -> new ChessboardViewControllerImpl(gameController, gameCoordinator));
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameLayout.fxml"));
+            loader.setControllerFactory(c -> new ChessboardViewControllerImpl(gameController, gameCoordinator));
 
-           this.gameRoot = loader.load();
-           final ChessboardViewController chessboardViewController = loader.getController();
-           gameController.getMatch().getBoard().addObserver((BoardObserver) chessboardViewController);
-           gameController.getMatch().addObserver((ChessMatchObserver) chessboardViewController);
-           gameController.setBoardView((BoardView) chessboardViewController);
-           chessboardViewController.refreshBoardView(gameController.getMatch().getBoard());
+            this.gameRoot = loader.load();
+            final ChessboardViewController chessboardViewController = loader.getController();
+            gameController.getMatch().getBoard().addObserver((BoardObserver) chessboardViewController);
+            gameController.getMatch().addObserver((ChessMatchObserver) chessboardViewController);
+            gameController.setBoardView((BoardView) chessboardViewController);
+            chessboardViewController.refreshBoardView(gameController.getMatch().getBoard());
 
-           final var cssLocation = getClass().getResource("/css/GameLayout.css");
-            this.gameScene = new Scene(gameRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final var cssLocation = getClass().getResource("/css/GameLayout.css");
+            this.gameScene = new Scene(gameRoot, windowWidth, windowHeight);
 
-           if (cssLocation != null) {
-               this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
-           }
-       } catch (final IOException e) {
+            if (cssLocation != null) {
+                this.gameScene.getStylesheets().add(cssLocation.toExternalForm());
+            }
+        } catch (final IOException e) {
             LOGGER.error("Failed to load Game Layout", e);
-       }
+        }
     }
 
     /**

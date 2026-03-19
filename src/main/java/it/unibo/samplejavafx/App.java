@@ -42,7 +42,7 @@ public final class App extends Application {
         stage.setMinHeight(WINDOW_HEIGHT);
         stage.setMinWidth(WINDOW_WIDTH);
 
-        final ViewFactory viewFactory = new JafaFXViewFactory(stage);
+        final ViewFactory viewFactory = new JafaFXViewFactory(stage, WINDOW_WIDTH, WINDOW_HEIGHT);
         final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
 
         // Start with Main Menu
