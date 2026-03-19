@@ -595,8 +595,10 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         if (isReplayMode) {
             return;
         }
-        turnValueLabel.setText(String.valueOf(turnNumber));
-        updateHistoryList();
+        Platform.runLater(() -> {
+            turnValueLabel.setText(String.valueOf(turnNumber));
+            updateHistoryList();
+        });
     }
 
     /**
@@ -607,7 +609,7 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         if (isReplayMode) {
             return;
         }
-        playerColorValueLabel.setText(String.valueOf(playerColor));
+        Platform.runLater(() -> playerColorValueLabel.setText(String.valueOf(playerColor)));
     }
 
     /**
@@ -618,30 +620,31 @@ public final class ChessboardViewControllerImpl implements ChessboardViewControl
         if (isReplayMode) {
             return;
         }
+        Platform.runLater(() -> {
+            switch (gameState) {
+                case CHECK, DOUBLE_CHECK -> {
+                    cells.get(gameController.getKingPos(playerColor)).pseudoClassStateChanged(CHECK_KING, true);
+                }
 
-        switch (gameState) {
-            case CHECK, DOUBLE_CHECK -> {
-                cells.get(gameController.getKingPos(playerColor)).pseudoClassStateChanged(CHECK_KING, true);
+                case NORMAL -> {
+                    final var check = cells.inverse().keySet().stream()
+                            .filter(b -> b.getPseudoClassStates().contains(CHECK_KING))
+                            .findFirst();
+                    check.ifPresent(button -> button.pseudoClassStateChanged(CHECK_KING, false));
+
+                }
+
+                case CHECKMATE -> this.showEndingDialog("Checkmate!", " has won!", Optional.of(playerColor));
+
+                case DRAW -> this.showEndingDialog("It's a draw!", "Neither player won", Optional.empty());
+
+                case PROMOTION -> {
+                    coordinator.initPromotion();
+                }
+
+                case TIMEOUT -> this.showEndingDialog("Time's up!", " has won!", Optional.of(playerColor));
             }
-
-            case NORMAL -> {
-                final var check = cells.inverse().keySet().stream()
-                        .filter(b -> b.getPseudoClassStates().contains(CHECK_KING))
-                        .findFirst();
-                check.ifPresent(button -> button.pseudoClassStateChanged(CHECK_KING, false));
-
-            }
-
-            case CHECKMATE -> this.showEndingDialog("Checkmate!", " has won!", Optional.of(playerColor));
-
-            case DRAW -> this.showEndingDialog("It's a draw!", "Neither player won", Optional.empty());
-
-            case PROMOTION -> {
-                coordinator.initPromotion();
-            }
-
-            case TIMEOUT -> this.showEndingDialog("Time's up!", " has won!", Optional.of(playerColor));
-        }
+        });
     }
 
     @Override
