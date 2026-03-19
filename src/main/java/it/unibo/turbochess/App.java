@@ -32,13 +32,6 @@ public final class App extends Application {
      */
     @Override
     public void start(final Stage stage) {
-        /*Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            if (throwable instanceof Exception) {
-                showFatalStartupError((Exception) throwable);
-            } else {
-                showFatalStartupError(new Exception(throwable));
-            }
-        });*/
         try {
             stage.setMinHeight(WINDOW_HEIGHT);
             stage.setMinWidth(WINDOW_WIDTH);
@@ -48,9 +41,10 @@ public final class App extends Application {
 
             // Start with Main Menu
             coordinator.initMainMenu();
-        } catch (final Exception e) {
-            showFatalStartupError(e);
+        } catch (final RuntimeException e) {
+           showFatalStartupError(e);
         }
+
 
     }
 
