@@ -10,6 +10,7 @@ import it.unibo.turbochess.controller.uicontroller.api.PromotionController;
 import it.unibo.turbochess.model.chessboard.boardfactory.api.DefinitionRegistry;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.utils.LoadingUtils;
+import it.unibo.turbochess.model.utils.RulesUtils;
 import it.unibo.turbochess.model.loadout.impl.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
 import javafx.fxml.FXML;
@@ -83,7 +84,7 @@ public final class PromotionControllerImpl implements PromotionController {
 
         for (final LoadoutEntry entry : set) {
             final String imagePath = entityCache.getDefinition(entry.packId(), entry.pieceId()).getImagePath();
-            final String imageColorPath = LoadingUtils.calculateImageColorPath(imagePath, currentColor, entry.pieceId());
+            final String imageColorPath = LoadingUtils.calculateImageColorPath(imagePath, RulesUtils.swapColor(currentColor), entry.pieceId());
             final Button btn = new Button("");
             final ImageView imageView = new ImageView(new Image(imageColorPath));
 
