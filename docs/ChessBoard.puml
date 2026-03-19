@@ -3,26 +3,35 @@ skinparam classAttributeIconSize 0
 hide empty fields
 hide empty methods
 
-interface ChessBoard {
-    isFree(pos : Point2D) : boolean
-    setEntity(pos : Point2D, newEntity : Entity) : void
-    getEntity(pos : Point2D) : Optional<Entity>
-    checkBounds(pos : Point2D) : boolean
-    getBoard() : Map<Point2D, Optional<Entity>>
+class DefinitionCacheEntry <<DTO>> {
+    + getPackId() : String
+    + getPieceId() : String
+    + getDefinition() : AbstractEntityDefinition
 }
 
-class ChessBoardImpl {
-    - {static} BOARD_HEIGHT : int
-    - {static} BOARD_LENGTH : int
-    - cells : List<Cell>
-
-    + isFree(pos : Point2D) : boolean
-    + setEntity(pos : Point2D, newEntity : Entity) : void
-    + getEntity(pos : Point2D) : Optional<Entity>
-    + checkBounds(pos : Point2D) : boolean
-    + getBoard() : Map<Point2D, Optional<Entity>>
+interface DefinitionRegistry <<Registry>> {
+    + getDefinition(packId: String, pieceId: String) : DefinitionCacheEntry
+    + registerDefinition(...) : void
 }
 
-ChessBoard <|.. ChessBoardImpl
+interface BoardFactory <<Factory>> {
+    + populateChessboard(whiteLoadout: Loadout, blackLoadout: Loadout, board: ChessBoard) : void
+    + createNewPiece(pos: Point2D, board: ChessBoard, pieceDef: PieceDefinition, color: PlayerColor) : void
+}
 
+class BoardFactoryImpl {
+    + populateChessboard(...) : void
+    + createNewPiece(...) : void
+}
+
+BoardFactory <|.. BoardFactoryImpl
+
+BoardFactoryImpl o--> "1" DefinitionRegistry : queries >
+DefinitionRegistry ..> DefinitionCacheEntry : produces >
+@enduml
+
+LoaderController <|.. LoaderControllerImpl
+BoardFactory <|.. BoardFactoryImpl
+
+BoardFactoryImpl o--> "1" LoaderController : uses
 @enduml

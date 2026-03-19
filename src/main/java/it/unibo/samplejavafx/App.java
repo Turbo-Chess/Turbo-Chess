@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * during startup.
  */
 public final class App extends Application {
-    private static final int WINDOW_WIDTH = 800;
+    private static final int WINDOW_WIDTH = 970;
     private static final int WINDOW_HEIGHT = 800;
 
     /**
