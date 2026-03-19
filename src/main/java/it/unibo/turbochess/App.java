@@ -32,21 +32,19 @@ public final class App extends Application {
      */
     @Override
     public void start(final Stage stage) {
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            if (throwable instanceof Exception) {
-                showFatalStartupError((Exception) throwable);
-            } else {
-                showFatalStartupError(new Exception(throwable));
-            }
-        });
-        stage.setMinHeight(WINDOW_HEIGHT);
-        stage.setMinWidth(WINDOW_WIDTH);
+        try {
+            stage.setMinHeight(WINDOW_HEIGHT);
+            stage.setMinWidth(WINDOW_WIDTH);
 
-        final ViewFactory viewFactory = new JafaFXViewFactory(stage, WINDOW_WIDTH, WINDOW_HEIGHT);
-        final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
+            final ViewFactory viewFactory = new JafaFXViewFactory(stage, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final GameCoordinator coordinator = new GameCoordinatorImpl(viewFactory);
 
-        // Start with Main Menu
-        coordinator.initMainMenu();
+            // Start with Main Menu
+            coordinator.initMainMenu();
+        } catch (final RuntimeException e) {
+           showFatalStartupError(e);
+        }
+
 
     }
 
