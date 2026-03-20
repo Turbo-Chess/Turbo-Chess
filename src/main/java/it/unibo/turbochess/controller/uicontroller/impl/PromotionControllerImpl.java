@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 /**
  * Implementation of {@link PromotionController}, handles the GUI for the promotion.
@@ -86,7 +87,8 @@ public final class PromotionControllerImpl implements PromotionController {
 
         for (final LoadoutEntry entry : set) {
             final String imagePath = entityCache.getDefinition(entry.packId(), entry.pieceId()).getImagePath();
-            final String imageColorPath = LoadingUtils.calculateImageColorPath(imagePath, RulesUtils.swapColor(currentColor), entry.pieceId());
+            final String imageColorPath = LoadingUtils.calculateImageColorPath(imagePath, 
+                RulesUtils.swapColor(currentColor), entry.pieceId());
             final Button btn = new Button("");
             final ImageView imageView = new ImageView(new Image(imageColorPath));
             imageView.setPreserveRatio(true);
@@ -94,7 +96,7 @@ public final class PromotionControllerImpl implements PromotionController {
             imageView.setFitWidth(IMAGE_BOX_SIZE);
             imageView.setFitHeight(IMAGE_BOX_SIZE);
 
-            final javafx.scene.layout.StackPane imageBox = new javafx.scene.layout.StackPane(imageView);
+            final StackPane imageBox = new javafx.scene.layout.StackPane(imageView);
             imageBox.setPrefSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);
             imageBox.setMinSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);
             imageBox.setMaxSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);
