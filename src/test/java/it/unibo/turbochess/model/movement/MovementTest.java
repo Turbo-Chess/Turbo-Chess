@@ -1,0 +1,417 @@
+// CHECKSTYLE: MagicNumber OFF
+
+package it.unibo.turbochess.model.movement;
+
+import it.unibo.turbochess.model.chessboard.board.api.ChessBoard;
+import it.unibo.turbochess.model.chessboard.board.impl.ChessBoardImpl;
+import it.unibo.turbochess.model.entity.impl.Piece;
+import it.unibo.turbochess.model.entity.impl.PieceType;
+import it.unibo.turbochess.model.entity.impl.PlayerColor;
+import it.unibo.turbochess.model.entity.definition.PieceDefinition;
+import it.unibo.turbochess.model.movement.api.MoveRules;
+import it.unibo.turbochess.model.movement.impl.MoveRulesImpl;
+import it.unibo.turbochess.model.point2d.Point2D;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+/**
+ * Test class made to test the general behavior of the move rules, pieces created on the spot just to verify
+ * that the rules are working.
+ */
+class MovementTest {
+    private static final String PIECE_ID = "test";
+    private static final String PIECE_NAME = "test-piece";
+    private static final String IMAGE_PATH = "classpath:/assets/images/white_pawn.png";
+    private static final String DUMMY1 = "dummy1";
+    private static final String BLACK_DUMMY = "blackDummy";
+    private static final String DUMMY2 = "dummy2";
+    private static final String WHITE_DUMMY = "whiteDummy";
+
+    private ChessBoard board = new ChessBoardImpl();
+    private int counter;
+
+    @BeforeEach
+    void initBoard() {
+        this.board = new ChessBoardImpl();
+        this.counter = 0;
+    }
+
+    private Piece createPiece(final String id, final String name, final PlayerColor color,
+                              final int weight, final PieceType type, final List<MoveRules> moveRules) {
+        final PieceDefinition def = new PieceDefinition.Builder()
+                .name(name)
+                .id(id)
+                .imagePath(IMAGE_PATH)
+                .weight(weight)
+                .pieceType(type)
+                .moveRules(moveRules)
+                .build();
+        final int currentGameId = counter;
+        counter++;
+        return new Piece.Builder()
+            .moved(false)
+            .entityDefinition(def)
+            .gameId(currentGameId)
+            .playerColor(color)
+            .build();
+    }
+
+    /**
+     * Tests that white and black pieces move in opposite vertical directions as intended.
+     *
+     * <p>
+     * Verifies that a white piece's (0, 1) rule moves it to (x, y-1) and a black piece's (0, 1) rule moves it to (x, y+1).
+     * </p>
+     */
+    @Test
+    void testWhiteBlackMovement() {
+        // This test wants to prove that the white piece moves in the reversed y direction compared to the black
+        final Piece blackPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
+                List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                        MoveRulesImpl.MoveStrategy.JUMPING, false)));
+
+        final Piece whitePiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.WHITE, 3, PieceType.INFERIOR,
+                List.of(new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                        MoveRulesImpl.MoveStrategy.JUMPING, false)));
+
+        board.setEntity(new Point2D(4, 4), whitePiece);
+        board.setEntity(new Point2D(2, 2), blackPiece);
+
+        assertEquals(List.of(new Point2D(4, 3)), whitePiece.getValidMoves(new Point2D(4, 4), board));
+
+        assertEquals(List.of(new Point2D(2, 3)), blackPiece.getValidMoves(new Point2D(2, 2), board));
+    }
+
+    /**
+     * Tests the jumping movement strategy.
+     *
+     * <p>
+     * Verifies that pieces with jumping strategy can calculate valid moves correctly, both within and at the
+     * boundaries of the board.
+     * </p>
+     */
+    @Test
+    void testJumping() {
+        final Piece blackJumpingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false)
+                ));
+
+        final Piece whiteJumpingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.WHITE, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false)
+                ));
+
+        // In the following test, we asssume that there are no entities on the piece way
+
+        //Verify the jumping movement of the black piece, assuming it remains on board limits
+        final Set<Point2D> blackMoves = Set.of(new Point2D(1, 3), new Point2D(1, 1), new Point2D(2, 2), new Point2D(0, 2));
+        board.setEntity(new Point2D(1, 2), blackJumpingPiece);
+        assertEquals(blackMoves, new HashSet<>(blackJumpingPiece.getValidMoves(new Point2D(1, 2), board)));
+
+        //Verify the jumping movement of the white piece, assuming it remains on board limits
+        final Set<Point2D> whiteMoves = Set.of(new Point2D(5, 5), new Point2D(5, 7), new Point2D(6, 6), new Point2D(4, 6));
+        board.setEntity(new Point2D(5, 6), whiteJumpingPiece);
+        assertEquals(whiteMoves, new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(5, 6), board)));
+
+        board.removeEntity(new Point2D(1, 2));
+        board.removeEntity(new Point2D(5, 6));
+
+        //Verify the jumping movement of the black piece, assuming it goes out of board limits
+        board.setEntity(new Point2D(0, 0), blackJumpingPiece);
+        assertEquals(Set.of(new Point2D(0, 1), new Point2D(1, 0)),
+                new HashSet<>(blackJumpingPiece.getValidMoves(new Point2D(0, 0), board)));
+
+        //Verify the jumping movement of the white piece, assuming it remains on board limits
+        board.setEntity(new Point2D(7, 7), whiteJumpingPiece);
+        assertEquals(Set.of(new Point2D(7, 6), new Point2D(6, 7)),
+                new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(7, 7), board)));
+    }
+
+    /**
+     * Tests the sliding movement strategy.
+     *
+     * <p>
+     * Verifies that pieces with sliding strategy generate all valid path coordinates until the board edge or an obstruction.
+     * </p>
+     */
+    @Test
+    void testSliding() {
+        final Piece blackSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false)
+                ));
+
+        final Piece whiteSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.WHITE, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false)
+                ));
+
+        // Test the sliding movement with no other entities on the way
+        board.setEntity(new Point2D(1, 2), blackSlidingPiece);
+        final Set<Point2D> blackMoves = Set.of(new Point2D(1, 1), new Point2D(1, 0), new Point2D(1, 3), new Point2D(1, 4),
+                new Point2D(1, 5), new Point2D(1, 6), new Point2D(1, 7), new Point2D(0, 2), new Point2D(2, 2), new Point2D(3, 2),
+                new Point2D(4, 2), new Point2D(5, 2), new Point2D(6, 2), new Point2D(7, 2));
+        assertEquals(blackMoves, new HashSet<>(blackSlidingPiece.getValidMoves(new Point2D(1, 2), board)));
+
+        board.setEntity(new Point2D(5, 6), whiteSlidingPiece);
+        assertEquals(Set.of(new Point2D(5, 5), new Point2D(5, 4), new Point2D(5, 3), new Point2D(5, 2),
+                        new Point2D(5, 1), new Point2D(5, 0), new Point2D(5, 7), new Point2D(6, 6),
+                        new Point2D(7, 6), new Point2D(4, 6), new Point2D(3, 6), new Point2D(2, 6),
+                        new Point2D(1, 6), new Point2D(0, 6)),
+                new HashSet<>(whiteSlidingPiece.getValidMoves(new Point2D(5, 6), board)));
+    }
+
+    /**
+     * Tests the "Move Only" movement type rule.
+     *
+     * <p>
+     * Verifies that pieces with this rule can only move to empty squares and cannot capture enemy pieces.
+     * </p>
+     */
+    @Test
+    void testMoveOnlyRule() {
+        final Piece blackSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false)
+                ));
+
+        final Piece whiteJumpingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.WHITE, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false)
+                ));
+
+        // Dummy Pieces
+        final Piece blackDummyPiece = createPiece(DUMMY1, BLACK_DUMMY, PlayerColor.BLACK, 3, PieceType.INFERIOR, List.of());
+        board.setEntity(new Point2D(3, 2), blackDummyPiece);
+        final Piece whiteDummyPiece = createPiece(DUMMY2, WHITE_DUMMY, PlayerColor.WHITE, 3, PieceType.INFERIOR, List.of());
+        board.setEntity(new Point2D(1, 4), whiteDummyPiece);
+
+        board.setEntity(new Point2D(1, 2), blackSlidingPiece);
+        assertEquals(Set.of(new Point2D(1, 1), new Point2D(1, 0), new Point2D(0, 2),
+                        new Point2D(2, 2), new Point2D(1, 3)),
+                new HashSet<>(blackSlidingPiece.getValidMoves(new Point2D(1, 2), board)));
+
+        // Change dummy positions
+        board.removeEntity(new Point2D(3, 2));
+        board.removeEntity(new Point2D(1, 4));
+        board.setEntity(new Point2D(7, 6), blackDummyPiece);
+        board.setEntity(new Point2D(3, 4), whiteDummyPiece);
+
+        board.setEntity(new Point2D(5, 5), whiteJumpingPiece);
+        assertEquals(Set.of(new Point2D(7, 4), new Point2D(3, 6)),
+            new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(5, 5), board)));
+    }
+
+    /**
+     * Tests the "Eat Only" movement type rule.
+     *
+     * <p>
+     * Verifies that pieces with this rule can only move to squares occupied by enemy pieces (capturing them)
+     * and cannot move to empty squares.
+     * </p>
+     */
+    @Test
+    void testEatOnlyRule() {
+        final Piece blackSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.EAT_ONLY,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.EAT_ONLY,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.EAT_ONLY,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.EAT_ONLY,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false)
+                ));
+
+        final Piece whiteJumpingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.WHITE, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.EAT_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.EAT_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.EAT_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.EAT_ONLY,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false)
+                ));
+
+        // Dummy Pieces
+        final Piece blackDummyPiece = createPiece(DUMMY1, BLACK_DUMMY, PlayerColor.BLACK, 3, PieceType.INFERIOR, List.of());
+        board.setEntity(new Point2D(3, 2), blackDummyPiece);
+        final Piece whiteDummyPiece = createPiece(DUMMY2, WHITE_DUMMY, PlayerColor.WHITE, 3, PieceType.INFERIOR, List.of());
+        board.setEntity(new Point2D(1, 4), whiteDummyPiece);
+
+        board.setEntity(new Point2D(1, 2), blackSlidingPiece);
+        assertEquals(Set.of(new Point2D(1, 4)), new HashSet<>(blackSlidingPiece.getValidMoves(new Point2D(1, 2), board)));
+
+        // Change dummy positions
+        board.removeEntity(new Point2D(3, 2));
+        board.removeEntity(new Point2D(1, 4));
+        board.setEntity(new Point2D(7, 6), blackDummyPiece);
+        board.setEntity(new Point2D(3, 4), whiteDummyPiece);
+
+        board.setEntity(new Point2D(5, 5), whiteJumpingPiece);
+        assertEquals(Set.of(new Point2D(7, 6)), new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(5, 5), board)));
+    }
+
+    /**
+     * Tests the "Move and Eat" movement type rule (default behavior).
+     *
+     * <p>
+     * Verifies that pieces with this rule can both move to empty squares and capture enemy pieces.
+     * </p>
+     */
+    @Test
+     void testBothRules() {
+        final Piece blackSlidingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(0, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(0, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false),
+                        new MoveRulesImpl(new Point2D(-1, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.SLIDING, false)
+                ));
+
+        final Piece whiteJumpingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.WHITE, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(-2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(2, -1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false),
+                        new MoveRulesImpl(new Point2D(-2, 1), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.JUMPING, false)
+                ));
+
+        // Dummy Pieces
+        final Piece blackDummyPiece = createPiece(DUMMY1, BLACK_DUMMY, PlayerColor.BLACK, 3, PieceType.INFERIOR, List.of());
+        board.setEntity(new Point2D(3, 2), blackDummyPiece);
+        final Piece whiteDummyPiece = createPiece(DUMMY2, WHITE_DUMMY, PlayerColor.WHITE, 3, PieceType.INFERIOR, List.of());
+        board.setEntity(new Point2D(1, 4), whiteDummyPiece);
+
+        board.setEntity(new Point2D(1, 2), blackSlidingPiece);
+        final Set<Point2D> blackMoves = Set.of(new Point2D(1, 3), new Point2D(1, 4), new Point2D(1, 1),
+                new Point2D(1, 0), new Point2D(0, 2), new Point2D(2, 2));
+        assertEquals(blackMoves, new HashSet<>(blackSlidingPiece.getValidMoves(new Point2D(1, 2), board)));
+
+        // Change dummy positions
+        board.removeEntity(new Point2D(3, 2));
+        board.removeEntity(new Point2D(1, 4));
+        board.setEntity(new Point2D(7, 6), blackDummyPiece);
+        board.setEntity(new Point2D(3, 4), whiteDummyPiece);
+
+        board.setEntity(new Point2D(5, 5), whiteJumpingPiece);
+        assertEquals(Set.of(new Point2D(7, 6), new Point2D(3, 6), new Point2D(7, 4)),
+                new HashSet<>(whiteJumpingPiece.getValidMoves(new Point2D(5, 5), board)));
+    }
+
+    /**
+     * Tests the stepping movement strategy.
+     *
+     * <p>
+     * Verifies that pieces with stepping strategy can move to the target square if the path is clear (no pieces in between).
+     * This is distinct from jumping (ignores intermediate squares) and sliding (stops at intermediate squares).
+     * Stepping requires the intermediate path to be clear to reach the destination.
+     * </p>
+     */
+    @Test
+    void testSteppingMovement() {
+        final Piece blackSteppingPiece = createPiece(PIECE_ID, PIECE_NAME, PlayerColor.BLACK, 3, PieceType.INFERIOR,
+                List.of(
+                        new MoveRulesImpl(new Point2D(0, 2), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.STEPPING, false),
+                        new MoveRulesImpl(new Point2D(2, 0), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.STEPPING, false),
+                        new MoveRulesImpl(new Point2D(2, 2), MoveRulesImpl.MoveType.MOVE_AND_EAT,
+                                MoveRulesImpl.MoveStrategy.STEPPING, false)
+                ));
+
+        board.setEntity(new Point2D(0, 0), blackSteppingPiece);
+        assertEquals(Set.of(new Point2D(0, 2), new Point2D(2, 0), new Point2D(2, 2)),
+                new HashSet<>(blackSteppingPiece.getValidMoves(new Point2D(0, 0), board)));
+
+        final Piece blockingPiece = createPiece("block", "block", PlayerColor.WHITE, 1, PieceType.INFERIOR, List.of());
+
+        board.setEntity(new Point2D(0, 1), blockingPiece);
+        assertEquals(Set.of(new Point2D(2, 0), new Point2D(2, 2)),
+                new HashSet<>(blackSteppingPiece.getValidMoves(new Point2D(0, 0), board)));
+
+        board.removeEntity(new Point2D(0, 1));
+
+        board.setEntity(new Point2D(1, 0), blockingPiece);
+        assertEquals(Set.of(new Point2D(0, 2)), new HashSet<>(blackSteppingPiece.getValidMoves(new Point2D(0, 0), board)));
+
+        board.removeEntity(new Point2D(0, 1));
+        board.removeEntity(new Point2D(1, 0));
+
+        board.setEntity(new Point2D(2, 1), blockingPiece);
+
+        assertEquals(Set.of(new Point2D(0, 2), new Point2D(2, 0)),
+                new HashSet<>(blackSteppingPiece.getValidMoves(new Point2D(0, 0), board)));
+
+        board.removeEntity(new Point2D(2, 1));
+
+        // Test capturing
+        board.setEntity(new Point2D(0, 2), blockingPiece);
+
+        final Piece friendlyPiece = createPiece("friend", "friend", PlayerColor.BLACK, 1, PieceType.INFERIOR, List.of());
+        board.setEntity(new Point2D(2, 0), friendlyPiece);
+
+        assertEquals(Set.of(new Point2D(0, 2)), new HashSet<>(blackSteppingPiece.getValidMoves(new Point2D(0, 0), board)));
+    }
+}
+// CHECKSTYLE: MagicNumber ON

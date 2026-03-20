@@ -1,0 +1,128 @@
+// CHECKSTYLE: MagicNumber OFF
+
+package it.unibo.turbochess.model.rules;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
+
+import it.unibo.turbochess.model.chessboard.board.api.ChessBoard;
+import it.unibo.turbochess.model.chessboard.board.impl.ChessBoardImpl;
+import it.unibo.turbochess.model.entity.impl.PlayerColor;
+import it.unibo.turbochess.model.handler.impl.GameState;
+import it.unibo.turbochess.model.point2d.Point2D;
+
+class DrawTest {
+    private ChessBoard board;
+    private Integer idCount;
+
+    @BeforeEach
+    void setUp() {
+        this.board = new ChessBoardImpl();
+        this.idCount = 0;
+    }
+
+    @Test
+    void testSimpleDraw() throws StreamReadException, DatabindException, IOException {
+        board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(7, 7), TestUtilities.createKing(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(1, 7), TestUtilities.createRook(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(7, 1), TestUtilities.createRook(PlayerColor.BLACK, idCount));
+        countInc();
+
+        assertEquals(GameState.DRAW, AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
+    }
+
+    @Test
+    void testSimpleFalseDraw() throws StreamReadException, DatabindException, IOException {
+        board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(7, 7), TestUtilities.createKing(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(2, 7), TestUtilities.createRook(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(7, 1), TestUtilities.createRook(PlayerColor.BLACK, idCount));
+        countInc();
+
+        assertEquals(GameState.NORMAL, AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
+    }
+
+    @Test
+    void testSimpleDrawWithPiece() throws StreamReadException, DatabindException, IOException {
+        board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(7, 7), TestUtilities.createKing(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(1, 7), TestUtilities.createRook(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(7, 1), TestUtilities.createRook(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(2, 0), TestUtilities.createPawn(PlayerColor.BLACK, idCount));
+        countInc();
+
+        assertEquals(GameState.DRAW, AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
+    }
+
+    @Test
+    void testPieceDraw() throws StreamReadException, DatabindException, IOException {
+        board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(1, 7), TestUtilities.createKing(PlayerColor.BLACK, idCount));
+        countInc();
+
+        assertEquals(GameState.DRAW, AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
+    }
+
+    @Test
+    void testImpossibleCheckDraw1() throws StreamReadException, DatabindException, IOException {
+        board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(1, 7), TestUtilities.createKing(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(4, 5), TestUtilities.createKnight(PlayerColor.BLACK, idCount));
+        countInc();
+
+        assertEquals(GameState.DRAW, AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
+    }
+
+    @Test
+    void testImpossibleCheckDraw2() throws StreamReadException, DatabindException, IOException {
+        board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(1, 7), TestUtilities.createKing(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(4, 5), TestUtilities.createBishop(PlayerColor.BLACK, idCount));
+        countInc();
+
+        assertEquals(GameState.DRAW, AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
+    }
+
+    @Test
+    void testFalseImpossibleCheckDraw() throws StreamReadException, DatabindException, IOException {
+        board.setEntity(new Point2D(0, 0), TestUtilities.createKing(PlayerColor.WHITE, idCount));
+        countInc();
+        board.setEntity(new Point2D(1, 7), TestUtilities.createKing(PlayerColor.BLACK, idCount));
+        countInc();
+        board.setEntity(new Point2D(4, 5), TestUtilities.createRook(PlayerColor.BLACK, idCount));
+        countInc();
+
+        assertEquals(GameState.NORMAL, AdvancedRules.draw(board, PlayerColor.WHITE, GameState.NORMAL));
+    }
+
+    // Implement test for PowerUps whenever they are fully functioning
+
+    private void countInc() {
+        this.idCount += 1;
+    }
+}
+
+// CHECKSTYLE: MagicNumber ON
