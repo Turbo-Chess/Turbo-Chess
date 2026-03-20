@@ -26,7 +26,7 @@ import java.util.Optional;
 )
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Piece.class, name = "piece"),
-    @JsonSubTypes.Type(value = PowerUp.class, name = "powerup")
+    //@JsonSubTypes.Type(value = PowerUp.class, name = "powerup")
 })
 public interface Entity {
     /**

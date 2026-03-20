@@ -42,7 +42,7 @@ import java.nio.file.Paths;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = PieceDefinition.class, name = "PIECE"),
-        @JsonSubTypes.Type(value = PowerUpDefinition.class, name = "POWERUP")
+        //@JsonSubTypes.Type(value = PowerUpDefinition.class, name = "POWERUP")
 })
 public abstract class AbstractEntityDefinition {
     private static final String FILE = "file:";
