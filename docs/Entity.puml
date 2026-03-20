@@ -1,36 +1,64 @@
-@startuml
+@startuml Entity
+
 skinparam classAttributeIconSize 0
 hide empty fields
 hide empty methods
 
-interface BoardEntity {
-
+interface Entity <<Interface>> {
+    +getId() : String
+    +getName() : String
+    +getImagePath() : String
+    +getType() : PieceType
+    +getPlayerColor() : PlayerColor
+    +getGameId() : int
+    +getWeight() : int
+    +cloneEntity() : Entity
+    +asMoveable() : Optional<Moveable>
 }
 
-abstract AbstractEntity {
-    - ID : String
-    - NAME : String
-    - IMAGE_PATH : String
-    - IS_WHITE : boolean
+interface Moveable <<Interface>> {
+    +getValidMoves(start : Point2D, board : ChessBoard) : List<Point2D>
+    +hasMoved() : boolean
+    +setHasMoved() : void
+}
+
+abstract class AbstractEntity<T extends AbstractEntityDefinition> {
+    +getEntityDefinition() : T
 }
 
 class Piece {
-    - has_moved : boolean
-    - weight : int
-    - availableCells : List<Point2D>
-    - movementRules : List<MoveRules>
-
-    + getValidMoves(ChessBoard board) : List<Point2D>
+    +getValidMoves(start : Point2D, board : ChessBoard) : List<Point2D>
+    +hasMoved() : boolean
+    +setHasMoved() : void
+    +cloneEntity() : Piece
+    +asMoveable() : Optional<Moveable>
 }
 
 class PowerUp {
-    - duration : int
-
-    + applyEffect() : void
+    +applyEffect() : void
+    +cloneEntity() : PowerUp
 }
 
-BoardEntity <|.. AbstractEntity
+abstract class AbstractEntityDefinition {
+    +getId() : String
+    +getName() : String
+    +getImagePath() : String
+    +getPieceType() : PieceType
+    +getWeight() : int
+}
+
+class PieceDefinition
+class PowerUpDefinition
+
+Entity <|.. AbstractEntity
 AbstractEntity <|-- Piece
 AbstractEntity <|-- PowerUp
+
+Moveable <|.. Piece
+
+AbstractEntityDefinition <|-- PieceDefinition
+AbstractEntityDefinition <|-- PowerUpDefinition
+
+AbstractEntity --> AbstractEntityDefinition : entityDefinition
 
 @enduml

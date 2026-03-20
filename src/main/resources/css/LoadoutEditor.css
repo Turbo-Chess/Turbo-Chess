@@ -1,0 +1,74 @@
+.root {
+    -fx-background-color: #121212;
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.list-view {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: #121212;
+}
+
+.list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #424242;
+    -fx-text-fill: white;
+}
+.list-cell:even {
+    -fx-background-color: #1a1a1a;
+}
+.list-cell:odd {
+    -fx-background-color: #212121;
+}
+
+.button {
+    -fx-background-color: #424242;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000088, 2, 0.2, 0, 1);
+}
+
+/* Board squares style */
+.button.light-square {
+    -fx-background-color: #757575;
+}
+
+.button.dark-square {
+    -fx-background-color: #424242;
+}
+
+.button.material-surface {
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+}
+
+.button:hover {
+    -fx-background-color: #5e5e5e;
+}
+
+.button:pressed {
+    -fx-background-color: #212121;
+}
+
+.text-field {
+    -fx-background-color: #424242;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #aaaaaa;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-background-color: #5e5e5e;
+    -fx-effect: dropshadow(gaussian, #00000088, 2, 0.2, 0, 1);
+}

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" spacing="20.0" style="-fx-background-color: #424242; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.SaveSlotController">
+<HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" spacing="20.0" stylesheets="@../css/SaveSlot.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.turbochess.controller.uicontroller.impl.SaveSlotController">
    <children>
       <Label fx:id="saveNameLabel" maxWidth="Infinity" minWidth="0.0" wrapText="true" text="Save Name" textFill="WHITE" HBox.hgrow="ALWAYS">
          <font>
@@ -24,7 +24,7 @@
             <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
          </padding>
       </Button>
-      <Button mnemonicParsing="false" onAction="#onDelete" minWidth="0.0" wrapText="true" style="-fx-background-color: #cf6679; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold;" text="Delete">
+      <Button mnemonicParsing="false" onAction="#onDelete" minWidth="0.0" wrapText="true" styleClass="delete-button" text="Delete">
          <font>
             <Font size="14.0" />
          </font>

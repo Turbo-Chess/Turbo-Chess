@@ -1,0 +1,33 @@
+.root {
+    -fx-background-color: #121212;
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.game-dialog {
+    -fx-background-color: #2c2c2c;
+    -fx-border-color: #373737;
+    -fx-border-width: 2px;
+}
+
+.label {
+    -fx-text-fill: #ffffff;
+}
+
+.button {
+    -fx-background-color: #424242;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000088, 2, 0.2, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #5e5e5e;
+}
+
+.button:pressed {
+    -fx-background-color: #212121;
+}
+

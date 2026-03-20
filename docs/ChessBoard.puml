@@ -1,28 +1,41 @@
-@startuml
+@startuml ChessBoard
 skinparam classAttributeIconSize 0
 hide empty fields
 hide empty methods
 
 interface ChessBoard {
-    isFree(pos : Point2D) : boolean
-    setEntity(pos : Point2D, newEntity : Entity) : void
-    getEntity(pos : Point2D) : Optional<Entity>
-    checkBounds(pos : Point2D) : boolean
-    getBoard() : Map<Point2D, Optional<Entity>>
+    +isFree(pos : Point2D) : boolean
+    +setEntity(pos : Point2D, newEntity : Entity) : void
+    +removeEntity(pos : Point2D) : void
+    +getEntity(pos : Point2D) : Optional<Entity>
+    +getPosByEntity(entity : Entity) : Point2D
+    +checkBounds(pos : Point2D) : boolean
+    +getBoard() : BiMap<Point2D, Entity>
+    +copyCells() : BiMap<Point2D, Entity>
+    +addObserver(observer : BoardObserver) : void
+    +removeObserver(observer : BoardObserver) : void
+    +move(start : Point2D, end : Point2D) : void
+    +eat(start : Point2D, end : Point2D) : void
 }
 
 class ChessBoardImpl {
-    - {static} BOARD_HEIGHT : int
-    - {static} BOARD_LENGTH : int
-    - cells : List<Cell>
+    + {static} CHESSBOARD_SIZE : int
 
     + isFree(pos : Point2D) : boolean
     + setEntity(pos : Point2D, newEntity : Entity) : void
+    + removeEntity(pos : Point2D) : void
     + getEntity(pos : Point2D) : Optional<Entity>
+    + getPosByEntity(entity : Entity) : Point2D
     + checkBounds(pos : Point2D) : boolean
-    + getBoard() : Map<Point2D, Optional<Entity>>
+    + getBoard() : BiMap<Point2D, Entity>
+    + copyCells() : BiMap<Point2D, Entity>
+    + addObserver(observer : BoardObserver) : void
+    + removeObserver(observer : BoardObserver) : void
+    + move(start : Point2D, end : Point2D) : void
+    + eat(start : Point2D, end : Point2D) : void
 }
 
 ChessBoard <|.. ChessBoardImpl
+ChessBoardImpl o-- "*" BoardObserver
 
 @enduml

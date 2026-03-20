@@ -1,0 +1,158 @@
+package it.unibo.turbochess.controller.replay.impl;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.turbochess.controller.replay.api.ReplayController;
+import it.unibo.turbochess.model.chessboard.board.api.ChessBoard;
+import it.unibo.turbochess.model.entity.api.Entity;
+import it.unibo.turbochess.model.point2d.Point2D;
+import it.unibo.turbochess.model.replay.impl.DespawnEvent;
+import it.unibo.turbochess.model.replay.api.GameEvent;
+import it.unibo.turbochess.model.replay.api.GameHistory;
+import it.unibo.turbochess.model.replay.impl.GameHistoryImpl;
+import it.unibo.turbochess.model.replay.impl.MoveEvent;
+import it.unibo.turbochess.model.replay.impl.SpawnEvent;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Implementation of ReplayController.
+ */
+public final class ReplayControllerImpl implements ReplayController {
+
+    private final ChessBoard board;
+    private GameHistory history;
+    private int currentIndex;
+    private int minIndex;
+
+    /**
+     * @param board the board to control during playback.
+     */
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2", 
+        justification = "The controller needs to modify the provided board state directly."
+    )
+    public ReplayControllerImpl(final ChessBoard board) {
+        this.board = board;
+        this.history = new GameHistoryImpl();
+        this.currentIndex = 0;
+    }
+
+    /**
+     * Loads a new history into the controller.
+     *
+     * @param newHistory the new history to load.
+     */
+    @Override
+    public void loadHistory(final GameHistory newHistory) {
+        // Clear the board first
+        for (final Point2D pos : List.copyOf(board.getBoard().keySet())) {
+             board.removeEntity(pos);
+        }
+
+        this.history = new GameHistoryImpl();
+        this.history.setEvents(newHistory.getEvents());
+        this.currentIndex = 0;
+        this.minIndex = 0;
+    }
+
+    @Override
+    public Optional<GameEvent> next() {
+        if (currentIndex >= history.getEvents().size()) {
+            return Optional.empty();
+        }
+
+        final GameEvent event = history.getEvents().get(currentIndex);
+        applyEvent(event);
+        currentIndex++;
+        return Optional.of(event);
+    }
+
+    @Override
+    public Optional<GameEvent> prev() {
+        if (currentIndex <= minIndex) {
+            return Optional.empty();
+        }
+
+        currentIndex--;
+        final GameEvent event = history.getEvents().get(currentIndex);
+        revertEvent(event);
+        return Optional.of(event);
+    }
+
+    @Override
+    public void jumpToStart() {
+        while (prev().isPresent()) {
+            this.currentIndex += 0;
+        }
+    }
+
+    @Override
+    public void jumpToEnd() {
+        while (next().isPresent()) {
+            this.currentIndex += 0;
+        }
+    }
+
+    @Override
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    @Override
+    public int getTotalEvents() {
+        return history.getEvents().size();
+    }
+
+    @Override
+    public void setMinIndex(final int minIndex) {
+        if (minIndex < 0) {
+            throw new IllegalArgumentException("Min index must be non-negative");
+        }
+        this.minIndex = minIndex;
+    }
+
+    private void applyEvent(final GameEvent event) {
+        if (event instanceof MoveEvent move) {
+            final Optional<Entity> entityOpt = board.getEntity(move.from());
+            if (entityOpt.isPresent()) {
+                final Entity entity = entityOpt.get();
+                board.removeEntity(move.from());
+                board.setEntity(move.to(), entity);
+
+                // Handle Promotion
+                if (move.promotedEntity() != null) {
+                    board.removeEntity(move.to()); // Remove the Pawn that just arrived
+                    board.setEntity(move.to(), move.promotedEntity()); // Place the Promoted Piece
+                }
+            }
+        } else if (event instanceof SpawnEvent spawn) {
+            board.setEntity(spawn.position(), spawn.entity());
+        } else if (event instanceof DespawnEvent despawn) {
+            board.removeEntity(despawn.position());
+        }
+    }
+
+    private void revertEvent(final GameEvent event) {
+        if (event instanceof MoveEvent move) {
+            if (move.promotedEntity() != null && move.originalEntity() != null) {
+                 board.removeEntity(move.to());
+                 board.setEntity(move.to(), move.originalEntity());
+            }
+
+            final Optional<Entity> entityOpt = board.getEntity(move.to());
+            if (entityOpt.isPresent()) {
+                board.removeEntity(move.to());
+                board.setEntity(move.from(), entityOpt.get());
+
+                if (move.capturedEntity() != null) {
+                    board.setEntity(move.to(), move.capturedEntity());
+                }
+            }
+        } else if (event instanceof SpawnEvent spawn) {
+            board.removeEntity(spawn.position());
+        } else if (event instanceof DespawnEvent despawn) {
+            board.setEntity(despawn.position(), despawn.entity());
+        }
+    }
+}

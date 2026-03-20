@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="SettingsBox" fx:id="SettingsBox" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="32.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.samplejavafx.mvc.controller.uicontroller.SettingsController">
+<VBox id="SettingsBox" fx:id="SettingsBox" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="32.0" stylesheets="@../css/Settings.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.turbochess.controller.uicontroller.impl.SettingsController">
    <children>
       <Label id="TitleLabel" fx:id="TitleLabel" text="Settings" />
       <VBox alignment="CENTER" spacing="12.0">

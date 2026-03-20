@@ -1,0 +1,106 @@
+package it.unibo.turbochess.model.entity.api;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import it.unibo.turbochess.model.entity.impl.Piece;
+import it.unibo.turbochess.model.entity.impl.PieceType;
+import it.unibo.turbochess.model.entity.impl.PlayerColor;
+
+import java.util.Optional;
+
+/**
+ * The {@link Entity} interface represents any distinct object that can exist on the game board.
+ * This abstraction serves as the root for various game elements such as pieces, power-ups and, in general, any possible
+ * object that have sense to put on a chessboard.
+ *
+ * <p>
+ * This interface works in conjunction with the JSON serialization mechanism to allow polymorphic
+ * handling of board entities.
+ * </p>
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "entityType"
+)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Piece.class, name = "piece")
+    //@JsonSubTypes.Type(value = PowerUp.class, name = "powerup")
+})
+public interface Entity {
+    /**
+     * Retrieves the unique identifier of the specific entity instance within the game context.
+     * This ID is used to differentiate between instances that may share the same definition.
+     *
+     * @return a {@link String} representing the unique ID of the entity.
+     */
+    String getId();
+
+    /**
+     * Retrieves the display name of the entity.
+     * This name is typically used for user interface elements or logging purposes to identify the type of entity.
+     *
+     * @return a {@link String} containing the name of the entity.
+     */
+    String getName();
+
+    /**
+     * Retrieves the file path or resource location for the image representing this entity.
+     *
+     * @return a {@link String} representing the image path.
+     */
+    String getImagePath();
+
+    /**
+     * Retrieves the categorical type of the entity.
+     * The type classifies the entity into broader categories defined by {@link PieceType}.
+     *
+     * @return the {@link PieceType} associated with this entity.
+     */
+    PieceType getType();
+
+    /**
+     * Retrieves the color of the player who owns this entity.
+     * The ownership determines which player can control or interact with the entity.
+     *
+     * @return the {@link PlayerColor} indicating the owner of the entity.
+     */
+    PlayerColor getPlayerColor();
+
+    /**
+     * Retrieves the identifier of the game instance to which this entity belongs.
+     * This allows distinguishing entities across multiple concurrent games.
+     *
+     * @return an {@link int} representing the game ID associated with this entity.
+     */
+    int getGameId();
+
+    /**
+     * Gets the weight of the entity for scoring.
+     *
+     * @return the weight.
+     */
+    int getWeight();
+
+    /**
+     * Returns a new instance of itself.
+     *
+     * @return the cloned {@link Entity}.
+     */
+    default Entity cloneEntity() {
+        return this;
+    }
+
+    /**
+     * Attempts to cast this entity to a {@link Moveable} object.
+     * In this way is possible to safely check if the entity possesses movement capabilities.
+     * In that case some specific properties are present.
+     * By default, entities are not moveable.
+     *
+     * @return an {@link Optional} containing this entity cast to {@link Moveable} if supported,
+     *         or {@link Optional#empty()} otherwise.
+     */
+    default Optional<Moveable> asMoveable() {
+        return Optional.empty();
+    }
+}

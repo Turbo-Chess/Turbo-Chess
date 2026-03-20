@@ -1,0 +1,144 @@
+package it.unibo.turbochess.model.chessmatch.api;
+
+import it.unibo.turbochess.model.chessboard.board.api.ChessBoard;
+import it.unibo.turbochess.model.entity.impl.PlayerColor;
+import it.unibo.turbochess.model.handler.impl.GameState;
+import it.unibo.turbochess.model.handler.api.TurnHandler;
+import it.unibo.turbochess.model.replay.api.GameHistory;
+import it.unibo.turbochess.model.point2d.Point2D;
+import it.unibo.turbochess.model.score.api.ScoreManager;
+import it.unibo.turbochess.model.timer.api.GameTimer;
+
+/**
+ * The {@code ChessMatch} interface represents the core session of a chess game.
+ *
+ * <p>
+ * It acts as the central source of truth for the game state, maintaining the flow of turns, player progression,
+ * and the overall status of the match.
+ * It aggregates key components such as the {@link ChessBoard}, {@link TurnHandler}, and {@link GameHistory}.
+ * </p>
+ */
+public interface ChessMatch {
+    /**
+     * Retrieves the current state of the game (e.g., NORMAL, CHECK, CHECKMATE).
+     *
+     * @return the current {@link GameState}.
+     */
+    GameState getGameState();
+
+    /**
+     * Identifies the player whose turn it currently is.
+     *
+     * @return the {@link PlayerColor} of the active player.
+     */
+    PlayerColor getCurrentPlayer();
+
+    /**
+     * Retrieves the current turn number of the match.
+     * The turn number typically increments after each player have completed a move.
+     *
+     * @return an integer representing the turn number.
+     */
+    int getTurnNumber();
+
+    /**
+     * Accesses the game board associated with this match.
+     *
+     * @return the {@link ChessBoard} instance where the game is being played.
+     */
+    ChessBoard getBoard();
+
+    /**
+     * Accesses the handler responsible for managing turn logic and rule enforcement.
+     *
+     * @return the {@link TurnHandler} for this match.
+     */
+    TurnHandler getTurnHandler();
+
+    /**
+     * Accesses the score manager for this match.
+     *
+     * @return the {@link ScoreManager} instance tracking the game score.
+     */
+    ScoreManager getScoreManager();
+
+    /**
+     * Registers an observer to receive outcomes and state updates from the match.
+     *
+     * @param observer The {@link ChessMatchObserver} to subscribe.
+     */
+    void addObserver(ChessMatchObserver observer);
+
+    /**
+     * Updates the turn counter to a specific value and notifies observers.
+     *
+     * @param turn The new turn number to set.
+     */
+    void updateTurn(int turn);
+
+    /**
+     * Updates the active player color and notifies observers of the change.
+     *
+     * @param currentColor The {@link PlayerColor} of the player who is now active.
+     */
+    void updatePlayerColor(PlayerColor currentColor);
+
+    /**
+     * Updates the overall game state (e.g., declaring checkmate) and notifies observers.
+     *
+     * @param state       The new {@link GameState}.
+     * @param playerColor The {@link PlayerColor} relevant to the state change (e.g., the winner).
+     */
+    void updateGameState(GameState state, PlayerColor playerColor);
+
+    /**
+     * Sets the current turn number for the match.
+     *
+     * <p>
+     * This is primarily used when loading a saved match or restoring a previous state.
+     * </p>
+     *
+     * @param turnNumber the turn number to set
+     */
+    void setTurnNumber(int turnNumber);
+
+    /**
+     * Sets the current active player for the match.
+     *
+     * <p>
+     * This is primarily used when loading a saved match or restoring a previous state.
+     * </p>
+     *
+     * @param playerColor the player who should be marked as active
+     */
+    void setPlayerColor(PlayerColor playerColor);
+
+    /**
+     * Accesses the game history for this match.
+     *
+     * @return the {@link GameHistory} instance associated with this match
+     */
+    GameHistory getGameHistory();
+
+    /**
+     * Gets the score of a player.
+     *
+     * @param player the player to get the score of.
+     * @return the score of the player.
+     */
+    int getScore(PlayerColor player);
+
+    /**
+     * Accesses the game timer.
+     *
+     * @return the {@link GameTimer} instance.
+     */
+    GameTimer getGameTimer();
+
+    /**
+     * Getter for the position of the promoting pawn.
+     *
+     * @return a {@link Point2D} position of the pawn.
+     */
+    Point2D getPromotionPos();
+}

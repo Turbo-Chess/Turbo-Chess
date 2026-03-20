@@ -1,0 +1,35 @@
+.root {
+    -fx-background-color: #121212;
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.button {
+    -fx-background-color: #424242;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000088, 2, 0.2, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #5e5e5e;
+}
+
+.button:pressed {
+    -fx-background-color: #212121;
+}
+

@@ -1,0 +1,79 @@
+@startuml DomainModel_Central_NoImpl
+
+skinparam classAttributeIconSize 0
+hide empty fields
+hide empty methods
+
+' ======================
+' Central domain concepts (NO implementation classes)
+' Include ONLY main/representative methods
+' ======================
+
+interface Entity {
+  + getPlayerColor() : PlayerColor
+  + getGameId() : int
+}
+
+interface ChessBoard {
+  + getEntity(pos : Point2D) : Optional<Entity>
+  + setEntity(pos : Point2D, newEntity : Entity) : void
+  + removeEntity(pos : Point2D) : void
+}
+
+interface ChessMatch {
+  + getBoard() : ChessBoard
+  + getTurnHandler() : TurnHandler
+  + getGameState() : GameState
+  + getCurrentPlayer() : PlayerColor
+  + updateGameState(state : GameState, playerColor : PlayerColor) : void
+}
+
+interface TurnHandler {
+  + thinking(pos : Point2D) : List<Point2D>
+  + executeTurn(moveAction : MoveType, target : Point2D) : boolean
+  + surrender() : void
+  + getPromotingPawnPos() : Point2D
+}
+
+class Point2D
+
+enum PlayerColor {
+  WHITE
+  BLACK
+}
+
+enum GameState {
+  NORMAL
+  CHECK
+  DOUBLE_CHECK
+  CHECKMATE
+  DRAW
+  PROMOTION
+  TIMEOUT
+}
+
+' MoveType is referenced by TurnHandler
+enum MoveType {
+  MOVE_ONLY
+  EAT_ONLY
+  MOVE_AND_EAT
+}
+
+' ======================
+' Relationships (domain-level)
+' ======================
+
+ChessBoard "1" o-- "*" Entity : contains >
+ChessBoard ..> Point2D : uses >
+
+ChessMatch "1" o-- "1" ChessBoard : has >
+ChessMatch "1" o-- "1" TurnHandler : manages turns >
+
+ChessMatch ..> GameState : state >
+ChessMatch ..> PlayerColor : current player >
+
+TurnHandler ..> Point2D : returns moves >
+TurnHandler ..> PlayerColor : current player >
+TurnHandler ..> MoveType : uses >
+
+@endumll

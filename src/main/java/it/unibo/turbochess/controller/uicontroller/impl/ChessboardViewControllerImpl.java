@@ -1,0 +1,704 @@
+package it.unibo.turbochess.controller.uicontroller.impl;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.turbochess.controller.coordinator.api.GameCoordinator;
+import it.unibo.turbochess.controller.gamecontroller.api.GameController;
+import it.unibo.turbochess.controller.replay.api.ReplayController;
+import it.unibo.turbochess.controller.replay.impl.ReplayControllerImpl;
+import it.unibo.turbochess.controller.uicontroller.api.BoardView;
+import it.unibo.turbochess.controller.uicontroller.api.ChessboardViewController;
+import it.unibo.turbochess.controller.uicontroller.api.GameOverController;
+import it.unibo.turbochess.model.chessboard.board.api.BoardObserver;
+import it.unibo.turbochess.model.chessboard.board.api.ChessBoard;
+import it.unibo.turbochess.model.chessboard.board.impl.ChessBoardImpl;
+import it.unibo.turbochess.model.chessmatch.api.ChessMatchObserver;
+import it.unibo.turbochess.model.entity.api.Entity;
+import it.unibo.turbochess.model.entity.impl.PlayerColor;
+import it.unibo.turbochess.model.handler.impl.GameState;
+import it.unibo.turbochess.model.utils.LoadingUtils;
+import it.unibo.turbochess.model.point2d.Point2D;
+import javafx.application.Platform;
+import it.unibo.turbochess.model.properties.GameProperties;
+import it.unibo.turbochess.model.replay.impl.MoveEvent;
+import it.unibo.turbochess.model.replay.impl.SpawnEvent;
+import it.unibo.turbochess.model.utils.FileSystemUtils;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static it.unibo.turbochess.view.impl.ChessboardViewPseudoClasses.CHECK_KING;
+import static it.unibo.turbochess.view.impl.ChessboardViewPseudoClasses.HASEAT;
+import static it.unibo.turbochess.view.impl.ChessboardViewPseudoClasses.HASMOVED;
+import static it.unibo.turbochess.view.impl.ChessboardViewPseudoClasses.START;
+import static it.unibo.turbochess.view.impl.ChessboardViewPseudoClasses.VALID_CAPTURE_CELL;
+import static it.unibo.turbochess.view.impl.ChessboardViewPseudoClasses.VALID_MOVEMENT_CELL;
+
+/**
+ * A concrete implementation of the {@link ChessboardViewController} interface responsible for managing the
+ * JavaFX view of the chessboard.
+ *
+ * <p>
+ * This class coordinates user interaction with the board (clicks), updates the visual state based on model changes,
+ * and handles UI-related game logic such as highlighting moves, displaying turn information, and managing
+ * replay controls.
+ * </p>
+ *
+ * <p>
+ * It acts as an observer for both the {@link ChessMatchObserver} and {@link BoardObserver}, ensuring
+ * real-time synchronization between the game state and the UI.
+ * </p>
+ */
+public final class ChessboardViewControllerImpl implements ChessboardViewController,
+        BoardObserver, ChessMatchObserver, BoardView {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChessboardViewControllerImpl.class);
+    private static final String PLUS_SIGN = "+";
+    private static final double IMAGE_SCALE = 0.8;
+    private static final double HISTORY_CELL_WIDTH_OFFSET = 24.0;
+    private static final long SECONDS_IN_MINUTE = 60L;
+
+    @FXML
+    private GridPane chessboardGridPane;
+
+    @FXML
+    private StackPane gameMainPane;
+
+    @FXML
+    private Label turnValueLabel;
+
+    @FXML
+    private Label playerColorValueLabel;
+
+    @FXML
+    private Label timeValueLabel;
+
+    @FXML
+    private Label whiteScoreLabel;
+
+    @FXML
+    private Label blackScoreLabel;
+
+    @FXML
+    private Button menuButton;
+
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private ToggleButton toggleReplayBtn;
+
+    @FXML
+    private ListView<String> historyListView;
+
+    @FXML
+    private HBox replayControlsBox;
+
+    @FXML
+    private Button btnStart;
+
+    @FXML
+    private Button btnPrev;
+
+    @FXML
+    private Button btnNext;
+
+    @FXML
+    private Button btnEnd;
+
+    private final GameController gameController;
+    private final GameCoordinator coordinator;
+    private final BiMap<Point2D, Button> cells = HashBiMap.create();
+    private Point2D lastStart;
+    private Point2D lastEnd;
+
+    // Replay related fields
+    private boolean isReplayMode;
+    private ReplayController replayController;
+    private ChessBoard replayBoard;
+
+    /**
+     * Constructs a new {@code ChessboardViewControllerImpl}.
+     *
+     * @param gameController The central {@link GameController} mediating game logic.
+     * @param coordinator    The {@link GameCoordinator} managing high-level application flow.
+     */
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "This is intended to be a shared controller to make the MVC working."
+    )
+    public ChessboardViewControllerImpl(final GameController gameController, final GameCoordinator coordinator) {
+        this.gameController = gameController;
+        this.coordinator = coordinator;
+    }
+
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     *
+     * <p>
+     * Sets up event handlers for UI components, initializes the board grid, and configures
+     * the replay mode controls.
+     * </p>
+     */
+    @FXML
+    public void initialize() {
+        initChessboardPane();
+        menuButton.setText("Surrender");
+        menuButton.setOnAction(e -> {
+            if (isReplayMode) {
+                return;
+            }
+            gameController.surrender();
+        });
+
+        historyListView.setCellFactory(lv -> new ListCell<>() {
+            private final Label wrapLabel = new Label();
+
+            {
+                wrapLabel.setWrapText(true);
+                wrapLabel.maxWidthProperty().bind(lv.widthProperty().subtract(HISTORY_CELL_WIDTH_OFFSET));
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            }
+
+            @Override
+            protected void updateItem(final String item, final boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    wrapLabel.setText(item);
+                    setGraphic(wrapLabel);
+                }
+            }
+        });
+
+        saveButton.setText("Save Game");
+        saveButton.setOnAction(e -> {
+            Path fileToSave = coordinator.getCurrentSaveFile();
+
+            if (fileToSave == null) {
+                final Path saveDir = Paths.get(GameProperties.SAVES_FOLDER.getPath());
+                try {
+                    FileSystemUtils.ensureDirectoryExists(saveDir);
+                    final String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+                    final String uuid = UUID.randomUUID().toString().substring(0, 8);
+                    final String filename = "save_" + timestamp + "_" + uuid + ".json";
+                    fileToSave = saveDir.resolve(filename);
+                } catch (final IOException ex) {
+                    LOGGER.error("Failed to create save directory", ex);
+                    return;
+                }
+            }
+            if (coordinator.saveGame(fileToSave)) {
+                LOGGER.info("Game saved to: " + fileToSave.toAbsolutePath());
+                coordinator.initMainMenu();
+            } else {
+                LOGGER.error("Failed to save game to: " + fileToSave.toAbsolutePath() + " (unknown reason)");
+            }
+        });
+
+        this.replayBoard = new ChessBoardImpl();
+        this.replayController = new ReplayControllerImpl(this.replayBoard);
+
+        toggleReplayBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            if (Boolean.TRUE.equals(newVal)) {
+                enableReplayMode();
+            } else {
+                disableReplayMode();
+            }
+        });
+
+        btnStart.setOnAction(e -> {
+            replayController.jumpToStart();
+            syncReplayView();
+            updateReplayScoreFromCurrentIndex();
+        });
+        btnPrev.setOnAction(e -> {
+            replayController.prev().ifPresent(event -> {
+                syncReplayView();
+                updateReplayScoreFromCurrentIndex();
+            });
+        });
+        btnNext.setOnAction(e -> {
+            replayController.next().ifPresent(event -> {
+                syncReplayView();
+                updateReplayScore(event.getWhiteScore(), event.getBlackScore());
+            });
+        });
+        btnEnd.setOnAction(e -> {
+            replayController.jumpToEnd();
+            syncReplayView();
+            updateReplayScoreFromCurrentIndex();
+        });
+        onTimerUpdated(PlayerColor.WHITE, gameController.getMatch().getGameTimer().getTimeRemaining(PlayerColor.WHITE));
+    }
+
+    private void enableReplayMode() {
+        isReplayMode = true;
+        replayControlsBox.setDisable(false);
+        menuButton.setDisable(true);
+        gameController.getMatch().getGameTimer().stop();
+
+        final var history = gameController.getGameHistory();
+        replayController.loadHistory(history);
+
+        final int initialSpawnCount = (int) history.getEvents().stream()
+            .takeWhile(event -> event instanceof SpawnEvent)
+            .count();
+        replayController.setMinIndex(initialSpawnCount);
+
+        replayController.jumpToEnd();
+
+        refreshBoardView(replayBoard);
+
+        updateHistoryList();
+        updateReplayScoreFromCurrentIndex();
+    }
+
+    private void disableReplayMode() {
+        isReplayMode = false;
+        replayControlsBox.setDisable(true);
+        menuButton.setDisable(false);
+        final var match = gameController.getMatch();
+        if (match.getGameState() != GameState.CHECKMATE
+                && match.getGameState() != GameState.DRAW
+                && match.getGameState() != GameState.TIMEOUT) {
+            match.getGameTimer().start();
+        }
+
+        // Restore Live Board View
+        refreshBoardView(gameController.getLiveBoard());
+        updateLiveScore();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void refreshBoardView(final ChessBoard board) {
+        cells.values().forEach(btn -> {
+            btn.setGraphic(null);
+            btn.setText("");
+            btn.pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+            btn.pseudoClassStateChanged(VALID_CAPTURE_CELL, false);
+            btn.pseudoClassStateChanged(START, false);
+            btn.pseudoClassStateChanged(HASMOVED, false);
+            btn.pseudoClassStateChanged(HASEAT, false);
+            btn.pseudoClassStateChanged(CHECK_KING, false);
+        });
+
+        // Fill from board
+        board.getBoard().forEach(this::setCellGraphic);
+    }
+
+    private void setCellGraphic(final Point2D pos, final Entity entity) {
+         final Button btn = cells.get(pos);
+         if (btn != null) {
+            btn.setText("");
+            btn.setGraphic(createResponsiveImageView(LoadingUtils.calculateImageColorPath(
+                entity.getImagePath(), entity.getPlayerColor(), entity.getId()), btn));
+        }
+    }
+
+    private void syncReplayView() {
+        refreshBoardView(replayBoard);
+    }
+
+    private void updateHistoryList() {
+        final var history = gameController.getGameHistory();
+        historyListView.setItems(FXCollections.observableArrayList(
+            history.getEvents().stream()
+                .filter(e -> e instanceof MoveEvent)
+                .map(e -> {
+                    final MoveEvent me = (MoveEvent) e;
+                    return me.getEventDescription();
+                })
+                .collect(Collectors.toList())
+        ));
+    }
+
+    private void updateReplayScore(final int whiteScore, final int blackScore) {
+        updateDeltaScoreLabels(whiteScore, blackScore);
+    }
+
+    private void updateReplayScoreFromCurrentIndex() {
+        final int idx = replayController.getCurrentIndex();
+        if (idx <= 0) {
+            updateReplayScore(0, 0);
+            return;
+        }
+
+        final var events = gameController.getGameHistory().getEvents();
+        if (idx > events.size()) {
+            updateReplayScore(0, 0);
+            return;
+        }
+
+        final var lastAppliedEvent = events.get(idx - 1);
+        updateReplayScore(lastAppliedEvent.getWhiteScore(), lastAppliedEvent.getBlackScore());
+    }
+
+    private void updateLiveScore() {
+        final var match = gameController.getMatch();
+        updateDeltaScoreLabels(
+            match.getScore(PlayerColor.WHITE),
+            match.getScore(PlayerColor.BLACK)
+        );
+    }
+
+    private void updateDeltaScoreLabels(final int whiteScore, final int blackScore) {
+        final int diff = whiteScore - blackScore;
+        whiteScoreLabel.setText(formatSignedDelta(diff));
+        blackScoreLabel.setText(formatSignedDelta(-diff));
+    }
+
+    private String formatSignedDelta(final int value) {
+        if (value > 0) {
+            return PLUS_SIGN + value;
+        }
+        return String.valueOf(value);
+    }
+
+    /**
+     * Initializes the chessboard grid pane with buttons and binds their size to the window.
+     *
+     * <p>
+     * This method creates a 8x8 grid of buttons, setting up their event handlers for user interaction
+     * and styling. It also initializes the turn and player labels.
+     * </p>
+     */
+    @FXML
+    public void initChessboardPane() {
+        final int size = 8;
+
+        final NumberBinding squareSize = Bindings.min(
+            gameMainPane.widthProperty(), gameMainPane.heightProperty()
+        );
+        chessboardGridPane.prefWidthProperty().bind(squareSize);
+        chessboardGridPane.prefHeightProperty().bind(squareSize);
+        chessboardGridPane.maxWidthProperty().bind(squareSize);
+        chessboardGridPane.maxHeightProperty().bind(squareSize);
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                final Button button = new Button();
+
+                button.setOnAction(event -> {
+                    if (isReplayMode) {
+                        return; // Disable interaction in replay mode
+                    }
+
+                    final Point2D pointClicked = cells.inverse().get((Button) event.getSource());
+                    gameController.handleClick(pointClicked);
+                });
+
+                button.getStyleClass().add("material-surface");
+                if ((row + col) % 2 == 0) {
+                    button.getStyleClass().add("light-square");
+                } else {
+                    button.getStyleClass().add("dark-square");
+                }
+                button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                cells.put(new Point2D(col, row), button);
+                chessboardGridPane.add(button, col, row);
+            }
+        }
+
+        turnValueLabel.setText("1");
+        playerColorValueLabel.setText("WHITE");
+    }
+
+    /**
+     * Creates an ImageView whose size tracks the button's actual size.
+     *
+     * @param imagePath path to the image file.
+     * @param button    the button to track.
+     * @return a responsive ImageView.
+     */
+    private ImageView createResponsiveImageView(final String imagePath, final Button button) {
+        final ImageView imageView = new ImageView(new Image(imagePath));
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+        imageView.fitHeightProperty().bind(button.heightProperty().multiply(IMAGE_SCALE));
+        imageView.fitWidthProperty().bind(button.widthProperty().multiply(IMAGE_SCALE));
+        return imageView;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onEntityAdded(final Point2D pos, final Entity entity) {
+        if (isReplayMode && !isReplayBoardEvent()) {
+             return;
+        }
+
+        final Button btn = cells.get(pos);
+        if (btn != null) {
+            btn.setText("");
+            final var imagePath = LoadingUtils.calculateImageColorPath(
+                    entity.getImagePath(), entity.getPlayerColor(), entity.getId());
+            btn.setGraphic(createResponsiveImageView(imagePath, btn));
+        }
+    }
+
+    private boolean isReplayBoardEvent() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onEntityEat(final Point2D from, final Point2D to) {
+        if (isReplayMode) {
+            return;
+        }
+        highlightEat(from, to);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onEntityRemoved(final Point2D pos, final Entity entity) {
+        if (isReplayMode) {
+            return;
+        }
+
+        final Button btn = cells.get(pos);
+        btn.setText("");
+        btn.setGraphic(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onEntityMoved(final Point2D from, final Point2D to, final Entity entity) {
+        onEntityRemoved(from, entity);
+        onEntityAdded(to, entity);
+        if (isReplayMode) {
+            return;
+        }
+        highlightMovement(from, to);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showMovementCells(final Set<Point2D> cellsToShow) {
+        if (isReplayMode) {
+            return;
+        }
+
+        for (final var move : cellsToShow) {
+            final Button btn = cells.get(move);
+            if (btn.getGraphic() != null) {
+                btn.pseudoClassStateChanged(VALID_CAPTURE_CELL, true);
+            } else {
+                btn.pseudoClassStateChanged(VALID_MOVEMENT_CELL, true);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void hideMovementCells(final Set<Point2D> cellsToHide) {
+        if (isReplayMode) {
+            return;
+        }
+
+        for (final var move : cellsToHide) {
+            final Button btn = cells.get(move);
+            btn.pseudoClassStateChanged(VALID_MOVEMENT_CELL, false);
+            btn.pseudoClassStateChanged(VALID_CAPTURE_CELL, false);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void highlightMovement(final Point2D start, final Point2D end) {
+        if (isReplayMode) {
+            return;
+        }
+
+        clearLastHighlight();
+        cells.get(start).pseudoClassStateChanged(START, true);
+        cells.get(end).pseudoClassStateChanged(HASMOVED, true);
+        this.lastStart = start;
+        this.lastEnd = end;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void highlightEat(final Point2D start, final Point2D end) {
+        if (isReplayMode) {
+            return;
+        }
+
+        clearLastHighlight();
+        cells.get(start).pseudoClassStateChanged(START, true);
+        cells.get(end).pseudoClassStateChanged(HASEAT, true);
+        this.lastStart = start;
+        this.lastEnd = end;
+    }
+
+    private void clearLastHighlight() {
+        if (lastStart != null && lastEnd != null) {
+            cells.get(lastStart).pseudoClassStateChanged(START, false);
+            cells.get(lastEnd).pseudoClassStateChanged(HASMOVED, false);
+            cells.get(lastEnd).pseudoClassStateChanged(HASEAT, false);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onTurnUpdated(final int turnNumber) {
+        if (isReplayMode) {
+            return;
+        }
+        Platform.runLater(() -> {
+            turnValueLabel.setText(String.valueOf(turnNumber));
+            updateHistoryList();
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onPlayerUpdated(final PlayerColor playerColor) {
+        if (isReplayMode) {
+            return;
+        }
+        Platform.runLater(() -> playerColorValueLabel.setText(String.valueOf(playerColor)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onGameStateUpdated(final GameState gameState, final PlayerColor playerColor) {
+        if (isReplayMode) {
+            return;
+        }
+        Platform.runLater(() -> {
+            switch (gameState) {
+                case CHECK, DOUBLE_CHECK -> {
+                    cells.get(gameController.getKingPos(playerColor)).pseudoClassStateChanged(CHECK_KING, true);
+                }
+
+                case NORMAL -> {
+                    final var check = cells.inverse().keySet().stream()
+                            .filter(b -> b.getPseudoClassStates().contains(CHECK_KING))
+                            .findFirst();
+                    check.ifPresent(button -> button.pseudoClassStateChanged(CHECK_KING, false));
+
+                }
+
+                case CHECKMATE -> this.showEndingDialog("Checkmate!", " has won!", Optional.of(playerColor));
+
+                case DRAW -> this.showEndingDialog("It's a draw!", "Neither player won", Optional.empty());
+
+                case PROMOTION -> {
+                    coordinator.initPromotion();
+                }
+
+                case TIMEOUT -> this.showEndingDialog("Time's up!", " has won!", Optional.of(playerColor));
+            }
+        });
+    }
+
+    @Override
+    public void onScoreChanged(final PlayerColor player, final int newScore) {
+        Platform.runLater(() -> {
+            updateLiveScore();
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onTimerUpdated(final PlayerColor player, final Long timeRemaining) {
+        Platform.runLater(() -> {
+            final var match = gameController.getMatch();
+            final var timer = match.getGameTimer();
+            final long whiteTime = timer.getTimeRemaining(PlayerColor.WHITE);
+            final long blackTime = timer.getTimeRemaining(PlayerColor.BLACK);
+
+            final String whiteStr = formatTime(whiteTime);
+            final String blackStr = formatTime(blackTime);
+
+            timeValueLabel.setText("White: " + whiteStr + " - Black: " + blackStr);
+        });
+    }
+
+    private String formatTime(final long seconds) {
+        return String.format("%d:%02d", seconds / SECONDS_IN_MINUTE, seconds % SECONDS_IN_MINUTE);
+    }
+
+    private void showEndingDialog(final String statusText, final String messageText, final Optional<PlayerColor> playerColor) {
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layouts/GameOver.fxml"));
+        loader.setControllerFactory(c -> new GameOverControllerImpl(coordinator));
+        DialogPane root = new DialogPane();
+        try {
+            root = loader.load();
+        } catch (final IOException e) {
+            LOGGER.error("Failed to load GameOver dialog", e);
+        }
+
+        final GameOverController gameOverController = loader.getController();
+        final var match = gameController.getMatch();
+        final String scoreText = String.format("White: %d - Black: %d", 
+            match.getScore(PlayerColor.WHITE), match.getScore(PlayerColor.BLACK));
+
+        if (playerColor.isPresent()) {
+            gameOverController.setTextLabel(statusText, playerColor.get() + messageText, scoreText);
+        } else {
+            gameOverController.setTextLabel(statusText, messageText, scoreText);
+        }
+        final Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(root);
+        dialog.setTitle("Game Results");
+        dialog.showAndWait();
+    }
+}
