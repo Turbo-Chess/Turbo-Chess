@@ -1,7 +1,9 @@
 package it.unibo.turbochess.model.replay.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import it.unibo.turbochess.model.loadout.api.Loadout;
+import it.unibo.turbochess.model.loadout.impl.LoadoutImpl;
 import it.unibo.turbochess.model.replay.api.GameEvent;
 import it.unibo.turbochess.model.replay.api.GameHistory;
 import lombok.Getter;
@@ -24,10 +26,12 @@ public final class GameHistoryImpl implements GameHistory {
 
     @Getter
     @Setter
+    @JsonDeserialize(as = LoadoutImpl.class)
     private Loadout whiteLoadout;
 
     @Getter
     @Setter
+    @JsonDeserialize(as = LoadoutImpl.class)
     private Loadout blackLoadout;
 
     @Getter
