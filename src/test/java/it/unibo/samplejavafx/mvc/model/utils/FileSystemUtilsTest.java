@@ -1,5 +1,6 @@
 package it.unibo.samplejavafx.mvc.model.utils;
 
+import it.unibo.turbochess.model.utils.FileSystemUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -14,10 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileSystemUtilsTest {
+    private static final String ABC_PATH = "a/b/c";
 
     @Test
     void normalizePathConvertsBackslashes() {
-        assertEquals("a/b/c", FileSystemUtils.normalizePath("a\\b\\c"));
+        assertEquals(ABC_PATH, FileSystemUtils.normalizePath("a\\b\\c"));
     }
 
     @Test
@@ -28,9 +30,9 @@ class FileSystemUtilsTest {
     @Test
     void pathContainsWorksAcrossSeparators() {
         assertTrue(FileSystemUtils.pathContains("a\\b\\c", "b/c"));
-        assertTrue(FileSystemUtils.pathContains("a/b/c", "b\\c"));
+        assertTrue(FileSystemUtils.pathContains(ABC_PATH, "b\\c"));
         assertFalse(FileSystemUtils.pathContains(null, "b/c"));
-        assertFalse(FileSystemUtils.pathContains("a/b/c", null));
+        assertFalse(FileSystemUtils.pathContains(ABC_PATH, null));
     }
 
     @Test
@@ -42,11 +44,10 @@ class FileSystemUtilsTest {
     }
 
     @Test
-    void ensureDirectoryExistsThrowsIfPathIsFile(@TempDir final Path tmp) throws Exception {
+    void ensureDirectoryExistsThrowsIfPathIsFile(@TempDir final Path tmp) throws IOException {
         final Path file = tmp.resolve("a-file.txt");
         Files.writeString(file, "x");
         assertNotNull(file);
         assertThrows(IOException.class, () -> FileSystemUtils.ensureDirectoryExists(file));
     }
 }
-

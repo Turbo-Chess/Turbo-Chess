@@ -1,6 +1,7 @@
 package it.unibo.samplejavafx.mvc.model.timer;
 
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
+import it.unibo.turbochess.model.entity.impl.PlayerColor;
+import it.unibo.turbochess.model.timer.impl.GameTimerImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -13,17 +14,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameTimerImplTest {
+    private static final long DEFAULT_TIME_SECONDS = 2;
+    private static final long SHORT_TIME_SECONDS = 1;
+    private static final long AWAIT_TIMEOUT_MS = 2_500;
+    private static final long SLEEP_MS = 1_200;
 
     @Test
-    void timerDoesNotTickBeforeStart() throws Exception {
+    void timerDoesNotTickBeforeStart() throws InterruptedException {
         final var ticks = new AtomicInteger(0);
         final var timer = new GameTimerImpl(
-            2,
+            DEFAULT_TIME_SECONDS,
             (p, t) -> ticks.incrementAndGet(),
             loser -> { }
         );
         try {
-            Thread.sleep(1200);
+            Thread.sleep(SLEEP_MS);
             assertEquals(0, ticks.get());
         } finally {
             timer.shutdown();
@@ -31,11 +36,11 @@ class GameTimerImplTest {
     }
 
     @Test
-    void timerDecrementsActivePlayerAfterStart() throws Exception {
+    void timerDecrementsActivePlayerAfterStart() throws InterruptedException {
         final var remaining = new AtomicLong(-1);
         final var latch = new CountDownLatch(1);
         final var timer = new GameTimerImpl(
-            2,
+            DEFAULT_TIME_SECONDS,
             (p, t) -> {
                 if (p == PlayerColor.WHITE) {
                     remaining.set(t);
@@ -46,24 +51,24 @@ class GameTimerImplTest {
         );
         try {
             timer.start();
-            assertTrue(latch.await(2500, TimeUnit.MILLISECONDS));
+            assertTrue(latch.await(AWAIT_TIMEOUT_MS, TimeUnit.MILLISECONDS));
             assertEquals(1, remaining.get());
             assertEquals(1, timer.getTimeRemaining(PlayerColor.WHITE));
-            assertEquals(2, timer.getTimeRemaining(PlayerColor.BLACK));
+            assertEquals(DEFAULT_TIME_SECONDS, timer.getTimeRemaining(PlayerColor.BLACK));
         } finally {
             timer.shutdown();
         }
     }
 
     @Test
-    void switchTurnChangesWhichClockIsDecremented() throws Exception {
-        final var lastWhite = new AtomicLong(2);
-        final var lastBlack = new AtomicLong(2);
+    void switchTurnChangesWhichClockIsDecremented() throws InterruptedException {
+        final var lastWhite = new AtomicLong(DEFAULT_TIME_SECONDS);
+        final var lastBlack = new AtomicLong(DEFAULT_TIME_SECONDS);
         final var whiteTick = new CountDownLatch(1);
         final var blackTick = new CountDownLatch(1);
 
         final var timer = new GameTimerImpl(
-            2,
+            DEFAULT_TIME_SECONDS,
             (p, t) -> {
                 if (p == PlayerColor.WHITE) {
                     lastWhite.set(t);
@@ -78,9 +83,9 @@ class GameTimerImplTest {
 
         try {
             timer.start();
-            assertTrue(whiteTick.await(2500, TimeUnit.MILLISECONDS));
+            assertTrue(whiteTick.await(AWAIT_TIMEOUT_MS, TimeUnit.MILLISECONDS));
             timer.switchTurn();
-            assertTrue(blackTick.await(2500, TimeUnit.MILLISECONDS));
+            assertTrue(blackTick.await(AWAIT_TIMEOUT_MS, TimeUnit.MILLISECONDS));
 
             assertEquals(1, lastWhite.get());
             assertEquals(1, lastBlack.get());
@@ -90,13 +95,13 @@ class GameTimerImplTest {
     }
 
     @Test
-    void timeoutTriggersCallbackAndStopsFurtherDecrements() throws Exception {
+    void timeoutTriggersCallbackAndStopsFurtherDecrements() throws InterruptedException {
         final var timedOut = new AtomicReference<PlayerColor>();
         final var timeoutLatch = new CountDownLatch(1);
         final var lastTime = new AtomicLong(99);
 
         final var timer = new GameTimerImpl(
-            1,
+            SHORT_TIME_SECONDS,
             (p, t) -> {
                 if (p == PlayerColor.WHITE) {
                     lastTime.set(t);
@@ -110,15 +115,14 @@ class GameTimerImplTest {
 
         try {
             timer.start();
-            assertTrue(timeoutLatch.await(2500, TimeUnit.MILLISECONDS));
+            assertTrue(timeoutLatch.await(AWAIT_TIMEOUT_MS, TimeUnit.MILLISECONDS));
             assertEquals(PlayerColor.WHITE, timedOut.get());
             assertEquals(0, timer.getTimeRemaining(PlayerColor.WHITE));
 
-            Thread.sleep(1200);
+            Thread.sleep(SLEEP_MS);
             assertEquals(0, timer.getTimeRemaining(PlayerColor.WHITE));
         } finally {
             timer.shutdown();
         }
     }
 }
-

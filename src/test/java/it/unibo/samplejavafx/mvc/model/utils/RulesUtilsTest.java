@@ -1,12 +1,13 @@
 package it.unibo.samplejavafx.mvc.model.utils;
 
-import it.unibo.samplejavafx.mvc.model.chessboard.ChessBoardImpl;
-import it.unibo.samplejavafx.mvc.model.entity.Piece;
-import it.unibo.samplejavafx.mvc.model.entity.PieceType;
-import it.unibo.samplejavafx.mvc.model.entity.PlayerColor;
-import it.unibo.samplejavafx.mvc.model.entity.entitydefinition.PieceDefinition;
-import it.unibo.samplejavafx.mvc.model.movement.MoveRulesImpl;
-import it.unibo.samplejavafx.mvc.model.point2d.Point2D;
+import it.unibo.turbochess.model.chessboard.board.impl.ChessBoardImpl;
+import it.unibo.turbochess.model.entity.definition.PieceDefinition;
+import it.unibo.turbochess.model.entity.impl.Piece;
+import it.unibo.turbochess.model.entity.impl.PieceType;
+import it.unibo.turbochess.model.entity.impl.PlayerColor;
+import it.unibo.turbochess.model.movement.impl.MoveRulesImpl;
+import it.unibo.turbochess.model.point2d.Point2D;
+import it.unibo.turbochess.model.utils.RulesUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -21,6 +22,7 @@ class RulesUtilsTest {
     private static final String PAWN_ID = "pawn";
     private static final String KING_NAME = "King";
     private static final String KING_ID = "king";
+    private static final int BACK_RANK = 7;
 
     private static PieceDefinition def(final String name, final String id, final PieceType type, final int weight) {
         return new PieceDefinition.Builder()
@@ -59,7 +61,7 @@ class RulesUtilsTest {
         final var whiteKing = piece(def(KING_NAME, KING_ID, PieceType.KING, 100), PlayerColor.WHITE, 1, false);
         final var blackPawn = piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.BLACK, 2, false);
 
-        board.setEntity(new Point2D(4, 7), whiteKing);
+        board.setEntity(new Point2D(4, BACK_RANK), whiteKing);
         board.setEntity(new Point2D(0, 1), blackPawn);
 
         final var king = RulesUtils.getKing(board, PlayerColor.WHITE).orElseThrow();
@@ -70,9 +72,12 @@ class RulesUtilsTest {
     @Test
     void piecesOfColorReturnsOnlyThatColor() {
         final var board = new ChessBoardImpl();
-        board.setEntity(new Point2D(0, 0), piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.WHITE, 1, false));
-        board.setEntity(new Point2D(1, 0), piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.WHITE, 2, false));
-        board.setEntity(new Point2D(0, 7), piece(def(KING_NAME, KING_ID, PieceType.KING, 100), PlayerColor.BLACK, 3, false));
+        final var whitePawn1 = piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.WHITE, 1, false);
+        final var whitePawn2 = piece(def(PAWN_NAME, PAWN_ID, PieceType.PAWN, 1), PlayerColor.WHITE, 2, false);
+        final var blackKing = piece(def(KING_NAME, KING_ID, PieceType.KING, 100), PlayerColor.BLACK, 3, false);
+        board.setEntity(new Point2D(0, 0), whitePawn1);
+        board.setEntity(new Point2D(1, 0), whitePawn2);
+        board.setEntity(new Point2D(0, BACK_RANK), blackKing);
 
         assertEquals(2, RulesUtils.getPiecesOfColor(board, PlayerColor.WHITE).size());
         assertEquals(1, RulesUtils.getPiecesOfColor(board, PlayerColor.BLACK).size());
