@@ -296,7 +296,7 @@ public class LoadoutImpl implements Loadout {
         private final List<LoadoutEntry> entries;
         private final Map<String, PieceDefinition> definitions;
         private final int expectedWeight;
-        private final it.unibo.turbochess.model.loadout.api.Loadout standardLoadout;
+        private final Loadout standardLoadout;
 
         /**
          * Creates a validation context for a loadout validation run.
@@ -310,7 +310,7 @@ public class LoadoutImpl implements Loadout {
             final List<LoadoutEntry> entries,
             final Map<String, PieceDefinition> definitions,
             final int expectedWeight,
-            final it.unibo.turbochess.model.loadout.api.Loadout standardLoadout
+            final Loadout standardLoadout
         ) {
             this.entries = entries;
             this.definitions = definitions;
