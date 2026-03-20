@@ -9,7 +9,8 @@ import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.entity.definition.PieceDefinition;
 import it.unibo.turbochess.model.movement.impl.MoveRulesImpl;
 import it.unibo.turbochess.model.point2d.Point2D;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
+import it.unibo.turbochess.model.replay.impl.GameHistoryImpl;
 import it.unibo.turbochess.model.replay.impl.MoveEvent;
 import it.unibo.turbochess.model.replay.impl.SpawnEvent;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ class ReplayBugTest {
     void testReplayReloadConsistency() {
         final ChessBoardImpl board = new ChessBoardImpl();
         final ReplayController controller = new ReplayControllerImpl(board);
-        final GameHistory history = new GameHistory();
+        final GameHistory history = new GameHistoryImpl();
 
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0), 0, 0));
         history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null, 0, 0));
@@ -79,7 +80,7 @@ class ReplayBugTest {
     void testGhostPieceBug() {
         final ChessBoardImpl board = new ChessBoardImpl();
         final ReplayController controller = new ReplayControllerImpl(board);
-        final GameHistory history = new GameHistory();
+        final GameHistory history = new GameHistoryImpl();
 
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0), 0, 0));
         history.addEvent(new MoveEvent(1, PAWN_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null, 0, 0));

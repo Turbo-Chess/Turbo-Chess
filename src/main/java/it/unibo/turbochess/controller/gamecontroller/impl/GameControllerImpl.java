@@ -14,8 +14,9 @@ import it.unibo.turbochess.model.loadout.impl.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
 import it.unibo.turbochess.model.loadout.api.LoadoutManager;
 import it.unibo.turbochess.model.point2d.Point2D;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
 import it.unibo.turbochess.model.replay.impl.GameHistoryRecorder;
+import it.unibo.turbochess.model.replay.impl.GameHistoryImpl;
 import it.unibo.turbochess.model.rules.AdvancedRules;
 import it.unibo.turbochess.model.utils.RulesUtils;
 import lombok.Getter;
@@ -195,7 +196,7 @@ public final class GameControllerImpl implements GameController {
     @Override
     public GameHistory getGameHistory() {
         if (this.match == null) {
-            return new GameHistory();
+            return new GameHistoryImpl();
         }
         return this.match.getGameHistory();
     }

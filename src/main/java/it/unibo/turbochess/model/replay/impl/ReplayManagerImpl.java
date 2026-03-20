@@ -2,6 +2,7 @@ package it.unibo.turbochess.model.replay.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import it.unibo.turbochess.model.replay.api.GameHistory;
 import it.unibo.turbochess.model.replay.api.ReplayManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public final class ReplayManagerImpl implements ReplayManager {
     @Override
     public GameHistory loadGame(final Path path) {
         try (InputStream is = Files.newInputStream(path)) {
-            return mapper.readValue(is, GameHistory.class);
+            return mapper.readValue(is, GameHistoryImpl.class);
         } catch (final IOException e) {
             LOGGER.error("Error loading game history from file: {}", path, e);
             return null;

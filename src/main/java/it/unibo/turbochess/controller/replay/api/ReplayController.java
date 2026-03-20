@@ -1,7 +1,7 @@
 package it.unibo.turbochess.controller.replay.api;
 
 import it.unibo.turbochess.model.replay.api.GameEvent;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
 
 import java.util.Optional;
 

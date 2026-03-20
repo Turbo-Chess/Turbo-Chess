@@ -1,7 +1,5 @@
 package it.unibo.turbochess.model.replay.api;
 
-import it.unibo.turbochess.model.replay.impl.GameHistory;
-
 import java.io.IOException;
 import java.nio.file.Path;
 

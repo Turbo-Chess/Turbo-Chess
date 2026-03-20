@@ -4,7 +4,7 @@ import it.unibo.turbochess.model.chessboard.board.api.ChessBoard;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.handler.impl.GameState;
 import it.unibo.turbochess.model.handler.api.TurnHandler;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
 import it.unibo.turbochess.model.point2d.Point2D;
 import it.unibo.turbochess.model.score.api.ScoreManager;
 import it.unibo.turbochess.model.timer.api.GameTimer;

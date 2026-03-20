@@ -6,6 +6,7 @@ import it.unibo.turbochess.model.entity.api.Entity;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.point2d.Point2D;
 import it.unibo.turbochess.model.replay.api.GameEvent;
+import it.unibo.turbochess.model.replay.api.GameHistory;
 import it.unibo.turbochess.model.score.api.ScoreManager;
 
 import java.util.function.Supplier;
@@ -26,7 +27,7 @@ public final class GameHistoryRecorder implements BoardObserver {
      * @param scoreSupplier a supplier that provides the score manager.
      */
     public GameHistoryRecorder(final Supplier<Integer> turnSupplier, final Supplier<ScoreManager> scoreSupplier) {
-        this.history = new GameHistory();
+        this.history = new GameHistoryImpl();
         this.turnSupplier = turnSupplier;
         this.scoreSupplier = scoreSupplier;
     }

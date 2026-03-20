@@ -7,7 +7,7 @@ import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.loadout.impl.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
 import it.unibo.turbochess.model.point2d.Point2D;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
 
 /**
  * The {@code GameController} interface orchestrates the flow of the chess game, mediating between

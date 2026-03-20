@@ -8,7 +8,8 @@ import it.unibo.turbochess.model.loadout.impl.Loadout;
 import it.unibo.turbochess.model.movement.impl.MoveRulesImpl;
 import it.unibo.turbochess.model.point2d.Point2D;
 import it.unibo.turbochess.model.replay.api.ReplayManager;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
+import it.unibo.turbochess.model.replay.impl.GameHistoryImpl;
 import it.unibo.turbochess.model.replay.impl.MoveEvent;
 import it.unibo.turbochess.model.replay.impl.ReplayManagerImpl;
 import it.unibo.turbochess.model.replay.impl.SpawnEvent;
@@ -25,7 +26,7 @@ class ReplayManagerTest {
 
     @Test
     void testSaveGame(@TempDir final Path tempDir) throws IOException {
-        final GameHistory history = new GameHistory();
+        final GameHistory history = new GameHistoryImpl();
 
         final PieceDefinition pawnDef = new PieceDefinition.Builder()
                 .name("Pawn")

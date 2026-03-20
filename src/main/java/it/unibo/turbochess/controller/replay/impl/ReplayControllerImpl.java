@@ -7,7 +7,8 @@ import it.unibo.turbochess.model.entity.api.Entity;
 import it.unibo.turbochess.model.point2d.Point2D;
 import it.unibo.turbochess.model.replay.impl.DespawnEvent;
 import it.unibo.turbochess.model.replay.api.GameEvent;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
+import it.unibo.turbochess.model.replay.impl.GameHistoryImpl;
 import it.unibo.turbochess.model.replay.impl.MoveEvent;
 import it.unibo.turbochess.model.replay.impl.SpawnEvent;
 
@@ -33,7 +34,7 @@ public final class ReplayControllerImpl implements ReplayController {
     )
     public ReplayControllerImpl(final ChessBoard board) {
         this.board = board;
-        this.history = new GameHistory();
+        this.history = new GameHistoryImpl();
         this.currentIndex = 0;
     }
 
@@ -49,7 +50,7 @@ public final class ReplayControllerImpl implements ReplayController {
              board.removeEntity(pos);
         }
 
-        this.history = new GameHistory();
+        this.history = new GameHistoryImpl();
         this.history.setEvents(newHistory.getEvents());
         this.currentIndex = 0;
         this.minIndex = 0;

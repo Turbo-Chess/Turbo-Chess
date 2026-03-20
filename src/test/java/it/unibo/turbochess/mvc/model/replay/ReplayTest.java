@@ -15,7 +15,8 @@ import it.unibo.turbochess.model.chessboard.board.impl.ChessBoardImpl;
 import it.unibo.turbochess.model.entity.api.Entity;
 import it.unibo.turbochess.model.replay.api.ReplayManager;
 import it.unibo.turbochess.model.replay.impl.DespawnEvent;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
+import it.unibo.turbochess.model.replay.impl.GameHistoryImpl;
 import it.unibo.turbochess.model.replay.impl.MoveEvent;
 import it.unibo.turbochess.model.replay.impl.ReplayManagerImpl;
 import it.unibo.turbochess.model.replay.impl.SpawnEvent;
@@ -60,7 +61,7 @@ class ReplayTest {
     @Test
     void testSaveAndLoad() throws IOException {
         final ReplayManager manager = new ReplayManagerImpl();
-        final GameHistory history = new GameHistory();
+        final GameHistory history = new GameHistoryImpl();
 
         // Add move event
         history.addEvent(
@@ -161,7 +162,7 @@ class ReplayTest {
             }
         });
 
-        final GameHistory history = new GameHistory();
+        final GameHistory history = new GameHistoryImpl();
 
         history.addEvent(new SpawnEvent(0, TEST_PIECE, new Point2D(0, 0), 0, 0));
         history.addEvent(new MoveEvent(1, PIECE_NAME, PlayerColor.WHITE, new Point2D(0, 0), new Point2D(0, 1), null, 0, 0));

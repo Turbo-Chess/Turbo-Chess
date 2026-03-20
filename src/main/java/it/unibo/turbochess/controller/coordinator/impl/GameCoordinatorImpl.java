@@ -14,7 +14,7 @@ import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.loadout.api.LoadoutManager;
 import it.unibo.turbochess.model.loadout.impl.LoadoutManagerImpl;
 import it.unibo.turbochess.model.replay.api.GameEvent;
-import it.unibo.turbochess.model.replay.impl.GameHistory;
+import it.unibo.turbochess.model.replay.api.GameHistory;
 import it.unibo.turbochess.model.replay.impl.MoveEvent;
 import it.unibo.turbochess.model.replay.api.ReplayManager;
 import it.unibo.turbochess.model.replay.impl.ReplayManagerImpl;
