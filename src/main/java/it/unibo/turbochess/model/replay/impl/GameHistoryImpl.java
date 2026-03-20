@@ -38,35 +38,35 @@ public final class GameHistoryImpl implements GameHistory {
     @Setter
     private long blackTimeRemaining;
 
-    @Override
     /** {@inheritDoc} */
+    @Override
     public void addEvent(final GameEvent event) {
         events.add(event);
     }
 
-    @Override
     /** {@inheritDoc} */
+    @Override
     public void removeLastEvent() {
         if (!events.isEmpty()) {
             events.remove(events.size() - 1);
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     @JsonIgnore
-    /** {@inheritDoc} */
     public GameEvent getLastEvent() {
         return events.isEmpty() ? null : events.get(events.size() - 1);
     }
 
-    @Override
     /** {@inheritDoc} */
+    @Override
     public List<GameEvent> getEvents() {
         return Collections.unmodifiableList(events);
     }
 
-    @Override
     /** {@inheritDoc} */
+    @Override
     public void setEvents(final List<GameEvent> events) {
         this.events.clear();
         this.events.addAll(events);
