@@ -38,19 +38,4 @@ class ChessBoardImpl {
 ChessBoard <|.. ChessBoardImpl
 ChessBoardImpl o-- "*" BoardObserver
 
-class BoardFactoryImpl {
-    + populateChessboard(...) : void
-    + createNewPiece(...) : void
-}
-
-BoardFactory <|.. BoardFactoryImpl
-
-BoardFactoryImpl o--> "1" DefinitionRegistry : queries >
-DefinitionRegistry ..> DefinitionCacheEntry : produces >
-@enduml
-
-LoaderController <|.. LoaderControllerImpl
-BoardFactory <|.. BoardFactoryImpl
-
-BoardFactoryImpl o--> "1" LoaderController : uses
 @enduml

@@ -1,44 +1,60 @@
-@startuml
+@startuml Movement
+
 skinparam classAttributeIconSize 0
 hide empty fields
 hide empty methods
 
-Interface MovementStrategy {
-    calculateMoves(Point2D start, Point2D direction, ChessBoard board) : List<Point2D>
+interface MovementStrategy {
+    +calculateMoves(start : Point2D, direction : Point2D, board : ChessBoard) : List<Point2D>
 }
 
 class SlidingMovement {
-    + calculateMoves(...) : List<Point2D>
+    +calculateMoves(start : Point2D, direction : Point2D, board : ChessBoard) : List<Point2D>
 }
 
 class JumpingMovement {
-    + calculateMoves(...) : List<Point2D>
+    +calculateMoves(start : Point2D, direction : Point2D, board : ChessBoard) : List<Point2D>
 }
 
-class MoveRules {
-    - directions : Point2D
-    - restriction : MoveType
-    - moveStrategy : MovementStrategy
+class SteppingMovement {
+    +calculateMoves(start : Point2D, direction : Point2D, board : ChessBoard) : List<Point2D>
+}
 
-    + getValidMoves(Point2D start, ChessBoard board, PlayerColor color) : List<Point2D>
+interface MoveRules {
+    +getValidMoves(start : Point2D, board : ChessBoard, playerColor : PlayerColor) : List<Point2D>
+}
+
+class MoveRulesImpl {
+    +getValidMoves(start : Point2D, board : ChessBoard, playerColor : PlayerColor) : List<Point2D>
 }
 
 enum MoveType {
-    - MOVE_ONLY
-    - EAT_ONLY
-    - MOVE_AND_EAT
+    MOVE_ONLY
+    EAT_ONLY
+    MOVE_AND_EAT
+}
+
+enum MoveStrategy {
+    JUMPING
+    SLIDING
+    STEPPING
 }
 
 class Piece {
-    moveRules : List<MoveRules>
-    ...
-
-    getValidMoves(ChessBoard board) : List<Point2D>
+    +getValidMoves(start : Point2D, board : ChessBoard) : List<Point2D>
+    +hasMoved() : boolean
+    +setHasMoved() : void
 }
 
 MovementStrategy <|.. SlidingMovement
 MovementStrategy <|.. JumpingMovement
-Piece "1" *-- "many" MoveRules : contains
-MoveRules "1" o-- "1" MovementStrategy : uses
-MoveRules "1" -- "1" MoveType : has
+MovementStrategy <|.. SteppingMovement
+
+MoveRules <|.. MoveRulesImpl
+MoveRulesImpl --> MoveType
+MoveRulesImpl --> MoveStrategy
+MoveStrategy --> MovementStrategy : strategy
+
+Piece ..> MoveRules : uses rules from PieceDefinition
+
 @enduml
