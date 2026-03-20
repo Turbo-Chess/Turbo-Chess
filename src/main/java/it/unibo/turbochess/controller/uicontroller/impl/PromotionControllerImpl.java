@@ -96,7 +96,7 @@ public final class PromotionControllerImpl implements PromotionController {
             imageView.setFitWidth(IMAGE_BOX_SIZE);
             imageView.setFitHeight(IMAGE_BOX_SIZE);
 
-            final StackPane imageBox = new javafx.scene.layout.StackPane(imageView);
+            final StackPane imageBox = new StackPane(imageView);
             imageBox.setPrefSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);
             imageBox.setMinSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);
             imageBox.setMaxSize(IMAGE_BOX_SIZE, IMAGE_BOX_SIZE);

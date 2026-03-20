@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.unibo.turbochess.model.entity.impl.Piece;
 import it.unibo.turbochess.model.entity.impl.PieceType;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
-import it.unibo.turbochess.model.entity.impl.PowerUp;
 
 import java.util.Optional;
 
@@ -25,7 +24,7 @@ import java.util.Optional;
     property = "entityType"
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = Piece.class, name = "piece"),
+    @JsonSubTypes.Type(value = Piece.class, name = "piece")
     //@JsonSubTypes.Type(value = PowerUp.class, name = "powerup")
 })
 public interface Entity {
