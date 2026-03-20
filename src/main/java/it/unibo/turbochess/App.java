@@ -41,11 +41,9 @@ public final class App extends Application {
 
             // Start with Main Menu
             coordinator.initMainMenu();
-        } catch (final RuntimeException e) {
+        } catch (final IllegalStateException e) {
            showFatalStartupError(e);
         }
-
-
     }
 
     private void showFatalStartupError(final Exception e) {
