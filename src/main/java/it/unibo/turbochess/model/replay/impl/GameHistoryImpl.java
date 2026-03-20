@@ -11,6 +11,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Default {@link GameHistory} implementation.
+ *
+ * <p>
+ * Stores the ordered list of {@link GameEvent}s produced during a match and the metadata required to restore it
+ * consistently (player loadouts and remaining time).
+ * </p>
+ */
 public final class GameHistoryImpl implements GameHistory {
     private final List<GameEvent> events = new LinkedList<>();
 
@@ -31,11 +39,13 @@ public final class GameHistoryImpl implements GameHistory {
     private long blackTimeRemaining;
 
     @Override
+    /** {@inheritDoc} */
     public void addEvent(final GameEvent event) {
         events.add(event);
     }
 
     @Override
+    /** {@inheritDoc} */
     public void removeLastEvent() {
         if (!events.isEmpty()) {
             events.remove(events.size() - 1);
@@ -44,16 +54,19 @@ public final class GameHistoryImpl implements GameHistory {
 
     @Override
     @JsonIgnore
+    /** {@inheritDoc} */
     public GameEvent getLastEvent() {
         return events.isEmpty() ? null : events.get(events.size() - 1);
     }
 
     @Override
+    /** {@inheritDoc} */
     public List<GameEvent> getEvents() {
         return Collections.unmodifiableList(events);
     }
 
     @Override
+    /** {@inheritDoc} */
     public void setEvents(final List<GameEvent> events) {
         this.events.clear();
         this.events.addAll(events);
