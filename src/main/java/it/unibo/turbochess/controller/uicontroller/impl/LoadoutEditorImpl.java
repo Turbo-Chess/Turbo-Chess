@@ -10,8 +10,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.turbochess.controller.coordinator.api.GameCoordinator;
 import it.unibo.turbochess.controller.uicontroller.api.LoadoutEditor;
 import it.unibo.turbochess.model.chessboard.boardfactory.api.DefinitionRegistry;
-import it.unibo.turbochess.model.loadout.impl.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
+import it.unibo.turbochess.model.loadout.impl.LoadoutImpl;
 import it.unibo.turbochess.model.loadout.api.LoadoutManager;
 import it.unibo.turbochess.model.point2d.Point2D;
 import javafx.beans.value.ChangeListener;
@@ -92,7 +92,7 @@ public final class LoadoutEditorImpl implements Initializable, LoadoutEditor {
 
         saveButton.setOnAction(event -> {
             if (buttonGrid.size() == SIZE && !textLabel.getText().isBlank()) {
-               loadoutManager.save(Loadout.create(textLabel.getText(), new ArrayList<>(entries.values())));
+               loadoutManager.save(LoadoutImpl.create(textLabel.getText(), new ArrayList<>(entries.values())));
             }
         });
 

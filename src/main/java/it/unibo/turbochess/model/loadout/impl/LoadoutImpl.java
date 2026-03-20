@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import it.unibo.turbochess.model.chessboard.board.impl.ChessBoardImpl;
 import it.unibo.turbochess.model.entity.impl.PieceType;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.entity.definition.PieceDefinition;
 import it.unibo.turbochess.model.point2d.Point2D;
 import lombok.Getter;
@@ -32,7 +33,7 @@ import java.util.stream.Stream;
  */
 @Getter
 @ToString
-public class Loadout {
+public class LoadoutImpl implements Loadout {
     private final String id;
     private final String name;
     private final long createdAt;
@@ -55,7 +56,7 @@ public class Loadout {
      * @throws NullPointerException if {@code entries} is {@code null}
      */
     @JsonCreator
-    public Loadout(
+    public LoadoutImpl(
             @JsonProperty("id") final String id,
             @JsonProperty("name") final String name,
             @JsonProperty("createdAt") final long createdAt,
@@ -68,14 +69,10 @@ public class Loadout {
         this.entries = List.copyOf(entries);
     }
 
-    /**
-     * Returns a copy of this loadout with a different name.
-     *
-     * @param newName the new loadout name
-     * @return a new {@link Loadout} instance with the updated name and refreshed {@code updatedAt}
-     */
-    public Loadout withName(final String newName) {
-        return new Loadout(
+    /** {@inheritDoc} */
+    @Override
+    public LoadoutImpl withName(final String newName) {
+        return new LoadoutImpl(
             this.id,
             newName,
             this.createdAt,
@@ -84,15 +81,10 @@ public class Loadout {
         );
     }
 
-    /**
-     * Returns a copy of this loadout with different entries.
-     *
-     * @param newEntries the new entries to use
-     * @return a new {@link Loadout} instance with the updated entries and refreshed {@code updatedAt}
-     * @throws NullPointerException if {@code newEntries} is {@code null}
-     */
-    public Loadout withEntries(final List<LoadoutEntry> newEntries) {
-        return new Loadout(
+    /** {@inheritDoc} */
+    @Override
+    public LoadoutImpl withEntries(final List<LoadoutEntry> newEntries) {
+        return new LoadoutImpl(
             this.id,
             this.name,
             this.createdAt,
@@ -101,14 +93,10 @@ public class Loadout {
         );
     }
 
-    /**
-     * Duplicates this loadout into a new one, generating a new id and timestamps.
-     *
-     * @param newName the name of the duplicated loadout
-     * @return a new {@link Loadout} with the same entries as this one
-     */
-    public Loadout duplicate(final String newName) {
-        return new Loadout(
+    /** {@inheritDoc} */
+    @Override
+    public LoadoutImpl duplicate(final String newName) {
+        return new LoadoutImpl(
             UUID.randomUUID().toString(),
             newName,
             Instant.now().toEpochMilli(),
@@ -117,41 +105,28 @@ public class Loadout {
         );
     }
 
-    /**
-     * Creates a mirrored version of this loadout for the opposite side of the board.
-     *
-     * <p>
-     * Each entry position is flipped along the Y axis so that the same formation can be used for the
-     * other player.
-     * </p>
-     *
-     * @return a new {@link Loadout} containing mirrored entries
-     */
-    public Loadout mirrored() {
+    /** {@inheritDoc} */
+    @Override
+    public LoadoutImpl mirrored() {
         final List<LoadoutEntry> mirroredEntries = getEntries().stream()
                 .map(e -> new LoadoutEntry(e.position().flipY(ChessBoardImpl.CHESSBOARD_SIZE), e.packId(), e.pieceId()))
                 .toList();
         return create(this.name + " (Mirrored)", mirroredEntries);
     }
 
-    /**
-     * Returns the entries of this loadout.
-     *
-     * @return an immutable copy of the entries
-     */
+    /** {@inheritDoc} */
+    @Override
     public List<LoadoutEntry> getEntries() {
         return List.copyOf(this.entries);
     }
 
-    /**
-     * validate the loadout against game rules.
-     *
-     * @param definitions the definitions of the pieces
-     * @param standardLoadout the standard loadout to compare against
-     * @return {@code true} if the loadout is valid with respect to the standard configuration
-     */
+    /** {@inheritDoc} */
+    @Override
     @JsonIgnore
-    public boolean isValid(final Map<String, PieceDefinition> definitions, final Loadout standardLoadout) {
+    public boolean isValid(
+        final Map<String, PieceDefinition> definitions,
+        final Loadout standardLoadout
+    ) {
         final int expected = calculateWeight(standardLoadout.getEntries(), definitions);
         return isValid(definitions, expected, standardLoadout);
     }
@@ -163,13 +138,13 @@ public class Loadout {
     ) {
         final ValidationContext context = new ValidationContext(this.entries, definitions, expectedWeight, standardLoadout);
         return Stream.<Predicate<ValidationContext>>of(
-                Loadout::validateWeight,
-                Loadout::validateEntryCount,
-                Loadout::validateKingCount,
-                Loadout::validateDistinctPositions,
-                Loadout::validateAllExist,
-                Loadout::validatePositionsMatch,
-                Loadout::validateWeightMatch
+                LoadoutImpl::validateWeight,
+                LoadoutImpl::validateEntryCount,
+                LoadoutImpl::validateKingCount,
+                LoadoutImpl::validateDistinctPositions,
+                LoadoutImpl::validateAllExist,
+                LoadoutImpl::validatePositionsMatch,
+                LoadoutImpl::validateWeightMatch
         ).allMatch(validation -> validation.test(context));
     }
 
@@ -180,8 +155,8 @@ public class Loadout {
      * @param entries the entries composing the loadout
      * @return a new {@link Loadout} instance
      */
-    public static Loadout create(final String name, final List<LoadoutEntry> entries) {
-        return new Loadout(
+    public static LoadoutImpl create(final String name, final List<LoadoutEntry> entries) {
+        return new LoadoutImpl(
             UUID.randomUUID().toString(),
             name,
             Instant.now().toEpochMilli(),
@@ -321,7 +296,7 @@ public class Loadout {
         private final List<LoadoutEntry> entries;
         private final Map<String, PieceDefinition> definitions;
         private final int expectedWeight;
-        private final Loadout standardLoadout;
+        private final it.unibo.turbochess.model.loadout.api.Loadout standardLoadout;
 
         /**
          * Creates a validation context for a loadout validation run.
@@ -335,7 +310,7 @@ public class Loadout {
             final List<LoadoutEntry> entries,
             final Map<String, PieceDefinition> definitions,
             final int expectedWeight,
-            final Loadout standardLoadout
+            final it.unibo.turbochess.model.loadout.api.Loadout standardLoadout
         ) {
             this.entries = entries;
             this.definitions = definitions;

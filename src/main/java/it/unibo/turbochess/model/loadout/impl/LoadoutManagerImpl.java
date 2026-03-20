@@ -6,6 +6,7 @@ import it.unibo.turbochess.model.entity.definition.AbstractEntityDefinition;
 import it.unibo.turbochess.model.entity.definition.PieceDefinition;
 import it.unibo.turbochess.model.loader.impl.EntityLoaderImpl;
 import it.unibo.turbochess.model.utils.LoadingUtils;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.loadout.api.LoadoutManager;
 import it.unibo.turbochess.model.properties.GameProperties;
 import it.unibo.turbochess.model.utils.FileSystemUtils;
@@ -55,7 +56,7 @@ public final class LoadoutManagerImpl implements LoadoutManager {
         try {
             final Loadout generated = StandardLoadoutFactory.createStandard();
 
-            final Loadout standard = new Loadout(
+            final Loadout standard = new LoadoutImpl(
                 STANDARD_LOADOUT_ID,
                 generated.getName(),
                 generated.getCreatedAt(),
@@ -89,7 +90,7 @@ public final class LoadoutManagerImpl implements LoadoutManager {
             return Optional.empty();
         }
         try {
-            final Loadout loadout = mapper.readValue(file.toFile(), Loadout.class);
+            final Loadout loadout = mapper.readValue(file.toFile(), LoadoutImpl.class);
             return Optional.of(loadout);
         } catch (final IOException e) {
             LOGGER.error("Failed to load loadout: {}", id, e);
@@ -141,7 +142,7 @@ public final class LoadoutManagerImpl implements LoadoutManager {
 
     private Optional<Loadout> parseLoadoutFile(final Path file) {
         try {
-            return Optional.of(mapper.readValue(file.toFile(), Loadout.class));
+            return Optional.of(mapper.readValue(file.toFile(), LoadoutImpl.class));
         } catch (final IOException e) {
             LOGGER.warn("Failed to parse loadout file: {}", file, e);
             return Optional.empty();

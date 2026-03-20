@@ -1,6 +1,6 @@
 package it.unibo.turbochess.model.replay.api;
 
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 
 import java.util.List;
 

@@ -15,8 +15,9 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
+import it.unibo.turbochess.model.loadout.impl.LoadoutImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +49,7 @@ class LoadoutTest {
 
         final ObjectMapper mapper = new ObjectMapper();
         final String json = Files.readString(Path.of(STANDARD_LOADOUT_PATH));
-        standardLoadout = mapper.readValue(json, Loadout.class);
+        standardLoadout = mapper.readValue(json, LoadoutImpl.class);
     }
 
     @Test

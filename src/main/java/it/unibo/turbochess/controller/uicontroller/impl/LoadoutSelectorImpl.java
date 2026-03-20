@@ -14,7 +14,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.turbochess.controller.coordinator.api.GameCoordinator;
 import it.unibo.turbochess.controller.gamecontroller.api.GameController;
 import it.unibo.turbochess.controller.uicontroller.api.LoadoutSelector;
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
 import it.unibo.turbochess.model.loadout.api.LoadoutManager;
 import javafx.beans.value.ChangeListener;

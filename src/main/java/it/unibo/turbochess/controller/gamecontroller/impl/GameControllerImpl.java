@@ -10,7 +10,7 @@ import it.unibo.turbochess.model.chessmatch.api.ChessMatch;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.handler.impl.GameState;
 import it.unibo.turbochess.model.handler.api.TurnHandler;
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
 import it.unibo.turbochess.model.loadout.api.LoadoutManager;
 import it.unibo.turbochess.model.point2d.Point2D;

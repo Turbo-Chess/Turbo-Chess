@@ -4,7 +4,7 @@ import it.unibo.turbochess.model.entity.impl.Piece;
 import it.unibo.turbochess.model.entity.impl.PieceType;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.entity.definition.PieceDefinition;
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.impl.LoadoutImpl;
 import it.unibo.turbochess.model.movement.impl.MoveRulesImpl;
 import it.unibo.turbochess.model.point2d.Point2D;
 import it.unibo.turbochess.model.replay.api.ReplayManager;
@@ -49,8 +49,8 @@ class ReplayManagerTest {
         history.addEvent(new SpawnEvent(1, pawn, new Point2D(0, 1), 0, 0));
         history.addEvent(new MoveEvent(2, "Pawn", PlayerColor.WHITE, new Point2D(0, 1), new Point2D(0, 2), null, 0, 0));
 
-        history.setWhiteLoadout(Loadout.create("White", List.of()));
-        history.setBlackLoadout(Loadout.create("Black", List.of()));
+        history.setWhiteLoadout(LoadoutImpl.create("White", List.of()));
+        history.setBlackLoadout(LoadoutImpl.create("Black", List.of()));
 
         final ReplayManager manager = new ReplayManagerImpl();
         final Path saveFile = tempDir.resolve("save_test.json");

@@ -9,7 +9,7 @@ import it.unibo.turbochess.model.entity.impl.Piece;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.entity.definition.AbstractEntityDefinition;
 import it.unibo.turbochess.model.entity.definition.PieceDefinition;
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
 import it.unibo.turbochess.model.point2d.Point2D;
 

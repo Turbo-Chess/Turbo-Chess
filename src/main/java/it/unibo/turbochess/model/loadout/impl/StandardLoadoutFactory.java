@@ -1,5 +1,6 @@
 package it.unibo.turbochess.model.loadout.impl;
 
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.point2d.Point2D;
 
 import java.util.ArrayList;
@@ -48,6 +49,6 @@ public final class StandardLoadoutFactory {
             entries.add(new LoadoutEntry(new Point2D(x, pawnsLines), packId, "pawn"));
         }
 
-        return Loadout.create("Standard Chess", entries);
+        return LoadoutImpl.create("Standard Chess", entries);
     }
 }

@@ -1,7 +1,7 @@
 package it.unibo.turbochess.model.chessboard.boardfactory.api;
 
 import it.unibo.turbochess.model.chessboard.board.api.ChessBoard;
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 
 /**
  * Functional interface for populating boards.

@@ -1,7 +1,7 @@
 package it.unibo.turbochess.model.replay.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.replay.api.GameEvent;
 import it.unibo.turbochess.model.replay.api.GameHistory;
 import lombok.Getter;

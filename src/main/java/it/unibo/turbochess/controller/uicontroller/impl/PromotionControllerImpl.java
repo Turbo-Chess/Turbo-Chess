@@ -12,7 +12,7 @@ import it.unibo.turbochess.model.entity.impl.PieceType;
 import it.unibo.turbochess.model.entity.impl.PlayerColor;
 import it.unibo.turbochess.model.utils.LoadingUtils;
 import it.unibo.turbochess.model.utils.RulesUtils;
-import it.unibo.turbochess.model.loadout.impl.Loadout;
+import it.unibo.turbochess.model.loadout.api.Loadout;
 import it.unibo.turbochess.model.loadout.impl.LoadoutEntry;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

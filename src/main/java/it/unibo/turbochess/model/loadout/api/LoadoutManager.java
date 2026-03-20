@@ -1,7 +1,5 @@
 package it.unibo.turbochess.model.loadout.api;
 
-import it.unibo.turbochess.model.loadout.impl.Loadout;
-
 import java.util.List;
 import java.util.Optional;
 
